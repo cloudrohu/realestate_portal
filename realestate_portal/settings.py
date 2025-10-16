@@ -84,6 +84,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 
@@ -152,17 +154,26 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
+# https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+# 📁 Static files configuration
+STATIC_URL = '/static/'
+
+# 🧠 This is where Django will *collect* all static files when you run `collectstatic`
+STATIC_ROOT = BASE_DIR / 'staticfiles'   # or os.path.join(BASE_DIR, 'staticfiles')
+
+# 🧱 These are the extra directories Django will look into for static files
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',   # e.g. your app-level or project-level static folder
+]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
