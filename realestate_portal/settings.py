@@ -87,6 +87,9 @@ DATABASES = {
     }
 }
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # 🧠 9️⃣ Auth
 AUTH_USER_MODEL = 'user.CustomUser'
 
@@ -105,11 +108,16 @@ USE_I18N = True
 USE_TZ = True
 
 # 🧱 Static & Media
+# 📁 Static files configuration
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# 🧠 This is where Django will *collect* all static files when you run `collectstatic`
+STATIC_ROOT = BASE_DIR / 'staticfiles'   # or os.path.join(BASE_DIR, 'staticfiles')
+
+# 🧱 These are the extra directories Django will look into for static files
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',   # e.g. your app-level or project-level static folder
+]
 
 # 📌 CKEditor
 CKEDITOR_UPLOAD_PATH = "uploads/"
