@@ -1,0 +1,91 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load utility_tags %} 
+{% load humanize %} 
+
+{% block title %}{{ site_settings.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
+
+{% block content %}
+
+    <section id="hero-slider" style="background-image: url({% if site_settings.search_bg %}{{ site_settings.search_bg.url }}{% endif %});">
+        <div class="container">
+            {% if sliders %}
+                <div class="owl-carousel">
+                    {% for slider in sliders %}
+                        <div class="slider-item">
+                            <h1>{{ slider.title }}</h1>
+                            <p>{{ slider.subtitle }}</p>
+                            <a href="{{ slider.button_link|default:'#' }}" class="btn-primary">{{ slider.button_text|default:'Explore Now' }}</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="slider-item">
+                    <h1>Find Your Dream Home</h1>
+                    <p>Search the best properties in major cities.</p>
+                    <a href="{% url 'properties' %}" class="btn-primary">Start Searching</a>
+                </div>
+            {% endif %}
+            
+            {% include 'includes/search_bar.html' %} 
+        </div>
+    </section>
+
+    <section id="featured-properties" class="py-5">
+        <div class="container">
+            <h2 class="text-center">Featured Listings</h2>
+            <hr>
+            
+            <div class="row property-grid">
+                {% if properties %}
+                    {% for property in properties %}
+                        <div class="col-md-3 mb-4">
+                            <div class="card property-card">
+                                <img src="{% if property.main_photo %}{{ property.main_photo.url }}{% else %}{% static 'img/placeholder.png' %}{% endif %}" class="card-img-top" alt="{{ property.title }}">
+                                <div class="card-body">
+                                    <h5 class="card-title"><a href="{% url 'property_detail' property.id %}">{{ property.title }}</a></h5>
+                                    
+                                    <p class="card-text price">
+                                        ₹{{ property.price|in_unit }} 
+                                        <small class="text-muted">| {{ property.area_sqft }} sq.ft.</small>
+                                    </p>
+
+                                    <ul class="list-inline details">
+                                        <li class="list-inline-item">{{ property.bedrooms|default:'?' }} Beds</li>
+                                        <li class="list-inline-item">{{ property.property_type.name }}</li>
+                                    </ul>
+                                    <p class="location text-muted">{{ property.locality.name }}, {{ property.city.name }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-center w-100">No featured properties available right now.</p>
+                {% endif %}
+            </div>
+            
+            <div class="text-center">
+                <a href="{% url 'properties' %}" class="btn btn-outline-primary">View All Properties</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" style="background-image: url({% if site_settings.testmonial_bg %}{{ site_settings.testmonial_bg.url }}{% endif %});" class="py-5 text-white">
+        <div class="container text-center">
+            <h2>What Our Clients Say</h2>
+            {% if testimonials %}
+                <div class="testimonial-slider owl-carousel mt-4">
+                    {% for t in testimonials %}
+                        <div class="testimonial-item p-4">
+                            <p class="lead">"{{ t.message|truncatewords:40 }}"</p>
+                            <p class="h6 font-weight-bold mt-3">{{ t.name }}</p>
+                            <p class="small">{{ t.designation }}</p>
+                            <p>{{ t.rating }} ⭐</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    {% endblock %}

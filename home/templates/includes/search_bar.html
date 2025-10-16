@@ -1,0 +1,166 @@
+{% load humanize %}
+<div class="search-form-container mt-4 p-3 bg-white rounded shadow-sm">
+    <form action="{% url 'properties' %}" method="GET" class="row g-2">
+        <div class="col-md-4">
+            <select name="locality_id" class="form-select">
+                <option value="" selected>Search Location...</option>
+                {% for location in top_level_localities %}
+                    <option value="{{ location.id }}">{{ location.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select name="property_type_id" class="form-select">
+                <option value="" selected>Property Type...</option>
+                {% for type in top_level_types %}
+                    <option value="{{ type.id }}">{{ type.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="keywords" class="form-control" placeholder="Keywords (e.g. 3BHK, pool)">
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </div>
+    </form>
+</div>
+
+
+
+{% load static %}
+
+{% block title %}{{ site_settings.meta_title|default:'Find Your Dream Home' }}{% endblock %}
+
+{% block content %}
+
+    <section id="hero-search" class="relative min-h-[500px] bg-gray-800 flex items-center justify-center" 
+        style="background-image: url({% static 'img/hero-bg.jpg' %}); background-size: cover; background-position: center;">
+        
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+
+        <div class="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
+            
+            <h1 class="text-3xl md:text-5xl text-white font-bold mb-2">Find Your Dream Home</h1>
+            <p class="text-lg md:text-xl mb-6">Search properties, projects & builders across the city</p>
+
+            <div id="search-box" class="bg-white rounded shadow-2xl mt-8 w-full max-w-5xl overflow-hidden">
+                <div class="flex flex-col md:flex-row items-stretch">
+
+                    <select id="dropdown1" class="px-4 py-3 border-r border-gray-300 focus:outline-none text-gray-700">
+                        <option value="new">New Projects</option>
+                        <option value="residential">Residential</option>
+                        <option value="commercial">Commercial</option>
+                        <option value="land">Land / Plot</option>
+                        <option value="pg">PG Co-Living</option>
+                    </select>
+
+                    <select id="dropdown2" class="px-4 py-3 border-r border-gray-300 focus:outline-none text-gray-700">
+                        </select>
+
+                    <input id="searchInput" type="text" placeholder="Locality, Builder or Project Name" 
+                           class="flex-1 px-4 py-3 focus:outline-none text-gray-700">
+
+                    <button id="toggleAdvance" type="button" 
+                            class="hidden md:flex items-center px-4 py-3 text-orange-600 font-medium hover:underline">
+                        Advance Search
+                    </button>
+
+                    <button id="searchBtn" type="button" 
+                            class="bg-orange-500 hover:bg-orange-600 px-6 py-3 flex items-center justify-center text-white font-bold">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            </div>
+    </section>
+    
+    {% endblock %}
+
+
+{% block extra_js %}
+<script>
+    const dropdown1 = document.getElementById("dropdown1");
+    const dropdown2 = document.getElementById("dropdown2");
+    const searchBtn = document.getElementById("searchBtn");
+    const searchInput = document.getElementById("searchInput");
+
+    // Options mapping (Matches the logic you provided)
+    const optionsMap = {
+        new: ["Residential", "Commercial"],
+        residential: ["Buy", "Rent"],
+        commercial: ["Buy", "Lease"],
+        land: ["Residential", "Commercial"],
+        pg: ["Single Room", "Shared Room", "With Food", "Without Food"]
+    };
+
+    // Function to update dropdown2
+    function updateDropdown2(selected) {
+        dropdown2.innerHTML = "";
+        if (optionsMap[selected]) {
+            optionsMap[selected].forEach(opt => {
+                const option = document.createElement("option");
+                option.value = opt.toLowerCase().replace(/\s+/g, "-");
+                option.textContent = opt;
+                dropdown2.appendChild(option);
+            });
+        }
+    }
+
+    // Default load
+    updateDropdown2(dropdown1.value);
+
+    // On change
+    dropdown1.addEventListener("change", function () {
+        updateDropdown2(this.value);
+    });
+
+    // Search Button Click Logic
+    searchBtn.addEventListener("click", function () {
+        const d1 = dropdown1.value;
+        // Use trim() to clean text, though this is less reliable than value property
+        const d2 = dropdown2.options[dropdown2.selectedIndex].text.trim(); 
+        const query = searchInput.value.trim();
+
+        let targetUrl = "";
+
+        // URL Mapping logic
+        if (d1 === "new" || d1 === "residential" || d1 === "commercial") {
+            // New Projects (Residential/Commercial) go to the Project listing page
+            targetUrl = "{% url 'projects' %}";
+        }
+        else if (d1 === "land" || d1 === "pg") {
+            // Land/PG listings go to the Properties page
+            targetUrl = "{% url 'properties' %}";
+        }
+
+        // Add filters based on user input
+        if (targetUrl) {
+            let params = new URLSearchParams();
+            
+            // Add D2 (Type filter)
+            if (d2) {
+                // NOTE: We need a mapping from D2 text to a specific model field value (e.g., 'rent', 'buy', etc.)
+                // Since D2 is dynamic, we'll use a generic filter name for now.
+                params.append('transaction_type', d2.toLowerCase()); 
+            }
+            
+            // Add Keywords
+            if (query) {
+                params.append('keywords', query);
+            }
+            
+            // Construct the final URL
+            const queryString = params.toString();
+            if (queryString) {
+                 targetUrl += "?" + queryString;
+            }
+            
+            window.location.href = targetUrl;
+        } else {
+            alert("Please select valid search options.");
+        }
+    });
+</script>
+{% endblock %}

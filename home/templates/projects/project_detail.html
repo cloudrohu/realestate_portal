@@ -1,0 +1,146 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load utility_tags %} 
+{% load humanize %}
+
+{% block title %}{{ project.project_name }} - Details{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <a href="{% url 'projects' %}" class="text-decoration-none">← Back to All Projects</a>
+    
+    <h1 class="mt-3">{{ project.project_name }}</h1>
+    <p class="lead text-muted">{{ project.locality.name }}, {{ project.city.name }}</p>
+    
+    <div class="row">
+        <!-- Left Column -->
+        <div class="col-lg-8">
+
+            <!-- Project Image / Gallery -->
+            <div id="project-gallery" class="mb-4">
+                {% if project.image %}
+                    <img src="{{ project.image.url }}" class="img-fluid rounded mb-2" alt="{{ project.project_name }}">
+                {% endif %}
+                <div class="row g-2">
+                    {% for g in galleries %}
+                    <div class="col-4">
+                        <img src="{{ g.image.url }}" class="img-fluid rounded" alt="Gallery {{ forloop.counter }}">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Overview -->
+            <div class="card card-body mb-4">
+                <h2>Overview</h2>
+                {% if overview %}
+                    <p>{{ overview.content|linebreaks }}</p>
+                {% endif %}
+                <p><strong>Developer:</strong> {{ project.developer }}</p>
+                <p><strong>Status:</strong> <span class="badge bg-primary">{{ project.construction_status }}</span></p>
+                <p><strong>Possession:</strong>
+                    {% if project.possession_month and project.possession_year %}
+                        {{ project.possession_month }} {{ project.possession_year.year_value }}
+                    {% else %}
+                        Not Specified
+                    {% endif %}
+                </p>
+                <p><strong>Price Range:</strong> ₹{{ project.get_price_range }}</p>
+                <p><strong>Available Units:</strong> {{ project.get_configuration_summary }}</p>
+            </div>
+
+            <!-- Configuration Table -->
+            {% if configurations %}
+            <div class="card card-body mb-4">
+                <h3>Unit Configurations</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>BHK Type</th>
+                            <th>Area (Sq.ft)</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for config in configurations %}
+                        <tr>
+                            <td>{{ config.bhk_type }}</td>
+                            <td>{{ config.area_sqft|intcomma }}</td>
+                            <td>₹{{ config.price_in_rupees|in_unit }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+            <!-- Amenities -->
+            {% if amenities %}
+            <div class="card card-body mb-4">
+                <h3>Amenities</h3>
+                <ul class="list-inline">
+                    {% for a in amenities %}
+                    <li class="list-inline-item badge bg-secondary mb-1">{{ a.amenities.title }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <!-- USP -->
+            {% if usps %}
+            <div class="card card-body mb-4">
+                <h3>Why Choose This Project?</h3>
+                <ul>
+                    {% for u in usps %}
+                    <li>{{ u.point }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <!-- Google Map -->
+            <div class="mb-4">
+                <h2>Location</h2>
+                <div class="map-container" style="height: 400px; overflow: hidden;">
+                    {% if project.google_map %}
+                        {{ project.google_map|safe }}
+                    {% else %}
+                        <p>Google Map not provided.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- RERA -->
+            {% if rera_info %}
+            <div class="alert alert-warning">
+                <h4>RERA Details</h4>
+                <p>Reg. No.: <strong>{{ rera_info.registration_no|default:"N/A" }}</strong></p>
+                <p>Disclaimer: {{ rera_info.disclaimer|default:"RERA details are subject to change." }}</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-lg-4">
+            <div class="sticky-top" style="top: 20px;">
+                <div class="card p-3 bg-light mb-3">
+                    <h5>Interested? Contact Us</h5>
+                    <p>Call: {{ site_settings.phone|default:'N/A' }}</p>
+                    <button class="btn btn-success w-100">Inquire Now</button>
+                </div>
+
+                {% if booking_offers %}
+                <div class="card p-3 bg-white">
+                    <h5>Special Booking Offers</h5>
+                    <ul class="list-unstyled">
+                        {% for offer in booking_offers %}
+                        <li>🎁 {{ offer.title }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}All Projects{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">🏗 All Projects</h1>
+        <form method="get" class="d-flex" style="max-width: 300px;">
+            <input type="text" name="q" class="form-control me-2" placeholder="Search projects..." value="{{ request.GET.q }}">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+    {% if projects %}
+    <div class="row g-4">
+        {% for project in projects %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0 hover-shadow">
+                {% if project.image %}
+                <a href="{{ project.get_absolute_url }}">
+                    <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.project_name }}" style="height: 220px; object-fit: cover;">
+                </a>
+                {% else %}
+                <a href="{{ project.get_absolute_url }}">
+                    <img src="{% static 'images/no-image.png' %}" class="card-img-top" alt="No Image" style="height: 220px; object-fit: cover;">
+                </a>
+                {% endif %}
+
+                <div class="card-body">
+                    <h5 class="card-title mb-1">
+                        <a href="{{ project.get_absolute_url }}" class="text-dark text-decoration-none">{{ project.project_name|truncatechars:30 }}</a>
+                    </h5>
+                    <p class="text-muted mb-1">
+                        {{ project.locality.name }}, {{ project.city.name }}
+                    </p>
+                    <span class="badge bg-primary mb-2">{{ project.construction_status }}</span>
+
+                    {% if project.get_price_range %}
+                    <p class="fw-bold text-success mb-0">₹{{ project.get_price_range }}</p>
+                    {% endif %}
+                </div>
+
+                <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
+                    <small class="text-muted">
+                        🏠 {{ project.get_configuration_summary|default:"--" }}
+                    </small>
+                    <a href="{{ project.get_absolute_url }}" class="btn btn-sm btn-outline-primary">View Details →</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="alert alert-info text-center mt-5">
+        No projects found.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
