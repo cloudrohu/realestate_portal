@@ -5,59 +5,116 @@
 {% block title %}All Projects{% endblock %}
 
 {% block content %}
-<div class="container my-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">🏗 All Projects</h1>
-        <form method="get" class="d-flex" style="max-width: 300px;">
-            <input type="text" name="q" class="form-control me-2" placeholder="Search projects..." value="{{ request.GET.q }}">
-            <button type="submit" class="btn btn-primary">Search</button>
-        </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Commercial Property Listings</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <!-- 🔷 Header Section -->
+  <header class="bg-white shadow p-4 flex justify-between items-center">
+    <div class="flex items-center gap-3">
+      <img src="https://static.99acres.com/universalapp/img/99acres-logo.svg" alt="logo" class="h-8">
+      <div class="border rounded-md flex items-center">
+        <select class="px-3 py-1 border-r focus:outline-none">
+          <option>Commercial Buy</option>
+          <option>Commercial Rent</option>
+          <option>Residential Buy</option>
+        </select>
+        <input type="text" placeholder="Mumbai" class="px-3 py-1 focus:outline-none w-32 md:w-60"/>
+        <button class="px-3 py-1 text-white bg-blue-600 hover:bg-blue-700">
+          🔍
+        </button>
+      </div>
     </div>
+    <button class="bg-green-500 text-white px-4 py-1 rounded">Post property FREE</button>
+  </header>
 
-    {% if projects %}
-    <div class="row g-4">
-        {% for project in projects %}
-        <div class="col-md-6 col-lg-4">
-            <div class="card h-100 shadow-sm border-0 hover-shadow">
-                {% if project.image %}
-                <a href="{{ project.get_absolute_url }}">
-                    <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.project_name }}" style="height: 220px; object-fit: cover;">
-                </a>
-                {% else %}
-                <a href="{{ project.get_absolute_url }}">
-                    <img src="{% static 'images/no-image.png' %}" class="card-img-top" alt="No Image" style="height: 220px; object-fit: cover;">
-                </a>
-                {% endif %}
+  <!-- 🔶 Main Section -->
+  <main class="max-w-7xl mx-auto py-6 px-4 grid grid-cols-1 md:grid-cols-4 gap-6">
+    <!-- 🧭 Filters (Left Sidebar) -->
+    <aside class="md:col-span-1 bg-white rounded-lg shadow p-4 space-y-4">
+      <h2 class="font-semibold text-lg">Filters</h2>
 
-                <div class="card-body">
-                    <h5 class="card-title mb-1">
-                        <a href="{{ project.get_absolute_url }}" class="text-dark text-decoration-none">{{ project.project_name|truncatechars:30 }}</a>
-                    </h5>
-                    <p class="text-muted mb-1">
-                        {{ project.locality.name }}, {{ project.city.name }}
-                    </p>
-                    <span class="badge bg-primary mb-2">{{ project.construction_status }}</span>
+      <!-- Budget -->
+      <div>
+        <button class="w-full flex justify-between items-center font-semibold">
+          Budget <span>▼</span>
+        </button>
+      </div>
 
-                    {% if project.get_price_range %}
-                    <p class="fw-bold text-success mb-0">₹{{ project.get_price_range }}</p>
-                    {% endif %}
-                </div>
+      <!-- Property Type -->
+      <div>
+        <button class="w-full flex justify-between items-center font-semibold">
+          Type of property <span>▼</span>
+        </button>
+      </div>
 
-                <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
-                    <small class="text-muted">
-                        🏠 {{ project.get_configuration_summary|default:"--" }}
-                    </small>
-                    <a href="{{ project.get_absolute_url }}" class="btn btn-sm btn-outline-primary">View Details →</a>
-                </div>
-            </div>
+      <!-- Localities -->
+      <div>
+        <h3 class="font-semibold mb-2">Localities</h3>
+        <div class="space-y-1 max-h-40 overflow-auto">
+          <label class="block"><input type="checkbox"> Andheri East</label>
+          <label class="block"><input type="checkbox"> Andheri West</label>
+          <label class="block"><input type="checkbox"> Borivali West</label>
+          <label class="block"><input type="checkbox"> Dadar West</label>
+          <label class="block"><input type="checkbox"> Wagle Estate</label>
         </div>
-        {% endfor %}
-    </div>
+      </div>
 
-    {% else %}
-    <div class="alert alert-info text-center mt-5">
-        No projects found.
-    </div>
-    {% endif %}
-</div>
+      <!-- Area -->
+      <div>
+        <button class="w-full flex justify-between items-center font-semibold">
+          Area (sq.ft.) <span>▼</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- 🏢 Listing Cards (Right Section) -->
+    <section class="md:col-span-3 space-y-4">
+
+      <!-- Results Count + Sort -->
+      <div class="flex justify-between items-center bg-white p-3 rounded-lg shadow">
+        <p class="font-semibold text-gray-700">7696 results | Commercial Property in Mumbai for Sale</p>
+        <select class="border px-2 py-1 rounded">
+          <option>Sort By</option>
+          <option>Price: Low to High</option>
+          <option>Price: High to Low</option>
+        </select>
+      </div>
+
+      <!-- Property Card -->
+      <div class="bg-white rounded-lg shadow overflow-hidden grid md:grid-cols-3">
+        <!-- Image Section -->
+        <div class="md:col-span-1 relative">
+          <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=400&q=60" alt="Property" class="w-full h-full object-cover">
+          <span class="absolute top-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">FEATURED</span>
+        </div>
+
+        <!-- Details Section -->
+        <div class="md:col-span-2 p-4 flex flex-col justify-between">
+          <div>
+            <h3 class="font-bold text-lg">Lotus Link Square</h3>
+            <p class="text-gray-600 text-sm mb-2">Ready to move Office Space for sale in Andheri West, Mumbai</p>
+            <p class="text-blue-600 font-bold text-lg">₹2.9 Cr <span class="text-sm text-gray-500">| 725 sqft</span></p>
+            <p class="text-sm text-gray-500 mt-1">Highlights: Grade A Building • Dn Nagar Nearby</p>
+          </div>
+          <div class="flex gap-3 mt-3">
+            <button class="bg-blue-600 text-white px-4 py-1 rounded">View Number</button>
+            <button class="bg-gray-200 text-gray-700 px-4 py-1 rounded">Contact</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Duplicate this card structure for multiple properties -->
+    </section>
+  </main>
+
+</body>
+</html>
+
 {% endblock %}

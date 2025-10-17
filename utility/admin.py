@@ -76,34 +76,17 @@ class PossessionInAdmin(admin.ModelAdmin):
 # --------------------------------------------
 @admin.register(ProjectAmenities)
 class ProjectAmenitiesAdmin(admin.ModelAdmin):
-    list_display = ('title', 'image_preview1', 'image_preview2', 'image_preview3')
+    list_display = ('title', 'image_preview',)
     search_fields = ('title',)
-    readonly_fields = ('image_preview1', 'image_preview2', 'image_preview3')
+    readonly_fields = ('image_preview', )
 
-    def image_preview1(self, obj):
-        if obj.image1 and hasattr(obj.image1, 'url'):
+    def image_preview(self, obj):
+        if obj.image and hasattr(obj.image, 'url'):
             url = obj.image1.url
         else:
             url = NO_IMAGE_URL
         return mark_safe(f'<img src="{url}" width="60" height="60" style="object-fit:cover;border-radius:6px;" />')
-    image_preview1.short_description = "Image 1"
-
-    def image_preview2(self, obj):
-        if obj.image2 and hasattr(obj.image2, 'url'):
-            url = obj.image2.url
-        else:
-            url = NO_IMAGE_URL
-        return mark_safe(f'<img src="{url}" width="60" height="60" style="object-fit:cover;border-radius:6px;" />')
-    image_preview2.short_description = "Image 2"
-
-    def image_preview3(self, obj):
-        # Aapke model me 3 bar image2 hai — yahan agar third image field add karni ho to karein
-        if hasattr(obj, 'image3') and obj.image3 and hasattr(obj.image3, 'url'):
-            url = obj.image3.url
-        else:
-            url = NO_IMAGE_URL
-        return mark_safe(f'<img src="{url}" width="60" height="60" style="object-fit:cover;border-radius:6px;" />')
-    image_preview3.short_description = "Image 3"
+    image_preview.short_description = "Image"
 
 
 # --------------------------------------------

@@ -2,10 +2,11 @@ from django.contrib import admin
 from django.utils.html import mark_safe
 from mptt.admin import MPTTModelAdmin
 from .models import (
-    Project, BookingOffer, WelcomeTo, Location, WebSlider, Overview, AboutUs,
+    Project, BookingOffer, WelcomeTo, WebSlider, Overview, AboutUs,
     USP, Configuration, Connectivity, Amenities, Gallery, Header,
     RERA_Info, WhyInvest, BankOffer
 )
+
 
 # 🟡 Placeholder image for fallback
 NO_IMAGE_URL = "https://via.placeholder.com/80x80.png?text=No+Image"
@@ -23,10 +24,6 @@ class WelcomeToInline(admin.StackedInline):
     model = WelcomeTo
     extra = 1
 
-
-class LocationInline(admin.StackedInline):
-    model = Location
-    extra = 1
 
 
 class WebSliderInline(admin.TabularInline):
@@ -110,14 +107,13 @@ class BankOfferInline(admin.TabularInline):
 # ----------------------------- #
 # 🏡 MAIN PROJECT ADMIN
 # ----------------------------- #
-
 @admin.register(Project)
 class ProjectAdmin(MPTTModelAdmin):
     list_display = (
-    'project_name', 'city', 'locality', 'developer',
-    'construction_status', 'possession_month', 'possession_year',
-    'featured_property', 'active', 'image_preview', 'youtube_preview'
-)
+        'project_name', 'city', 'locality', 'developer',
+        'construction_status', 'possession_month', 'possession_year',
+        'featured_property', 'active', 'image_preview', 'youtube_preview'
+    )
 
     list_filter = ('city', 'developer', 'propert_type', 'construction_status', 'featured_property', 'active')
     search_fields = ('project_name', 'city__name', 'locality__name', 'developer__title')
@@ -140,7 +136,7 @@ class ProjectAdmin(MPTTModelAdmin):
             )
         }),
         ('Media & Map', {
-            'fields': ('image', 'image_preview', 'youtube_embed_id', 'youtube_preview')
+            'fields': ('image', 'image_preview', 'youtube_embed_id', 'google_map_iframe','youtube_preview')
         }),
         ('Timestamps', {
             'fields': ('create_at', 'update_at')
@@ -150,7 +146,6 @@ class ProjectAdmin(MPTTModelAdmin):
     inlines = [
         BookingOfferInline,
         WelcomeToInline,
-        LocationInline,
         WebSliderInline,
         OverviewInline,
         AboutUsInline,
@@ -169,15 +164,24 @@ class ProjectAdmin(MPTTModelAdmin):
         order_insertion_by = ['project_name']
 
     def image_preview(self, obj):
-        """Show image thumbnail or fallback."""
+        """Admin list image preview — Safe for .webp and missing files."""
         if obj.image and hasattr(obj.image, 'url'):
-            url = obj.image.url
-        else:
-            url = NO_IMAGE_URL
-        return mark_safe(f'<img src="{url}" width="80" height="50" style="object-fit:cover;border-radius:6px;">')
+            return mark_safe(
+                f'<img src="{obj.image.url}" width="80" height="50" style="object-fit:cover;border-radius:6px;">'
+            )
+        return mark_safe(
+            f'<img src="https://via.placeholder.com/80x50.png?text=No+Image" width="80" height="50">'
+        )
     image_preview.short_description = "Preview"
 
-   
+
+    def image_tag(self, obj):
+        """Bigger image preview in admin (e.g. readonly_fields)"""
+        if obj.image and hasattr(obj.image, 'url'):
+            return mark_safe(f'<img src="{obj.image.url}" height="60">')
+        return mark_safe(f'<img src="{NO_IMAGE_URL}" height="60">')
+    image_tag.short_description = 'Preview'
+
     def youtube_preview(self, obj):
         """Show YouTube video thumbnail or fallback."""
         if obj.youtube_embed_id:
@@ -191,7 +195,3 @@ class ProjectAdmin(MPTTModelAdmin):
             ''')
         return "No Video"
     youtube_preview.short_description = "YouTube Preview"
-
-
-    from django.utils.html import mark_safe
-

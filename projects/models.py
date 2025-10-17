@@ -14,6 +14,7 @@ from utility.models import City,Locality,PossessionIn,PropertyType,ProjectAmenit
 from multiselectfield import MultiSelectField
 from user.models import Developer
 from embed_video.fields import EmbedVideoField
+from utility.compress_mixin import ImageCompressionMixin
 
 
 
@@ -94,6 +95,8 @@ class Project(MPTTModel):
     featured_property = models.BooleanField(default=False)
     active = models.BooleanField(default=False)
     image = models.ImageField(null=True, blank=True,upload_to='images/')
+    google_map_iframe = models.TextField(null=True, blank=True,)
+
     
     slug = models.SlugField(unique=True, null=True, blank=True,max_length=555,)
     create_at = models.DateTimeField(auto_now_add=True,null=True, blank=True,)
@@ -107,6 +110,13 @@ class Project(MPTTModel):
     
     class Meta:
         verbose_name_plural='1. Project'
+    
+        # models.py
+    def image_tag(self):
+        if self.image:
+            return mark_safe(f'<img src="{self.image.url}" height="60">')
+        return ""
+
 
     # 🔑 CRITICAL FIX: Handling object-to-string conversion for slug creation
     def save(self, *args, **kwargs):
@@ -207,12 +217,7 @@ class WelcomeTo(models.Model):
     def __str__(self):
         return self.description
 
-class Location(models.Model):
-    Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="locations")
-    google_map_iframe = models.TextField(null=True, blank=True,)
 
-    def __str__(self):
-        return self.google_map_iframe
 
 class WebSlider(models.Model):
     Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="sliders")

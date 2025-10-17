@@ -123,10 +123,9 @@ class PossessionIn(models.Model):
 
 class ProjectAmenities(models.Model):
     title = models.CharField(max_length=100)
-    image1 = models.ImageField(upload_to='amenities/', blank=True, null=True)
-    image2 = models.ImageField(upload_to='amenities/', blank=True, null=True)
-    image2 = models.ImageField(upload_to='amenities/', blank=True, null=True)
-    image2 = models.ImageField(upload_to='amenities/', blank=True, null=True)
+    image = models.ImageField(upload_to='amenities/', blank=True, null=True)
+
+
 
     def __str__(self):
         return self.title

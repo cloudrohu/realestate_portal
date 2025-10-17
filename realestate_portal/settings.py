@@ -38,7 +38,7 @@ INSTALLED_APPS = [
 
     # 📌 My Apps
     'home',
-    'projects',
+    'projects.apps.ProjectsConfig',
     'properties',
     'utility',
     'crm',
@@ -90,7 +90,7 @@ DATABASES = {
 }
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 🧠 9️⃣ Auth
 AUTH_USER_MODEL = 'user.CustomUser'
