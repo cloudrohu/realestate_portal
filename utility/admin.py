@@ -1,15 +1,17 @@
 from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
 from django.utils.html import mark_safe
+import admin_thumbnails
+
 from .models import City, Locality, PropertyType, PossessionIn, ProjectAmenities, Bank, Property
+
 
 # 🟡 Placeholder image URL (fallback)
 NO_IMAGE_URL = "https://via.placeholder.com/80x80.png?text=No+Image"
 
-
-# --------------------------------------------
+# =======================================================
 # 🏙 City Admin (MPTT)
-# --------------------------------------------
+# =======================================================
 @admin.register(City)
 class CityAdmin(MPTTModelAdmin):
     list_display = ('name', 'level_type', 'parent')
@@ -24,10 +26,9 @@ class CityAdmin(MPTTModelAdmin):
         }),
     )
 
-
-# --------------------------------------------
+# =======================================================
 # 📍 Locality Admin (MPTT)
-# --------------------------------------------
+# =======================================================
 @admin.register(Locality)
 class LocalityAdmin(MPTTModelAdmin):
     list_display = ('name', 'city', 'parent')
@@ -42,10 +43,9 @@ class LocalityAdmin(MPTTModelAdmin):
         }),
     )
 
-
-# --------------------------------------------
+# =======================================================
 # 🏠 PropertyType Admin (MPTT)
-# --------------------------------------------
+# =======================================================
 @admin.register(PropertyType)
 class PropertyTypeAdmin(MPTTModelAdmin):
     list_display = ('name', 'parent', 'is_top_level', 'is_selectable')
@@ -60,47 +60,64 @@ class PropertyTypeAdmin(MPTTModelAdmin):
         }),
     )
 
-
-# --------------------------------------------
+# =======================================================
 # 📅 PossessionIn Admin
-# --------------------------------------------
+# =======================================================
 @admin.register(PossessionIn)
 class PossessionInAdmin(admin.ModelAdmin):
     list_display = ('year',)
     ordering = ('year',)
     search_fields = ('year',)
 
-
-# --------------------------------------------
-# 🏊 Project Amenities Admin
-# --------------------------------------------
 @admin.register(ProjectAmenities)
 class ProjectAmenitiesAdmin(admin.ModelAdmin):
-    list_display = ('title', )
-    
+    list_display = ('title', 'preview')
+
+    def preview(self, obj):
+        """Display safe image preview in Django admin."""
+        try:
+            if obj.image and hasattr(obj.image, 'url'):
+                return mark_safe(
+                    f'<img src="{obj.image.url}" width="80" height="80" '
+                    f'style="object-fit:cover;border-radius:8px;" />'
+                )
+        except Exception:
+            pass
+        return mark_safe(
+            '<img src="https://via.placeholder.com/80x80.png?text=No+Image" '
+            'style="object-fit:cover;border-radius:8px;" />'
+        )
+
+    preview.short_description = "Preview"
 
 
-# --------------------------------------------
+
+# =======================================================
 # 🏦 Bank Admin
-# --------------------------------------------
+# =======================================================
 @admin.register(Bank)
 class BankAdmin(admin.ModelAdmin):
-    list_display = ('title', 'image_preview')
+    list_display = ('title', 'safe_image_preview')
     search_fields = ('title',)
-    readonly_fields = ('image_preview',)
+    readonly_fields = ('safe_image_preview',)
 
-    def image_preview(self, obj):
-        if obj.image and hasattr(obj.image, 'url'):
-            url = obj.image.url
-        else:
+    def safe_image_preview(self, obj):
+        """Safe logo preview (never crashes even if image missing)."""
+        try:
+            if obj.image and hasattr(obj.image, 'url'):
+                url = obj.image.url
+            else:
+                url = NO_IMAGE_URL
+        except Exception:
             url = NO_IMAGE_URL
-        return mark_safe(f'<img src="{url}" width="60" height="60" style="object-fit:contain;border-radius:6px;" />')
-    image_preview.short_description = "Logo"
+        return mark_safe(f'<img src="{url}" width="60" height="60" '
+                         f'style="object-fit:contain;border-radius:6px;" />')
 
+    safe_image_preview.short_description = "Logo"
 
-# --------------------------------------------
-# 📝 Property (Optional Basic Admin)
-# --------------------------------------------
+# =======================================================
+# 📝 Property Admin
+# =======================================================
 @admin.register(Property)
 class PropertyAdmin(admin.ModelAdmin):
     list_display = ('property_type', 'city', 'locality')

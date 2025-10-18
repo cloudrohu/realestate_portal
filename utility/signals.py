@@ -58,5 +58,8 @@ def compress_bank_image(sender, instance, **kwargs):
 # 🏡 ProjectAmenities Images compression
 @receiver(post_save, sender=ProjectAmenities)
 def compress_amenities_images(sender, instance, **kwargs):
-    for field_name in ['image1', 'image2']:
-        process_image_field(instance, field_name)
+    """
+    Compress amenity image safely if it exists.
+    """
+    # ✅ Only one image field exists now
+    process_image_field(instance, 'image')

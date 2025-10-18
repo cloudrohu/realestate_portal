@@ -19,16 +19,12 @@ sitemaps = {
 }
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('home.urls')), 
-
+    path('', include('home.urls')),
+    path('projects/', include('projects.urls')),
     path('properties/', include('properties.urls')),
     path('accounts/', include('user.urls')),
-    path('projects/', include('projects.urls')), # <-- New line for projects app
-    path('blog/', include('blog.urls')), # <-- New line for blog app
+    path('blog/', include('blog.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    # 📌 Final Sitemap URL
-    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'), 
 ]
-
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

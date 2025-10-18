@@ -2,6 +2,8 @@
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 from django.utils.text import slugify
+import admin_thumbnails
+from django.utils.html import mark_safe
 
 class City(MPTTModel):
     name = models.CharField(max_length=150)
@@ -39,33 +41,35 @@ class City(MPTTModel):
         full_path = [node.name for node in self.get_ancestors(include_self=True)]
         return ' / '.join(full_path)
 # --- 2. Locality Model (MPTT Child Structure) ---
+
+# --- 2. Locality Model (MPTT Child Structure) ---
 class Locality(MPTTModel):
-    # Standard Foreign Key to City (This is the explicit geographical link)
-    city = models.ForeignKey(City, on_delete=models.CASCADE) 
-    
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
     name = models.CharField(max_length=150)
     slug = models.SlugField(max_length=150, unique=True, null=True, blank=True)
-    
-    # MPTT Hierarchy Field: Allows Locality to have sub-localities (e.g., Phase 1 > Block A)
+
     parent = TreeForeignKey(
-        'self', 
-        on_delete=models.CASCADE, 
-        null=True, 
-        blank=True, 
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
         related_name='children',
         verbose_name='Parent Locality/Zone'
     )
 
     class MPTTMeta:
         order_insertion_by = ['name']
-        unique_together = ('city', 'name') # Ensures locality name is unique within a City
+
+    class Meta:
+        unique_together = ('city', 'name')  # ✅ Correct placement
+        verbose_name_plural = "Localities"
 
     def __str__(self):
-        # Shows Local Sub-hierarchy + City link
         path = [node.name for node in self.get_ancestors(include_self=True)]
         return f"{' / '.join(path)} ({self.city.name})"
-# ... (Keep Developer, Bank, P_Amenities models here) ...
-# --- PropertyType Model (MPTT) ---
+
+
+
 class PropertyType(MPTTModel):
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=50, unique=True, null=True, blank=True)
@@ -121,14 +125,23 @@ class PossessionIn(models.Model):
     def __str__(self):
         return str(self.year)
 
+from django.db import models
+from django.utils.html import mark_safe
+
 class ProjectAmenities(models.Model):
     title = models.CharField(max_length=100)
     image = models.ImageField(upload_to='amenities/', blank=True, null=True)
-
-
+    
+    
+    def image_tag(self):
+        if self.image:
+            return mark_safe(f'<img src="{self.image.url}" width="50" height="50" />')
+        return ""
+    image_tag.short_description = 'Image'
 
     def __str__(self):
         return self.title
+
 
 class Bank(models.Model):
     title = models.CharField(max_length=50,blank=True)

@@ -15,7 +15,8 @@ load_dotenv(BASE_DIR / '.env')
 
 # 🧠 3️⃣ Security Settings
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-default')
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = os.getenv('DEBUG', 'False').strip().lower() in ('true', '1', 'yes')
+
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
 
 # 🧠 4️⃣ Installed Apps
@@ -44,6 +45,8 @@ INSTALLED_APPS = [
     'crm',
     'user',
     'blog',
+
+    'thumbnails',
 ]
 
 # 🧠 5️⃣ Middleware
@@ -89,8 +92,6 @@ DATABASES = {
     }
 }
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 🧠 9️⃣ Auth
 AUTH_USER_MODEL = 'user.CustomUser'
@@ -109,17 +110,16 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# 🧱 Static & Media
-# 📁 Static files configuration
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# 🧠 This is where Django will *collect* all static files when you run `collectstatic`
-STATIC_ROOT = BASE_DIR / 'staticfiles'   # or os.path.join(BASE_DIR, 'staticfiles')
-
-# 🧱 These are the extra directories Django will look into for static files
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',   # e.g. your app-level or project-level static folder
+    os.path.join(BASE_DIR, 'static'),
 ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # 📌 CKEditor
 CKEDITOR_UPLOAD_PATH = "uploads/"
