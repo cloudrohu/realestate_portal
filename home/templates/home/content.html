@@ -1,0 +1,126 @@
+{% load static %}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+<section class="bg-[#f8fafc] py-16 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4">
+
+    <!-- Section Title -->
+    <div class="text-center mb-10">
+      <h2 class="text-3xl md:text-4xl font-bold text-orange-500 uppercase tracking-wide">
+        Featured Projects
+      </h2>
+      <p class="text-gray-500 mt-1 text-sm md:text-base">
+        Explore our best and most popular real estate projects
+      </p>
+    </div>
+
+    <!-- Swiper Container -->
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        {% for rs in project_featured %}
+        <div class="swiper-slide">
+          <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+
+            <!-- Image Section -->
+            <div class="relative h-56 w-full overflow-hidden">
+              {% if rs.image %}
+                <img src="{{ rs.image.url }}" alt="{{ rs.project_name }}"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              {% else %}
+                <img src="{% static 'images/default-placeholder.jpg' %}" alt="No image"
+                  class="w-full h-full object-cover">
+              {% endif %}
+
+              <!-- Property Type Tag -->
+              <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full shadow">
+                {{ rs.propert_type }}
+              </span>
+
+              <!-- Construction Status -->
+              <span class="absolute bottom-3 right-3 bg-black/80 text-white text-[11px] font-medium px-3 py-1 rounded-full">
+                {{ rs.construction_status }}
+              </span>
+
+              <!-- Hover Icons -->
+              <div class="absolute inset-0 bg-black/50 flex items-center justify-center gap-4 opacity-0 hover:opacity-100 transition duration-300">
+                <a href="{{ rs.get_absolute_url }}" class="bg-white p-3 rounded-full shadow hover:bg-orange-500 hover:text-white transition">
+                  <i class="fas fa-link"></i>
+                </a>
+                <a href="{{ rs.get_absolute_url }}" class="bg-white p-3 rounded-full shadow hover:bg-orange-500 hover:text-white transition">
+                  <i class="fas fa-video"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-5">
+              <h3 class="text-lg font-semibold text-gray-800 mb-1 hover:text-orange-600 transition">
+                {{ rs.project_name }}
+              </h3>
+              <p class="text-sm text-gray-600 flex items-center mb-2">
+                <i class="fas fa-map-marker-alt text-orange-500 mr-2"></i>
+                {{ rs.locality }}, {{ rs.city }}
+              </p>
+              <p class="text-orange-600 font-medium text-sm mb-1">{{ rs.get_configuration_summary }}</p>
+              <p class="text-gray-900 font-bold text-lg mb-4">₹ {{ rs.get_price_range }}</p>
+
+              <!-- Developer -->
+              <div class="flex items-center gap-3">
+                {% if rs.developer.logo %}
+                  <img src="{{ rs.developer.logo.url }}" alt="Developer" class="h-14 w-14 rounded-full border">
+                {% else %}
+                  <img src="{% static 'images/user-placeholder.png' %}" alt="Developer" class="h-14 w-14 rounded-full border">
+                {% endif %}
+                <span class="text-green-600 font-medium text-sm">{{ rs.developer }}</span>
+              </div>
+            </div>
+
+            <!-- Footer Button -->
+            <div class="bg-orange-500 text-center py-3 hover:bg-orange-600 transition">
+              <a href="{{ rs.get_absolute_url }}" class="text-white font-semibold uppercase tracking-wide">
+                See Details
+              </a>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <p class="col-span-3 text-center text-gray-500">No featured projects available at the moment.</p>
+        {% endfor %}
+      </div>
+      <br><br>
+      <!-- Pagination + Arrows -->
+      <div class="swiper-pagination mt-6"></div>
+      <div class="swiper-button-prev text-blue-500"></div>
+      <div class="swiper-button-next text-blue-500"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SwiperJS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    loop: true,
+    autoplay: {
+      delay: 3000, // Auto slide every 3 seconds
+      disableOnInteraction: false,
+      pauseOnMouseEnter: true, // pause on hover
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    breakpoints: {
+      640: { slidesPerView: 1.2 },
+      768: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 },
+    },
+  });
+</script>

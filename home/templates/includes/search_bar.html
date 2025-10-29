@@ -1,166 +1,161 @@
-{% load humanize %}
-<div class="search-form-container mt-4 p-3 bg-white rounded shadow-sm">
-    <form action="{% url 'properties' %}" method="GET" class="row g-2">
-        <div class="col-md-4">
-            <select name="locality_id" class="form-select">
-                <option value="" selected>Search Location...</option>
-                {% for location in top_level_localities %}
-                    <option value="{{ location.id }}">{{ location.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="col-md-3">
-            <select name="property_type_id" class="form-select">
-                <option value="" selected>Property Type...</option>
-                {% for type in top_level_types %}
-                    <option value="{{ type.id }}">{{ type.name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="col-md-3">
-            <input type="text" name="keywords" class="form-control" placeholder="Keywords (e.g. 3BHK, pool)">
-        </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-primary w-100">Search</button>
-        </div>
-    </form>
-</div>
+{% load static %}
 
 
 
 {% load static %}
 
-{% block title %}{{ site_settings.meta_title|default:'Find Your Dream Home' }}{% endblock %}
+<!-- ====================== -->
+<!-- DESKTOP SEARCH SECTION -->
+<!-- ====================== -->
+<div class="hidden md:block">
+  <section class="relative flex flex-col items-center justify-center text-center text-white h-[500px] bg-cover bg-center bg-no-repeat"
+    style="background-image: url('{% static "images/central-mumbai.jpeg" %}');">
 
-{% block content %}
+    <h1 class="text-3xl md:text-4xl font-bold mb-2">India's Largest Real Estate Platform</h1>
+    <p class="text-gray-300 mb-6">
+      We’ve got you covered! From finding the perfect property to
+      <span class="text-pink-400">Transactions</span>
+    </p>
 
-    <section id="hero-search" class="relative min-h-[500px] bg-gray-800 flex items-center justify-center" 
-        style="background-image: url({% static 'img/hero-bg.jpg' %}); background-size: cover; background-position: center;">
-        
-        <div class="absolute inset-0 bg-black opacity-50"></div>
+    <!-- White Search Box -->
+    <div class="bg-white w-[90%] md:w-[75%] rounded-2xl p-4 shadow-xl text-gray-900">
+      <!-- Tabs -->
+      <div class="flex flex-wrap items-center gap-2 border-b pb-2 mb-4">
+        <button class="px-4 py-2 rounded-md bg-gray-200 font-semibold text-blue-700">Buy</button>
+        <button class="px-4 py-2 rounded-md hover:bg-gray-100">Rental</button>
+        <button class="px-4 py-2 rounded-md hover:bg-gray-100">Projects</button>
+        <button class="px-4 py-2 rounded-md hover:bg-gray-100">PG / Co-living</button>
+      </div>
 
-        <div class="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4">
-            
-            <h1 class="text-3xl md:text-5xl text-white font-bold mb-2">Find Your Dream Home</h1>
-            <p class="text-lg md:text-xl mb-6">Search properties, projects & builders across the city</p>
+      <!-- Filters -->
+      <div class="flex flex-wrap items-center gap-2">
+        <select class="border rounded-md px-3 py-2 w-40">
+          <option>Residenti</option>
+          <option>Pune</option>
+          <option>Delhi</option>
+        </select>
 
-            <div id="search-box" class="bg-white rounded shadow-2xl mt-8 w-full max-w-5xl overflow-hidden">
-                <div class="flex flex-col md:flex-row items-stretch">
+        <input type="text" placeholder="Search by Project, Locality, or Builder"
+          class="flex-grow border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
 
-                    <select id="dropdown1" class="px-4 py-3 border-r border-gray-300 focus:outline-none text-gray-700">
-                        <option value="new">New Projects</option>
-                        <option value="residential">Residential</option>
-                        <option value="commercial">Commercial</option>
-                        <option value="land">Land / Plot</option>
-                        <option value="pg">PG Co-Living</option>
-                    </select>
+        <select class="border rounded-md px-3 py-2">
+          <option>Budget</option>
+          <option>₹10L - ₹50L</option>
+          <option>₹50L - ₹1Cr</option>
+        </select>
 
-                    <select id="dropdown2" class="px-4 py-3 border-r border-gray-300 focus:outline-none text-gray-700">
-                        </select>
+        <select class="border rounded-md px-3 py-2">
+          <option>Property Type</option>
+          <option>1 BHK</option>
+          <option>2 BHK</option>
+        </select>
 
-                    <input id="searchInput" type="text" placeholder="Locality, Builder or Project Name" 
-                           class="flex-1 px-4 py-3 focus:outline-none text-gray-700">
+        <select class="border rounded-md px-3 py-2">
+          <option>Possession Status</option>
+          <option>Ready to Move</option>
+          <option>Under Construction</option>
+        </select>
 
-                    <button id="toggleAdvance" type="button" 
-                            class="hidden md:flex items-center px-4 py-3 text-orange-600 font-medium hover:underline">
-                        Advance Search
-                    </button>
+        <button class="bg-green-500 text-white px-6 py-2 rounded-md font-semibold hover:bg-green-600 transition">
+          Search
+        </button>
+      </div>
+    </div>
+  </section>
+</div>
 
-                    <button id="searchBtn" type="button" 
-                            class="bg-orange-500 hover:bg-orange-600 px-6 py-3 flex items-center justify-center text-white font-bold">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-            
-            </div>
-    </section>
-    
-    {% endblock %}
+<!-- ====================== -->
+<!-- MOBILE SEARCH SECTION -->
+<!-- ====================== -->
+<div class="md:hidden">
+  <section class="relative flex flex-col items-center justify-center text-center text-white h-[400px] bg-cover bg-center bg-no-repeat overflow-hidden"
+    style="background-image: url('{% static "images/central-mumbai.jpeg" %}');">
 
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/60"></div>
 
-{% block extra_js %}
+    <!-- CONTENT -->
+    <div class="relative z-10 w-full px-4 sm:px-6 md:px-10">
+      <h2 class="text-2xl md:text-3xl font-bold mb-2 drop-shadow-lg">Real Estate Made Real Easy</h2>
+      <p class="text-gray-300 mb-6 text-sm md:text-base">
+        We’ve got you covered! From finding the perfect property to
+        <span class="text-pink-400 font-semibold">Interiors</span>
+      </p>
+
+      <!-- Tabs -->
+      <div class="flex justify-center gap-1 mt-4 whitespace-nowrap overflow-x-auto scrollbar-hide">
+        <button class="bg-white text-black px-3 py-2 rounded-md font-semibold hover:bg-gray-100 transition">Buy</button>
+        <button class="bg-[#122c61] text-white px-3 py-2 rounded-md hover:bg-[#163070] transition">Rental</button>
+        <button class="bg-[#122c61] text-white px-3 py-2 rounded-md hover:bg-[#163070] transition">PG / Co-living</button>
+        <button class="bg-[#122c61] text-white px-3 py-2 rounded-md hover:bg-[#163070] transition">Projects</button>
+      </div>
+<!-- ✅ Search Bar with Select + Dynamic Redirect -->
+<div class="flex items-center bg-white mx-auto mt-6 rounded-full px-4 py-2 text-gray-700 shadow-lg max-w-lg" id="searchBar">
+
+  <!-- 🔽 Property Type Select -->
+  <select id="propertyTypeSelect" class="text-sm font-medium text-gray-600 bg-transparent border-none outline-none cursor-pointer focus:ring-0 pr-3">
+    <option value="residential">Residential</option>
+    <option value="commercial">Commercial</option>
+  </select>
+
+  <!-- Divider -->
+  <div class="h-5 w-px bg-gray-300 mx-2"></div>
+
+  <!-- 🔍 Search Icon -->
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+      d="M21 21l-4.35-4.35M11 6a5 5 0 100 10 5 5 0 000-10z" />
+  </svg>
+
+  <!-- 🏙️ Input Field -->
+  <input id="searchInput" type="text" placeholder="Search by Project, Locality, or Builder"
+    class="flex-grow outline-none text-sm bg-transparent placeholder-gray-500" />
+
+  <!-- 🎯 Search Button -->
+  <button id="searchButton" class="bg-[#122c61] text-white px-4 py-2 rounded-full ml-2 hover:bg-[#163070] transition">
+    Search
+  </button>
+</div>
+
+<!-- 🧠 JS Logic -->
 <script>
-    const dropdown1 = document.getElementById("dropdown1");
-    const dropdown2 = document.getElementById("dropdown2");
-    const searchBtn = document.getElementById("searchBtn");
-    const searchInput = document.getElementById("searchInput");
+document.getElementById("searchButton").addEventListener("click", function() {
+  const type = document.getElementById("propertyTypeSelect").value;
+  const query = document.getElementById("searchInput").value.trim();
 
-    // Options mapping (Matches the logic you provided)
-    const optionsMap = {
-        new: ["Residential", "Commercial"],
-        residential: ["Buy", "Rent"],
-        commercial: ["Buy", "Lease"],
-        land: ["Residential", "Commercial"],
-        pg: ["Single Room", "Shared Room", "With Food", "Without Food"]
-    };
+  let baseUrl = "";
+  if (type === "residential") {
+    baseUrl = "/projects/residential/";
+  } else if (type === "commercial") {
+    baseUrl = "/projects/commercial/";
+  }
 
-    // Function to update dropdown2
-    function updateDropdown2(selected) {
-        dropdown2.innerHTML = "";
-        if (optionsMap[selected]) {
-            optionsMap[selected].forEach(opt => {
-                const option = document.createElement("option");
-                option.value = opt.toLowerCase().replace(/\s+/g, "-");
-                option.textContent = opt;
-                dropdown2.appendChild(option);
-            });
-        }
-    }
+  // Add search query
+  const url = query ? `${baseUrl}?q=${encodeURIComponent(query)}` : baseUrl;
 
-    // Default load
-    updateDropdown2(dropdown1.value);
-
-    // On change
-    dropdown1.addEventListener("change", function () {
-        updateDropdown2(this.value);
-    });
-
-    // Search Button Click Logic
-    searchBtn.addEventListener("click", function () {
-        const d1 = dropdown1.value;
-        // Use trim() to clean text, though this is less reliable than value property
-        const d2 = dropdown2.options[dropdown2.selectedIndex].text.trim(); 
-        const query = searchInput.value.trim();
-
-        let targetUrl = "";
-
-        // URL Mapping logic
-        if (d1 === "new" || d1 === "residential" || d1 === "commercial") {
-            // New Projects (Residential/Commercial) go to the Project listing page
-            targetUrl = "{% url 'projects' %}";
-        }
-        else if (d1 === "land" || d1 === "pg") {
-            // Land/PG listings go to the Properties page
-            targetUrl = "{% url 'properties' %}";
-        }
-
-        // Add filters based on user input
-        if (targetUrl) {
-            let params = new URLSearchParams();
-            
-            // Add D2 (Type filter)
-            if (d2) {
-                // NOTE: We need a mapping from D2 text to a specific model field value (e.g., 'rent', 'buy', etc.)
-                // Since D2 is dynamic, we'll use a generic filter name for now.
-                params.append('transaction_type', d2.toLowerCase()); 
-            }
-            
-            // Add Keywords
-            if (query) {
-                params.append('keywords', query);
-            }
-            
-            // Construct the final URL
-            const queryString = params.toString();
-            if (queryString) {
-                 targetUrl += "?" + queryString;
-            }
-            
-            window.location.href = targetUrl;
-        } else {
-            alert("Please select valid search options.");
-        }
-    });
+  // Redirect
+  window.location.href = url;
+});
 </script>
-{% endblock %}
+
+</div>
+
+      </div>
+
+      <p class="text-center text-sm mt-3 text-gray-200">
+        Search by 🚗 <span class="underline font-semibold text-yellow-300">commute</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- Hide scrollbar styling -->
+  <style>
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</div>

@@ -1,365 +1,151 @@
-<!-- Main Header Nav -->
-<!-- Main Header Nav -->
 {% load static %}
-{% for rs in setting %}
-<header class="header-nav menu_style_home_one style2 style3 navbar-scrolltofixed stricky main-menu " style="background-color: {{rs.header_footer_color}}; ">
-    <div class="container p0">
-        <!-- Ace Responsive Menu -->
-        
-        <nav>
-            <!-- Menu Toggle btn-->
-            <div class="menu-toggle">
-                <img class="nav_logo_img img-fluid" src="{{rs.logo.url}}" alt="makaanhub.png" style="height: 70px; margin-top: -10px;">
-                <button type="button" id="menu-btn">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <a href="/" class="navbar_brand float-left dn-smd">
-                <img class="logo1 img-fluid" src="{{rs.logo.url}}" alt="makaanhub.png" style="height: 70px; margin-top: -10px;">
-                <img class="logo2 img-fluid" src="{{rs.logo.url}}" alt="makaanhub.png" style="height: 70px; margin-top: -10px;">
-            </a>
-            <!-- Responsive Menu Structure-->
-            <!--Note: declare the Menu style in the data-menu-style="horizontal" (options: horizontal, vertical, accordion) -->
-            <div class="ht_left_widget float-left">
-                <ul>
-                    <li class="list-inline-item dn-1440">
-                        <div class="ht_search_widget">
-                            <div class="header_search_widget">
-                                <form method="get" action="" class="form-inline mailchimp_form">
-                                    <input type="text" name="q" class="form-control" id="inlineFormInputName2" placeholder="What are you looking for?" value="{{ query }}">
-                                    <button type="submit" class="btn btn-primary">
-                                        <span class="flaticon-magnifying-glass"></span>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-inline-item list_s dib-1440 dn">
-                        <div class="search_overlay">
-                            <a id="search-button-listener" class="mk-search-trigger mk-fullscreen-trigger" href="#">
-                                <span id="search-button"><i class="flaticon-magnifying-glass"></i></span>
-                            </a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
 
 
-            <ul id="respMenu" class="ace-responsive-menu text-right" data-menu-style="horizontal">
-                <li><a href="/"><span class="title" style="color: {{rs.text_color}};">Home</span></a> </li>  
-                <li><a href="/"><span class="title" style="color: {{rs.text_color}};">Properties</span></a> </li>  
-                <li><a href="/"><span class="title" style="color: {{rs.text_color}};">Projects</span></a> </li>  
-                <li><a href="/"><span class="title" style="color: {{rs.text_color}};">About Us</span></a> </li>  
-                <li><a href="/"><span class="title" style="color: {{rs.text_color}};">Services</span></a> </li>  
-                <li><a href="/"><span class="title" style="color: {{rs.text_color}};">Blog</span></a> </li>  
-                <li><a href="https://wa.me/+91{{rs.whatsapp}}"><span class="title" style="color: {{rs.text_color}};">Contact</span></a> </li>  
-                               
+<!-- ====================== -->
+<!-- DESKTOP VIEW -->
+<!-- ====================== -->
 
-                <li class="list-inline-item list_s"><a href="#" class="btn flaticon-user" data-toggle="modal" data-target=".bd-example-modal-lg"> <span class="dn-lg"></span></a></li>
-                <li class="list-inline-item add_listing home6"><a href="https://wa.me/+91{{rs.whatsapp}}"><span class="flaticon-plus"></span><span class="dn-lg"> List Property</span></a></li>
-            
-            
-            </ul>
-        </nav>
-        
+<div class="hidden md:block">
+  <header class="flex justify-between items-center px-8 py-2 bg-[#000428]/80 backdrop-blur-md text-white">
+    <div class="flex items-center gap-2">
+  {% if settings_obj.logo %}
+    <!-- Show logo only if it exists -->
+    <img 
+      src="{{ settings_obj.logo.url }}" 
+      alt="{{ settings_obj.site_name|default:'RealEstatePro' }}" 
+      style="height: 80px; width: 180px; margin-left: 120px;">
+  {% else %}
+    <!-- Fallback: show site name if no logo -->
+    <span class="font-bold text-xl">
+      {{ settings_obj.site_name|default:'RealEstatePro' }}
+    </span>
+  {% endif %}
+</div>
+
+
+
+    <nav class="flex gap-8 text-xl font-medium">
+      <a href="/" class="hover:text-[#00E0FF] transition">Home</a>
+      <a href="#" class="hover:text-[#00E0FF] transition">New Lunch</a>
+      <a href="#" class="hover:text-[#00E0FF] transition">Blogs</a>
+      <a href="#" class="hover:text-[#00E0FF] transition">About Us</a>
+      <a href="#" class="hover:text-[#00E0FF] transition">Services</a>
+      <a href="#" class="hover:text-[#00E0FF] transition">Contact Us</a>
+    </nav>
+
+    <div class="flex items-center gap-4">
+      <button class="bg-[#00E0FF] text-black px-4 py-2 rounded-lg font-semibold hover:bg-white transition">
+        Sell / Rent Property
+      </button>
+      <button class="border border-white px-4 py-2 rounded-lg hover:bg-white hover:text-black transition">Login</button>
     </div>
+  </header>
+</div>
+
+<!-- ====================== -->
+<!-- MOBILE VIEW -->
+<!-- ====================== -->
+<div class="md:hidden text-white">
+  <div class="md:hidden text-white">
+  <header class="flex items-center justify-between px-4 py-2 bg-black">
+  <!-- LEFT SECTION -->
+  <div class="flex items-center gap-2">
+    <!-- Menu Icon -->
+    <button id="menuBtn">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+        stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-white">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+      </svg>
+    </button>
+
+    <!-- Logo -->
+    {% if settings_obj.logo %}
+      <img src="{{ settings_obj.logo.url }}" alt="logo" class="h-8 ml-1">
+    {% else %}
+      <span class="font-semibold text-lg ml-1">RealEstatePro</span>
+    {% endif %}
+
+    <!-- City Dropdown -->
+    <div class="relative ml-2">
+      <select
+        class="bg-black text-white text-sm font-medium focus:outline-none appearance-none cursor-pointer pr-5"
+        style="background-image: url('data:image/svg+xml;utf8,<svg fill=\'white\' height=\'12\' viewBox=\'0 0 24 24\' width=\'12\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>'); background-repeat: no-repeat; background-position: right center;">
+        
+        {% for city in cities %}
+          <option {% if city.name == current_city %}selected{% endif %}>
+            {{ city.name }}
+          </option>
+        {% empty %}
+          <option selected>Mumbai</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <!-- RIGHT SECTION -->
+  <div>
+    <button
+      class="border border-green-400 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-green-400 hover:text-black transition">
+      Sell or Rent Property
+    </button>
+  </div>
 </header>
-<!-- Modal -->
-<div class="sign_up_modal modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              </div>
-              <div class="modal-body container pb20">
-                  <div class="row">
-                      <div class="col-lg-12">
-                        <ul class="sign_up_tab nav nav-tabs" id="myTab" role="tablist">
-                              <li class="nav-item">
-                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Login</a>
-                              </li>
-                              <li class="nav-item">
-                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Register</a>
-                              </li>
-                        </ul>
-                      </div>
-                  </div>
-                <div class="tab-content container" id="myTabContent">
-                      <div class="row mt25 tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                          <div class="col-lg-6 col-xl-6">
-                              <div class="login_thumb">
-                                  <img class="img-fluid w100" style="height: 350px;" src="{{rs.logo.url}}" alt="login.jpg">
-                              </div>
-                          </div>
-                          <div class="col-lg-6 col-xl-6">
-                            <div class="login_form">
-                                <form action="#">
-                                    <div class="heading">
-                                        <h4>Login</h4>
-                                    </div>
-                                    <div class="row mt25">
-                                        <div class="col-lg-12">
-                                            <button type="submit" class="btn btn-fb btn-block"><i class="fa fa-facebook float-left mt5"></i> Login with Facebook</button>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <button type="submit" class="btn btn-googl btn-block"><i class="fa fa-google float-left mt5"></i> Login with Google</button>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="input-group mb-2 mr-sm-2">
-                                        <input type="text" class="form-control" id="inlineFormInputGroupUsername2" placeholder="User Name Or Email">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text"><i class="flaticon-user"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="input-group form-group">
-                                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text"><i class="flaticon-password"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="exampleCheck1">
-                                        <label class="custom-control-label" for="exampleCheck1">Remember me</label>
-                                        <a class="btn-fpswd float-right" href="#">Lost your password?</a>
-                                    </div>
-                                    <button type="submit" class="btn btn-log btn-block btn-thm">Log In</button>
-                                    <p class="text-center">Don't have an account? <a class="text-thm" href="#">Register</a></p>
-                                </form>
-                            </div>
-                          </div>
-                      </div>
-                      <div class="row mt25 tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                          <div class="col-lg-6 col-xl-6">
-                              <div class="regstr_thumb">
-                                  <img class="img-fluid w100" style="height: 350px;" src="{{rs.logo.url}}" alt="regstr.jpg">
-                              </div>
-                          </div>
-                          <div class="col-lg-6 col-xl-6">
-                            <div class="sign_up_form">
-                                <div class="heading">
-                                    <h4>Register</h4>
-                                </div>
-                                <form action="#">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <button type="submit" class="btn btn-block btn-fb"><i class="fa fa-facebook float-left mt5"></i> Login with Facebook</button>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <button type="submit" class="btn btn-block btn-googl"><i class="fa fa-google float-left mt5"></i> Login with Google</button>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="form-group input-group">
-                                        <input type="text" class="form-control" id="exampleInputName" placeholder="User Name">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text"><i class="flaticon-user"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Email">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text"><i class="fa fa-envelope-o"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text"><i class="flaticon-password"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group input-group">
-                                        <input type="password" class="form-control" id="exampleInputPassword3" placeholder="Re-enter password">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text"><i class="flaticon-password"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group ui_kit_select_search mb0">
-                                        <select class="selectpicker" data-live-search="true" data-width="100%">
-                                            <option data-tokens="SelectRole">Single User</option>
-                                            <option data-tokens="Agent/Agency">Agent</option>
-                                            <option data-tokens="SingleUser">Multi User</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="exampleCheck2">
-                                        <label class="custom-control-label" for="exampleCheck2">I have read and accept the Terms and Privacy Policy?</label>
-                                    </div>
-                                    <button type="submit" class="btn btn-log btn-block btn-thm">Sign Up</button>
-                                    <p class="text-center">Already have an account? <a class="text-thm" href="#">Log In</a></p>
-                                </form>
-                            </div>
-                          </div>
-                      </div>
-                </div>
-              </div>
-        </div>
-    </div>
-</div>
-<!-- Modal Search Button Bacground Overlay -->
-<div class="search_overlay dn-992">
-    <div class="mk-fullscreen-search-overlay" id="mk-search-overlay">
-        <button class="mk-fullscreen-close" id="mk-fullscreen-close-button"><i class="fa fa-times"></i></button>
-        <div id="mk-fullscreen-search-wrapper">
-          <form method="get" id="mk-fullscreen-searchform">
-            <input type="text" value="" placeholder="Search courses..." id="mk-fullscreen-search-input">
-            <i class="flaticon-magnifying-glass fullscreen-search-icon"><input value="" type="submit"></i>
-          </form>
-        </div>
-    </div>
+
 </div>
 
 
-<!-- Tailwind -->
-<script src="https://cdn.tailwindcss.com"></script>
+  <!-- Slide Menu -->
+  <div id="mobileMenu"
+    class="fixed top-0 right-0 w-3/4 h-full bg-[#000428] text-white z-50 transform translate-x-full transition-transform duration-300 ease-in-out">
+    <div class="flex justify-between items-center px-4 py-3 border-b border-white/20">
+      <h2 class="font-bold text-lg">Menu</h2>
+      <button id="closeMenu" class="text-gray-300 hover:text-white text-2xl">&times;</button>
+    </div>
 
+    <nav class="flex flex-col gap-4 px-6 mt-6 text-base font-medium">
+      <a href="/" class="hover:text-[#00E0FF] transition">Home</a>
+      <a href="#" class="hover:text-[#00E0FF] transition">New Lunch</a>
+      <a href="#" class="hover:text-[#00E0FF] transition">Blogs</a>
+      <a href="#" class="hover:text-[#00E0FF] transition">About Us</a>
+      <a href="#" class="hover:text-[#00E0FF] transition">Services</a>
+      <a href="#" class="hover:text-[#00E0FF] transition">Contact Us</a>
 
+    </nav>
 
-<!-- ✅ Mobile Header (only visible on mobile) -->
-<div class="md:hidden flex items-center justify-between px-4 py-3 bg-white shadow">
-  <!-- Logo -->
-  <a href="/">
-    <img src="{{rs.logo.url}}" alt="Logo" class="h-10">
-  </a>
-  <!-- Toggle Button -->
-  <button id="menu-toggle" class="text-3xl text-gray-700">
-    ☰
-  </button>
+    <div class="absolute bottom-8 w-full px-6">
+      <button
+        class="w-full bg-[#00E0FF] text-black py-2 rounded-lg font-semibold mb-3 hover:bg-white transition">Sell / Rent Property</button>
+      <button
+        class="w-full border border-white py-2 rounded-lg font-semibold hover:bg-white hover:text-black transition">Login</button>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div id="overlay"
+    class="fixed inset-0 bg-black/60 hidden z-40 transition-opacity duration-300"></div>
 </div>
 
-<!-- ✅ Drawer Menu -->
-<div id="mobile-menu"
-  class="fixed top-0 right-[-100%] w-72 h-full bg-white shadow-lg z-50 transition-all duration-300 overflow-hidden">
-
-  <!-- Main Menu -->
-  <div id="menu-main" class="h-full flex flex-col">
-    <div class="flex justify-between items-center p-4 border-b">
-      <h2 class="text-lg font-semibold">Menu</h2>
-      <button id="menu-close" class="text-2xl">&times;</button>
-    </div>
-    <ul class="flex-1 overflow-y-auto">
-      <li><a href="/" class="block px-4 py-3 border-b">Home</a></li>
-      <li>
-        <button class="menu-link w-full flex justify-between px-4 py-3 border-b" data-target="menu-projects">
-          New Projects <span>›</span>
-        </button>
-      </li>
-      <li>
-        <button class="menu-link w-full flex justify-between px-4 py-3 border-b" data-target="menu-buy">
-          Buy Property <span>›</span>
-        </button>
-      </li>
-      <li>
-        <button class="menu-link w-full flex justify-between px-4 py-3 border-b" data-target="menu-rent">
-          Rented Property <span>›</span>
-        </button>
-      </li>
-      <li>
-        <button class="menu-link w-full flex justify-between px-4 py-3 border-b" data-target="menu-about">
-          About & More <span>›</span>
-        </button>
-      </li>
-      <li><a href="page-login.html" class="block px-4 py-3 border-b">👤 Login</a></li>
-      <li><a href="page-register.html" class="block px-4 py-3 border-b">✏️ Register</a></li>
-    </ul>
-    <div class="p-4">
-      <a href="https://wa.me/+91{{rs.whatsapp}}" class="block text-center bg-red-500 text-white py-3 rounded-full font-semibold">
-        Connect Now
-      </a>
-    </div>
-  </div>
-
-  <!-- ✅ Submenu: New Projects -->
-  <div id="menu-projects" class="submenu hidden h-full flex flex-col">
-    <div class="flex items-center p-4 border-b">
-      <button class="back-btn text-lg mr-3">‹</button>
-      <h2 class="text-lg font-semibold">New Projects</h2>
-    </div>
-    <ul class="flex-1 overflow-y-auto">
-      <li><a href="{% url 'residential_project' %}" class="block px-4 py-3 border-b">Residential</a></li>
-      <li><a href="{% url 'commercial_project' %}" class="block px-4 py-3 border-b">Commercial</a></li>
-    </ul>
-  </div>
-
-  <!-- ✅ Submenu: Buy Property -->
-  <div id="menu-buy" class="submenu hidden h-full flex flex-col">
-    <div class="flex items-center p-4 border-b">
-      <button class="back-btn text-lg mr-3">‹</button>
-      <h2 class="text-lg font-semibold">Buy Property</h2>
-    </div>
-    <ul class="flex-1 overflow-y-auto">
-      <li><a href="{% url 'residential_project' %}" class="block px-4 py-3 border-b">Residential</a></li>
-      <li><a href="{% url 'commercial_project' %}" class="block px-4 py-3 border-b">Commercial</a></li>
-    </ul>
-  </div>
-
-  <!-- ✅ Submenu: Rented Property -->
-  <div id="menu-rent" class="submenu hidden h-full flex flex-col">
-    <div class="flex items-center p-4 border-b">
-      <button class="back-btn text-lg mr-3">‹</button>
-      <h2 class="text-lg font-semibold">Rented Property</h2>
-    </div>
-    <ul class="flex-1 overflow-y-auto">
-      <li><a href="{% url 'residential_project' %}" class="block px-4 py-3 border-b">Residential</a></li>
-      <li><a href="{% url 'commercial_project' %}" class="block px-4 py-3 border-b">Commercial</a></li>
-    </ul>
-  </div>
-
-  <!-- ✅ Submenu: About & More -->
-  <div id="menu-about" class="submenu hidden h-full flex flex-col">
-    <div class="flex items-center p-4 border-b">
-      <button class="back-btn text-lg mr-3">‹</button>
-      <h2 class="text-lg font-semibold">About & More</h2>
-    </div>
-    <ul class="flex-1 overflow-y-auto">
-      <li><a href="{% url 'contactus' %}" class="block px-4 py-3 border-b">Contact</a></li>
-      <li><a href="{% url 'aboutus' %}" class="block px-4 py-3 border-b">About</a></li>
-      <li><a href="{% url 'blog' %}" class="block px-4 py-3 border-b">Blog</a></li>
-      <li><a href="{% url 'aboutus' %}" class="block px-4 py-3 border-b">Paying Guest</a></li>
-    </ul>
-  </div>
-</div>
-
-
-<!-- JS -->
+<!-- ====================== -->
+<!-- SCRIPT -->
+<!-- ====================== -->
 <script>
-  const toggle = document.getElementById("menu-toggle");
-  const closeBtn = document.getElementById("menu-close");
-  const menu = document.getElementById("mobile-menu");
-  const menuLinks = document.querySelectorAll(".menu-link");
-  const submenus = document.querySelectorAll(".submenu");
-  const backBtns = document.querySelectorAll(".back-btn");
+  const menuBtn = document.getElementById("menuBtn");
+  const mobileMenu = document.getElementById("mobileMenu");
+  const closeMenu = document.getElementById("closeMenu");
+  const overlay = document.getElementById("overlay");
 
-  // open drawer
-  toggle.addEventListener("click", () => {
-    menu.style.right = "0";
+  menuBtn.addEventListener("click", () => {
+    mobileMenu.classList.remove("translate-x-full");
+    overlay.classList.remove("hidden");
   });
 
-  // close drawer
-  closeBtn.addEventListener("click", () => {
-    menu.style.right = "-100%";
-    submenus.forEach(sm => sm.classList.add("hidden"));
-    document.getElementById("menu-main").classList.remove("hidden");
+  closeMenu.addEventListener("click", () => {
+    mobileMenu.classList.add("translate-x-full");
+    overlay.classList.add("hidden");
   });
 
-  // go to submenu
-  menuLinks.forEach(link => {
-    link.addEventListener("click", () => {
-      const target = document.getElementById(link.dataset.target);
-      document.getElementById("menu-main").classList.add("hidden");
-      target.classList.remove("hidden");
-    });
-  });
-
-  // back to main menu
-  backBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      btn.closest(".submenu").classList.add("hidden");
-      document.getElementById("menu-main").classList.remove("hidden");
-    });
+  overlay.addEventListener("click", () => {
+    mobileMenu.classList.add("translate-x-full");
+    overlay.classList.add("hidden");
   });
 </script>
-
-{% endfor %}

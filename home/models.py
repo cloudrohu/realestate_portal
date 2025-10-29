@@ -7,10 +7,7 @@ from utility.compress_mixin import ImageCompressionMixin
 # =============================
 # 🧠 MAIN MODEL — Website Setting
 # =============================
-class Setting(ImageCompressionMixin, models.Model):
-
-
-    
+class Setting(ImageCompressionMixin, models.Model):    
     site_name = models.CharField(max_length=150)
     logo = models.ImageField(upload_to='settings/', blank=True, null=True)
     favicon = models.ImageField(upload_to='settings/', blank=True, null=True)
@@ -18,19 +15,15 @@ class Setting(ImageCompressionMixin, models.Model):
     testmonial_bg = models.ImageField(upload_to='logo/')
     header_footer_color = models.CharField(max_length=150, blank=True)
     text_color = models.CharField(max_length=150, blank=True)
-
     address = models.CharField(blank=True, max_length=100)
     phone = models.CharField(blank=True, max_length=15)
     whatsapp = models.CharField(blank=True, max_length=15)
     email = models.CharField(blank=True, max_length=50)
     google_map = models.CharField(blank=True, max_length=1000)
-
     smtpserver = models.CharField(blank=True, max_length=50)
     smtpemail = models.CharField(blank=True, max_length=50)
     smtppassword = models.CharField(blank=True, max_length=10)
     smtpport = models.CharField(blank=True, max_length=5)
-
-
     meta_title = models.CharField(max_length=200, blank=True, null=True)
     meta_description = models.TextField(blank=True, null=True)
     footer_text = models.CharField(max_length=250, blank=True, null=True)
@@ -41,8 +34,6 @@ class Setting(ImageCompressionMixin, models.Model):
         ('True', 'True'),
         ('False', 'False'),
     )
-
-    
     
     
 
@@ -65,6 +56,13 @@ class Setting(ImageCompressionMixin, models.Model):
         if self.logo:
             return mark_safe(f'<img src="{self.logo.url}" width="100"/>')
         return "(No Logo)"
+
+    @property
+    def logo_or_name(self):
+        if self.logo and self.logo.name:
+            return self.logo.url
+        return None
+
 
 
 # =============================

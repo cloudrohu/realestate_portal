@@ -1,4 +1,3 @@
-# home/views.py (FINAL CLEANED VERSION)
 
 from django.shortcuts import render
 from django.http import HttpResponse 
@@ -8,59 +7,37 @@ from .models import (
     Setting, Slider, Testimonial, About_Page, 
     Contact_Page, FAQ, Our_Team
 )
-
+from utility.models import City
 # NOTE: The manual function get_global_context() has been removed 
 #       because the utility.context_processors handles this globally.
 
-# ==========================================================
-# 🌐 MAIN VIEWS
-# ==========================================================
+from django.shortcuts import render
+from projects.models import Project  # import your Project model
 
 def index(request):
-    """
-    Renders the main landing page, fetching featured properties and site content.
-    """
     settings_obj = Setting.objects.first()
+    cities = City.objects.filter(level_type="CITY").order_by("name")
 
-    # 1. Fetch Featured Properties 
-    latest_properties = Property.objects.order_by('-list_date').filter(is_published=True)[:4]
-    
-    # 2. Fetch Home Page Content 
-    sliders = Slider.objects.filter(setting=settings_obj, is_active=True).order_by('order') if settings_obj else None
-    testimonials = Testimonial.objects.filter(setting=settings_obj).order_by('?') if settings_obj else None
-    
-    # 3. MPTT Data for Search Bar (CRITICAL for Homepage Search)
-    top_level_types = PropertyType.objects.filter(parent__isnull=True).order_by('name')
-    top_level_localities = Locality.objects.filter(parent__isnull=True).order_by('name')
+    project_featured = (
+        Project.objects.filter(featured_property=True, active=True)
+        .select_related("city", "locality", "developer", "propert_type")
+        .prefetch_related("configurations")[:6]
+    )
+
+    current_city = None
+    if project_featured.exists() and project_featured[0].city:
+        current_city = project_featured[0].city.name
 
     context = {
-        'properties': latest_properties,
-        'sliders': sliders,
-        'testimonials': testimonials,
-        # Injected data for the search bar template
-        'top_level_types': top_level_types,
-        'top_level_localities': top_level_localities,
+        "settings_obj": settings_obj,
+        "project_featured": project_featured,
+        "cities": cities,  # 👈 dynamic data from City model
+        "current_city": current_city or "Mumbai",
     }
-    
-    def global_settings_processor(request):
-        """
-        Context processor to make site-wide settings available in all templates.
-        Crashes if Setting model or its dependency (like ImageCompressionMixin) has an issue.
-        """
-        try:
-            # Fetch the main site settings object safely
-            settings = Setting.objects.first()
-        except Exception as e:
-            # If the database is empty or an import fails, settings will be None.
-            # Print the error for local debugging, but prevent crash.
-            print(f"CRITICAL CONTEXT ERROR: {e}") 
-            settings = None
 
-        return {
-            'site_settings': settings,
-        }
+    return render(request, "home/index.html", context)
 
-    return render(request, 'home/index.html', context)
+
 
 
 def robots_txt(request):

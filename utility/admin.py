@@ -3,7 +3,7 @@ from mptt.admin import MPTTModelAdmin
 from django.utils.html import mark_safe
 import admin_thumbnails
 
-from .models import City, Locality, PropertyType, PossessionIn, ProjectAmenities, Bank, Property
+from .models import City, Locality, PropertyType, PossessionIn, ProjectAmenities, Bank
 
 
 # 🟡 Placeholder image URL (fallback)
@@ -115,11 +115,4 @@ class BankAdmin(admin.ModelAdmin):
 
     safe_image_preview.short_description = "Logo"
 
-# =======================================================
-# 📝 Property Admin
-# =======================================================
-@admin.register(Property)
-class PropertyAdmin(admin.ModelAdmin):
-    list_display = ('property_type', 'city', 'locality')
-    list_filter = ('property_type', 'city', 'locality')
-    search_fields = ('property_type__name', 'city__name', 'locality__name')
+

@@ -74,8 +74,59 @@ def index(request):
     return render(request, 'projects/projects.html', context)
 
 
+from django.shortcuts import render, get_object_or_404
+from .models import Project
+
+# 🏠 Residential Projects
+def residential_projects(request):
+    query = request.GET.get('q', '')
+    projects = Project.objects.filter(
+        propert_type__parent__name__iexact='Residential',
+        active=True
+    ).select_related('city', 'locality', 'propert_type')
+
+    if query:
+        projects = projects.filter(project_name__icontains=query)
+
+    context = {
+        'projects': projects,
+        'page_title': 'Residential Projects',
+        'breadcrumb': 'Residential',
+    }
+    return render(request, 'projects/residential_list.html', context)
+
+
+# 🏢 Commercial Projects
+def commercial_projects(request):
+    query = request.GET.get('q', '')
+    projects = Project.objects.filter(
+        propert_type__parent__name__iexact='Commercial',
+        active=True
+    ).select_related('city', 'locality', 'propert_type')
+
+    if query:
+        projects = projects.filter(project_name__icontains=query)
+
+    context = {
+        'projects': projects,
+        'page_title': 'Commercial Projects',
+        'breadcrumb': 'Commercial',
+    }
+    return render(request, 'projects/commercial_list.html', context)
+
+
+# 🔍 Project Details
+def project_details(request, id, slug):
+    project = get_object_or_404(Project, id=id, slug=slug)
+    context = {
+        'project': project,
+        'title': project.project_name
+    }
+    return render(request, 'projects/project_details.html', context)
+
 # --- 2. Project Detail Page (From Step 50) ---
 def project_details(request, id, slug):
+
     """
     Renders the detail page for a single project, fetching all related content 
     using the optimized related_name access.

@@ -101,13 +101,6 @@ class PropertyType(MPTTModel):
         full_path = [node.name for node in self.get_ancestors(include_self=True)]
         return ' / '.join(full_path) # <-- **Is tarah theek karein**
 # --- Property Model (Ensure the FK is pointing here) ---
-class Property(models.Model):
-    # Link to the MPTT Type
-    property_type = models.ForeignKey(PropertyType, on_delete=models.PROTECT) 
-
-    # Link to Location
-    city = models.ForeignKey('utility.City', on_delete=models.PROTECT) 
-    locality = models.ForeignKey('utility.Locality', on_delete=models.PROTECT) 
 
     # ... (Other fields like title, price, bedrooms, etc.) ...
 # --- PossessionIn Model (Only Year) ---
@@ -151,3 +144,20 @@ class Bank(models.Model):
     
     class Meta:
         verbose_name_plural='03. Bank'
+
+class PropertyAmenities(models.Model):
+    name = models.CharField(max_length=100)
+    icon = models.ImageField(upload_to='property/amenities/', blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = "Property Amenities"
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+    def icon_tag(self):
+        if self.icon:
+            return mark_safe(f'<img src="{self.icon.url}" width="40" height="40" />')
+        return ""
+    icon_tag.short_description = "Icon"
