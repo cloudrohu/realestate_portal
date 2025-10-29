@@ -8,8 +8,10 @@
 <!-- DESKTOP SEARCH SECTION -->
 <!-- ====================== -->
 <div class="hidden md:block">
-  <section class="relative flex flex-col items-center justify-center text-center text-white h-[500px] bg-cover bg-center bg-no-repeat"
-    style="background-image: url('{% static "images/central-mumbai.jpeg" %}');">
+  <section 
+  class="relative flex flex-col items-center justify-center text-center text-white h-[400px] bg-cover bg-center bg-no-repeat overflow-hidden"
+  style="background-image: url('{% if settings_obj.search_bg %}{{ settings_obj.search_bg.url }}{% else %}{% static 'images/central-mumbai.jpeg' %}{% endif %}');">
+
 
     <h1 class="text-3xl md:text-4xl font-bold mb-2">India's Largest Real Estate Platform</h1>
     <p class="text-gray-300 mb-6">
@@ -53,8 +55,9 @@
 <!-- MOBILE SEARCH SECTION -->
 <!-- ====================== -->
 <div class="md:hidden">
-  <section class="relative flex flex-col items-center justify-center text-center text-white h-[400px] bg-cover bg-center bg-no-repeat overflow-hidden"
-    style="background-image: url('{% static "images/central-mumbai.jpeg" %}');">
+  <section 
+  class="relative flex flex-col items-center justify-center text-center text-white h-[400px] bg-cover bg-center bg-no-repeat overflow-hidden"
+  style="background-image: url('{% if settings_obj.search_bg %}{{ settings_obj.search_bg.url }}{% else %}{% static 'images/central-mumbai.jpeg' %}{% endif %}');">
 
     <!-- Overlay -->
     <div class="absolute inset-0 bg-black/60"></div>
