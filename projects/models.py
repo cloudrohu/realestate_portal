@@ -15,26 +15,38 @@ from multiselectfield import MultiSelectField
 from user.models import Developer
 from embed_video.fields import EmbedVideoField
 from utility.compress_mixin import ImageCompressionMixin
+from django.db.models import Min, Max
 
-
-
-# --- Helper Function for Price Formatting ---
+# ==========================
+# 💰 GLOBAL HELPER FUNCTIONS
+# ==========================
 def format_price(num):
-    """Convert number into Indian readable format (Lac/Cr)."""
-    # Price comes as a string, convert it carefully
+    """Convert number into Indian readable format (Lakh/Cr)."""
     try:
         num = int("".join(filter(str.isdigit, str(num))))
     except ValueError:
         return ""
 
     if num >= 10000000:  # 1 Crore
-        return f"{round(num/10000000, 2):.2f} Cr"
-    elif num >= 100000:  # 1 Lac
-        return f"{round(num/100000, 2):.2f} L"
+        return f"{round(num / 10000000, 2):.2f} Cr"
+    elif num >= 100000:  # 1 Lakh
+        return f"{round(num / 100000, 2):.2f} L"
     else:
-        # Using the standard format for numbers less than 1 Lakh
-        return f"{num: ,}"
-# --------------------------------------------
+        return f"{num:,}"
+
+
+def format_price_range(price_min, price_max):
+    """Convert rupees to Lakh/Cr format cleanly."""
+    def fmt(value):
+        if value >= 1e7:
+            return f"₹{value / 1e7:.2f}Cr".rstrip('0').rstrip('.')
+        elif value >= 1e5:
+            return f"₹{value / 1e5:.0f}L"
+        return f"₹{value:,}"
+
+    if price_min == price_max:
+        return fmt(price_min)
+    return f"{fmt(price_min)}–{fmt(price_max)}"
 
 
 class Project(MPTTModel):
@@ -152,54 +164,34 @@ class Project(MPTTModel):
     def get_absolute_url(self):
         return reverse("project_details", kwargs={'id': self.id, 'slug': self.slug})
 
-    # --- Configuration Summary Methods (Using the format_price helper) ---
-    # projects/models.py (Project model ke andar)
+    def get_configuration_details(self):
+        from django.db.models import Min, Max
 
-    def get_configuration_summary(self):
         configs = self.configurations.all()
-        if not configs:
+        if not configs.exists():
             return ""
 
-        try:
-            # Configuration objects se area ki list banao
-            areas = [c.area_sqft for c in configs if c.area_sqft is not None]
-        except Exception: # Specific error type use karna behtar hai
-            areas = []
-        
-        if not areas:
-            return ""
+        summary_lines = []
+        bhk_types = sorted(set(configs.values_list("bhk_type", flat=True)))
 
-        min_area = min(areas)
-        max_area = max(areas)
+        for bhk in bhk_types:
+            bhk_configs = configs.filter(bhk_type=bhk)
 
-        # Unique BHK types (sets automatically handle unique values)
-        bhk_list = sorted(set([c.bhk_type for c in configs]))
-        bhk_display = ", ".join(bhk_list)
+            # Area range
+            area_min = bhk_configs.aggregate(Min("area_sqft"))["area_sqft__min"]
+            area_max = bhk_configs.aggregate(Max("area_sqft"))["area_sqft__max"]
+            area_range = f"{area_min}" if area_min == area_max else f"{area_min}-{area_max}"
 
-        return f"{min_area}-{max_area} Sq.ft ({bhk_display})"
+            # Price range
+            price_min = bhk_configs.aggregate(Min("price_in_rupees"))["price_in_rupees__min"]
+            price_max = bhk_configs.aggregate(Max("price_in_rupees"))["price_in_rupees__max"]
+            price_range = format_price_range(price_min, price_max)
 
-    def get_price_range(self):
-        configs = self.configurations.all()
-        if not configs:
-            return ""
+            summary_lines.append(f"{bhk} {area_range} Sq.ft {price_range}")
 
-        try:
-            # FIX: Sahi IntegerField 'price_in_rupees' use kiya gaya hai.
-            # Filter out None values to prevent min()/max() errors
-            prices = [c.price_in_rupees for c in configs if c.price_in_rupees is not None]
-        except Exception: 
-            # Yeh block generic errors ko handle karta hai
-            prices = []
+        return "\n".join(summary_lines)
 
-        if not prices:
-            return ""
 
-        min_price = min(prices)
-        max_price = max(prices)
-
-        # format_price function use karein (jo models.py ke top par define kiya gaya hai)
-        if min_price == max_price:
-            return format_price(min_price)
 
 
 class BookingOffer(models.Model):
