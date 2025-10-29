@@ -64,6 +64,8 @@ def about_view(request):
     team_members = Our_Team.objects.filter(setting=settings_obj).order_by('name') if settings_obj else None
     
     context = {
+        "settings_obj": settings_obj,
+
         'about_content': about_content,
         'team_members': team_members
     }
@@ -78,6 +80,8 @@ def contact_view(request):
     contact_content = Contact_Page.objects.filter(setting=settings_obj).first() if settings_obj else None
 
     context = {
+        "settings_obj": settings_obj,
+
         'contact_content': contact_content,
     }
     return render(request, 'home/contact.html', context)
@@ -91,6 +95,8 @@ def faq_view(request):
     faqs = FAQ.objects.filter(setting=settings_obj).order_by('id') if settings_obj else None
     
     context = {
+        "settings_obj": settings_obj,
+
         'faqs': faqs
     }
     return render(request, 'home/faq.html', context)

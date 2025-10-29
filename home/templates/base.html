@@ -39,16 +39,18 @@
       <p class="mb-3">Get in touch with us</p>
       <p class="flex items-center gap-2 mb-2">
         <i class="fas fa-map-marker-alt text-orange-500"></i>
-        Skydeck Building, Shop No. 4,<br>
-        Sundervan Complex, Andheri (W), Mumbai - 400053
+        
+        {{ settings_obj.address}}
+
       </p>
       <p class="flex items-center gap-2 mb-2">
         <i class="fas fa-envelope text-orange-500"></i>
-        malhotraestate4@gmail.com
+        {{ settings_obj.email}}
+
       </p>
       <p class="flex items-center gap-2">
         <i class="fas fa-phone-alt text-orange-500"></i>
-        +91-9820070344
+        {{ settings_obj.phone}}
       </p>
     </div>
 
@@ -90,7 +92,8 @@
 
   <!-- Bottom -->
   <div class="border-t border-gray-700 mt-10 py-6 text-center text-sm text-gray-400">
-    © 2025 Malhotra Estate. All Rights Reserved.
+    © {{ settings_obj.copy_right}}         {{ settings_obj.site_name}}
+                                . All Rights Reserved.
   </div>
 </footer>
   <!-- Bootstrap JS -->

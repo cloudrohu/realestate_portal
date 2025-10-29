@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load utility_tags %}
+{% load humanize %}
+{% block title %}{{ site_settings.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
+
+{% block content %}
+
+  <!-- Hero Section -->
+  <section class="relative h-[70vh] flex items-center justify-center text-white">
+    <div class="absolute inset-0 bg-[url('assets/images/hero/slid-1.jpg')] bg-cover bg-center"></div>
+    <div class="absolute inset-0 bg-black/60"></div>
+    <div class="relative z-10 text-center max-w-3xl px-6">
+      <h1 class="text-5xl md:text-6xl font-extrabold mb-4">About <span class="text-orange-400">Malhotra Real Estate</span></h1>
+      <p class="text-lg opacity-90">
+        With a legacy of 16+ years, Malhotra Real Estate stands as a trusted name delivering premium homes, innovative solutions, and unmatched client satisfaction.
+      </p>
+    </div>
+  </section>
+
+  <!-- Who We Are -->
+  <section class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
+    <img src="https://dummyimage.com/600x400/eeeeee/000000&text=Our+Journey" class="rounded-2xl shadow-xl hover:scale-105 transition"/>
+    <div>
+      <h2 class="text-3xl font-bold mb-4">Who We Are</h2>
+      <p class="text-gray-600 leading-relaxed mb-4">
+        Malhotra Real Estate is more than a property consultancy — we are lifestyle creators. 
+        Our expertise in <span class="font-semibold">residential, commercial, and luxury projects</span> has empowered 10,000+ clients across Mumbai and India.
+      </p>
+      <p class="text-gray-600">
+        From transparent deals to modern housing, our mission is simple: deliver trust, growth, and value in every project.
+      </p>
+    </div>
+  </section>
+
+  <!-- Stats Counter -->
+  <section class="bg-gradient-to-r from-orange-600 to-orange-500 text-white py-16">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-4 gap-8 text-center">
+      <div>
+        <h3 id="projects" class="text-4xl font-bold">0+</h3>
+        <p class="mt-2">Projects Delivered</p>
+      </div>
+      <div>
+        <h3 id="clients" class="text-4xl font-bold">0+</h3>
+        <p class="mt-2">Happy Families</p>
+      </div>
+      <div>
+        <h3 id="years" class="text-4xl font-bold">0+</h3>
+        <p class="mt-2">Years of Excellence</p>
+      </div>
+      <div>
+        <h3 id="awards" class="text-4xl font-bold">0+</h3>
+        <p class="mt-2">Awards & Recognitions</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="max-w-7xl mx-auto px-6 py-20">
+    <h2 class="text-3xl font-bold text-center mb-12">Why Choose <span class="text-orange-600">Malhotra Real Estate?</span></h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-2xl transition">
+        <i class="fas fa-building text-orange-500 text-5xl mb-4"></i>
+        <h3 class="font-semibold text-lg mb-2">Premium Projects</h3>
+        <p class="text-gray-600">Residential & commercial spaces in prime locations.</p>
+      </div>
+      <div class="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-2xl transition">
+        <i class="fas fa-users text-orange-500 text-5xl mb-4"></i>
+        <h3 class="font-semibold text-lg mb-2">10,000+ Clients</h3>
+        <p class="text-gray-600">A strong community built on trust and transparency.</p>
+      </div>
+      <div class="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-2xl transition">
+        <i class="fas fa-handshake text-orange-500 text-5xl mb-4"></i>
+        <h3 class="font-semibold text-lg mb-2">Trusted Partner</h3>
+        <p class="text-gray-600">End-to-end assistance from property search to possession.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission & Vision -->
+  <section class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-10">
+    <div class="bg-white shadow-xl rounded-xl p-10 hover:shadow-2xl transition">
+      <h2 class="text-2xl font-bold mb-3">Our Mission</h2>
+      <p class="text-gray-600">To redefine real estate consultancy by offering transparent, innovative, and premium housing solutions tailored for modern lifestyles.</p>
+    </div>
+    <div class="bg-white shadow-xl rounded-xl p-10 hover:shadow-2xl transition">
+      <h2 class="text-2xl font-bold mb-3">Our Vision</h2>
+      <p class="text-gray-600">To be the most trusted name in Indian real estate by continuously delivering excellence, innovation, and customer satisfaction.</p>
+    </div>
+  </section>
+
+  <!-- Leadership -->
+  <section class="bg-gray-100 py-20">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold mb-12">Meet Our <span class="text-orange-600">Leadership</span></h2>
+      <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-10">
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:scale-105 transition">
+          <img src="https://dummyimage.com/150x150/cccccc/000000&text=CEO" class="w-24 h-24 mx-auto rounded-full mb-4">
+          <h3 class="font-semibold">Rahul Malhotra</h3>
+          <p class="text-gray-500 text-sm">Founder & CEO</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:scale-105 transition">
+          <img src="https://dummyimage.com/150x150/cccccc/000000&text=MD" class="w-24 h-24 mx-auto rounded-full mb-4">
+          <h3 class="font-semibold">Neha Malhotra</h3>
+          <p class="text-gray-500 text-sm">Managing Director</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:scale-105 transition">
+          <img src="https://dummyimage.com/150x150/cccccc/000000&text=COO" class="w-24 h-24 mx-auto rounded-full mb-4">
+          <h3 class="font-semibold">Amit Sharma</h3>
+          <p class="text-gray-500 text-sm">COO</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:scale-105 transition">
+          <img src="https://dummyimage.com/150x150/cccccc/000000&text=Sales" class="w-24 h-24 mx-auto rounded-full mb-4">
+          <h3 class="font-semibold">Priya Kapoor</h3>
+          <p class="text-gray-500 text-sm">Sales Head</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-gradient-to-r from-orange-700 to-orange-500 text-white py-20 text-center">
+    <h2 class="text-3xl font-bold mb-4">Looking To Buy, Sell or Rent?</h2>
+    <p class="mb-6 text-lg">Get in touch with Malhotra Real Estate today and find your dream property.</p>
+    <a href="{% url "contact" %}" class="px-8 py-3 bg-white text-orange-600 font-semibold rounded-lg shadow hover:bg-gray-100">Contact Us</a>
+  </section>
+
+  <!-- CountUp Script -->
+  <script>
+    window.onload = function () {
+      new CountUp("projects", 120).start();
+      new CountUp("clients", 10000).start();
+      new CountUp("years", 16).start();
+      new CountUp("awards", 15).start();
+    };
+  </script>
+  <!-- FOOTER START HERE -->
+{% endblock %}

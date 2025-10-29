@@ -1,91 +1,75 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% load static %}
-{% load utility_tags %} 
-{% load humanize %} 
-
+{% load utility_tags %}
+{% load humanize %}
 {% block title %}{{ site_settings.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
 
 {% block content %}
 
-    <section id="hero-slider" style="background-image: url({% if site_settings.search_bg %}{{ site_settings.search_bg.url }}{% endif %});">
-        <div class="container">
-            {% if sliders %}
-                <div class="owl-carousel">
-                    {% for slider in sliders %}
-                        <div class="slider-item">
-                            <h1>{{ slider.title }}</h1>
-                            <p>{{ slider.subtitle }}</p>
-                            <a href="{{ slider.button_link|default:'#' }}" class="btn-primary">{{ slider.button_text|default:'Explore Now' }}</a>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <div class="slider-item">
-                    <h1>Find Your Dream Home</h1>
-                    <p>Search the best properties in major cities.</p>
-                    <a href="{% url 'properties' %}" class="btn-primary">Start Searching</a>
-                </div>
-            {% endif %}
-            
-            {% include 'includes/search_bar.html' %} 
+<!-- Hero Section -->
+<section class="bg-orange-500 text-white py-16 text-center relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6 relative z-10">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">Get in Touch</h1>
+    <p class="text-lg md:text-xl opacity-90">
+      We’d love to hear from you. Reach out for inquiries, collaborations, or support.
+    </p>
+  </div>
+  <div class="absolute inset-0 bg-[url('{% static 'images/bg-pattern.png' %}')] opacity-10"></div>
+</section>
+
+<!-- Contact Section -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 px-6">
+
+    <!-- Contact Form -->
+    <div class="bg-white/80 backdrop-blur-md p-8 rounded-2xl shadow-xl border border-gray-100">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">Send Us a Message</h2>
+      <form action="#" method="POST" class="space-y-5">
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Full Name</label>
+          <input type="text" placeholder="Your Name"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
         </div>
-    </section>
 
-    <section id="featured-properties" class="py-5">
-        <div class="container">
-            <h2 class="text-center">Featured Listings</h2>
-            <hr>
-            
-            <div class="row property-grid">
-                {% if properties %}
-                    {% for property in properties %}
-                        <div class="col-md-3 mb-4">
-                            <div class="card property-card">
-                                <img src="{% if property.main_photo %}{{ property.main_photo.url }}{% else %}{% static 'img/placeholder.png' %}{% endif %}" class="card-img-top" alt="{{ property.title }}">
-                                <div class="card-body">
-                                    <h5 class="card-title"><a href="{% url 'property_detail' property.id %}">{{ property.title }}</a></h5>
-                                    
-                                    <p class="card-text price">
-                                        ₹{{ property.price|in_unit }} 
-                                        <small class="text-muted">| {{ property.area_sqft }} sq.ft.</small>
-                                    </p>
-
-                                    <ul class="list-inline details">
-                                        <li class="list-inline-item">{{ property.bedrooms|default:'?' }} Beds</li>
-                                        <li class="list-inline-item">{{ property.property_type.name }}</li>
-                                    </ul>
-                                    <p class="location text-muted">{{ property.locality.name }}, {{ property.city.name }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <p class="text-center w-100">No featured properties available right now.</p>
-                {% endif %}
-            </div>
-            
-            <div class="text-center">
-                <a href="{% url 'properties' %}" class="btn btn-outline-primary">View All Properties</a>
-            </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Email Address</label>
+          <input type="email" placeholder="Your Email"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
         </div>
-    </section>
 
-    <section id="testimonials" style="background-image: url({% if site_settings.testmonial_bg %}{{ site_settings.testmonial_bg.url }}{% endif %});" class="py-5 text-white">
-        <div class="container text-center">
-            <h2>What Our Clients Say</h2>
-            {% if testimonials %}
-                <div class="testimonial-slider owl-carousel mt-4">
-                    {% for t in testimonials %}
-                        <div class="testimonial-item p-4">
-                            <p class="lead">"{{ t.message|truncatewords:40 }}"</p>
-                            <p class="h6 font-weight-bold mt-3">{{ t.name }}</p>
-                            <p class="small">{{ t.designation }}</p>
-                            <p>{{ t.rating }} ⭐</p>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Phone Number</label>
+          <input type="text" placeholder="Enter Your Mobile Number"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
         </div>
-    </section>
 
-    {% endblock %}
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-1">Message</label>
+          <textarea rows="4" placeholder="Type your message..."
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+        </div>
+
+        <button type="submit"
+          class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg transition-transform transform hover:scale-[1.02] duration-200">
+          Send Message
+        </button>
+      </form>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="bg-white/80 backdrop-blur-md p-8 rounded-2xl shadow-xl border border-gray-100 flex flex-col justify-between">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">Contact Information</h2>
+        <p class="text-gray-700 mb-3"><i class="fas fa-map-marker-alt text-orange-500 mr-2"></i>{{ settings_obj.address }}</p>
+        <p class="text-gray-700 mb-3"><i class="fas fa-phone text-orange-500 mr-2"></i>{{ settings_obj.phone }}</p>
+        <p class="text-gray-700 mb-3"><i class="fas fa-envelope text-orange-500 mr-2"></i>{{ settings_obj.email }}</p>
+      </div>
+
+      <div class="mt-6 rounded-lg overflow-hidden shadow-md border border-gray-100">
+        {{ settings_obj.google_map|safe }}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

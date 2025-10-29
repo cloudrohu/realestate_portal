@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load utility_tags %}
+{% load humanize %}
+{% block title %}FAQs | {{ site_settings.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="bg-orange-500 text-white py-16 text-center">
+  <div class="max-w-4xl mx-auto px-6">
+    <h1 class="text-4xl md:text-5xl font-bold mb-3">Frequently Asked Questions</h1>
+    <p class="text-lg opacity-90">Find answers to the most common questions about our real estate services.</p>
+  </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-5xl mx-auto px-6">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Your Questions, Answered</h2>
+
+    <div class="space-y-6">
+
+      <!-- FAQ Item -->
+      <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-xl border border-gray-100 overflow-hidden">
+        <button class="faq-toggle w-full flex justify-between items-center p-5 text-left focus:outline-none">
+          <span class="text-lg font-semibold text-gray-800">1. How can I book a site visit for a property?</span>
+          <svg class="w-5 h-5 text-orange-500 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="faq-content hidden px-5 pb-5 text-gray-600">
+          You can schedule a site visit by contacting our sales team through the “Contact Us” page or calling the provided phone number. We’ll help you fix a convenient time.
+        </div>
+      </div>
+
+      <!-- FAQ Item -->
+      <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-xl border border-gray-100 overflow-hidden">
+        <button class="faq-toggle w-full flex justify-between items-center p-5 text-left focus:outline-none">
+          <span class="text-lg font-semibold text-gray-800">2. Do you provide loan assistance for buying properties?</span>
+          <svg class="w-5 h-5 text-orange-500 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="faq-content hidden px-5 pb-5 text-gray-600">
+          Yes, we collaborate with leading banks and financial institutions to help our clients with easy home loan approvals.
+        </div>
+      </div>
+
+      <!-- FAQ Item -->
+      <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-xl border border-gray-100 overflow-hidden">
+        <button class="faq-toggle w-full flex justify-between items-center p-5 text-left focus:outline-none">
+          <span class="text-lg font-semibold text-gray-800">3. What documents are required to buy a flat or plot?</span>
+          <svg class="w-5 h-5 text-orange-500 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="faq-content hidden px-5 pb-5 text-gray-600">
+          You will need identity proof, address proof, PAN card, and a copy of the property’s title and agreement. Our team will guide you through the exact list.
+        </div>
+      </div>
+
+      <!-- FAQ Item -->
+      <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-xl border border-gray-100 overflow-hidden">
+        <button class="faq-toggle w-full flex justify-between items-center p-5 text-left focus:outline-none">
+          <span class="text-lg font-semibold text-gray-800">4. Are the projects RERA registered?</span>
+          <svg class="w-5 h-5 text-orange-500 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="faq-content hidden px-5 pb-5 text-gray-600">
+          Yes, all our featured projects are 100% RERA registered. You can find the registration number on each project’s details page.
+        </div>
+      </div>
+
+      <!-- FAQ Item -->
+      <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-xl border border-gray-100 overflow-hidden">
+        <button class="faq-toggle w-full flex justify-between items-center p-5 text-left focus:outline-none">
+          <span class="text-lg font-semibold text-gray-800">5. Can I get virtual tours of properties?</span>
+          <svg class="w-5 h-5 text-orange-500 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="faq-content hidden px-5 pb-5 text-gray-600">
+          Absolutely! Many of our premium projects offer 360° virtual tours right on their listing page, so you can explore them online before visiting.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FAQ Toggle Script -->
+<script>
+  document.querySelectorAll(".faq-toggle").forEach(button => {
+    button.addEventListener("click", () => {
+      const content = button.nextElementSibling;
+      const icon = button.querySelector("svg");
+
+      if (content.classList.contains("hidden")) {
+        document.querySelectorAll(".faq-content").forEach(item => item.classList.add("hidden"));
+        document.querySelectorAll(".faq-toggle svg").forEach(i => i.classList.remove("rotate-180"));
+        content.classList.remove("hidden");
+        icon.classList.add("rotate-180");
+      } else {
+        content.classList.add("hidden");
+        icon.classList.remove("rotate-180");
+      }
+    });
+  });
+</script>
+
+{% endblock %}
