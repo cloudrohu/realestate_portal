@@ -9,4 +9,6 @@ urlpatterns = [
     path('about/', views.about_view, name='about'),
     path('contact/', views.contact_view, name='contact'),
     path('faq/', views.faq_view, name='faq'),
+    path('privacy-policy/', views.privacy_policy, name='privacy-policy'),
+    path('terms-conditions/', views.terms_conditions, name='terms_conditions'),
 ]

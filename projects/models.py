@@ -337,3 +337,26 @@ class BankOffer(models.Model):
         return f"{self.Project.project_name} - {self.bank.title}"
 
 
+# projects/models.py  (or a separate app like enquiries/models.py)
+
+from django.db import models
+
+class Enquiry(models.Model):
+    project = models.ForeignKey(
+        'Project',
+        on_delete=models.CASCADE,
+        related_name='enquiries'
+    )
+    name = models.CharField(max_length=120)
+    email = models.EmailField(blank=True, null=True)
+    phone = models.CharField(max_length=20)
+    message = models.TextField(blank=True)
+    contacted_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Enquiry for {self.project.project_name} by {self.name}"
+
+    class Meta:
+        verbose_name = 'Project Enquiry'
+        verbose_name_plural = '3. Project Enquiries'
+        ordering = ['-contacted_on']

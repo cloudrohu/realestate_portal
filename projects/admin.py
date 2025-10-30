@@ -4,7 +4,7 @@ from mptt.admin import MPTTModelAdmin
 from .models import (
     Project, BookingOffer, WelcomeTo, WebSlider, Overview, AboutUs,
     USP, Configuration, Connectivity, Amenities, Gallery, Header,
-    RERA_Info, WhyInvest, BankOffer
+    RERA_Info, WhyInvest, BankOffer,Enquiry
 )
 
 
@@ -195,3 +195,13 @@ class ProjectAdmin(MPTTModelAdmin):
             ''')
         return "No Video"
     youtube_preview.short_description = "YouTube Preview"
+
+
+
+
+@admin.register(Enquiry)
+class EnquiryAdmin(admin.ModelAdmin):
+    list_display = ['id','name', 'phone', 'email', 'project', 'message', 'contacted_on']
+    list_filter = ('project', 'contacted_on')
+    search_fields = ('name', 'email', 'phone', 'message', 'project__project_name')
+    ordering = ('-contacted_on',)

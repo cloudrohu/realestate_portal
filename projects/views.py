@@ -1,6 +1,6 @@
 # projects/views.py
+from django.shortcuts import render, redirect, get_object_or_404
 
-from django.shortcuts import render, get_object_or_404
 from django.db.models import Q 
 from .models import Project
 from properties.models import Property # Needed for project_details if included
@@ -9,10 +9,10 @@ from utility.models import City, Locality # Locality and City imported
 # Import related models for dropdowns
 from utility.models import City, Locality # Locality and City imported
 from .models import (
-    Project, Configuration, Gallery, RERA_Info, BookingOffer, 
-    Overview, USP, Amenities as ProjectAmenitiesModel # Project details models
+    Project, Configuration, Gallery, RERA_Info, BookingOffer, Overview,
+    USP, Amenities, Header, WelcomeTo, Connectivity, WhyInvest,Enquiry
 ) 
-
+from django.contrib import messages
 
 # --- 1. All Projects Listing Page (Optimized Index) ---
 def index(request):
@@ -124,35 +124,75 @@ def project_details(request, id, slug):
     }
     return render(request, 'projects/project_details.html', context)
 
-# --- 2. Project Detail Page (From Step 50) ---
+
+
+# 🏗️ Final: Project Detail View
 def project_details(request, id, slug):
-
     """
-    Renders the detail page for a single project, fetching all related content 
-    using the optimized related_name access.
+    Render single project details page with all connected content.
+    Compatible with your big HTML template.
     """
-    # Fetch the main project object by ID and slug
-    project = get_object_or_404(Project, slug=slug, active=True)
+    # --- Get main project ---
+    project = get_object_or_404(Project, id=id, slug=slug, active=True)
 
-    # 1. Fetch related properties (Fixing the AttributeError source)
-    # The related_name 'unit_listings' is used to query individual properties belonging to this project.
-    project_properties = project.unit_listings.filter(is_published=True).order_by('-list_date')
-    
-    # 2. Compile Context (Using related_name access)
+    # --- Fetch related data using related_name ---
     context = {
+        # ✅ main project data
+        'active': project,
         'project': project,
-        'properties': project_properties, # The list of associated properties
-        
-        # Optimized access for related models:
-        'configurations': project.configurations.all().order_by('bhk_type'),
-        'galleries': project.gallery.all(),
-        'rera_info': project.rera.first(), 
-        'amenities': project.amenities.all(),
-        'overview': project.overviews.first(),
+
+        # ✅ global site settings if used (for meta tags, favicon etc.)
+        'setting': Header.objects.filter(Project=project),
+
+        # ✅ related data blocks
+        'welcome': project.welcomes.all(),
         'usps': project.usps.all(),
-        'booking_offers': project.BookingOffer.all(),
-        
-        # Note: All related models (WelcomeTo, WebSlider, etc.) are implicitly accessed 
-        # via project.related_name.all() or project.related_name.first()
+        'configurations': project.configurations.all().order_by('bhk_type'),
+        'gallery': project.gallery.all(),
+        'amenities': project.amenities.all(),
+        'rera': project.rera.all(),
+        'BookingOffer': project.BookingOffer.all(),
+        'headers': project.headers.all(),
+        'configs': project.configs.all(),
+        'why_invest': project.why_invest.all(),
+
+        # ✅ optional properties (only if Property model exists)
+        'properties': Property.objects.filter(project=project).order_by('-created_at'),
+
+        # ✅ for dynamic header/footer use
+        'reraaditional': project.rera.all(),
+        'bookingopen': [project],
     }
+
     return render(request, 'projects/project_detail.html', context)
+
+
+
+def submit_enquiry(request, id):
+    project = get_object_or_404(Project, id=id)
+
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        message = request.POST.get('message')
+
+        # Save enquiry
+        Enquiry.objects.create(
+            project=project,
+            name=name,
+            email=email,
+            phone=phone,
+            message=message
+        )
+
+        messages.success(request, "Thank you! Your enquiry has been submitted successfully.")
+        return redirect('thank_you')  # or use project detail slug redirect
+
+    return redirect('project_details', id=project.id, slug=project.slug)
+
+
+
+
+def thank_you(request):
+    return render(request, 'projects/thank_you.html')

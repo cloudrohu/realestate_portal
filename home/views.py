@@ -100,3 +100,13 @@ def faq_view(request):
         'faqs': faqs
     }
     return render(request, 'home/faq.html', context)
+
+
+
+def privacy_policy(request):
+    return render(request, 'static_pages/privacy_policy.html')
+
+def terms_conditions(request):
+    return render(request, 'static_pages/terms_conditions.html')
+
+
