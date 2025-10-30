@@ -49,104 +49,7 @@
   </section>
 </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const tabs = document.querySelectorAll(".tab-btn");
-  const select = document.getElementById("propertyType");
-  const searchInput = document.getElementById("searchInput");
-  const suggestionBox = document.getElementById("suggestionBox"); // ✅ use existing ul, don't recreate it
 
-  const tabOptions = {
-    buy: ["Residential", "Commercial"],
-    rental: ["Residential", "Commercial Lease", "PG / Co-living"],
-    new: ["Residential", "Commercial"]
-  };
-
-  // ✅ Tab click logic
-  tabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-      tabs.forEach(t => t.classList.remove("bg-gray-200", "text-blue-700", "font-semibold"));
-      tab.classList.add("bg-gray-200", "text-blue-700", "font-semibold");
-
-      const selectedTab = tab.dataset.tab;
-      select.innerHTML = "";
-      tabOptions[selectedTab].forEach(opt => {
-        const option = document.createElement("option");
-        option.textContent = opt;
-        select.appendChild(option);
-      });
-
-      searchInput.placeholder = "Select City";
-    });
-  });
-
-  // ✅ Auto-suggestion from database (AJAX)
-  searchInput.addEventListener("input", async () => {
-    const query = searchInput.value.trim();
-    suggestionBox.innerHTML = "";
-
-    if (query.length < 3) {
-      suggestionBox.classList.add("hidden");
-      return;
-    }
-
-    try {
-      const response = await fetch(`/api/cities/?q=${encodeURIComponent(query)}`);
-      if (!response.ok) throw new Error("Network error");
-
-      const results = await response.json();
-
-      if (results.length === 0) {
-        suggestionBox.innerHTML = `<li class="px-4 py-2 text-sm text-gray-500">No results found</li>`;
-        suggestionBox.classList.remove("hidden");
-        return;
-      }
-
-      // ✅ Add results dynamically
-      results.forEach(item => {
-        const li = document.createElement("li");
-        li.className = "px-4 py-2 hover:bg-gray-100 flex justify-between items-center cursor-pointer text-sm";
-        li.innerHTML = `
-          <span>${item.name}</span>
-          <span class="text-gray-500 text-xs">${item.type}</span>
-        `;
-        li.addEventListener("click", () => {
-          searchInput.value = item.name;
-          suggestionBox.classList.add("hidden");
-        });
-        suggestionBox.appendChild(li);
-      });
-
-      suggestionBox.classList.remove("hidden");
-    } catch (error) {
-      console.error("❌ Error fetching cities:", error);
-      suggestionBox.innerHTML = `<li class="px-4 py-2 text-sm text-red-500">Error fetching data</li>`;
-      suggestionBox.classList.remove("hidden");
-    }
-  });
-
-  // ✅ Hide dropdown on outside click
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest("#searchInput")) {
-      suggestionBox.classList.add("hidden");
-    }
-  });
-});
-
-// ✅ Search button click logic
-document.getElementById("searchButton").addEventListener("click", function () {
-  const city = document.getElementById("searchInput").value.trim();
-  const type = document.getElementById("propertyType").value.toLowerCase(); // residential/commercial
-
-  if (city.length < 2) {
-    alert("Please select a valid city.");
-    return;
-  }
-
-  // Redirect to search page with parameters
- window.location.href = `/projects/search/?q=${encodeURIComponent(city)}&type=${encodeURIComponent(type)}`;
-});
-</script>
 <!-- ====================== -->
 <!-- MOBILE SEARCH SECTION -->
 <!-- ====================== -->
@@ -209,16 +112,117 @@ document.getElementById("searchButton").addEventListener("click", function () {
     .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </div>
-
-<!-- ====================== -->
-<!-- ✅ MOBILE JS LOGIC -->
-<!-- ====================== -->
+<!-- ============================= -->
+<!-- ✅ DESKTOP SEARCH LOGIC -->
+<!-- ============================= -->
 <script>
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
+  const tabs = document.querySelectorAll(".tab-btn");
+  const select = document.getElementById("propertyType");
+  const searchInput = document.getElementById("searchInput");
+  const suggestionBox = document.getElementById("suggestionBox");
+
+  const tabOptions = {
+    buy: ["Residential", "Commercial"],
+    rental: ["Residential", "Commercial Lease", "PG / Co-living"],
+    new: ["Residential", "Commercial"]
+  };
+
+  // ✅ Tab switching logic
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("bg-gray-200", "text-blue-700", "font-semibold"));
+      tab.classList.add("bg-gray-200", "text-blue-700", "font-semibold");
+
+      const selectedTab = tab.dataset.tab;
+      select.innerHTML = "";
+      tabOptions[selectedTab].forEach(opt => {
+        const option = document.createElement("option");
+        option.textContent = opt;
+        select.appendChild(option);
+      });
+
+      searchInput.placeholder = "Select City";
+    });
+  });
+
+  // ✅ Desktop suggestion search
+  searchInput.addEventListener("input", async () => {
+    const query = searchInput.value.trim();
+    suggestionBox.innerHTML = "";
+
+    if (query.length < 3) {
+      suggestionBox.classList.add("hidden");
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/cities/?q=${encodeURIComponent(query)}`);
+      if (!response.ok) throw new Error("Network error");
+
+      const results = await response.json();
+
+      if (results.length === 0) {
+        suggestionBox.innerHTML = `<li class="px-4 py-2 text-sm text-gray-500">No results found</li>`;
+        suggestionBox.classList.remove("hidden");
+        return;
+      }
+
+      results.forEach(item => {
+        const li = document.createElement("li");
+        li.className = "px-4 py-2 hover:bg-gray-100 flex justify-between items-center cursor-pointer text-sm";
+        li.innerHTML = `
+          <span>${item.name}</span>
+          <span class="text-gray-500 text-xs">${item.type}</span>
+        `;
+        li.addEventListener("click", () => {
+          searchInput.value = item.name;
+          suggestionBox.classList.add("hidden");
+        });
+        suggestionBox.appendChild(li);
+      });
+
+      suggestionBox.classList.remove("hidden");
+    } catch (error) {
+      console.error("❌ Error fetching cities:", error);
+      suggestionBox.innerHTML = `<li class="px-4 py-2 text-sm text-red-500">Error fetching data</li>`;
+      suggestionBox.classList.remove("hidden");
+    }
+  });
+
+  // ✅ Hide suggestion on outside click
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("#searchInput")) {
+      suggestionBox.classList.add("hidden");
+    }
+  });
+
+  // ✅ Redirect to Django search view
+  document.getElementById("searchButton").addEventListener("click", function () {
+    const city = searchInput.value.trim();
+    const type = select.value.toLowerCase();
+
+    if (city.length < 2) {
+      alert("Please select a valid city.");
+      return;
+    }
+
+    window.location.href = `/projects/search/?q=${encodeURIComponent(city)}&type=${encodeURIComponent(type)}`;
+  });
+});
+</script>
+
+
+<!-- ============================= -->
+<!-- ✅ MOBILE SEARCH LOGIC -->
+<!-- ============================= -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
   const tabs = document.querySelectorAll("#mobileTabs .tab-btn");
   const select = document.getElementById("propertyTypeSelect");
   const input = document.getElementById("mobileSearchInput");
   const suggestionBox = document.getElementById("mobileSuggestionBox");
+  const searchButton = document.getElementById("mobileSearchButton");
 
   const tabOptions = {
     buy: ["Residential", "Commercial"],
@@ -226,14 +230,13 @@ document.addEventListener("DOMContentLoaded", function() {
     projects: ["Residential", "Commercial"]
   };
 
-  // ✅ Tab switching logic
+  // ✅ Tab switching
   tabs.forEach(tab => {
     tab.addEventListener("click", () => {
       tabs.forEach(t => {
         t.classList.remove("bg-white", "text-black", "font-semibold");
         t.classList.add("bg-[#122c61]", "text-white");
       });
-
       tab.classList.add("bg-white", "text-black", "font-semibold");
       tab.classList.remove("bg-[#122c61]", "text-white");
 
@@ -250,7 +253,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 
-  // ✅ Fetch suggestions from Django API
+  // ✅ City suggestions (mobile)
   input.addEventListener("input", async () => {
     const query = input.value.trim();
     suggestionBox.innerHTML = "";
@@ -288,17 +291,30 @@ document.addEventListener("DOMContentLoaded", function() {
 
       suggestionBox.classList.remove("hidden");
     } catch (error) {
-      console.error("Error fetching cities:", error);
+      console.error("❌ Error fetching cities:", error);
       suggestionBox.innerHTML = `<li class="px-4 py-2 text-sm text-red-500">Error fetching data</li>`;
       suggestionBox.classList.remove("hidden");
     }
   });
 
-  // ✅ Hide dropdown on outside click
+  // ✅ Hide suggestion when clicking outside
   document.addEventListener("click", (e) => {
     if (!e.target.closest("#mobileSearchInput")) {
       suggestionBox.classList.add("hidden");
     }
+  });
+
+  // ✅ Mobile search redirect (SAME LOGIC AS DESKTOP)
+  searchButton.addEventListener("click", () => {
+    const city = input.value.trim();
+    const type = select.value.toLowerCase().replace("-", " "); // normalize “residential”, “commercial”
+
+    if (city.length < 2) {
+      alert("Please select a valid city.");
+      return;
+    }
+
+    window.location.href = `/projects/search/?q=${encodeURIComponent(city)}&type=${encodeURIComponent(type)}`;
   });
 });
 </script>
