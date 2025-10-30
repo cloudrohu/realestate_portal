@@ -74,7 +74,6 @@ class PropertyType(MPTTModel):
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=50, unique=True, null=True, blank=True)
     
-    # Hierarchy Field: Allows parent/child relationships
     parent = TreeForeignKey(
         'self', 
         on_delete=models.CASCADE, 
@@ -84,10 +83,8 @@ class PropertyType(MPTTModel):
         verbose_name='Parent Type/Category'
     )
     
-    # Flag to easily identify main categories (Residential/Commercial) in views
     is_top_level = models.BooleanField(default=False) 
     
-    # Flag to denote if this type can be directly selected for a listing (e.g., "3 BHK" can be selected, but "Residential" cannot)
     is_selectable = models.BooleanField(default=True)
 
     class MPTTMeta:
@@ -97,13 +94,10 @@ class PropertyType(MPTTModel):
         verbose_name_plural = "Property Types"
 
     def __str__(self):
-    # Sahi syntax: Sirf string separator (' / ') ko join method se pehle use karein.
         full_path = [node.name for node in self.get_ancestors(include_self=True)]
-        return ' / '.join(full_path) # <-- **Is tarah theek karein**
-# --- Property Model (Ensure the FK is pointing here) ---
-
-    # ... (Other fields like title, price, bedrooms, etc.) ...
-# --- PossessionIn Model (Only Year) ---
+        return ' / '.join(full_path)
+    
+    
 class PossessionIn(models.Model):
     year = models.PositiveIntegerField(
         unique=True,

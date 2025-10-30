@@ -3,11 +3,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from django.db.models import Q 
 from .models import Project
+from home.models import Setting
 from properties.models import Property # Needed for project_details if included
 # Import related models for dropdowns
-from utility.models import City, Locality # Locality and City imported
+from utility.models import City, Locality , PropertyType# Locality and City imported
 # Import related models for dropdowns
-from utility.models import City, Locality # Locality and City imported
 from .models import (
     Project, Configuration, Gallery, RERA_Info, BookingOffer, Overview,
     USP, Amenities, Header, WelcomeTo, Connectivity, WhyInvest,Enquiry
@@ -74,8 +74,51 @@ def index(request):
     return render(request, 'projects/projects.html', context)
 
 
-from django.shortcuts import render, get_object_or_404
-from .models import Project
+
+def search_projects(request):
+    settings_obj = Setting.objects.first()
+
+    query = request.GET.get("q", "").strip()
+    selected_type = request.GET.get("type", "").strip().lower()
+
+    projects = Project.objects.filter(active=True)
+
+    # City filter
+    city_obj = City.objects.filter(name__icontains=query).first()
+    if city_obj:
+        projects = projects.filter(city=city_obj)
+
+    # Property type filter (parent + children)
+    try:
+        parent_type = PropertyType.objects.get(name__iexact=selected_type.capitalize())
+        all_types = parent_type.get_descendants(include_self=True)
+        projects = projects.filter(propert_type__in=all_types)
+    except PropertyType.DoesNotExist:
+        pass
+
+    # Optional fuzzy search
+    if query:
+        projects = projects.filter(
+            Q(project_name__icontains=query) |
+            Q(locality__name__icontains=query) |
+            Q(city__name__icontains=query)
+        ).distinct()
+
+    context = {
+        "settings_obj": settings_obj,
+
+        "projects": projects.select_related("city", "locality", "propert_type"),
+        "query": query,
+        "property_type": selected_type,
+        "city": city_obj.name if city_obj else query,
+    }
+
+    # ✅ template by type
+    template = "projects/commercial_list.html" if selected_type == "commercial" else "projects/residential_list.html"
+    return render(request, template, context)
+
+
+
 
 # 🏠 Residential Projects
 def residential_projects(request):

@@ -132,6 +132,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+// ✅ Search button click logic
+document.getElementById("searchButton").addEventListener("click", function () {
+  const city = document.getElementById("searchInput").value.trim();
+  const type = document.getElementById("propertyType").value.toLowerCase(); // residential/commercial
+
+  if (city.length < 2) {
+    alert("Please select a valid city.");
+    return;
+  }
+
+  // Redirect to search page with parameters
+ window.location.href = `/projects/search/?q=${encodeURIComponent(city)}&type=${encodeURIComponent(type)}`;
+});
 </script>
 <!-- ====================== -->
 <!-- MOBILE SEARCH SECTION -->

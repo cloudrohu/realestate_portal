@@ -191,9 +191,6 @@ class Project(MPTTModel):
 
         return "\n".join(summary_lines)
 
-
-
-
 class BookingOffer(models.Model):
     Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="BookingOffer")
     title = models.CharField(max_length=255)
@@ -208,8 +205,6 @@ class WelcomeTo(models.Model):
 
     def __str__(self):
         return self.description
-
-
 
 class WebSlider(models.Model):
     Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="sliders")
@@ -326,8 +321,7 @@ class BankOffer(models.Model):
     
     def __str__(self):
         return f"{self.Project.project_name} - {self.bank.title}"
-
-    
+  
 
 class BankOffer(models.Model):
     Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="bank_offers")

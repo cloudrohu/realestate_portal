@@ -21,6 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
     path('projects/', include('projects.urls')),
+    # realestate_portal/urls.py
+
     path('properties/', include('properties.urls')),
     path('accounts/', include('user.urls')),
     path('blog/', include('blog.urls')),
