@@ -441,7 +441,7 @@
 </script>
 
 <!-- HERO -->
-<section class="relative bg-cover bg-center h-[80vh]" style="background-image:url('https://dummyimage.com/1600x700/cccccc/000&text=Real+Estate+Hero');">
+<section class="relative bg-cover bg-center h-[80vh]" style="background-image:url('{{ settings_obj.testmonial_bg.url}}');">
   <div class="bg-black/50 absolute inset-0"></div>
   <div class="relative z-10 flex items-center justify-center h-full text-center text-white px-4">
     <div>
@@ -646,8 +646,9 @@
     <div>
       <h2 class="text-3xl font-bold text-orange-600 mb-4">Contact Us</h2>
       <p class="mb-4 text-gray-700">We’d love to help you with your property needs.</p>
-      <p><strong>Phone:</strong> +91 9898 03 4466</p>
-      <p><strong>Email:</strong> info@realestate.com</p>
+      <p><strong>Phone: </strong> {{ settings_obj.phone}}</p>
+      <br>
+      <p><strong>Email:</strong> {{ settings_obj.email}}</p>
     </div>
     <form class="bg-gray-100 p-6 rounded shadow">
       <input type="text" placeholder="Your Name" class="w-full mb-3 p-3 rounded border">

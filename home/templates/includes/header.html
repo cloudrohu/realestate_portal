@@ -6,7 +6,7 @@
 <!-- ====================== -->
 
 <div class="hidden md:block">
-  <header class="flex justify-between items-center px-8 py-2 bg-[#000428]/80 backdrop-blur-md text-white">
+  <header class="flex justify-between items-center px-8 py-2  backdrop-blur-md text-white" style="background-color: {{ settings_obj.header_footer_color}}; color: {{ settings_obj.text_color}};">
     <div class="flex items-center gap-2">
   {% if settings_obj.logo %}
     <!-- Show logo only if it exists -->
@@ -58,13 +58,7 @@
       </svg>
     </button>
 
-    <!-- Logo -->
-    {% if settings_obj.logo %}
-      <img src="{{ settings_obj.logo.url }}" alt="logo" class="h-8 ml-1">
-    {% else %}
-      <span class="font-semibold text-lg ml-1">RealEstatePro</span>
-    {% endif %}
-
+   
     <!-- City Dropdown -->
     <div class="relative ml-2">
       <select
@@ -81,6 +75,13 @@
       </select>
     </div>
   </div>
+
+   <!-- Logo -->
+    {% if settings_obj.logo %}
+      <img src="{{ settings_obj.logo.url }}" alt="logo" class="h-8 w-16 ml-1">
+    {% else %}
+      <span class="font-semibold text-lg ml-1">RealEstatePro</span>
+    {% endif %}
 
  
 </header>

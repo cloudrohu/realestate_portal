@@ -24,7 +24,9 @@ urlpatterns = [
     path('properties/', include('properties.urls')),
     path('accounts/', include('user.urls')),
     path('blog/', include('blog.urls')),
+    path("", include("utility.urls")),  # ✅ Add this
     path('ckeditor/', include('ckeditor_uploader.urls')),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
