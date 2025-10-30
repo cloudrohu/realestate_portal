@@ -1,178 +1,396 @@
+{% extends 'base.html' %} 
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>{{ active.project_name }} | {{ rs.title }}</title> 
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="keywords" content="{{ rs.keywords }}">
-<link rel="icon" href="{{ rs.icon.url }}" sizes="16x16">
-<meta name="description" content="{{ rs.description }}">
+{% load utility_tags %} 
+{% load humanize %} 
+{% block title %}{{ site_settings.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
 
-<!-- CSS and JS CDN links -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
-<link rel="stylesheet" href="{% static 'projects/assets/css/style.css' %}">
-</head>
 
-<body>
 
-<!-- ========== 🏙️ SLIDER SECTION ========== -->
-<section id="home">
-  <div class="container-fluid">
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-indicators">
-        {% for i in active.sliders.all %}
-          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" aria-current="true"></button>
-        {% endfor %}
-      </div>
+{% block content %}
 
-      <div class="carousel-inner">
-        {% for i in active.sliders.all %}
-          <div class="carousel-item {% if forloop.first %}active{% endif %}">
-            {% if i.image %}
-              <img src="{{ i.image.url }}" style="height: 650px; width: 100%;" class="d-block w-100 mobile-img" alt="{{ active.project_name }}">
-            {% else %}
-              <img src="{% static 'projects/assets/images/default-placeholder.webp' %}" style="height: 650px; width: 100%;" class="d-block w-100 mobile-img" alt="No image available">
-            {% endif %}
-          </div>
-        {% endfor %}
-      </div>
 
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
+<section class="relative h-[300px] bg-cover bg-center" style="background-image: url('{% static 'images/no-images.jpg' %}');">
+  <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+  <div class="relative z-10 flex flex-col justify-center items-center h-full text-center text-white">
+    <h1 class="text-3xl md:text-5xl font-bold">{{ page_title|default:"Projects Listing" }}</h1>
+    <nav class="mt-3 text-sm md:text-base">
+      <ol class="flex justify-center space-x-2">
+        <li><a href="/" class="hover:text-orange-400">Home</a></li>
+        <li>/</li>
+        <li class="text-orange-400">{{ breadcrumb }}</li>
+      </ol>
+    </nav>
   </div>
 </section>
 
-<!-- ========== 🏗️ OVERVIEW SECTION ========== -->
-<section class="sec1" id="about_us">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-xl-7 col-lg-7 col-sm-12">
-        <div class="overview-data">
-          <h1>Welcome To {{ active.project_name }}</h1>
-          {% for welcome in active.welcomes.all %}
-            <p>{{ welcome.description }}</p>
-            {% if welcome.read_more %}
-              <p class="overview-info">
-                <span class="moreText" style="display: none;">
-                  {{ welcome.read_more }}
-                </span>
-              </p>
-              <button class="readMoreBtn custom-btn" onclick="toggleReadMore(this)">Read More</button>
-            {% endif %}
-          {% empty %}
-            <p>No description available.</p>
-          {% endfor %}
-          <br><br>
-          <button id="request-brochure-button" type="button" class="custom-btn data-id-btn on-rera"
-            data-bs-target="#enquire-modal" data-bs-toggle="modal"
-            data-bs-whatever="Enquire Now" data-id="Brochure">
-            <i class="fa-solid fa-download"></i>&nbsp;&nbsp;Request Brochure
+
+
+
+<!-- Main Container -->
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 px-4">
+
+  <!-- Left Side - Property List -->
+  <div class="lg:col-span-2 space-y-6">
+
+    <!-- Header -->
+      <div class="flex items-center gap-2 bg-white shadow p-3 rounded mb-4">
+        <!-- List Button -->
+        <button id="listViewBtn" class="bg-orange-500 text-white p-2 rounded">
+          <i class="fas fa-list"></i>
+        </button>
+
+        <!-- Grid Button -->
+        <button id="gridViewBtn" class="bg-gray-200 text-gray-700 p-2 rounded">
+          <i class="fas fa-th"></i>
+        </button>
+
+        <span class="font-semibold text-orange-600">Properties</span>
+      </div>
+
+
+    <!-- Property Filters Start -->
+     <filter-section>
+
+      <div class="bg-white shadow rounded p-4 flex flex-wrap gap-4 items-center lg:hidden">
+
+        <!-- Location -->
+        <select class="border px-3 py-2 rounded text-sm">
+          <option>All Locations</option>
+          <option>Mira Road</option>
+          <option>Andheri</option>
+          <option>Borivali</option>
+        </select>
+
+        <!-- Property Type -->
+        <select class="border px-3 py-2 rounded text-sm">
+          <option>Property Type</option>
+          <option>Apartment</option>
+          <option>Plot</option>
+          <option>Villa</option>
+          <option>Builder Floor</option>
+        </select>
+
+        <!-- BHK -->
+        <select class="border px-3 py-2 rounded text-sm">
+          <option>BHK</option>
+          <option>1 RK</option>
+          <option>1 BHK</option>
+          <option>1.5 BHK</option>
+          <option>2 BHK</option>
+          <option>2.5 BHK</option>
+          <option>3 BHK</option>
+          <option>3.5 BHK</option>
+        </select>
+
+        <!-- Price -->
+        <div class="flex gap-2">
+          <input type="text" placeholder="Min Price" class="border px-3 py-2 rounded text-sm w-28">
+          <input type="text" placeholder="Max Price" class="border px-3 py-2 rounded text-sm w-28">
+        </div>
+
+        <!-- Brokerage -->
+        <select class="border px-3 py-2 rounded text-sm">
+          <option>Brokerage Charges</option>
+          <option>No Brokerage</option>
+          <option>With Brokerage</option>
+        </select>
+
+        <!-- Carpet Area -->
+        <div class="flex gap-2">
+          <input type="text" placeholder="Min (sqft)" class="border px-3 py-2 rounded text-sm w-28">
+          <input type="text" placeholder="Max (sqft)" class="border px-3 py-2 rounded text-sm w-28">
+        </div>
+
+        <!-- More Filters Button -->
+        <button id="moreFiltersBtn"
+          class="text-orange-600 font-semibold underline text-sm ml-auto">More Filters</button>
+
+        <!-- Submit -->
+        <button
+          class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 text-sm font-semibold">
+          Filter
+        </button>
+      </div>
+
+      <!-- More Filters Panel -->
+      <div id="moreFiltersPanel" class="hidden bg-white shadow rounded p-4 mt-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+          <select class="border px-3 py-2 rounded">
+            <option>Posted By</option>
+            <option>Owner</option>
+            <option>Dealer</option>
+          </select>
+          <select class="border px-3 py-2 rounded">
+            <option>Sale Type</option>
+            <option>New</option>
+            <option>Resale</option>
+          </select>
+          <select class="border px-3 py-2 rounded">
+            <option>Property Status</option>
+            <option>Ready to Move</option>
+            <option>Under Construction</option>
+          </select>
+          <select class="border px-3 py-2 rounded">
+            <option>Possession From</option>
+            <option>2024</option>
+            <option>2025</option>
+          </select>
+          <select class="border px-3 py-2 rounded">
+            <option>Property Age</option>
+            <option>0-5 Years</option>
+            <option>5-10 Years</option>
+          </select>
+          <select class="border px-3 py-2 rounded">
+            <option>Bathrooms</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3+</option>
+          </select>
+          <label class="flex items-center gap-2">
+            <input type="checkbox"> Parking
+          </label>
+          <label class="flex items-center gap-2">
+            <input type="checkbox"> Live-in Tour / Video
+          </label>
+        </div>
+
+        <!-- Bottom Buttons -->
+        <div class="flex justify-between items-center mt-4">
+          <button id="closeFilters" class="text-sm text-blue-600">Clear Filters & Close</button>
+          <button class="bg-orange-500 px-4 py-2 rounded text-white font-semibold">
+            Show Properties
           </button>
         </div>
       </div>
 
-      <!-- ✅ Safe image handling -->
-      <div class="col-xl-5 col-lg-5 col-sm-12 text-center ps-0 pe-0">
-        {% if active.image %}
-          <img src="{{ active.image.url }}" width="100%" class="data-id-btn" data-id="Project Video" alt="{{ active.project_name }}">
-        {% else %}
-          <img src="{% static 'projects/assets/images/default-placeholder.webp' %}" width="100%" alt="No image available">
-        {% endif %}
-      </div>
+        <!-- JS -->
+        <script>
+          document.getElementById("moreFiltersBtn").addEventListener("click", () => {
+            document.getElementById("moreFiltersPanel").classList.toggle("hidden");
+          });
+          document.getElementById("closeFilters").addEventListener("click", () => {
+            document.getElementById("moreFiltersPanel").classList.add("hidden");
+          });
+        </script>
+     </filter-section>
+    <!-- Property Filters End -->
+    
+
+
+<!-- ✅ List View -->
+<!-- ✅ List View -->
+<div id="listView" class="space-y-6">
+  {% for project in projects %}
+  <div class="flex flex-col sm:flex-row bg-white rounded-lg shadow p-4 border hover:shadow-lg hover:border-orange-500 transition">
+    {% if project.image %}
+    <img src="{{ project.image.url }}" class="w-full sm:w-64 h-50 object-cover rounded" alt="{{ project.project_name }}" style="height: 250px;">
+    {% else %}
+    <img src="{% static 'images/no-images.jpg' %}" class="w-full sm:w-64 h-50 object-cover rounded" alt="No Image" style="height: 250px;">
+    {% endif %}
+    
+    <div class="sm:ml-4 mt-4 sm:mt-0 flex-1">
+      <h2 class="text-xl font-semibold text-gray-800">{{ project.project_name }}</h2>
+      <p class="text-sm text-gray-500 mb-2">
+        <i class="fas fa-map-marker-alt text-orange-500"></i> {{ project.locality }}, {{ project.city }}
+      </p>
+      <p class="text-gray-600 text-sm mb-2">
+        {{ project.construction_status }} | {{ project.propert_type }} | Land Parcel: {{ project.land_parce|default:"N/A" }}
+      </p>
+      <p class="text-gray-600 text-sm mb-2">
+        {{ project.get_configuration_summary }}
+      </p>
+      <p class="text-gray-700 text-sm mb-2 font-medium">Price: {{ project.get_price_range }}</p>
+      <p class="text-gray-600 text-sm mb-3">Possession: {{ project.possession_month }}, {{ project.possession_year }}</p>
+      <a href="{{ project.get_absolute_url }}" class="text-orange-500 font-semibold underline">View Details →</a>
     </div>
   </div>
-</section>
+  {% empty %}
+  <div class="text-center text-gray-500 py-10">No projects found.</div>
+  {% endfor %}
+</div>
 
-<!-- ========== 🖼️ GALLERY SECTION ========== -->
-<section class="sec2" id="gallery">
-  <div class="container wow fadeInUp">
-    <h1 class="section-title">Project Gallery</h1>
-    <div class="content-gallery">
-      <div class="gallery js-gallery">
-        {% for img in active.gallery.all %}
-          <div class="gallery-item">
-            <div class="gallery-img-holder js-gallery-popup">
-              {% if img.image %}
-                <img src="{{ img.image.url }}" style="height: 175px;" alt="{{ active.project_name }}" class="gallery-img">
-              {% else %}
-                <img src="{% static 'projects/assets/images/default-placeholder.webp' %}" style="height: 175px;" alt="No image available" class="gallery-img">
-              {% endif %}
-            </div>
-          </div>
-        {% empty %}
-          <p>No images available in gallery.</p>
-        {% endfor %}
-      </div>
+
+<!-- ✅ Grid View -->
+<!-- ✅ Grid View (Dynamic Django Version) -->
+<div id="gridView" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+
+  {% for project in projects %}
+  <div class="bg-white rounded-lg shadow p-4 border hover:shadow-lg hover:border-orange-500 transition">
+    
+    {% if project.image %}
+    <img src="{{ project.image.url }}" class="w-full h-48 object-cover rounded" alt="{{ project.project_name }}"style="height: 250px;">
+    {% else %}
+    <img src="{% static 'images/no-images.jpg' %}" class="w-full h-48 object-cover rounded" alt="No Image"style="height: 250px;">
+    {% endif %}
+
+    <div class="mt-4">
+      <h2 class="text-xl font-semibold text-gray-800">{{ project.project_name }}</h2>
+      <p class="text-sm text-gray-500 mb-2">
+        <i class="fas fa-map-marker-alt text-orange-500"></i> {{ project.locality }}, {{ project.city }}
+      </p>
+      <p class="text-gray-600 text-sm mb-2">
+        {{ project.construction_status }} | {{ project.propert_type.name }} | Land Parcel: {{ project.land_parce|default:"N/A" }}
+      </p>
+      <p class="text-gray-600 text-sm mb-2">
+        {{ project.get_configuration_summary }}
+      </p>
+      <p class="text-gray-700 text-sm mb-2 font-medium">Price: {{ project.get_price_range }}</p>
+      <p class="text-gray-600 text-sm mb-3">
+        Possession: {{ project.possession_month }}, {{ project.possession_year }}
+      </p>
+
+      <a href="{{ project.get_absolute_url }}" 
+         class="inline-block mt-2 text-sm text-white bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded transition">
+         View Details
+      </a>
     </div>
   </div>
-</section>
+  {% empty %}
+  <div class="text-center text-gray-500 py-10 col-span-2">No projects found.</div>
+  {% endfor %}
+</div>
 
-<!-- ========== 🏠 AMENITIES SECTION ========== -->
-<section class="sec1" id="amenities">
-  <div class="container">
-    <h1 class="section-title on-rera">Luxurious Amenities</h1>
-    <div id="slick1" class="row">
-      {% for amenity in active.amenities.all %}
-        <div class="col-md-3 text-center">
-          {% if amenity.amenities.icon %}
-            <img src="{{ amenity.amenities.icon.url }}" style="height: 120px;" alt="{{ amenity.amenities.title }}">
-          {% else %}
-            <img src="{% static 'projects/assets/images/default-placeholder.webp' %}" style="height: 120px;" alt="No image available">
-          {% endif %}
-          <p class="mt-2">{{ amenity.amenities.title }}</p>
-        </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
 
-<!-- ========== 📜 RERA INFO SECTION ========== -->
-<section class="sec1" id="rera-info">
-  <div class="container">
-    {% for rera in active.rera.all %}
-      <h1 class="section-title">RERA Information</h1>
-      <div class="rera-box d-flex align-items-center gap-3 mb-3">
-        {% if rera.qr_image %}
-          <img src="{{ rera.qr_image.url }}" loading="lazy" style="height:100px;" alt="RERA QR">
-        {% else %}
-          <img src="{% static 'projects/assets/images/default-placeholder.webp' %}" loading="lazy" style="height:100px;" alt="No QR Available">
-        {% endif %}
-        <div>
-          <p>{{ active.project_name }} — <b>{{ rera.registration_no }}</b></p>
-          <p>{{ rera.details }}</p>
-        </div>
-      </div>
-    {% empty %}
-      <p>No RERA information available.</p>
-    {% endfor %}
-  </div>
-</section>
-
-<!-- ========== JS ========== -->
+<!-- ✅ JS Toggle -->
 <script>
-function toggleReadMore(btn) {
-  const moreText = btn.previousElementSibling.querySelector(".moreText");
-  if (moreText.style.display === "inline" || moreText.style.display === "") {
-    moreText.style.display = "none";
-    btn.textContent = "Read More";
-  } else {
-    moreText.style.display = "inline";
-    btn.textContent = "Read Less";
-  }
-}
+  const listViewBtn = document.getElementById("listViewBtn");
+  const gridViewBtn = document.getElementById("gridViewBtn");
+  const listView = document.getElementById("listView");
+  const gridView = document.getElementById("gridView");
+
+  listViewBtn.addEventListener("click", () => {
+    listView.classList.remove("hidden");
+    gridView.classList.add("hidden");
+
+    listViewBtn.classList.add("bg-orange-500", "text-white");
+    listViewBtn.classList.remove("bg-gray-200", "text-gray-700");
+
+    gridViewBtn.classList.remove("bg-orange-500", "text-white");
+    gridViewBtn.classList.add("bg-gray-200", "text-gray-700");
+  });
+
+  gridViewBtn.addEventListener("click", () => {
+    gridView.classList.remove("hidden");
+    listView.classList.add("hidden");
+
+    gridViewBtn.classList.add("bg-orange-500", "text-white");
+    gridViewBtn.classList.remove("bg-gray-200", "text-gray-700");
+
+    
+    listViewBtn.classList.remove("bg-orange-500", "text-white");
+    listViewBtn.classList.add("bg-gray-200", "text-gray-700");
+  });
 </script>
 
-</body>
-</html>
+
+
+
+    <!-- ✅ Repeat more project cards like above (they’ll stack nicely on mobile) -->
+
+  </div>
+
+
+
+
+
+
+  <!-- Right Side - Sidebar -->
+  <aside class="space-y-6 md:hidden hidden lg:block">
+
+    <!-- Advanced Search -->
+    <div class="bg-white shadow rounded p-6">
+      <h3 class="font-bold text-gray-700 mb-4 text-lg">ADVANCED SEARCH</h3>
+      <select class="w-full border px-3 py-2 rounded mb-3 text-sm">
+        <option>For Sale</option>
+        <option>For Rent</option>
+      </select>
+      <select class="w-full border px-3 py-2 rounded mb-3 text-sm">
+        <option>Types</option>
+        <option>Residential</option>
+        <option>Commercial</option>
+      </select>
+      <select class="w-full border px-3 py-2 rounded mb-3 text-sm">
+        <option>Property Types</option>
+        <option>Apartment</option>
+        <option>Villa</option>
+        <option>Plot</option>
+      </select>
+      <input type="text" placeholder="Location" class="w-full border px-3 py-2 rounded mb-3 text-sm">
+      <div class="flex flex-col sm:flex-row gap-3 mb-3">
+        <select class="w-full sm:w-1/2 border px-3 py-2 rounded text-sm">
+          <option>BHK</option>
+          <option>1 BHK</option>
+          <option>2 BHK</option>
+          <option>3 BHK</option>
+        </select>
+        <select class="w-full sm:w-1/2 border px-3 py-2 rounded text-sm">
+          <option>Transaction</option>
+          <option>New</option>
+          <option>Resale</option>
+        </select>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-3 mb-3">
+        <input type="text" placeholder="Min Budget" class="w-full sm:w-1/2 border px-3 py-2 rounded text-sm">
+        <input type="text" placeholder="Max Budget" class="w-full sm:w-1/2 border px-3 py-2 rounded text-sm">
+      </div>
+      <label class="block text-sm text-gray-600 mb-1">Area</label>
+      <input type="range" min="0" max="1000000" value="2000" class="w-full accent-orange-500">
+      <div class="flex justify-between text-xs text-gray-600 mb-3">
+        <span>0 Sq.ft</span>
+        <span>1000000 Sq.ft</span>
+      </div>
+      <a href="#" class="text-orange-600 text-sm font-semibold block mb-4">+ Show More Options</a>
+      <button class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded">SEARCH</button>
+    </div>
+
+    <!-- Popular Category -->
+    <div class="bg-white shadow rounded p-6">
+      <h3 class="font-bold text-gray-700 mb-3 text-lg">POPULAR CATEGORY</h3>
+      <p class="text-gray-600 text-sm flex justify-between">Residential Apartment <span>(14)</span></p>
+    </div>
+
+    <!-- Recent Properties -->
+    <div class="bg-white shadow rounded p-6">
+      <h3 class="font-bold text-gray-700 mb-3 text-lg">RECENT PROPERTIES</h3>
+      <div class="space-y-3 text-sm">
+        <div class="flex gap-3">
+          <img src="https://dummyimage.com/80x60/aaaaaa/000000" class="w-20 h-14 object-cover rounded">
+          <div>
+            <p class="text-orange-600">700 Sq.Ft. 2 BHK Apartment</p>
+            <p class="text-gray-600">₹65.00 Th</p>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <img src="https://dummyimage.com/80x60/cccccc/000000" class="w-20 h-14 object-cover rounded">
+          <div>
+            <p class="text-orange-600">610 Sq.Ft. 2 BHK Apartment</p>
+            <p class="text-gray-600">₹70.00 Th</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Helping Center -->
+    <div class="bg-white shadow rounded p-6">
+      <h3 class="font-bold text-gray-700 mb-3 text-lg">HELPING CENTER</h3>
+      <p class="text-gray-700 text-sm mb-2"><strong>Address</strong><br> {{ settings_obj.address}}</p>
+      <p class="text-gray-700 text-sm"><strong>Phone</strong><br> {{ settings_obj.phone}}</p>
+    </div>
+
+  </aside>
+</div>
+
+
+<!-- ✅ Pagination Controls -->
+<div id="paginationWrapper" class="flex justify-center mt-10 space-x-3"></div>
+
+
+<!-- FontAwesome -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<!-- FOOTER END HERE -->
+
+
+{% endblock %}
+
+
