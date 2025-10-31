@@ -2115,3 +2115,56 @@ footer .elementor-widget-container p {
     }
 }
 
+/* ✅ Mobile Fix for Booking Section (Project Details) */
+@media (max-width: 768px) {
+  #home .project-details {
+    position: relative !important;
+    top: auto !important;
+    margin: 10px auto !important;
+    width: 90% !important;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    padding: 20px 15px;
+    text-align: center;
+    z-index: 10;
+  }
+
+  #home .project-details h1 {
+    font-size: 18px !important;
+  }
+
+  #home .project-details h6 {
+    font-size: 13px !important;
+  }
+
+  .offerBox {
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+    background: linear-gradient(45deg, #a98028, #ffcc33);
+    color: #fff;
+    font-size: 14px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  }
+
+  .offerBox .innerBox p {
+    margin: 4px 0;
+    font-weight: 500;
+    font-size: 13px;
+  }
+
+  .price-text {
+    font-size: 22px;
+    margin: 8px 0;
+  }
+
+  .project-details .custom-btn {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+  }
+}

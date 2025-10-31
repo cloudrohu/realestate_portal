@@ -506,7 +506,7 @@
 
       <!-- ✅ Project Info Overlay -->
       <div class="project-details">
-        <p class="text-center mb-1 on-rera">{{ active.construction_status }}</p>
+        <p class="text-center on-rera">{{ active.construction_status }}</p>
         <h1 class="text-center mb-1" style="font-weight:600; text-transform:uppercase;">
           {{ active.project_name }}
         </h1>
@@ -549,7 +549,7 @@
 
         <button id="request-brochure-button" type="button"
                 class="custom-btn data-id-btn non-rera"
-                data-bs-target="#enquire-later-modal" data-bs-toggle="modal"
+                data-bs-target="#enquire-modal" data-bs-toggle="modal"
                 data-bs-whatever="Enquire Now" data-id="Brochure">
           Enquire Now
         </button>
@@ -560,10 +560,7 @@
 
 
 
-
-
-
-                <div class="mob-form d-sm-block d-md-none d-lg-none">
+<div class="mob-form d-sm-block d-md-none d-lg-none hidden">
                     <div class="call-back-section text-center pt-3 pb-3" style="border-bottom: 1px solid #DDD;">
                         <h3 class="mb-0">Pre-Register here for Best Offers</h3>
                     </div>
@@ -603,7 +600,8 @@
                 </form>
                     </div>
                 </div>
-                <!-- xxxxxxxxxxxx Overview section xxxxxxxxxxxx -->
+
+ <!-- xxxxxxxxxxxx Overview section xxxxxxxxxxxx -->
                 <section class="sec1" id="about_us">
                     <div class="container">
                         <div class="row">
@@ -626,7 +624,7 @@
 
                                 <br><br>
                                 <button id="request-brochure-button" type="button" class="custom-btn data-id-btn on-rera"
-                                        data-bs-target="#enquire-later-modal" data-bs-toggle="modal"
+                                        data-bs-target="#enquire-modal" data-bs-toggle="modal"
                                         data-bs-whatever="Enquire Now" data-id="Brochure">
                                     <i class="fa-solid fa-download"></i>&nbsp;&nbsp;Request Brochure
                                 </button>
@@ -642,7 +640,8 @@
                         </div>
                     </div>
       <!-- xxxxxxxxxxxx Overview section End xxxxxxxxxxxx -->
-                </section>
+                </section>                
+               
 
 <section class="sec2" id="highlights">               
                 <h1 class="section-title">{{active.project_name}} - Highlights </h1>
@@ -688,7 +687,7 @@
                                             <td class="price">{{configurations.bhk_type}}</td>
                                             <td>{{configurations.area}}</td>
                                             <td class="price"><span style="font-family: sans-serif;">₹</span>{{configurations.price}}</td>
-                                            <td> <a href="javascript:void(0);" class="btn text-white my-1 enquiryBtn1 pricing-btn-1 custom-btn data-id-btn on-rera" data-bs-target="#enquire-later-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Costing Details">Complete Costing Details</a> </td>
+                                            <td> <a href="javascript:void(0);" class="btn text-white my-1 enquiryBtn1 pricing-btn-1 custom-btn data-id-btn on-rera" data-bs-target="#enquire-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Costing Details">Complete Costing Details</a> </td>
                                             
                                         </tr>
                                         {% endfor %}
@@ -708,7 +707,7 @@
                                 <h1 class="section-title on-rera">Master Plan Layout</h1>
                             </div>
                             <img src="{%  static '' %}projects/assets/images/floor-plan/MasterPlan.webp" alt="" class="img-fluid">
-                            <div class="btn_box text-center"> <a href="#" class="btn mt-4 custom-btn data-id-btn on-rera mx-auto" data-bs-target="#enquire-later-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Master Layout Plan"> Request Master Layout Plan </a>
+                            <div class="btn_box text-center"> <a href="#" class="btn mt-4 custom-btn data-id-btn on-rera mx-auto" data-bs-target="#enquire-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Master Layout Plan"> Request Master Layout Plan </a>
                                 
                             </div>
                         </div>
@@ -717,8 +716,7 @@
                                 <h1 class="section-title on-rera">Unit Plan Layout</h1>
                             </div>
                             <img src="{%  static '' %}projects/assets/images/floor-plan/UnitPlan.webp" alt="" class="img-fluid">
-
-                            <div class="btn_box text-center"> <a href="#" class="btn mt-4 custom-btn data-id-btn on-rera mx-auto" data-bs-target="#enquire-later-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Unit Layout Plan"> Request Unit Layout Plans </a>
+                            <div class="btn_box text-center"> <a href="#" class="btn mt-4 custom-btn data-id-btn on-rera mx-auto" data-bs-target="#enquire-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Unit Layout Plan"> Request Unit Layout Plans </a>
                         </div>
                     </div>
                 </div>
@@ -743,7 +741,7 @@
                     </div>
                     <div class="text-center">
                         <br>
-                        <button id="request-amenities-button" type="button" class="btn custom-btn data-id-btn non-rera" data-bs-target="#enquire-later-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Amenities">Express Your Interest</button>
+                        <button id="request-amenities-button" type="button" class="btn custom-btn data-id-btn non-rera" data-bs-target="#enquire-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Amenities">Express Your Interest</button>
                     </div>
                 </div>
             </section>
@@ -818,7 +816,7 @@
                             </div>
                         </div>
                         <div class="mt-2">
-                            <button id="request-location-button" type="button" class="btn mt-2 custom-btn data-id-btn on-rera mx-auto d-block" data-bs-target="#enquire-later-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Location Map">Request Location Details</button>
+                            <button id="request-location-button" type="button" class="btn mt-2 custom-btn data-id-btn on-rera mx-auto d-block" data-bs-target="#enquire-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Location Map">Request Location Details</button>
                         </div>
                     </div>
                 </div>
@@ -854,7 +852,7 @@
       </div>
       <div class="virtual-tour-play-button"
            data-bs-toggle="modal"
-           data-bs-target="#enquire-later-modal">▶</div>
+           data-bs-target="#enquire-modal">▶</div>
     </div>
   </div>
 </section>
@@ -1040,8 +1038,8 @@
                     <div class="footer-enquiryBtn d-flex d-sm-none">
                         <a class="monCall data-id-btn" id="mobPhone" href="tel:+91{{rs.phone}}"><em class="fa fa-phone"></em> Call</a>
                         <a id="discovery_mobile" target="_blank" class="monCall whatsappBtn data-id-btn on-rera" href="https://api.whatsapp.com/send?phone=91{{rs.whatsapp}}&text=Hey There, I would like to explore further details About {% for rs in bookingopen %} {{rs.project_name}}  By {{rs.by}} At {{rs.at}} {% endfor %} Maharashtra. Please Share Details."><i class="fa fa-brands fa-whatsapp"></i> WhatsApp</a>
-                        <a class="monCall data-id-btn on-rera" id="mobPhone" data-bs-target="#enquire-later-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Enquire Now">Enquire Now</a> <a class="monCall data-id-btn non-rera" id="mobPhone"
-                            data-bs-target="#enquire-later-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Enquire Now">Express Your Interest</a>
+                        <a class="monCall data-id-btn on-rera" id="mobPhone" data-bs-target="#enquire-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Enquire Now">Enquire Now</a> <a class="monCall data-id-btn non-rera" id="mobPhone"
+                            data-bs-target="#enquire-modal" data-bs-toggle="modal" data-bs-whatever="Enquire Now" data-id="Enquire Now">Express Your Interest</a>
                     </div>
         </section>
             </div>
@@ -1049,81 +1047,7 @@
 
     </div>
     <!--end main container-->
-<!-- 🆕 Second Modal: Enquire Later -->
-<div class="modal enquire-modal fade" id="enquire-later-modal" tabindex="-1" aria-labelledby="enquireLaterLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      
-      <!-- Header -->
-      <div class="modal-header bg-warning text-white">
-        <h4 class="modal-title" id="enquireLaterLabel">Get Best Offers</h4>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
 
-      <!-- Body -->
-      <div class="modal-body">
-
-        <!-- Logo -->
-        <a class="modal-logo text-center d-block mb-4" href="#">
-          {% with active.headers.last as header %}
-            {% if header and header.logo %}
-              <img src="{{ header.logo.url }}" alt="Logo" style="height: 55px;" width="160">
-            {% elif rs and rs.logo %}
-              <img src="{{ rs.logo.url }}" alt="Default Logo" style="height: 55px;" width="160">
-            {% else %}
-              <img src="{% static 'projects/assets/images/default-placeholder.jpg' %}" alt="Default" style="height: 55px;" width="160">
-            {% endif %}
-          {% endwith %}
-        </a>
-
-        <!-- Form -->
-        <form name="enquire-later-form"
-              action="{% url 'submit_enquiry' active.id %}"
-              method="post"
-              onsubmit="return validateCaptchaLater()">
-          {% csrf_token %}
-          <div class="row">
-            
-            <!-- Name -->
-            <div class="col-12 forms-input-fields">
-              <i class="fa-solid fa-user"></i>
-              <input type="text" name="name" class="form-control" required placeholder="Full Name*">
-            </div>
-
-            <!-- Phone -->
-            <div class="col-12 forms-input-fields">
-              <i class="fa-solid fa-phone"></i>
-              <input type="text" name="phone" class="form-control" required placeholder="Phone Number*" oninput="limitDigits(this, 10)">
-            </div>
-
-            <!-- Email -->
-            <div class="col-12 forms-input-fields">
-              <i class="fa fa-envelope"></i>
-              <input type="email" name="email" class="form-control" required placeholder="Email*">
-            </div>
-
-            <!-- Hidden Message (auto includes project name) -->
-            <input type="hidden" name="message" value="Interested in {{ active.project_name }}, please contact me.">
-
-            <!-- CAPTCHA -->
-            <div class="col-12 forms-input-fields mb-2">
-              <label class="form-label fw-bold">
-                Solve: <span id="captcha-question-later"></span>
-              </label>
-              <input type="number" class="form-control mb-2" id="captcha-answer-later" placeholder="Enter CAPTCHA Answer" required>
-              <input type="hidden" id="captcha-correct-later">
-            </div>
-
-            <!-- Submit -->
-            <button type="submit" class="btn w-100 custom-btn btn-hover text-white mt-3">
-              Submit
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- Popup Modal for Enquiry Form End -->
 
@@ -1249,54 +1173,6 @@
 </script>
 
 
-<!-- 🧩 Script for "Enquire Later" Modal -->
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const modalEl = document.getElementById("enquire-later-modal");
-  if (!modalEl) return;
-
-  const modal = new bootstrap.Modal(modalEl);
-  const projectId = "{{ active.id|default:'0' }}";
-  const modalKey = `enquireLaterShown_${projectId}`;
-  const shownBefore = localStorage.getItem(modalKey);
-
-  // CAPTCHA Generator
-  function generateCaptchaLater() {
-    const n1 = Math.floor(Math.random() * 10) + 1;
-    const n2 = Math.floor(Math.random() * 10) + 1;
-    document.getElementById("captcha-question-later").innerText = `${n1} + ${n2}`;
-    document.getElementById("captcha-correct-later").value = n1 + n2;
-  }
-
-  generateCaptchaLater();
-
-  // CAPTCHA Validation
-  window.validateCaptchaLater = function() {
-    const userAns = parseInt(document.getElementById("captcha-answer-later").value);
-    const correctAns = parseInt(document.getElementById("captcha-correct-later").value);
-    if (userAns !== correctAns) {
-      alert("❌ Wrong CAPTCHA. Please try again.");
-      return false;
-    }
-    return true;
-  }
-
-  // Auto show after 12s (only once)
-  if (!shownBefore) {
-    setTimeout(() => {
-      modal.show();
-      localStorage.setItem(modalKey, "true");
-    }, 12000); // 12 seconds delay
-  }
-
-  // Manual trigger
-  document.querySelectorAll('[data-bs-target="#enquire-later-modal"]').forEach(btn => {
-    btn.addEventListener("click", () => modal.show());
-  });
-});
-</script>
-
-
 <!-- Add this script -->
 <script>
   function toggleReadMore(btn) {
@@ -1410,72 +1286,48 @@ function validateCaptchaOfferForm() {
 document.addEventListener("DOMContentLoaded", generateCaptchaOfferForm);
 </script>
 
+<!-- ✅ AUTO ENQUIRE NOW MODAL (only once per project, slow delay + user interaction trigger) -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-  const modalEl = document.getElementById("enquire-later-modal");
+  const modalEl = document.getElementById("enquire-modal");
   if (!modalEl) return;
 
   const modal = new bootstrap.Modal(modalEl);
   const projectId = "{{ active.id|default:'0' }}";
-  const modalKey = `enquireLaterShown_${projectId}`;
-  const shownBefore = localStorage.getItem(modalKey);
+  const modalKey = `enquireModalShown_${projectId}`;
+  const modalShown = localStorage.getItem(modalKey);
+
   let hasInteracted = false;
 
-  // ✅ 1️⃣ Detect user activity (scroll, click, keypress)
-  ["scroll", "mousemove", "click", "keydown", "touchstart"].forEach(evt => {
+  // Detect user interaction
+  ['scroll', 'mousemove', 'click', 'keydown'].forEach(evt => {
     window.addEventListener(evt, () => hasInteracted = true, { once: true });
   });
 
-  // ✅ 2️⃣ Generate CAPTCHA for this modal
-  function generateCaptchaLater() {
-    const n1 = Math.floor(Math.random() * 10) + 1;
-    const n2 = Math.floor(Math.random() * 10) + 1;
-    const q = document.getElementById("captcha-question-later");
-    const c = document.getElementById("captcha-correct-later");
-    if (q && c) {
-      q.innerText = `${n1} + ${n2}`;
-      c.value = n1 + n2;
-    }
-  }
-  generateCaptchaLater();
-
-  // ✅ 3️⃣ Validate CAPTCHA before submit
-  window.validateCaptchaLater = function() {
-    const ans = parseInt(document.getElementById("captcha-answer-later").value);
-    const correct = parseInt(document.getElementById("captcha-correct-later").value);
-    if (ans !== correct) {
-      alert("❌ Wrong CAPTCHA. Please try again.");
-      return false;
-    }
-    return true;
-  };
-
-  // ✅ 4️⃣ Auto Show Logic (Only Once per Project)
-  if (!shownBefore) {
+  // ✅ Show only once per project, 8 seconds after load, only if user hasn't interacted yet
+  if (!modalShown) {
     setTimeout(() => {
-      // Show only if user hasn't interacted early
       if (!hasInteracted) {
         modal.show();
         localStorage.setItem(modalKey, "true");
       }
-    }, 9000); // ⏱ Appears automatically after 9 seconds
+    }, 8000); // ⏰ Delay increased to 8s
   }
 
-  // ✅ 5️⃣ Manual Trigger — Open on Button Click
-  document.querySelectorAll('[data-bs-target="#enquire-later-modal"]').forEach(btn => {
+  // ✅ Open manually when user clicks any Enquire button
+  document.querySelectorAll('[data-bs-target="#enquire-modal"]').forEach(btn => {
     btn.addEventListener("click", () => modal.show());
   });
 
-  // ✅ 6️⃣ Update Title Dynamically
+  // ✅ Update modal title dynamically when triggered
   modalEl.addEventListener("show.bs.modal", function (event) {
     const button = event.relatedTarget;
-    const title = button ? button.getAttribute("data-bs-whatever") : "Get Best Offers";
+    const recipient = button ? button.getAttribute("data-bs-whatever") : "Enquire Now";
     const modalTitle = modalEl.querySelector(".modal-title");
-    if (modalTitle) modalTitle.textContent = title;
+    if (modalTitle) modalTitle.textContent = recipient;
   });
 });
 </script>
-
 
 <!-- ✅ Google Conversion Tracking -->
 <script>
