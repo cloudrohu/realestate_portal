@@ -1,6 +1,6 @@
 # projects/views.py
 from django.shortcuts import render, redirect, get_object_or_404
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q 
 from .models import Project
 from home.models import Setting
@@ -75,6 +75,7 @@ def index(request):
 
 
 
+
 def search_projects(request):
     settings_obj = Setting.objects.first()
 
@@ -83,12 +84,12 @@ def search_projects(request):
 
     projects = Project.objects.filter(active=True)
 
-    # City filter
+    # ✅ City filter
     city_obj = City.objects.filter(name__icontains=query).first()
     if city_obj:
         projects = projects.filter(city=city_obj)
 
-    # Property type filter (parent + children)
+    # ✅ Property type filter
     try:
         parent_type = PropertyType.objects.get(name__iexact=selected_type.capitalize())
         all_types = parent_type.get_descendants(include_self=True)
@@ -96,7 +97,7 @@ def search_projects(request):
     except PropertyType.DoesNotExist:
         pass
 
-    # Optional fuzzy search
+    # ✅ Optional fuzzy search
     if query:
         projects = projects.filter(
             Q(project_name__icontains=query) |
@@ -104,18 +105,36 @@ def search_projects(request):
             Q(city__name__icontains=query)
         ).distinct()
 
+    # ✅ PAGINATION START
+    page = request.GET.get("page", 1)
+    paginator = Paginator(projects, 9)  # 👈 9 projects per page
+    try:
+        projects_page = paginator.page(page)
+    except PageNotAnInteger:
+        projects_page = paginator.page(1)
+    except EmptyPage:
+        projects_page = paginator.page(paginator.num_pages)
+    # ✅ PAGINATION END
+
     context = {
         "settings_obj": settings_obj,
-
-        "projects": projects.select_related("city", "locality", "propert_type"),
+        "projects": projects_page,  # paginated queryset
         "query": query,
         "property_type": selected_type,
         "city": city_obj.name if city_obj else query,
+        "paginator": paginator,  # optional
     }
 
-    # ✅ template by type
-    template = "projects/commercial_list.html" if selected_type == "commercial" else "projects/residential_list.html"
+    # ✅ choose correct template
+    template = (
+        "projects/commercial_list.html"
+        if selected_type == "commercial"
+        else "projects/residential_list.html"
+    )
     return render(request, template, context)
+
+
+
 
 
 
@@ -158,16 +177,6 @@ def commercial_projects(request):
     return render(request, 'projects/commercial_list.html', context)
 
 
-# 🔍 Project Details
-def project_details(request, id, slug):
-    project = get_object_or_404(Project, id=id, slug=slug)
-    context = {
-        'project': project,
-        'title': project.project_name
-    }
-    return render(request, 'projects/project_details.html', context)
-
-
 
 # 🏗️ Final: Project Detail View
 def project_details(request, id, slug):
@@ -177,6 +186,7 @@ def project_details(request, id, slug):
     """
     # --- Get main project ---
     project = get_object_or_404(Project, id=id, slug=slug, active=True)
+    rs = Setting.objects.first()  # ✅ your global settings
 
     # --- Fetch related data using related_name ---
     context = {
@@ -184,8 +194,8 @@ def project_details(request, id, slug):
         'active': project,
         'project': project,
 
-        # ✅ global site settings if used (for meta tags, favicon etc.)
-        'setting': Header.objects.filter(Project=project),
+        # ✅ global site settings (used for favicon, meta, logo, etc.)
+        'rs': rs,   # <-- ADD THIS ✅
 
         # ✅ related data blocks
         'welcome': project.welcomes.all(),
@@ -198,18 +208,14 @@ def project_details(request, id, slug):
         'headers': project.headers.all(),
         'configs': project.configs.all(),
         'why_invest': project.why_invest.all(),
-
-        # ✅ optional properties (only if Property model exists)
-        'properties': Property.objects.filter(project=project).order_by('-created_at'),
-
-        # ✅ for dynamic header/footer use
         'reraaditional': project.rera.all(),
         'bookingopen': [project],
+
+        # ✅ optional
+        'properties': Property.objects.filter(project=project).order_by('-created_at'),
     }
 
     return render(request, 'projects/project_detail.html', context)
-
-
 
 def submit_enquiry(request, id):
     project = get_object_or_404(Project, id=id)

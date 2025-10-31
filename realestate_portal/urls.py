@@ -20,13 +20,12 @@ sitemaps = {
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
+    path("", include("utility.urls")),  # ✅ Add this
     path('projects/', include('projects.urls')),
-    # realestate_portal/urls.py
-
     path('properties/', include('properties.urls')),
     path('accounts/', include('user.urls')),
     path('blog/', include('blog.urls')),
-    path("", include("utility.urls")),  # ✅ Add this
+    
     path('ckeditor/', include('ckeditor_uploader.urls')),
 
 ]

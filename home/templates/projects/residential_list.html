@@ -251,6 +251,45 @@
 </div>
 
 
+<!-- Pagination Section -->
+{% if projects.has_other_pages %}
+<nav class="flex justify-center mt-10">
+  <ul class="flex items-center gap-2 text-gray-700">
+
+    {% if projects.has_previous %}
+      <li>
+        <a href="?q={{ query }}&type={{ property_type }}&page={{ projects.previous_page_number }}" 
+           class="px-3 py-1 border rounded hover:bg-gray-200">&laquo; Prev</a>
+      </li>
+    {% else %}
+      <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">&laquo; Prev</li>
+    {% endif %}
+
+    {% for num in projects.paginator.page_range %}
+      {% if num == projects.number %}
+        <li class="px-3 py-1 bg-[#00E0FF] text-white rounded">{{ num }}</li>
+      {% elif num > projects.number|add:'-3' and num < projects.number|add:'3' %}
+        <li>
+          <a href="?q={{ query }}&type={{ property_type }}&page={{ num }}" 
+             class="px-3 py-1 border rounded hover:bg-gray-200">{{ num }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+
+    {% if projects.has_next %}
+      <li>
+        <a href="?q={{ query }}&type={{ property_type }}&page={{ projects.next_page_number }}" 
+           class="px-3 py-1 border rounded hover:bg-gray-200">Next &raquo;</a>
+      </li>
+    {% else %}
+      <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">Next &raquo;</li>
+    {% endif %}
+
+  </ul>
+</nav>
+{% endif %}
+
+
 <!-- ✅ JS Toggle -->
 <script>
   const listViewBtn = document.getElementById("listViewBtn");
