@@ -5,6 +5,8 @@ from django.contrib import messages
 from .forms import UserRegistrationForm # Hum yeh form abhi banaenge
 from django.contrib.auth.decorators import login_required # Required for protection
 from crm.models import Inquiry # Inquiry model import karein
+from django.shortcuts import render, get_object_or_404
+from .models import Developer
 # --- 1. User Registration View ---
 def register(request):
     if request.method == 'POST':
@@ -68,3 +70,9 @@ def dashboard(request):
         'inquiries': user_inquiries,
     }
     return render(request, 'user/dashboard.html', context)
+
+
+
+def developer_detail(request, slug):
+    developer = get_object_or_404(Developer, slug=slug)
+    return render(request, 'user/developer_detail.html', {'developer': developer})

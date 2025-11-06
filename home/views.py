@@ -2,27 +2,38 @@
 from django.shortcuts import render
 from django.http import HttpResponse 
 from properties.models import Property 
-from utility.models import Locality,PropertyType
+from utility.models import Locality,PropertyType,City
 from .models import (
     Setting, Slider, Testimonial, About, Leadership,
-    Contact_Page, FAQ, Our_Team
+    Contact_Page, FAQ, Our_Team,Why_Choose
 )
-from utility.models import City
+from user.models import Developer  # 👈 import your Developer model
 # NOTE: The manual function get_global_context() has been removed 
 #       because the utility.context_processors handles this globally.
 
 from django.shortcuts import render
 from projects.models import Project  # import your Project model
 
+
 def index(request):
     settings_obj = Setting.objects.first()
     cities = City.objects.filter(level_type="CITY").order_by("name")
 
+    # Featured Projects
     project_featured = (
         Project.objects.filter(featured_property=True, active=True)
         .select_related("city", "locality", "developer", "propert_type")
         .prefetch_related("configurations")[:6]
     )
+
+    # Featured Developers (from user app)
+    featured_developers = Developer.objects.filter(featured_builder=True).order_by('-create_at')[:8]
+
+    # Other sections
+    about_page = About.objects.filter(is_active=True).first()
+    why_choose_items = Why_Choose.objects.filter(is_active=True).order_by("order")
+    testimonials = Testimonial.objects.all().order_by("-id")
+    faqs = FAQ.objects.all().order_by("id")
 
     current_city = None
     if project_featured.exists() and project_featured[0].city:
@@ -31,11 +42,17 @@ def index(request):
     context = {
         "settings_obj": settings_obj,
         "project_featured": project_featured,
-        "cities": cities,  # 👈 dynamic data from City model
+        "featured_developers": featured_developers,  # 👈 added
+        "cities": cities,
         "current_city": current_city or "Mumbai",
+        "about_page": about_page,
+        "why_choose_items": why_choose_items,
+        "testimonials": testimonials,
+        "faqs": faqs,
     }
 
     return render(request, "home/index.html", context)
+
 
 
 def robots_txt(request):

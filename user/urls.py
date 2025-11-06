@@ -7,4 +7,7 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'), # <-- New Dashboard URL
+    path('developer/<slug:slug>/', views.developer_detail, name='developer_detail'),
+
 ]
+

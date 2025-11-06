@@ -110,9 +110,6 @@ class Leadership(models.Model):
         return f"{self.name} ({self.designation})"
 
 
-# =============================
-# 🖼️ Hero / Slider Section (Multiple)
-# =============================
 class Why_Choose(models.Model):
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=300, blank=True, null=True)
@@ -203,6 +200,8 @@ class About(models.Model):
 
     def __str__(self):
         return self.title
+
+
 # =============================
 # 📝 Contact Page (Single)
 # =============================
