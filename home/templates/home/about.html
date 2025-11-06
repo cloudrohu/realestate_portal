@@ -2,137 +2,148 @@
 {% load static %}
 {% load utility_tags %}
 {% load humanize %}
-{% block title %}{{ site_settings.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
+
+{% block title %}{{ about_page.meta_title|default:'About Makaan Hub' }}{% endblock %}
+{% block meta_description %}{{ about_page.meta_description|default:'Discover more about Makaan Hub - 16+ years of excellence in real estate.' }}{% endblock %}
 
 {% block content %}
 
-  <!-- Hero Section -->
-  <section class="relative h-[70vh] flex items-center justify-center text-white">
-    <div class="absolute inset-0 bg-[url('assets/images/hero/slid-1.jpg')] bg-cover bg-center"></div>
-    <div class="absolute inset-0 bg-black/60"></div>
-    <div class="relative z-10 text-center max-w-3xl px-6">
-      <h1 class="text-5xl md:text-6xl font-extrabold mb-4">About <span class="text-orange-400">{{ settings_obj.site_name}}</span></h1>
-      <p class="text-lg opacity-90">
-        With a legacy of 16+ years, Malhotra Real Estate stands as a trusted name delivering premium homes, innovative solutions, and unmatched client satisfaction.
-      </p>
-    </div>
-  </section>
+<!-- 🟠 HERO SECTION -->
+<section class="relative h-[70vh] flex items-center justify-center text-white overflow-hidden">
+  <div class="absolute inset-0 bg-cover bg-center animate-zoomHero"
+       style="background-image: url('{{ about_page.home_bg.url|default:'/static/assets/images/hero/slid-1.jpg' }}');"></div>
+  <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/60 to-orange-800/40"></div>
+  <div class="relative z-10 text-center max-w-3xl px-6" data-aos="fade-up">
+    <h1 class="text-5xl md:text-6xl font-extrabold mb-4 animate-fadeInDown">
+      About <span class="text-orange-400">{{ settings_obj.site_name }}</span>
+    </h1>
+    <p class="text-lg opacity-90 leading-relaxed animate-fadeInUp">
+      {{ about_page.subtitle|default:"Delivering trust, growth and innovation since 2008." }}
+    </p>
+  </div>
+</section>
 
-  <!-- Who We Are -->
-  <section class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
-    <img src="https://dummyimage.com/600x400/eeeeee/000000&text=Our+Journey" class="rounded-2xl shadow-xl hover:scale-105 transition"/>
-    <div>
-      <h2 class="text-3xl font-bold mb-4">Who We Are</h2>
-      <p class="text-gray-600 leading-relaxed mb-4">
-        Malhotra Real Estate is more than a property consultancy — we are lifestyle creators. 
-        Our expertise in <span class="font-semibold">residential, commercial, and luxury projects</span> has empowered 10,000+ clients across Mumbai and India.
-      </p>
-      <p class="text-gray-600">
-        From transparent deals to modern housing, our mission is simple: deliver trust, growth, and value in every project.
-      </p>
-    </div>
-  </section>
+<!-- WHO WE ARE -->
+<section class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
+  <img src="{{ about_page.image.url|default:'https://dummyimage.com/600x400/eeeeee/000000&text=Our+Journey' }}"
+       alt="Who We Are"
+       class="rounded-2xl shadow-2xl hover:scale-105 transition-transform duration-700" 
+       data-aos="zoom-in-right" />
+  <div data-aos="fade-left">
+    <h2 class="text-3xl font-bold mb-4 text-gray-800">{{ about_page.who_we_are_title|default:"Who We Are" }}</h2>
+    <p class="text-gray-600 leading-relaxed mb-4 italic">{{ about_page.who_we_are_subtitle|default:"We are more than property consultants – we build lifestyles." }}</p>
+    <div class="text-gray-600 prose max-w-none">{{ about_page.who_we_are_description|safe }}</div>
+  </div>
+</section>
 
-  <!-- Stats Counter -->
-  <section class="bg-gradient-to-r from-orange-600 to-orange-500 text-white py-16">
-    <div class="max-w-6xl mx-auto grid md:grid-cols-4 gap-8 text-center">
-      <div>
-        <h3 id="projects" class="text-4xl font-bold">1000+</h3>
-        <p class="mt-2">Projects Delivered</p>
-      </div>
-      <div>
-        <h3 id="clients" class="text-4xl font-bold">0+</h3>
-        <p class="mt-2">Happy Families</p>
-      </div>
-      <div>
-        <h3 id="years" class="text-4xl font-bold">0+</h3>
-        <p class="mt-2">Years of Excellence</p>
-      </div>
-      <div>
-        <h3 id="awards" class="text-4xl font-bold">0+</h3>
-        <p class="mt-2">Awards & Recognitions</p>
-      </div>
-    </div>
-  </section>
+<!-- STATS COUNTER -->
+<section class="relative text-white py-20 bg-gradient-to-r from-orange-600 to-orange-500 overflow-hidden">
+  <div class="absolute inset-0 bg-[url('/static/assets/images/pattern.svg')] opacity-10 animate-floatPattern"></div>
+  <div class="max-w-6xl mx-auto grid md:grid-cols-4 gap-8 text-center relative z-10">
 
-  <!-- Why Choose Us -->
-  <section class="max-w-7xl mx-auto px-6 py-20">
-    <h2 class="text-3xl font-bold text-center mb-12">Why Choose <span class="text-orange-600">{{ settings_obj.site_name}}?</span></h2>
-    <div class="grid md:grid-cols-3 gap-8">
-      <div class="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-2xl transition">
-        <i class="fas fa-building text-orange-500 text-5xl mb-4"></i>
-        <h3 class="font-semibold text-lg mb-2">Premium Projects</h3>
-        <p class="text-gray-600">Residential & commercial spaces in prime locations.</p>
-      </div>
-      <div class="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-2xl transition">
-        <i class="fas fa-users text-orange-500 text-5xl mb-4"></i>
-        <h3 class="font-semibold text-lg mb-2">10,000+ Clients</h3>
-        <p class="text-gray-600">A strong community built on trust and transparency.</p>
-      </div>
-      <div class="bg-white rounded-xl shadow-lg p-8 text-center hover:shadow-2xl transition">
-        <i class="fas fa-handshake text-orange-500 text-5xl mb-4"></i>
-        <h3 class="font-semibold text-lg mb-2">Trusted Partner</h3>
-        <p class="text-gray-600">End-to-end assistance from property search to possession.</p>
-      </div>
+    <!-- Single stat -->
+    <div class="bg-white/10 backdrop-blur-lg rounded-2xl py-10 px-4 hover:bg-white/20 transition-transform transform hover:scale-105" data-aos="zoom-in">
+      <i class="fas fa-building text-4xl mb-3 text-orange-300 animate-pulseSlow"></i>
+      <h3 class="text-4xl font-bold" id="projects-delivered">{{ about_page.projects_delivered|intcomma }}+</h3>
+      <p class="mt-2 text-lg">Projects Delivered</p>
     </div>
-  </section>
 
-  <!-- Mission & Vision -->
-  <section class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-10">
-    <div class="bg-white shadow-xl rounded-xl p-10 hover:shadow-2xl transition">
-      <h2 class="text-2xl font-bold mb-3">Our Mission</h2>
-      <p class="text-gray-600">To redefine real estate consultancy by offering transparent, innovative, and premium housing solutions tailored for modern lifestyles.</p>
+    <div class="bg-white/10 backdrop-blur-lg rounded-2xl py-10 px-4 hover:bg-white/20 transition-transform transform hover:scale-105" data-aos="zoom-in" data-aos-delay="100">
+      <i class="fas fa-users text-4xl mb-3 text-orange-300 animate-pulseSlow"></i>
+      <h3 class="text-4xl font-bold" id="happy-families">{{ about_page.happy_families|intcomma }}+</h3>
+      <p class="mt-2 text-lg">Happy Families</p>
     </div>
-    <div class="bg-white shadow-xl rounded-xl p-10 hover:shadow-2xl transition">
-      <h2 class="text-2xl font-bold mb-3">Our Vision</h2>
-      <p class="text-gray-600">To be the most trusted name in Indian real estate by continuously delivering excellence, innovation, and customer satisfaction.</p>
-    </div>
-  </section>
 
-  <!-- Leadership -->
-  <section class="bg-gray-100 py-20">
-    <div class="max-w-7xl mx-auto px-6 text-center">
-      <h2 class="text-3xl font-bold mb-12">Meet Our <span class="text-orange-600">Leadership</span></h2>
-      <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-10">
-        <div class="bg-white rounded-xl shadow-lg p-6 hover:scale-105 transition">
-          <img src="https://dummyimage.com/150x150/cccccc/000000&text=CEO" class="w-24 h-24 mx-auto rounded-full mb-4">
-          <h3 class="font-semibold">Rahul Malhotra</h3>
-          <p class="text-gray-500 text-sm">Founder & CEO</p>
+    <div class="bg-white/10 backdrop-blur-lg rounded-2xl py-10 px-4 hover:bg-white/20 transition-transform transform hover:scale-105" data-aos="zoom-in" data-aos-delay="200">
+      <i class="fas fa-clock text-4xl mb-3 text-orange-300 animate-pulseSlow"></i>
+      <h3 class="text-4xl font-bold" id="years-of-excellence">{{ about_page.years_of_excellence|intcomma }}+</h3>
+      <p class="mt-2 text-lg">Years of Excellence</p>
+    </div>
+
+    <div class="bg-white/10 backdrop-blur-lg rounded-2xl py-10 px-4 hover:bg-white/20 transition-transform transform hover:scale-105" data-aos="zoom-in" data-aos-delay="300">
+      <i class="fas fa-trophy text-4xl mb-3 text-orange-300 animate-pulseSlow"></i>
+      <h3 class="text-4xl font-bold" id="awards-recognitions">{{ about_page.awards_recognitions|intcomma }}+</h3>
+      <p class="mt-2 text-lg">Awards & Recognitions</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- MISSION & VISION -->
+<section class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-10">
+  <div class="bg-white shadow-xl rounded-xl p-10 hover:-translate-y-2 hover:shadow-2xl border-t-4 border-orange-500 transition-all duration-500" data-aos="fade-right">
+    <h2 class="text-2xl font-bold mb-3 text-orange-600">{{ about_page.our_mission_title|default:"Our Mission" }}</h2>
+    <div class="text-gray-600 leading-relaxed">{{ about_page.our_mission|safe }}</div>
+  </div>
+  <div class="bg-white shadow-xl rounded-xl p-10 hover:-translate-y-2 hover:shadow-2xl border-t-4 border-orange-500 transition-all duration-500" data-aos="fade-left">
+    <h2 class="text-2xl font-bold mb-3 text-orange-600">{{ about_page.our_vision_title|default:"Our Vision" }}</h2>
+    <div class="text-gray-600 leading-relaxed">{{ about_page.our_vision|safe }}</div>
+  </div>
+</section>
+
+<!-- LEADERSHIP -->
+<section class="bg-gray-100 py-20">
+  <div class="max-w-7xl mx-auto px-6 text-center">
+    <h2 class="text-3xl font-bold mb-12" data-aos="fade-up">Meet Our <span class="text-orange-600">Leadership</span></h2>
+    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-10">
+      {% for leader in leaders %}
+      <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group" data-aos="zoom-in">
+        <div class="relative">
+          <img src="{{ leader.image.url }}" alt="{{ leader.name }}"
+               class="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-orange-200 group-hover:border-orange-500 transition-transform duration-500 group-hover:rotate-3">
+          <div class="absolute inset-0 bg-orange-500/10 opacity-0 group-hover:opacity-100 rounded-full blur-md transition-all"></div>
         </div>
-        <div class="bg-white rounded-xl shadow-lg p-6 hover:scale-105 transition">
-          <img src="https://dummyimage.com/150x150/cccccc/000000&text=MD" class="w-24 h-24 mx-auto rounded-full mb-4">
-          <h3 class="font-semibold">Neha Malhotra</h3>
-          <p class="text-gray-500 text-sm">Managing Director</p>
-        </div>
-        <div class="bg-white rounded-xl shadow-lg p-6 hover:scale-105 transition">
-          <img src="https://dummyimage.com/150x150/cccccc/000000&text=COO" class="w-24 h-24 mx-auto rounded-full mb-4">
-          <h3 class="font-semibold">Amit Sharma</h3>
-          <p class="text-gray-500 text-sm">COO</p>
-        </div>
-        <div class="bg-white rounded-xl shadow-lg p-6 hover:scale-105 transition">
-          <img src="https://dummyimage.com/150x150/cccccc/000000&text=Sales" class="w-24 h-24 mx-auto rounded-full mb-4">
-          <h3 class="font-semibold">Priya Kapoor</h3>
-          <p class="text-gray-500 text-sm">Sales Head</p>
-        </div>
+        <h3 class="font-semibold text-lg">{{ leader.name }}</h3>
+        <p class="text-gray-500 text-sm">{{ leader.designation }}</p>
       </div>
+      {% endfor %}
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- CTA -->
-  <section class="bg-gradient-to-r from-orange-700 to-orange-500 text-white py-20 text-center">
-    <h2 class="text-3xl font-bold mb-4">Looking To Buy, Sell or Rent?</h2>
-    <p class="mb-6 text-lg">Get in touch with Malhotra Real Estate today and find your dream property.</p>
-    <a href="{% url "contact" %}" class="px-8 py-3 bg-white text-orange-600 font-semibold rounded-lg shadow hover:bg-gray-100">Contact Us</a>
-  </section>
+<!-- CTA -->
+<section class="relative bg-gradient-to-r from-orange-700 via-orange-600 to-orange-500 text-white py-24 text-center overflow-hidden">
+  <div class="absolute inset-0 bg-[url('/static/assets/images/bg-pattern2.svg')] opacity-10 animate-moveBg"></div>
+  <div class="relative z-10" data-aos="zoom-in-up">
+    <h2 class="text-3xl font-bold mb-4">{{ about_page.looking_to_title|default:"Looking To Buy, Sell or Rent?" }}</h2>
+    <p class="mb-6 text-lg">{{ about_page.looking_to_description|default:"Get in touch with Makaan Hub today and find your dream property." }}</p>
+    <a href="{{ about_page.looking_to_button_link|default:'#' }}" class="px-8 py-3 bg-white text-orange-600 font-semibold rounded-lg shadow hover:bg-gray-100 transition-all duration-300">
+      {{ about_page.looking_to_button_text|default:"Contact Us" }}
+    </a>
+  </div>
+</section>
 
-  <!-- CountUp Script -->
-  <script>
-    window.onload = function () {
-      new CountUp("projects", 120).start();
-      new CountUp("clients", 10000).start();
-      new CountUp("years", 16).start();
-      new CountUp("awards", 15).start();
-    };
-  </script>
-  <!-- FOOTER START HERE -->
+<!-- ✨ Custom Animations -->
+<style>
+@keyframes zoomHero { 0%,100% { transform: scale(1.05);} 50% { transform: scale(1.1);} }
+@keyframes floatPattern { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+@keyframes moveBg { 0%{background-position:0 0;} 100%{background-position:1000px 0;} }
+@keyframes pulseSlow { 0%,100%{opacity:0.8; transform:scale(1);} 50%{opacity:1; transform:scale(1.1);} }
+
+.animate-zoomHero { animation: zoomHero 20s ease-in-out infinite; }
+.animate-floatPattern { animation: floatPattern 25s ease-in-out infinite; }
+.animate-moveBg { animation: moveBg 35s linear infinite; }
+.animate-pulseSlow { animation: pulseSlow 3s ease-in-out infinite; }
+.animate-fadeInDown { animation: fadeInDown 1s ease forwards; }
+.animate-fadeInUp { animation: fadeInUp 1s ease forwards; }
+
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+
+<!-- Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.6.2/countUp.umd.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+<script>
+AOS.init({ duration: 1200, once: true });
+window.onload = function () {
+  ['projects-delivered', 'happy-families', 'years-of-excellence', 'awards-recognitions'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) new CountUp.CountUp(el, parseInt(el.innerText)).start();
+  });
+};
+</script>
+
 {% endblock %}

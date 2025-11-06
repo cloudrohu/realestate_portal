@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from properties.models import Property 
 from utility.models import Locality,PropertyType
 from .models import (
-    Setting, Slider, Testimonial, About_Page, 
+    Setting, Slider, Testimonial, About, Leadership,
     Contact_Page, FAQ, Our_Team
 )
 from utility.models import City
@@ -54,24 +54,40 @@ Sitemap: http://127.0.0.1:8000/sitemap.xml
     """
     return HttpResponse(robots_content.strip(), content_type="text/plain")
 
+def about_page_view(request):
+    """
+    Display the About page with:
+    - About section (single)
+    - Leadership list
+    - Global site settings
+    """
 
-def about_view(request):
-    """Renders the About Us page."""
-    settings_obj = Setting.objects.first()
-    
-    # Fetch About Content and Team members
-    about_content = About_Page.objects.filter(setting=settings_obj).first() if settings_obj else None
-    team_members = Our_Team.objects.filter(setting=settings_obj).order_by('name') if settings_obj else None
-    
+    # 🧠 Global site settings (for logo, footer, SEO)
+    settings_obj = Setting.objects.filter(status="True").first()
+
+    # 🏠 Fetch active About page content (latest or first)
+    about_page = About.objects.filter(is_active=True).order_by('-created_at').first()
+
+    # 👥 Leadership team
+    leaders = Leadership.objects.filter(is_active=True).order_by('display_order')
+
+    # ✅ Fallback (safe defaults)
+    if not about_page:
+        about_page = {
+            "title": "About Makaan Hub",
+            "subtitle": "Delivering trust, growth and innovation since 2008.",
+            "projects_delivered": 120,
+            "happy_families": 10000,
+            "years_of_excellence": 16,
+            "awards_recognitions": 12,
+        }
+
     context = {
+        "about_page": about_page,
+        "leaders": leaders,
         "settings_obj": settings_obj,
-
-        'about_content': about_content,
-        'team_members': team_members
     }
-    return render(request, 'home/about.html', context)
-
-
+    return render(request, "home/about.html", context)
 def contact_view(request):
     """Renders the Contact Page with site contact details."""
     settings_obj = Setting.objects.first()
