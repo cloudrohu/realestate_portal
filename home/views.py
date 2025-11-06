@@ -38,8 +38,6 @@ def index(request):
     return render(request, "home/index.html", context)
 
 
-
-
 def robots_txt(request):
     """
     Serves the robots.txt file content for SEO.
@@ -102,21 +100,18 @@ def contact_view(request):
     }
     return render(request, 'home/contact.html', context)
 
-
 def faq_view(request):
     """Renders the FAQ page."""
     settings_obj = Setting.objects.first()
-    
-    # Fetch all FAQs
-    faqs = FAQ.objects.filter(setting=settings_obj).order_by('id') if settings_obj else None
-    
+
+    # Fetch all FAQs (no setting filter because model doesn't have it)
+    faqs = FAQ.objects.all().order_by('id')
+
     context = {
         "settings_obj": settings_obj,
-
-        'faqs': faqs
+        "faqs": faqs,
     }
     return render(request, 'home/faq.html', context)
-
 
 
 def privacy_policy(request):

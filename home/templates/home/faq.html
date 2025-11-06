@@ -1,118 +1,78 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load utility_tags %}
-{% load humanize %}
-{% block title %}FAQs | {{ site_settings.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
+{% block title %}FAQs | {{ settings_obj.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
 
 {% block content %}
 
 <!-- Hero Section -->
-<section class="bg-orange-500 text-white py-16 text-center">
-  <div class="max-w-4xl mx-auto px-6">
-    <h1 class="text-4xl md:text-5xl font-bold mb-3">Frequently Asked Questions</h1>
-    <p class="text-lg opacity-90">Find answers to the most common questions about our real estate services.</p>
+<section class="bg-orange-600 text-white py-20 text-center relative overflow-hidden">
+  <div class="absolute inset-0 bg-[url('/static/assets/images/bg-pattern2.svg')] opacity-10 animate-moveBg"></div>
+  <div class="relative z-10 max-w-4xl mx-auto px-6">
+    <h1 class="text-5xl font-extrabold mb-3" data-aos="fade-down">Frequently Asked Questions</h1>
+    <p class="text-lg opacity-90" data-aos="fade-up">
+      Find answers to the most common questions about our real estate services.
+    </p>
   </div>
 </section>
 
 <!-- FAQ Section -->
-<section class="py-16 bg-gray-50">
+<section class="py-20 bg-gray-50">
   <div class="max-w-5xl mx-auto px-6">
-    <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">Your Questions, Answered</h2>
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-12" data-aos="fade-up">
+      Your Questions, Answered
+    </h2>
 
+    {% if faqs %}
     <div class="space-y-6">
-
-      <!-- FAQ Item -->
-      <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-xl border border-gray-100 overflow-hidden">
+      {% for faq in faqs %}
+      <div class="bg-white shadow-lg rounded-xl border border-gray-100 overflow-hidden" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
         <button class="faq-toggle w-full flex justify-between items-center p-5 text-left focus:outline-none">
-          <span class="text-lg font-semibold text-gray-800">1. How can I book a site visit for a property?</span>
+          <span class="text-lg font-semibold text-gray-800">{{ forloop.counter }}. {{ faq.question }}</span>
           <svg class="w-5 h-5 text-orange-500 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none"
             viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
-        <div class="faq-content hidden px-5 pb-5 text-gray-600">
-          You can schedule a site visit by contacting our sales team through the “Contact Us” page or calling the provided phone number. We’ll help you fix a convenient time.
+        <div class="faq-content hidden px-5 pb-5 text-gray-600 leading-relaxed">
+          {{ faq.answer|safe }}
         </div>
       </div>
-
-      <!-- FAQ Item -->
-      <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-xl border border-gray-100 overflow-hidden">
-        <button class="faq-toggle w-full flex justify-between items-center p-5 text-left focus:outline-none">
-          <span class="text-lg font-semibold text-gray-800">2. Do you provide loan assistance for buying properties?</span>
-          <svg class="w-5 h-5 text-orange-500 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-        <div class="faq-content hidden px-5 pb-5 text-gray-600">
-          Yes, we collaborate with leading banks and financial institutions to help our clients with easy home loan approvals.
-        </div>
-      </div>
-
-      <!-- FAQ Item -->
-      <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-xl border border-gray-100 overflow-hidden">
-        <button class="faq-toggle w-full flex justify-between items-center p-5 text-left focus:outline-none">
-          <span class="text-lg font-semibold text-gray-800">3. What documents are required to buy a flat or plot?</span>
-          <svg class="w-5 h-5 text-orange-500 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-        <div class="faq-content hidden px-5 pb-5 text-gray-600">
-          You will need identity proof, address proof, PAN card, and a copy of the property’s title and agreement. Our team will guide you through the exact list.
-        </div>
-      </div>
-
-      <!-- FAQ Item -->
-      <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-xl border border-gray-100 overflow-hidden">
-        <button class="faq-toggle w-full flex justify-between items-center p-5 text-left focus:outline-none">
-          <span class="text-lg font-semibold text-gray-800">4. Are the projects RERA registered?</span>
-          <svg class="w-5 h-5 text-orange-500 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-        <div class="faq-content hidden px-5 pb-5 text-gray-600">
-          Yes, all our featured projects are 100% RERA registered. You can find the registration number on each project’s details page.
-        </div>
-      </div>
-
-      <!-- FAQ Item -->
-      <div class="bg-white/80 backdrop-blur-md shadow-lg rounded-xl border border-gray-100 overflow-hidden">
-        <button class="faq-toggle w-full flex justify-between items-center p-5 text-left focus:outline-none">
-          <span class="text-lg font-semibold text-gray-800">5. Can I get virtual tours of properties?</span>
-          <svg class="w-5 h-5 text-orange-500 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-        <div class="faq-content hidden px-5 pb-5 text-gray-600">
-          Absolutely! Many of our premium projects offer 360° virtual tours right on their listing page, so you can explore them online before visiting.
-        </div>
-      </div>
-
+      {% endfor %}
     </div>
+    {% else %}
+    <p class="text-center text-gray-500 text-lg">No FAQs available yet. Please check back later.</p>
+    {% endif %}
   </div>
 </section>
 
-<!-- FAQ Toggle Script -->
+<!-- Toggle Script -->
 <script>
   document.querySelectorAll(".faq-toggle").forEach(button => {
     button.addEventListener("click", () => {
       const content = button.nextElementSibling;
       const icon = button.querySelector("svg");
 
-      if (content.classList.contains("hidden")) {
-        document.querySelectorAll(".faq-content").forEach(item => item.classList.add("hidden"));
-        document.querySelectorAll(".faq-toggle svg").forEach(i => i.classList.remove("rotate-180"));
-        content.classList.remove("hidden");
-        icon.classList.add("rotate-180");
-      } else {
-        content.classList.add("hidden");
-        icon.classList.remove("rotate-180");
-      }
+      document.querySelectorAll(".faq-content").forEach(c => {
+        if (c !== content) c.classList.add("hidden");
+      });
+      document.querySelectorAll(".faq-toggle svg").forEach(i => {
+        if (i !== icon) i.classList.remove("rotate-180");
+      });
+
+      content.classList.toggle("hidden");
+      icon.classList.toggle("rotate-180");
     });
   });
 </script>
+
+<!-- Animation -->
+<style>
+@keyframes moveBg { 0% { background-position: 0 0; } 100% { background-position: 1000px 0; } }
+.animate-moveBg { animation: moveBg 40s linear infinite; }
+</style>
+
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>AOS.init({ duration: 1000, once: true });</script>
 
 {% endblock %}
