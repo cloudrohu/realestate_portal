@@ -103,19 +103,17 @@ def about_page_view(request):
         "settings_obj": settings_obj,
     }
     return render(request, "home/about.html", context)
-
-
-
 def contact_view(request):
     """Renders the Contact Page with site contact details."""
     settings_obj = Setting.objects.first()
-    # Contact_Page में 'setting' field नहीं है (traceback के अनुसार),
-    # इसलिए सीधे पहला contact record ले रहें हैं।
-    contact_content = Contact_Page.objects.first()
+    
+    # Fetch Contact Content
+    contact_content = Contact_Page.objects.filter(setting=settings_obj).first() if settings_obj else None
 
     context = {
         "settings_obj": settings_obj,
-        "contact_content": contact_content,
+
+        'contact_content': contact_content,
     }
     return render(request, 'home/contact.html', context)
 
