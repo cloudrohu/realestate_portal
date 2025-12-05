@@ -97,7 +97,7 @@
      {% if request.path == '/contact/' %}
         text-[{{ settings_obj.text_color }}] font-semibold
      {% else %}
-        text-[{{ settings_obj.text_color }}] hover:text-[{{ settings_obj.text_color }}]
+        text-[{{ settings_obj.header_footer_color }}] hover:text-[{{ settings_obj.text_color }}]
      {% endif %}">
     Contact
     <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}] transition-all duration-300 
@@ -107,7 +107,7 @@
 
 
     <div class="flex items-center gap-4">
-      <button class="bg-[{{ settings_obj.header_footer_color }}] text-black px-4 py-2 rounded-lg font-semibold hover:bg-white transition">
+      <button class="bg-[{{ settings_obj.text_color }}] text-black px-4 py-2 rounded-lg font-semibold hover:bg-white transition">
         Sell / Rent Property
       </button>
       <button class="border border-white px-4 py-2 rounded-lg hover:bg-white hover:text-black transition">Login</button>
