@@ -15,8 +15,6 @@ class Setting(ImageCompressionMixin, models.Model):
     testmonial_bg = models.ImageField(upload_to='logo/')
     header_footer_color = models.CharField(max_length=150, blank=True)
     text_color = models.CharField(max_length=150, blank=True)
-    button_color = models.CharField(max_length=150, blank=True)
-    rera_color = models.CharField(max_length=150, blank=True)
     rera_number = models.CharField(max_length=150, blank=True)
     address = models.CharField(blank=True, max_length=100)
     phone = models.CharField(blank=True, max_length=15)
