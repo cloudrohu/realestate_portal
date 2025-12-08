@@ -137,10 +137,6 @@ def privacy_policy(request):
     return render(request, 'terms/privacy_policy.html')
 
 def terms_conditions(request):
-    return render(request, 'terms/terms_conditions.html')
+    return render(request, 'static_pages/terms_conditions.html')
 
-def disclaimer(request):
-    return render(request, 'terms/disclaimer.html')
 
-def cookies(request):
-    return render(request, 'terms/cookies-policy.html')

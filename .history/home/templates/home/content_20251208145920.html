@@ -355,31 +355,156 @@ relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
 <!-- POSSESSION END SECTION -->
 
 <!-- ===================== FULL WIDTH SECTION ======================= -->
-<section class="bg-[#071220] text-white py-16">
-  <div class="max-w-7xl mx-auto px-6 text-center">
+<section 
+  class="w-full bg-cover bg-center bg-no-repeat py-20"
+  style="background-image: url('data:image/jpeg;base64,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');"
+>
 
-    <!-- Heading -->
-    <h2 class="text-3xl md:text-4xl font-bold mb-2">How it Works</h2>
-    <p class="text-gray-300 mb-12">Your Hassle-Free Property Buying Process</p>
+  <!-- Overlay -->
+  <div class="bg-black/40 w-full h-full py-20">
 
-    <!-- GRID -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+    <!-- CENTER CONTENT (max width container) -->
+    <div class="max-w-7xl mx-auto px-5 text-center text-white">
 
-      
+      <!-- Heading -->
+      <h2 class="text-3xl md:text-4xl font-bold mb-12">End To End Assistance</h2>
 
+      <!-- FLEX STEPS -->
+      <div class="relative flex justify-between items-start gap-6">
+
+        <!-- CONNECTOR LINE -->
+        <div class="absolute top-[40px] left-0 right-0 h-[2px] bg-white/50 z-0"></div>
+
+        <!-- ================= STEP 1 ================= -->
+        <div onclick="openPopup()" class="group relative z-10 text-center w-[180px] cursor-pointer">
+
+          <!-- Circle -->
+          <div
+            class="w-20 h-20 mx-auto rounded-full border border-white flex items-center justify-center
+                bg-white/10 backdrop-blur-sm 
+                group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-300">
+
+            <!-- Icon Building -->
+            <svg xmlns="http://www.w3.org/2000/svg" 
+              class="w-10 h-10 text-white" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="6" y="6" width="20" height="24" rx="2"></rect>
+              <path d="M10 10h4M10 14h4M10 18h4M10 22h4"/>
+            </svg>
+          </div>
+
+          <h3 class="mt-4 font-semibold text-lg">Search & Shortlisting</h3>
+        </div>
+
+        <!-- ================= STEP 2 ================= -->
+        <div onclick="openPopup()" class="group relative z-10 text-center w-[180px] cursor-pointer">
+          
+          <div
+            class="w-20 h-20 mx-auto rounded-full border border-white flex items-center justify-center
+                bg-white/10 group-hover:bg-orange-500 group-hover:border-orange-500 transition-all">
+
+            <!-- Car Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg"
+              class="w-10 h-10 text-white" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 14h18l-2-5H5l-2 5z"></path>
+              <circle cx="7" cy="18" r="2"></circle>
+              <circle cx="17" cy="18" r="2"></circle>
+            </svg>
+          </div>
+
+          <h3 class="mt-4 font-semibold text-lg">Site Visit</h3>
+        </div>
+
+        <!-- ================= STEP 3 ================= -->
+        <div onclick="openPopup()" class="group relative z-10 text-center w-[180px] cursor-pointer">
+
+          <div
+            class="w-20 h-20 mx-auto rounded-full border border-white flex items-center justify-center 
+                bg-white/10 group-hover:bg-orange-500 group-hover:border-orange-500 transition-all">
+
+            <!-- Loan Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg"
+              class="w-10 h-10 text-white" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="4" y="10" width="24" height="14" rx="2"></rect>
+              <path d="M12 16h8"></path>
+              <path d="M16 12v8"></path>
+            </svg>
+          </div>
+
+          <h3 class="mt-4 font-semibold text-lg">Home Loan Assistance</h3>
+        </div>
+
+        <!-- ================= STEP 4 ================= -->
+        <div onclick="openPopup()" class="group relative z-10 text-center w-[180px] cursor-pointer">
+
+          <div
+            class="w-20 h-20 mx-auto rounded-full border border-white flex items-center justify-center 
+                bg-white/10 group-hover:bg-orange-500 group-hover:border-orange-500 transition-all">
+
+            <!-- Legal Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" 
+              class="w-10 h-10 text-white" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="8" y="4" width="18" height="26" rx="2"/>
+              <path d="M12 10h10M12 15h10M12 20h7"/>
+            </svg>
+          </div>
+
+          <h3 class="mt-4 font-semibold text-lg">Legal Advice</h3>
+        </div>
+
+        <!-- ================= STEP 5 ================= -->
+        <div onclick="openPopup()" class="group relative z-10 text-center w-[180px] cursor-pointer">
+
+          <div
+            class="w-20 h-20 mx-auto rounded-full border border-white flex items-center justify-center 
+                bg-white/10 group-hover:bg-orange-500 group-hover:border-orange-500 transition-all">
+
+            <!-- Key Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg"
+              class="w-10 h-10 text-white" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5" />
+              <path d="M17 12h7M21 12v4M18 16h3"/>
+            </svg>
+          </div>
+
+          <h3 class="mt-4 font-semibold text-lg">Unit Booking</h3>
+        </div>
+
+      </div><!-- END FLEX -->
     </div>
-
-    <!-- BUTTON -->
-    <div class="mt-12">
-      <a href="#contact"
-        class="bg-blue-900 hover:bg-blue-800 px-8 py-3 rounded-full inline-block font-semibold">
-        Contact Us Now
-      </a>
-    </div>
-
   </div>
 </section>
 
+<!-- ===================== POPUP ======================= -->
+<div id="popup"
+  class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
+
+  <div class="bg-white w-full max-w-md rounded-lg p-6 relative">
+    <button onclick="closePopup()" class="absolute top-3 right-3 text-gray-600 text-xl">&times;</button>
+
+    <h3 class="text-xl font-semibold mb-4 text-center">Connect With Us</h3>
+
+    <input type="text" placeholder="Your Name"
+      class="w-full border-b p-2 outline-none mb-4">
+
+    <input type="text" placeholder="Mobile Number" 
+      class="w-full border-b p-2 outline-none mb-4">
+
+    <button class="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-semibold">
+      Get Call Back
+    </button>
+  </div>
+</div>
+
+
+<script>
+function openPopup() {
+  document.getElementById("popup").classList.remove("hidden");
+  document.getElementById("popup").classList.add("flex");
+}
+function closePopup() {
+  document.getElementById("popup").classList.add("hidden");
+}
+</script>
 
 
 <!-- 🏡 ULTRA LUXURY REAL ESTATE ABOUT SECTION (WHITE THEME) -->

@@ -142,5 +142,5 @@ def terms_conditions(request):
 def disclaimer(request):
     return render(request, 'terms/disclaimer.html')
 
-def cookies(request):
-    return render(request, 'terms/cookies-policy.html')
+def disclaimer(request):
+    return render(request, 'terms/disclaimer.html')

@@ -12,7 +12,4 @@ urlpatterns = [
     path('faq/', views.faq_view, name='faq'),
     path('privacy-policy/', views.privacy_policy, name='privacy-policy'),
     path('terms-conditions/', views.terms_conditions, name='terms_conditions'),
-    path('disclaimer/', views.disclaimer, name='disclaimer'),
-    path('terms-cookies/', views.cookies, name='cookies'),
-
 ]

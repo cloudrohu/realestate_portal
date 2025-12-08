@@ -354,32 +354,207 @@ relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
 </section>
 <!-- POSSESSION END SECTION -->
 
-<!-- ===================== FULL WIDTH SECTION ======================= -->
-<section class="bg-[#071220] text-white py-16">
-  <div class="max-w-7xl mx-auto px-6 text-center">
+<!-- =====================  SECTION BG  ======================= -->
+<section  
+    class="relative bg-cover bg-center bg-no-repeat py-20"
+    style="background-image: url('/your-bg-image.jpg');"
+>
+    <div class="absolute inset-0 bg-black/50"></div>
 
-    <!-- Heading -->
-    <h2 class="text-3xl md:text-4xl font-bold mb-2">How it Works</h2>
-    <p class="text-gray-300 mb-12">Your Hassle-Free Property Buying Process</p>
+    <div class="relative max-w-7xl mx-auto px-5 text-center text-white">
 
-    <!-- GRID -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+        <!-- Heading -->
+        <h2 class="text-3xl md:text-4xl font-bold mb-10">End To End Assistance</h2>
 
-      
+        <!-- STEPS ROW -->
+        <div class="flex flex-wrap justify-between items-start gap-8">
 
+            <!-- STEP TEMPLATE -->
+            <div onclick="openPopup()" 
+                class="group w-[180px] mx-auto cursor-pointer transition-all">
+
+                <!-- Circle Icon -->
+                <div
+                    class="w-20 h-20 mx-auto rounded-full border border-white flex items-center justify-center 
+                    group-hover:bg-orange-500 group-hover:border-orange-500 transition-all">
+                    <!-- ICON -->
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="20" cy="20" r="18"></circle>
+                    </svg>
+                </div>
+
+                <!-- TITLE -->
+                <h3 class="mt-4 text-lg font-semibold group-hover:text-orange-400 transition-all">
+                    Search & Shortlisting
+                </h3>
+
+                <!-- description -->
+                <p class="text-gray-300 text-sm mt-1">
+                    Lacs of verified listings from top developers.
+                </p>
+
+                <!-- CTA Button -->
+                <button
+                    class="mt-4 opacity-0 group-hover:opacity-100 border border-white px-4 py-1 rounded-full 
+                    transition-all">
+                    Get in touch
+                </button>
+            </div>
+
+            <!-- STEP 2 -->
+            <div onclick="openPopup()"
+                class="group w-[180px] mx-auto cursor-pointer transition-all">
+
+                <div
+                    class="w-20 h-20 mx-auto rounded-full border border-white flex items-center justify-center 
+                    group-hover:bg-orange-500 group-hover:border-orange-500 transition-all">
+
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="8" y="14" width="24" height="14" rx="2"></rect>
+                    </svg>
+                </div>
+
+                <h3 class="mt-4 text-lg font-semibold group-hover:text-orange-400 transition-all">
+                    Site Visit
+                </h3>
+
+                <p class="text-gray-300 text-sm mt-1">
+                    Visit properties with our experts.
+                </p>
+
+                <button
+                    class="mt-4 opacity-0 group-hover:opacity-100 border border-white px-4 py-1 rounded-full 
+                    transition-all">
+                    Book visit
+                </button>
+            </div>
+
+            <!-- STEP 3 -->
+            <div onclick="openPopup()" 
+                class="group w-[180px] mx-auto cursor-pointer transition-all">
+
+                <div
+                    class="w-20 h-20 mx-auto rounded-full border border-white flex items-center justify-center 
+                    group-hover:bg-orange-500 group-hover:border-orange-500 transition-all">
+
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 2L6 12l12 10 12-10L18 2z"></path>
+                    </svg>
+                </div>
+
+                <h3 class="mt-4 text-lg font-semibold group-hover:text-orange-400 transition-all">
+                    Home Loan Assistance
+                </h3>
+
+                <p class="text-gray-300 text-sm mt-1">
+                    Easy loans through bank partners.
+                </p>
+
+                <button
+                    class="mt-4 opacity-0 group-hover:opacity-100 border border-white px-4 py-1 rounded-full 
+                    transition-all">
+                    Apply now
+                </button>
+            </div>
+
+            <!-- STEP 4 -->
+            <div onclick="openPopup()"
+                class="group w-[180px] mx-auto cursor-pointer transition-all">
+
+                <div
+                    class="w-20 h-20 mx-auto rounded-full border border-white flex items-center justify-center 
+                    group-hover:bg-orange-500 group-hover:border-orange-500 transition-all">
+
+                    <svg class="w-9 h-9 text-white" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="10" y="6" width="24" height="28"></rect>
+                    </svg>
+                </div>
+
+                <h3 class="mt-4 text-lg font-semibold group-hover:text-orange-400 transition-all">
+                    Legal Advice
+                </h3>
+
+                <p class="text-gray-300 text-sm mt-1">
+                    Verified legal document support.
+                </p>
+
+                <button
+                    class="mt-4 opacity-0 group-hover:opacity-100 border border-white px-4 py-1 rounded-full 
+                    transition-all">
+                    Get advice
+                </button>
+            </div>
+
+            <!-- STEP 5 -->
+            <div onclick="openPopup()"
+                class="group w-[180px] mx-auto cursor-pointer transition-all">
+
+                <div
+                    class="w-20 h-20 mx-auto rounded-full border border-white flex items-center justify-center 
+                    group-hover:bg-orange-500 group-hover:border-orange-500 transition-all">
+
+                    <svg class="w-9 h-9 text-white" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="20" cy="20" r="15"></circle>
+                    </svg>
+                </div>
+
+                <h3 class="mt-4 text-lg font-semibold group-hover:text-orange-400 transition-all">
+                    Unit Booking
+                </h3>
+
+                <p class="text-gray-300 text-sm mt-1">
+                    Full support till possession.
+                </p>
+
+                <button
+                    class="mt-4 opacity-0 group-hover:opacity-100 border border-white px-4 py-1 rounded-full 
+                    transition-all">
+                    Book now
+                </button>
+            </div>
+        </div>
     </div>
-
-    <!-- BUTTON -->
-    <div class="mt-12">
-      <a href="#contact"
-        class="bg-blue-900 hover:bg-blue-800 px-8 py-3 rounded-full inline-block font-semibold">
-        Contact Us Now
-      </a>
-    </div>
-
-  </div>
 </section>
 
+
+
+<!-- ===================== POPUP ======================= -->
+<div id="popup"
+    class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
+
+    <div class="bg-white w-full max-w-md rounded-xl p-6 relative">
+
+        <button onclick="closePopup()" 
+            class="absolute top-3 right-3 text-gray-600 text-xl">&times;</button>
+
+        <h3 class="text-xl font-semibold mb-4 text-center">Connect With Us</h3>
+
+        <input type="text" placeholder="Name"
+            class="w-full border-b p-2 outline-none mb-4">
+
+        <input type="text" placeholder="Mobile Number"
+            class="w-full border-b p-2 outline-none mb-4">
+
+        <label class="flex items-center gap-2 text-gray-600 text-sm mb-4">
+            <input type="checkbox" class="accent-orange-500">
+            I agree to be contacted via WhatsApp, SMS, Email, Calls.
+        </label>
+
+        <button class="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-semibold">
+            Get Call Back
+        </button>
+    </div>
+</div>
+
+<script>
+    function openPopup() {
+        document.getElementById("popup").classList.remove("hidden");
+        document.getElementById("popup").classList.add("flex");
+    }
+    function closePopup() {
+        document.getElementById("popup").classList.add("hidden");
+    }
+</script>
 
 
 <!-- 🏡 ULTRA LUXURY REAL ESTATE ABOUT SECTION (WHITE THEME) -->
@@ -445,7 +620,9 @@ relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
 </section>
 
 
-
+<button class="hidden hover:block bg-blue-500 text-white p-2 rounded">
+  I appear on hover!
+</button>
 <!-- USP -->
 <section class="py-16 bg-gray-100" id="usp">
   <div class="max-w-7xl mx-auto px-6 text-center">
