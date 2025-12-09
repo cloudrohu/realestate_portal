@@ -759,10 +759,9 @@
 
 
 <!-- ===================== Location BOX ===================== -->
-
 <section class="max-w-7xl mx-auto p-4 scroll-mt-[130px] grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6" id="location">
 
-    <!-- MIDDLE: LOCATION & 360 -->
+    <!-- ===================== MIDDLE COLUMN ===================== -->
     <div>
 
         <!-- LOCATION HEADING -->
@@ -773,8 +772,7 @@
             <!-- MAP -->
             <div class="border rounded-lg overflow-hidden" style="height: 350px; width: 100%;">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3768.2056162297818!2d72.84950649999999!3d19.1862196!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4a7ab8d67e5cd74b%3A0x5c693c8584c9ee0c!2sSigma%20Consultancy!5e0!3m2!1sen!2sin!4v1765095829683!5m2!1sen!2sin"
-                        width="600" height="450" style="border:0;" allowfullscreen loading="lazy">
-                </iframe>
+                        width="600" height="450" style="border:0;" allowfullscreen loading="lazy"></iframe>
             </div>
 
             <br>
@@ -794,29 +792,31 @@
         </div>
 
         <!-- VIDEOS SECTION -->
-        <h2 class="text-xl font-semibold bg-[#e8eff5] px-4 py-3 mt-6 rounded-t-lg border scroll-mt-[130px]">Videos</h2>
+        <h2 class="text-xl font-semibold bg-[#e8eff5] px-4 py-3 mt-6 rounded-t-lg border scroll-mt-[130px]">
+            Videos
+        </h2>
 
         <div class="border border-t-0 rounded-b-lg p-5 bg-white" id="video">
 
-             <p class="text-green-600 font-semibold mb-3">Teaser</p>
+            <p class="text-green-600 font-semibold mb-3">Teaser</p>
 
             <div class="relative w-full h-56 bg-black rounded-lg overflow-hidden">
 
-                <!-- HTML5 VIDEO -->
+                <!-- VIDEO -->
                 <video id="teaserVideo" class="w-full h-full object-cover" preload="metadata">
                     <source src="https://www.youtube.com/watch?v=VNdB9OrDKn8&t=1s" type="video/mp4">
                 </video>
 
-                <!-- PLAY BUTTON OVERLAY -->
+                <!-- Play Button -->
                 <div id="playBtn"
                     class="absolute inset-0 flex items-center justify-center bg-black/40 cursor-pointer transition hover:bg-black/50">
-                    <img src="https://housiey.com/_next/image?url=https%3A%2F%2Fresources.housiey.com%2Fadmin%2Fuploads%2Fproject_images%2FL%26T_Island_Cove_Elevation--1712469067411-img.webp&w=1080&q=75" class="w-14 opacity-90" />
+                    <img src="https://housiey.com/_next/image?url=https%3A%2F%2Fresources.housiey.com%2Fadmin%2Fuploads%2Fproject_images%2FL%26T_Island_Cove_Elevation--1712469067411-img.webp&w=1080&q=75"
+                        class="w-14 opacity-90" />
                 </div>
 
-                <!-- CUSTOM CONTROLS -->
+                <!-- CONTROLS -->
                 <div id="controls"
                     class="absolute bottom-0 left-0 right-0 bg-black/60 text-white px-4 py-2 flex justify-between items-center opacity-0 transition">
-                    
                     <button id="pausePlay" class="text-lg">⏵</button>
                     <button id="fullscreenBtn" class="text-lg">⛶</button>
                 </div>
@@ -825,123 +825,126 @@
 
         </div>
 
+    </div> <!-- ⭐ MIDDLE COLUMN CLOSED (IMPORTANT!) -->
 
-
-    <!-- RIGHT SIDE: CALL ME INST. + SITE VISIT FORM -->
+    <!-- ===================== RIGHT COLUMN ===================== -->
     <div class="space-y-5">
-      
-    <!-- CALL ME INSTANTLY BOX (Premium UI) -->
-    <div class="bg-gradient-to-br from-blue-900 to-green-600 text-white rounded-2xl p-6 shadow-xl">
 
-        <!-- Heading -->
-        <h3 class="text-2xl font-semibold mb-1 flex items-center gap-2">
-            <i class="fa-solid fa-bolt text-yellow-300"></i>
-            Call Me Instantly
-        </h3>
+        <!-- CALL ME INSTANTLY -->
+        <div class="bg-gradient-to-br from-blue-900 to-green-600 text-white rounded-2xl p-6 shadow-xl">
 
-        <p class="text-sm opacity-90 mb-5">
-            Our Executive will contact you within seconds!
-        </p>
+            <h3 class="text-2xl font-semibold mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-bolt text-yellow-300"></i> Call Me Instantly
+            </h3>
 
-        <!-- INPUT FIELD TEMPLATE -->
-        <div class="space-y-3">
+            <p class="text-sm opacity-90 mb-5">Our Executive will contact you within seconds!</p>
 
-            <!-- NAME -->
-            <div class="group flex items-center gap-3 bg-white/90 text-gray-700 rounded-xl px-4 py-3 border border-transparent focus-within:border-yellow-400 transition">
-                <span class="text-lg text-blue-700 group-focus-within:text-yellow-500 transition">
-                    <i class="fa-solid fa-user"></i>
-                </span>
-                <input type="text" name="name" placeholder="Enter Your Name"
-                      class="flex-1 bg-transparent outline-none text-sm" />
+            <!-- INPUTS -->
+            <div class="space-y-3">
+
+                <!-- NAME -->
+                <div
+                    class="group flex items-center gap-3 bg-white/90 text-gray-700 rounded-xl px-4 py-3 border border-transparent focus-within:border-yellow-400 transition">
+                    <span class="text-lg text-blue-700 group-focus-within:text-yellow-500">
+                        <i class="fa-solid fa-user"></i>
+                    </span>
+                    <input type="text" name="name" placeholder="Enter Your Name"
+                        class="flex-1 bg-transparent outline-none text-sm" />
+                </div>
+
+                <!-- EMAIL -->
+                <div
+                    class="group flex items-center gap-3 bg-white/90 text-gray-700 rounded-xl px-4 py-3 border border-transparent focus-within:border-yellow-400 transition">
+                    <span class="text-lg text-blue-700 group-focus-within:text-yellow-500">
+                        <i class="fa-solid fa-envelope"></i>
+                    </span>
+                    <input type="email" name="email" placeholder="Enter Your Email"
+                        class="flex-1 bg-transparent outline-none text-sm" />
+                </div>
+
+                <!-- PHONE -->
+                <div
+                    class="group flex items-center gap-3 bg-white/90 text-gray-700 rounded-xl px-4 py-3 border border-transparent focus-within:border-yellow-400 transition">
+                    <span class="text-lg text-blue-700 group-focus-within:text-yellow-500">
+                        <i class="fa-solid fa-phone"></i>
+                    </span>
+                    <input type="text" name="phone" placeholder="Enter Mobile Number"
+                        class="flex-1 bg-transparent outline-none text-sm" />
+                </div>
+
             </div>
 
-            <!-- EMAIL -->
-            <div class="group flex items-center gap-3 bg-white/90 text-gray-700 rounded-xl px-4 py-3 border border-transparent focus-within:border-yellow-400 transition">
-                <span class="text-lg text-blue-700 group-focus-within:text-yellow-500 transition">
-                    <i class="fa-solid fa-envelope"></i>
-                </span>
-                <input type="email" name="email" placeholder="Enter Your Email"
-                      class="flex-1 bg-transparent outline-none text-sm" />
-            </div>
-
-            <!-- PHONE -->
-            <div class="group flex items-center gap-3 bg-white/90 text-gray-700 rounded-xl px-4 py-3 border border-transparent focus-within:border-yellow-400 transition">
-                <span class="text-lg text-blue-700 group-focus-within:text-yellow-500 transition">
-                    <i class="fa-solid fa-phone"></i>
-                </span>
-                <input type="text" name="phone" placeholder="Enter Mobile Number"
-                      class="flex-1 bg-transparent outline-none text-sm" />
-            </div>
-
-        </div>
-
-        <!-- BUTTON -->
-        <button
-            class="mt-6 w-full py-3 bg-yellow-300 hover:bg-yellow-400 text-gray-900 font-semibold rounded-xl text-sm shadow-lg transition transform hover:scale-[1.02] active:scale-95">
-            Get Instant Call Back
-        </button>
-
-    </div>
-
-
-    <!-- BOOK SITE VISIT -->
-    <div class="bg-white rounded-xl border p-5">
-
-        <div class="flex border-b text-sm">
-            <button class="px-3 py-2 font-semibold border-b-2 border-blue-700 text-blue-700">
-                Book Free Site Visit
+            <!-- BUTTON -->
+            <button
+                class="mt-6 w-full py-3 bg-yellow-300 hover:bg-yellow-400 text-gray-900 font-semibold rounded-xl text-sm shadow-lg transition transform hover:scale-[1.02] active:scale-95">
+                Get Instant Call Back
             </button>
-            <button class="px-3 py-2 text-gray-500">Online Presentation</button>
+
         </div>
 
-        <!-- Search -->
-        <div class="mt-4">
-            <label class="text-xs text-gray-500">Search projects</label>
-            <div class="flex items-center gap-2 bg-gray-100 rounded-full px-3 py-2 mt-1">
-                <span class="bg-green-600 text-white text-xs px-2 py-1 rounded-full">
-                    Mahindra Marina 64 ✕
-                </span>
+        <!-- BOOK SITE VISIT -->
+        <div class="bg-white rounded-xl border p-5">
+
+            <div class="flex border-b text-sm">
+                <button class="px-3 py-2 font-semibold border-b-2 border-blue-700 text-blue-700">
+                    Book Free Site Visit
+                </button>
+                <button class="px-3 py-2 text-gray-500">Online Presentation</button>
             </div>
-        </div>
 
-        <!-- Calendar -->
-        <div class="mt-4">
-            <div class="flex items-center gap-2 bg-gray-100 rounded-lg px-4 py-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-600" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                <span class="text-gray-700 text-sm">12-07-2025 12:29 PM</span>
+            <!-- Search -->
+            <div class="mt-4">
+                <label class="text-xs text-gray-500">Search projects</label>
+                <div class="flex items-center gap-2 bg-gray-100 rounded-full px-3 py-2 mt-1">
+                    <span class="bg-green-600 text-white text-xs px-2 py-1 rounded-full">
+                        Mahindra Marina 64 ✕
+                    </span>
+                </div>
             </div>
+
+            <!-- Calendar -->
+            <div class="mt-4">
+                <div class="flex items-center gap-2 bg-gray-100 rounded-lg px-4 py-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-600" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span class="text-gray-700 text-sm">12-07-2025 12:29 PM</span>
+                </div>
+            </div>
+
+            <!-- OLA Option -->
+            <div class="mt-4 text-sm">
+                <label class="flex items-center gap-2">
+                    <input type="radio" name="ride" checked />
+                    <img src="https://logovectordl.com/wp-content/uploads/2020/10/ola-logo-vector.png"
+                        class="w-12" />
+                </label>
+                <label class="flex items-center gap-2 mt-2">
+                    <input type="radio" name="ride" />
+                    <span>Not Required</span>
+                </label>
+            </div>
+
+            <ul class="mt-4 text-sm text-gray-700 space-y-1 list-disc pl-4">
+                <li>Free Pick Up & Drop - Book Personal Ola</li>
+                <li>Visit Your Selected 3 Projects in One Tour</li>
+                <li>Just Visit & Decide later</li>
+            </ul>
+
+            <button class="w-full mt-5 bg-blue-900 hover:bg-blue-800 text-white py-2 rounded-lg font-semibold text-sm">
+                Book Site Visit
+            </button>
+
         </div>
-
-        <!-- OLA Option -->
-        <div class="mt-4 text-sm">
-            <label class="flex items-center gap-2">
-                <input type="radio" name="ride" checked />
-                <img src="https://logovectordl.com/wp-content/uploads/2020/10/ola-logo-vector.png"
-                    class="w-12" />
-            </label>
-            <label class="flex items-center gap-2 mt-2">
-                <input type="radio" name="ride" />
-                <span>Not Required</span>
-            </label>
-        </div>
-
-        <ul class="mt-4 text-sm text-gray-700 space-y-1 list-disc pl-4">
-            <li>Free Pick Up & Drop - Book Personal Ola</li>
-            <li>Visit Your Selected 3 Projects in One Tour</li>
-            <li>Just Visit & Decide later</li>
-        </ul>
-
-        <button class="w-full mt-5 bg-blue-900 hover:bg-blue-800 text-white py-2 rounded-lg font-semibold text-sm">
-            Book Site Visit
-        </button>
 
     </div>
-    </div>
-    
+
+</section>
+
+
+<!-- ===================== VIDEO SCRIPT ===================== -->
 <script>
     const video = document.getElementById("teaserVideo");
     const playBtn = document.getElementById("playBtn");
@@ -949,14 +952,12 @@
     const pausePlay = document.getElementById("pausePlay");
     const fullscreenBtn = document.getElementById("fullscreenBtn");
 
-    // Play button in center
     playBtn.addEventListener("click", () => {
         playBtn.style.display = "none";
         controls.style.opacity = "1";
         video.play();
     });
 
-    // Pause / Play button bottom-left
     pausePlay.addEventListener("click", () => {
         if (video.paused) {
             video.play();
@@ -967,28 +968,19 @@
         }
     });
 
-    // Fullscreen
     fullscreenBtn.addEventListener("click", () => {
         if (video.requestFullscreen) video.requestFullscreen();
     });
 
-    // Auto-hide controls when paused
-    video.addEventListener("pause", () => {
-        pausePlay.textContent = "⏵";
-    });
+    video.addEventListener("pause", () => { pausePlay.textContent = "⏵"; });
 
-    // Auto show play button again when ended
     video.addEventListener("ended", () => {
         playBtn.style.display = "flex";
         controls.style.opacity = "0";
     });
 </script>
 
-
-</section>
-
 <!-- ===================== AMENITIES SECTION ===================== -->
-
 <section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="amenities">
 
     <!-- HEADER BAR -->
@@ -1001,109 +993,151 @@
         <!-- EXTERNAL AMENITIES -->
         <h3 class="text-sm font-semibold text-gray-700 mb-3">External Amenities</h3>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3" id="amenitiesGrid">
 
-            <!-- AMENITY CARD -->
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/727/727598.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Swimming Pool</p>
+            <!-- VISIBLE AMENITIES -->
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/727/727598.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Swimming Pool</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Club House</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Club House</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/3076/3076409.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Kids Play Area</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3076/3076409.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Kids Play Area</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Kids Pool</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Kids Pool</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/1016/1016133.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Skating Rink</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/1016/1016133.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Skating Rink</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/841/841389.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Amphitheater</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/841/841389.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Amphitheater</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/2964/2964514.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Yoga Zone</p>
+                 <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/727/727598.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Swimming Pool</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/1057/1057431.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Rock Climbing</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Club House</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/745/745361.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Cycling Track</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3076/3076409.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Kids Play Area</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/3081/3081377.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">BBQ Lawn</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Kids Pool</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/4603/4603911.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Pet Park</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/1016/1016133.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Skating Rink</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/1710/1710737.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Indoor Games</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/841/841389.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Amphitheater</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/6030/6030093.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Yoga Deck</p>
+            <!-- ========= HIDDEN AMENITIES (Initially Hidden) ========= -->
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/2964/2964514.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Yoga Zone</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/1046/1046804.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Badminton Court</p>
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/1057/1057431.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Rock Climbing</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/3003/3003985.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Gymnasium</p>
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/745/745361.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Cycling Track</p>
             </div>
 
-            <!-- +4 MORE CARD -->
-            <div
-                class="border rounded-lg flex items-center justify-center text-center p-3 h-28 bg-[#e8eff5] text-gray-700 font-semibold">
-                +4 More
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/3081/3081377.png" class="w-8 opacity-80 mt-1">
+                <p class="label">BBQ Lawn</p>
+            </div>
+
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/4603/4603911.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Pet Park</p>
+            </div>
+
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/1710/1710737.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Indoor Games</p>
+            </div>
+
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/6030/6030093.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Yoga Deck</p>
+            </div>
+
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/1046/1046804.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Badminton Court</p>
+            </div>
+
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/3003/3003985.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Gymnasium</p>
+            </div>
+
+            <!-- SHOW MORE BUTTON -->
+            <div id="showMoreBtn"
+                class="border rounded-lg flex items-center justify-center text-center p-2 h-10 bg-[#e8eff5] text-gray-700 font-semibold cursor-pointer">
+                + 4 More
             </div>
 
         </div>
     </div>
-
 </section>
+
+<!-- ===================== JS FOR SHOW MORE ===================== -->
+<script>
+    const btn = document.getElementById("showMoreBtn");
+    const hiddenItems = document.querySelectorAll(".more-item");
+    let expanded = false;
+
+    btn.addEventListener("click", () => {
+        expanded = !expanded;
+
+        hiddenItems.forEach(item => {
+            item.classList.toggle("hidden");
+        });
+
+        btn.textContent = expanded ? "- Show Less" : "+ 4 More";
+    });
+</script>
+
+<!-- ===================== CARD STYLE (Tailwind classes) ===================== -->
+<style>
+    .amenity-card {
+        @apply border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition;
+    }
+    .amenity-card .label {
+        @apply text-xs text-gray-800;
+    }
+</style>
 
 
 <!-- ===================== MASTER & FLOOR PLAN SECTION ===================== -->
@@ -1562,7 +1596,7 @@
                     <p class="font-medium text-gray-800">
                         Can I see the sample flat of Mahindra Marina 64? Is it ready?
                     </p>
-                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">⌄</span>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300"><i class="fa-solid fa-caret-down"></i></span>
                 </div>
                 <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
                     Yes, sample flat visits are allowed based on builder availability. Contact us to book a free guided visit.
@@ -1574,7 +1608,7 @@
                     <p class="font-medium text-gray-800">
                         When is the expected possession of Mahindra Marina 64?
                     </p>
-                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">⌄</span>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300"><i class="fa-solid fa-caret-down"></i></span>
                 </div>
                 <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
                     The project is expected to be delivered by December 2029 as per the current construction schedule.
@@ -1586,7 +1620,7 @@
                     <p class="font-medium text-gray-800">
                         Is Mahindra Marina 64 RERA registered? What is the RERA number?
                     </p>
-                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">⌄</span>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300"><i class="fa-solid fa-caret-down"></i></span>
                 </div>
                 <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
                     Yes, the project is RERA registered with number PR1181012500087.
@@ -1598,7 +1632,7 @@
                     <p class="font-medium text-gray-800">
                         What amenities are offered at Mahindra Marina 64?
                     </p>
-                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">⌄</span>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300"><i class="fa-solid fa-caret-down"></i></span>
                 </div>
                 <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
                     Amenities include pool, gymnasium, clubhouse, skating rink, yoga deck, kids play area & more.
@@ -1610,7 +1644,7 @@
                     <p class="font-medium text-gray-800">
                         What is the carpet area of a 2BHK in Mahindra Marina 64?
                     </p>
-                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">⌄</span>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300"><i class="fa-solid fa-caret-down"></i></span>
                 </div>
                 <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
                     The carpet area of 2BHK ranges from approx. 761–775 sq.ft.
@@ -1960,48 +1994,6 @@ var swiper = new Swiper(".relatedSwiper", {
             desc.classList.add("hidden");
             icon.textContent = "+";
         }
-    });
-</script>
-
-<script>
-    const video = document.getElementById("teaserVideo");
-    const playBtn = document.getElementById("playBtn");
-    const controls = document.getElementById("controls");
-    const pausePlay = document.getElementById("pausePlay");
-    const fullscreenBtn = document.getElementById("fullscreenBtn");
-
-    // Play button in center
-    playBtn.addEventListener("click", () => {
-        playBtn.style.display = "none";
-        controls.style.opacity = "1";
-        video.play();
-    });
-
-    // Pause / Play button bottom-left
-    pausePlay.addEventListener("click", () => {
-        if (video.paused) {
-            video.play();
-            pausePlay.textContent = "⏸";
-        } else {
-            video.pause();
-            pausePlay.textContent = "⏵";
-        }
-    });
-
-    // Fullscreen
-    fullscreenBtn.addEventListener("click", () => {
-        if (video.requestFullscreen) video.requestFullscreen();
-    });
-
-    // Auto-hide controls when paused
-    video.addEventListener("pause", () => {
-        pausePlay.textContent = "⏵";
-    });
-
-    // Auto show play button again when ended
-    video.addEventListener("ended", () => {
-        playBtn.style.display = "flex";
-        controls.style.opacity = "0";
     });
 </script>
 
