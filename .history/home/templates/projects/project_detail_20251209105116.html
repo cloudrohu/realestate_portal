@@ -202,11 +202,11 @@
 
 <SECTION-FIRST>
         <!-- IMAGES  -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
         <!-- LEFT BIG IMAGE -->
-        <div class="md:col-span-2 relative border border-gray-200" >
-            <img src="https://keystonerealestateadvisory.com/public/uploads/property/oEQ2GmDsD5WiSmvXGILIVtqg1twLjirUZTHr0w9J.webp" 
+        <div class="md:col-span-2 relative" >
+            <img src="assets/images/projects details/9.jpg" 
                     class="w-full h-[530px] object-cover  cursor-pointer gallery-img"
                     data-index="0">
         </div>
@@ -216,14 +216,14 @@
 
             <!-- TOP SMALL -->
             <div class="relative">
-                <img src="https://keystonerealestateadvisory.com/public/img/rtm.webp" 
+                <img src="assets/images/projects details/Main Image 12.jpg" 
                         class="w-full h-[260px] object-cover cursor-pointer gallery-img"
                         data-index="1">
             </div>
 
             <!-- BOTTOM SMALL WITH OVERLAY -->
             <div class="relative">
-                <img src="https://keystonerealestateadvisory.com/public/img/uc.webp" 
+                <img src="assets/images/projects details/Main Image 7.jpg" 
                         class="w-full h-[260px] object-cover   md:mt-3 cursor-pointer gallery-img opacity-90"
                         data-index="2">
 
@@ -236,33 +236,17 @@
         </div>
 
         </div>
-            <!-- POPUP -->
-                <div id="popup" class="fixed inset-0 bg-black/90 hidden items-center justify-center z-[9999] backdrop-blur-sm transition">
+        <!-- POPUP -->
+        <div id="popup" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50">
+            <button id="closeBtn" class="absolute top-4 right-4 text-white text-3xl">✕</button>
+            <button id="prevBtn" class="absolute left-4 text-white text-4xl">❮</button>
+            <button id="nextBtn" class="absolute right-4 text-white text-4xl">❯</button>
 
-                    <!-- CLOSE BUTTON -->
-                    <button id="closeBtn"
-                        class="absolute top-5 right-5 text-white text-4xl font-light hover:scale-110 transition">
-                        ✕
-                    </button>
-
-                    <!-- PREV -->
-                    <button id="prevBtn"
-                        class="absolute left-6 text-white text-5xl hover:scale-110 transition select-none">
-                        ❮
-                    </button>
-
-                    <!-- NEXT -->
-                    <button id="nextBtn"
-                        class="absolute right-6 text-white text-5xl hover:scale-110 transition select-none">
-                        ❯
-                    </button>
-
-                    <!-- CENTER IMAGE -->
-                    <img id="popupImg" class="max-h-[90vh] max-w-[90vw] rounded-no shadow-2xl transition">
-                </div>
-
+            <img id="popupImg" class="max-h-[90vh] max-w-[90vw]  shadow-xl">
+              <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" id="another-close-button">Close</button>
+        </div>
         <br>
-     <script>
+        <script>
             const imgs = document.querySelectorAll(".gallery-img");
             const popup = document.getElementById("popup");
             const popupImg = document.getElementById("popupImg");
@@ -274,37 +258,31 @@
                     popupImg.src = img.src;
                     popup.classList.remove("hidden");
                     popup.classList.add("flex");
-                    document.body.style.overflow = "hidden"; // prevent scroll behind
                 });
             });
 
+            // Next
             document.getElementById("nextBtn").onclick = () => {
                 current = (current + 1) % imgs.length;
                 popupImg.src = imgs[current].src;
             };
 
+            // Prev
             document.getElementById("prevBtn").onclick = () => {
                 current = (current - 1 + imgs.length) % imgs.length;
                 popupImg.src = imgs[current].src;
             };
 
+            // Close
             document.getElementById("closeBtn").onclick = () => {
                 popup.classList.add("hidden");
-                popup.classList.remove("flex");
-                document.body.style.overflow = "auto"; // restore scroll
             };
+            
+    function closeModal() {
+        modal.classList.add('hidden');
+        modalOverlay.classList.add('hidden');
+    }
         </script>
-
-        <style>
-            #popup {
-                animation: fadeIn 0.25s ease-out;
-            }
-            @keyframes fadeIn {
-                from { opacity: 0; }
-                to   { opacity: 1; }
-            }
-        </style>
-
 
         <!-- IMAGES END-->
 
@@ -798,34 +776,14 @@
 
         <div class="border border-t-0 rounded-b-lg p-5 bg-white" id="video">
 
-             <p class="text-green-600 font-semibold mb-3">Teaser</p>
+            <p class="text-green-600 font-semibold mb-3">Teaser</p>
 
-            <div class="relative w-full h-56 bg-black rounded-lg overflow-hidden">
-
-                <!-- HTML5 VIDEO -->
-                <video id="teaserVideo" class="w-full h-full object-cover" preload="metadata">
-                    <source src="https://www.youtube.com/watch?v=VNdB9OrDKn8&t=1s" type="video/mp4">
-                </video>
-
-                <!-- PLAY BUTTON OVERLAY -->
-                <div id="playBtn"
-                    class="absolute inset-0 flex items-center justify-center bg-black/40 cursor-pointer transition hover:bg-black/50">
-                    <img src="https://housiey.com/_next/image?url=https%3A%2F%2Fresources.housiey.com%2Fadmin%2Fuploads%2Fproject_images%2FL%26T_Island_Cove_Elevation--1712469067411-img.webp&w=1080&q=75" class="w-14 opacity-90" />
-                </div>
-
-                <!-- CUSTOM CONTROLS -->
-                <div id="controls"
-                    class="absolute bottom-0 left-0 right-0 bg-black/60 text-white px-4 py-2 flex justify-between items-center opacity-0 transition">
-                    
-                    <button id="pausePlay" class="text-lg">⏵</button>
-                    <button id="fullscreenBtn" class="text-lg">⛶</button>
-                </div>
-
+            <div class="w-full h-56 bg-gray-200 rounded-lg flex items-center justify-center">
+                <span class="text-gray-500">Video Preview / Embedded Video</span>
             </div>
 
         </div>
-
-
+    </div>
 
     <!-- RIGHT SIDE: CALL ME INST. + SITE VISIT FORM -->
     <div class="space-y-5">
@@ -941,49 +899,6 @@
 
     </div>
     </div>
-    
-<script>
-    const video = document.getElementById("teaserVideo");
-    const playBtn = document.getElementById("playBtn");
-    const controls = document.getElementById("controls");
-    const pausePlay = document.getElementById("pausePlay");
-    const fullscreenBtn = document.getElementById("fullscreenBtn");
-
-    // Play button in center
-    playBtn.addEventListener("click", () => {
-        playBtn.style.display = "none";
-        controls.style.opacity = "1";
-        video.play();
-    });
-
-    // Pause / Play button bottom-left
-    pausePlay.addEventListener("click", () => {
-        if (video.paused) {
-            video.play();
-            pausePlay.textContent = "⏸";
-        } else {
-            video.pause();
-            pausePlay.textContent = "⏵";
-        }
-    });
-
-    // Fullscreen
-    fullscreenBtn.addEventListener("click", () => {
-        if (video.requestFullscreen) video.requestFullscreen();
-    });
-
-    // Auto-hide controls when paused
-    video.addEventListener("pause", () => {
-        pausePlay.textContent = "⏵";
-    });
-
-    // Auto show play button again when ended
-    video.addEventListener("ended", () => {
-        playBtn.style.display = "flex";
-        controls.style.opacity = "0";
-    });
-</script>
-
 
 </section>
 
@@ -1962,49 +1877,6 @@ var swiper = new Swiper(".relatedSwiper", {
         }
     });
 </script>
-
-<script>
-    const video = document.getElementById("teaserVideo");
-    const playBtn = document.getElementById("playBtn");
-    const controls = document.getElementById("controls");
-    const pausePlay = document.getElementById("pausePlay");
-    const fullscreenBtn = document.getElementById("fullscreenBtn");
-
-    // Play button in center
-    playBtn.addEventListener("click", () => {
-        playBtn.style.display = "none";
-        controls.style.opacity = "1";
-        video.play();
-    });
-
-    // Pause / Play button bottom-left
-    pausePlay.addEventListener("click", () => {
-        if (video.paused) {
-            video.play();
-            pausePlay.textContent = "⏸";
-        } else {
-            video.pause();
-            pausePlay.textContent = "⏵";
-        }
-    });
-
-    // Fullscreen
-    fullscreenBtn.addEventListener("click", () => {
-        if (video.requestFullscreen) video.requestFullscreen();
-    });
-
-    // Auto-hide controls when paused
-    video.addEventListener("pause", () => {
-        pausePlay.textContent = "⏵";
-    });
-
-    // Auto show play button again when ended
-    video.addEventListener("ended", () => {
-        playBtn.style.display = "flex";
-        controls.style.opacity = "0";
-    });
-</script>
-
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />

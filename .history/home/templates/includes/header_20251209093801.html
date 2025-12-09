@@ -4,119 +4,133 @@
 <!-- ====================== -->
 <!-- DESKTOP VIEW -->
 <!-- ====================== -->
-<div class="hidden md:block">
-  <header class="w-full backdrop-blur-md"
-    style="background-color: {{ settings_obj.header_footer_color }}; color: {{ settings_obj.text_color }};">
 
-    <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
-
-      <!-- LEFT: LOGO -->
-      <a href="/" class="flex items-center">
-        {% if settings_obj.logo %}
-        <img src="{{ settings_obj.logo.url }}"
-             alt="{{ settings_obj.site_name|default:'RealEstatePro' }}"
-             class="h-14 w-auto object-contain">
-        {% else %}
-        <span class="font-bold text-2xl">{{ settings_obj.site_name|default:'RealEstatePro' }}</span>
-        {% endif %}
-      </a>
-
-
-      <!-- CENTER: NAV MENU -->
-      <nav class="flex items-center gap-8 text-lg font-medium">
-
-        <!-- HOME -->
-        <a href="/"
-          class="relative group transition duration-300
-          {% if request.path == '/' %}font-semibold{% endif %}"
-          style="color: {{ settings_obj.text_color }};">
-          Home
-          <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}]
-          transition-all duration-300 {% if request.path == '/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}">
-          </span>
-        </a>
-
-        <!-- FAQ -->
-        <a href="{% url 'faq' %}"
-          class="relative group transition duration-300
-          {% if request.path == '/faq/' %}font-semibold{% endif %}"
-          style="color: {{ settings_obj.text_color }};">
-          FAQ's
-          <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}]
-          transition-all duration-300 {% if request.path == '/faq/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}">
-          </span>
-        </a>
-
-        <!-- BLOGS -->
-        <a href="/blogs/"
-          class="relative group transition duration-300
-          {% if request.path == '/blogs/' %}font-semibold{% endif %}"
-          style="color: {{ settings_obj.text_color }};">
-          Blogs
-          <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}]
-          transition-all duration-300 {% if request.path == '/blogs/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}">
-          </span>
-        </a>
-
-        <!-- ABOUT -->
-        <a href="{% url 'about' %}"
-          class="relative group transition duration-300
-          {% if request.path == '/about/' %}font-semibold{% endif %}"
-          style="color: {{ settings_obj.text_color }};">
-          About
-          <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}]
-          transition-all duration-300 {% if request.path == '/about/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}">
-          </span>
-        </a>
-
-        <!-- SERVICES -->
-        <a href="/services/"
-          class="relative group transition duration-300
-          {% if request.path == '/services/' %}font-semibold{% endif %}"
-          style="color: {{ settings_obj.text_color }};">
-          Services
-          <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}]
-          transition-all duration-300 {% if request.path == '/services/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}">
-          </span>
-        </a>
-
-        <!-- CONTACT -->
-        <a href="{% url 'contact' %}"
-          class="relative group transition duration-300
-          {% if request.path == '/contact/' %}font-semibold{% endif %}"
-          style="color: {{ settings_obj.text_color }};">
-          Contact
-          <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}]
-          transition-all duration-300 {% if request.path == '/contact/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}">
-          </span>
-        </a>
-
-      </nav>
+<div class="hidden md:block fixed top-0">
+  <header class="flex justify-between items-center px-8 py-2  backdrop-blur-md text-white" style="background-color: {{ settings_obj.header_footer_color}}; color: {{ settings_obj.text_color}};">
+    <div class="flex items-center gap-2">
+  <a href="/" class="flex items-center gap-2">
+    {% if settings_obj.logo %}
+      <!-- Show logo only if it exists -->
+      <img 
+        src="{{ settings_obj.logo.url }}" 
+        alt="{{ settings_obj.site_name|default:'RealEstatePro' }}" 
+        style="height: 60px; width: 140px; margin-left: 120px;">
+    {% else %}
+      <!-- Fallback: show site name if no logo -->
+      <span class="font-bold text-xl hover:text-orange-500 transition">
+        {{ settings_obj.site_name|default:'RealEstatePro' }}
+      </span>
+    {% endif %}
+  </a>
+</div>
 
 
-      <!-- RIGHT: BUTTONS -->
+<nav class="flex gap-8 text-lg font-medium">
+  <!-- 🏠 Home -->
+  <a href="/" 
+     class="relative group transition duration-300 
+     {% if request.path == '/' %}
+        text-[{{ settings_obj.text_color }}] font-semibold
+     {% else %}
+        text-[{{ settings_obj.text_color }}] hover:text-[{{ settings_obj.text_color }}]
+     {% endif %}">
+    Home
+    <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}] transition-all duration-300 
+      {% if request.path == '/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}"></span>
+  </a>
+
+  <!-- ❓ FAQ -->
+  <a href="{% url 'faq' %}" 
+     class="relative group transition duration-300 
+     {% if request.path == '/faq/' %}
+        text-[{{ settings_obj.text_color }}] font-semibold
+     {% else %}
+        text-[{{ settings_obj.text_color }}] hover:text-[{{ settings_obj.text_color }}]
+     {% endif %}">
+    FAQ's
+    <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}] transition-all duration-300 
+      {% if request.path == '/faq/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}"></span>
+  </a>
+
+  <!-- 📰 Blogs -->
+  <a href="/blogs/" 
+     class="relative group transition duration-300 
+     {% if request.path == '/blogs/' %}
+        text-[{{ settings_obj.text_color }}] font-semibold
+     {% else %}
+        text-[{{ settings_obj.text_color }}] hover:text-[{{ settings_obj.text_color }}]
+     {% endif %}">
+    Blogs
+    <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}] transition-all duration-300 
+      {% if request.path == '/blogs/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}"></span>
+  </a>
+
+  <!-- ℹ️ About -->
+  <a href="{% url 'about' %}" 
+     class="relative group transition duration-300 
+     {% if request.path == '/about/' %}
+        text-[{{ settings_obj.text_color }}] font-semibold
+     {% else %}
+        text-[{{ settings_obj.text_color }}] hover:text-[{{ settings_obj.text_color }}]
+     {% endif %}">
+    About
+    <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}] transition-all duration-300 
+      {% if request.path == '/about/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}"></span>
+  </a>
+
+  <!-- 🧰 Services -->
+  <a href="/services/" 
+     class="relative group transition duration-300 
+     {% if request.path == '/services/' %}
+        text-[{{ settings_obj.text_color }}] font-semibold
+     {% else %}
+        text-[{{ settings_obj.text_color }}] hover:text-[{{ settings_obj.text_color }}]
+     {% endif %}">
+    Services
+    <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}] transition-all duration-300 
+      {% if request.path == '/services/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}"></span>
+  </a>
+
+  <!-- 📞 Contact -->
+  <a href="{% url 'contact' %}" 
+     class="relative group transition duration-300 
+     {% if request.path == '/contact/' %}
+        text-[{{ settings_obj.text_color }}] font-semibold
+     {% else %}
+        text-[{{ settings_obj.text_color }}] hover:text-[{{ settings_obj.text_color }}]
+     {% endif %}">
+    Contact
+    <span class="absolute left-0 -bottom-1 h-[2px] bg-[{{ settings_obj.text_color }}] transition-all duration-300 
+      {% if request.path == '/contact/' %}w-full{% else %}w-0 group-hover:w-full{% endif %}"></span>
+  </a>
+</nav>
+
       <div class="flex items-center gap-4">
 
         <!-- SELL / RENT BUTTON -->
         <button
           class="px-5 py-2.5 font-semibold rounded-xl
-          bg-gradient-to-r from-orange-500 to-red-500 text-white
-          shadow-lg hover:scale-105 transition-all duration-300">
+                bg-gradient-to-r from-orange-500 to-red-500 text-white
+                shadow-lg shadow-red-400/40
+                hover:scale-105 hover:shadow-red-500/60 
+                transition-all duration-300">
           Sell / Rent Property
         </button>
+        <a href="https://wa.me/{{rs.whatsapp}}" target="_blank"
+          class="flex items-center gap-2 px-6 py-2 rounded-xl font-semibold
+                text-white border border-white/20
+                bg-white/10 backdrop-blur-md
+                hover:bg-white/20 hover:scale-105
+                shadow-[0px_4px_20px_rgba(0,255,0,0.25)] transition-all duration-300">
 
-        <!-- WHATSAPP -->
-        <a href="https://wa.me/{{ rs.whatsapp }}" target="_blank"
-          class="flex items-center gap-2 px-5 py-2 rounded-xl font-semibold
-          text-white border border-white/20 bg-white/10 backdrop-blur-md
-          hover:bg-white/20 hover:scale-105 transition-all duration-300">
-          <i class="fa-brands fa-whatsapp text-green-500 text-xl"></i>
+              <i class="fa-brands fa-whatsapp text-green-600 text-xl"></i>
+
           Chat
         </a>
 
+
       </div>
 
-    </div>
   </header>
 </div>
 

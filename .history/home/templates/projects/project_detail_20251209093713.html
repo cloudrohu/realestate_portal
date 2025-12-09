@@ -201,112 +201,84 @@
 </SECTION-FRIST-HEAD>
 
 <SECTION-FIRST>
-        <!-- IMAGES  -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+<!-- IMAGES  -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-        <!-- LEFT BIG IMAGE -->
-        <div class="md:col-span-2 relative border border-gray-200" >
-            <img src="https://keystonerealestateadvisory.com/public/uploads/property/oEQ2GmDsD5WiSmvXGILIVtqg1twLjirUZTHr0w9J.webp" 
-                    class="w-full h-[530px] object-cover  cursor-pointer gallery-img"
-                    data-index="0">
+<!-- LEFT BIG IMAGE -->
+<div class="md:col-span-2 relative" >
+    <img src="assets/images/projects details/9.jpg" 
+            class="w-full h-[530px] object-cover  cursor-pointer gallery-img"
+            data-index="0">
+</div>
+
+<!-- RIGHT SIDE SMALL IMAGES -->
+<div class="flex flex-col gap-4 hidden md:block">
+
+    <!-- TOP SMALL -->
+    <div class="relative">
+        <img src="assets/images/projects details/Main Image 12.jpg" 
+                class="w-full h-[260px] object-cover cursor-pointer gallery-img"
+                data-index="1">
+    </div>
+
+    <!-- BOTTOM SMALL WITH OVERLAY -->
+    <div class="relative">
+        <img src="assets/images/projects details/Main Image 7.jpg" 
+                class="w-full h-[260px] object-cover   md:mt-3 cursor-pointer gallery-img opacity-90"
+                data-index="2">
+
+        <!-- OVERLAY -->
+        <div class="absolute inset-0 bg-black/40  flex items-center justify-center text-white text-lg font-medium cursor-pointer">
+            View all images
         </div>
+    </div>
 
-        <!-- RIGHT SIDE SMALL IMAGES -->
-        <div class="flex flex-col gap-4 hidden md:block">
+</div>
 
-            <!-- TOP SMALL -->
-            <div class="relative">
-                <img src="https://keystonerealestateadvisory.com/public/img/rtm.webp" 
-                        class="w-full h-[260px] object-cover cursor-pointer gallery-img"
-                        data-index="1">
-            </div>
+</div>
+<!-- POPUP -->
+<div id="popup" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50">
+    <button id="closeBtn" class="absolute top-4 right-4 text-white text-3xl">✕</button>
+    <button id="prevBtn" class="absolute left-4 text-white text-4xl">❮</button>
+    <button id="nextBtn" class="absolute right-4 text-white text-4xl">❯</button>
 
-            <!-- BOTTOM SMALL WITH OVERLAY -->
-            <div class="relative">
-                <img src="https://keystonerealestateadvisory.com/public/img/uc.webp" 
-                        class="w-full h-[260px] object-cover   md:mt-3 cursor-pointer gallery-img opacity-90"
-                        data-index="2">
+    <img id="popupImg" class="max-h-[90vh] max-w-[90vw]  shadow-xl">
+</div>
+ <br>
+<script>
+const imgs = document.querySelectorAll(".gallery-img");
+const popup = document.getElementById("popup");
+const popupImg = document.getElementById("popupImg");
+let current = 0;
 
-                <!-- OVERLAY -->
-                <div class="absolute inset-0 bg-black/40  flex items-center justify-center text-white text-lg font-medium cursor-pointer">
-                    View all images
-                </div>
-            </div>
+imgs.forEach((img, index) => {
+    img.addEventListener("click", () => {
+        current = index;
+        popupImg.src = img.src;
+        popup.classList.remove("hidden");
+        popup.classList.add("flex");
+    });
+});
 
-        </div>
+// Next
+document.getElementById("nextBtn").onclick = () => {
+    current = (current + 1) % imgs.length;
+    popupImg.src = imgs[current].src;
+};
 
-        </div>
-            <!-- POPUP -->
-                <div id="popup" class="fixed inset-0 bg-black/90 hidden items-center justify-center z-[9999] backdrop-blur-sm transition">
+// Prev
+document.getElementById("prevBtn").onclick = () => {
+    current = (current - 1 + imgs.length) % imgs.length;
+    popupImg.src = imgs[current].src;
+};
 
-                    <!-- CLOSE BUTTON -->
-                    <button id="closeBtn"
-                        class="absolute top-5 right-5 text-white text-4xl font-light hover:scale-110 transition">
-                        ✕
-                    </button>
+// Close
+document.getElementById("closeBtn").onclick = () => {
+    popup.classList.add("hidden");
+};
+</script>
 
-                    <!-- PREV -->
-                    <button id="prevBtn"
-                        class="absolute left-6 text-white text-5xl hover:scale-110 transition select-none">
-                        ❮
-                    </button>
-
-                    <!-- NEXT -->
-                    <button id="nextBtn"
-                        class="absolute right-6 text-white text-5xl hover:scale-110 transition select-none">
-                        ❯
-                    </button>
-
-                    <!-- CENTER IMAGE -->
-                    <img id="popupImg" class="max-h-[90vh] max-w-[90vw] rounded-no shadow-2xl transition">
-                </div>
-
-        <br>
-     <script>
-            const imgs = document.querySelectorAll(".gallery-img");
-            const popup = document.getElementById("popup");
-            const popupImg = document.getElementById("popupImg");
-            let current = 0;
-
-            imgs.forEach((img, index) => {
-                img.addEventListener("click", () => {
-                    current = index;
-                    popupImg.src = img.src;
-                    popup.classList.remove("hidden");
-                    popup.classList.add("flex");
-                    document.body.style.overflow = "hidden"; // prevent scroll behind
-                });
-            });
-
-            document.getElementById("nextBtn").onclick = () => {
-                current = (current + 1) % imgs.length;
-                popupImg.src = imgs[current].src;
-            };
-
-            document.getElementById("prevBtn").onclick = () => {
-                current = (current - 1 + imgs.length) % imgs.length;
-                popupImg.src = imgs[current].src;
-            };
-
-            document.getElementById("closeBtn").onclick = () => {
-                popup.classList.add("hidden");
-                popup.classList.remove("flex");
-                document.body.style.overflow = "auto"; // restore scroll
-            };
-        </script>
-
-        <style>
-            #popup {
-                animation: fadeIn 0.25s ease-out;
-            }
-            @keyframes fadeIn {
-                from { opacity: 0; }
-                to   { opacity: 1; }
-            }
-        </style>
-
-
-        <!-- IMAGES END-->
+<!-- IMAGES END-->
 
 
 </SECTION-FIRST>
@@ -316,112 +288,112 @@
     <div class="w-full border-t border-b bg-white sticky top-[60px] z-50">
 
 
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
+  <div class="max-w-7xl mx-auto flex items-center justify-between">
 
-        <!-- LEFT ARROW -->
-        <button id="navLeft" class="p-2 border  bg-white shadow-sm text-gray-700">
-        <span class="text-xl">&lt;</span>
-        </button>
+    <!-- LEFT ARROW -->
+    <button id="navLeft" class="p-2 border  bg-white shadow-sm text-gray-700">
+      <span class="text-xl">&lt;</span>
+    </button>
 
-        <!-- SCROLLABLE NAV -->
-        <div id="navScroll" class="flex-1 overflow-x-auto mx-4 no-scrollbar">
-        <div class="flex items-center gap-10 whitespace-nowrap text-gray-700 font-medium py-4">
+    <!-- SCROLLABLE NAV -->
+    <div id="navScroll" class="flex-1 overflow-x-auto mx-4 no-scrollbar">
+      <div class="flex items-center gap-10 whitespace-nowrap text-gray-700 font-medium py-4">
 
-            <a href="#overview" class="nav-link active">Overview</a>
-            <a href="#pricing" class="nav-link">Pricing & Unit Plans</a>
-            <a href="#location" class="nav-link">Location</a>
-            <a href="#video" class="nav-link"> Video</a>
+        <a href="#overview" class="nav-link active">Overview</a>
+        <a href="#pricing" class="nav-link">Pricing & Unit Plans</a>
+        <a href="#location" class="nav-link">Location</a>
+        <a href="#video" class="nav-link"> Video</a>
 
-            <a href="#amenities" class="nav-link">Amenities</a>
-            <a href="#floorplan" class="nav-link">Floor Plan</a>
-            <a href="#paymentscheme" class="nav-link">Payment Scheme</a>
-            <a href="#bank_offers" class="nav-link">Bank</a>
+        <a href="#amenities" class="nav-link">Amenities</a>
+        <a href="#floorplan" class="nav-link">Floor Plan</a>
+        <a href="#paymentscheme" class="nav-link">Payment Scheme</a>
+        <a href="#bank_offers" class="nav-link">Bank</a>
 
-            <a href="#emi_calculator" class="nav-link">EMI Calculator</a>
-            <a href="#about_developer" class="nav-link">About Developer</a>
-            <a href="#faqs" class="nav-link">Faq's</a>
+        <a href="#emi_calculator" class="nav-link">EMI Calculator</a>
+        <a href="#about_developer" class="nav-link">About Developer</a>
+        <a href="#faqs" class="nav-link">Faq's</a>
 
 
-        </div>
-        </div>
-
-        <!-- RIGHT ARROW -->
-        <button id="navRight" class="p-2 border  bg-white shadow-sm text-gray-700">
-        <span class="text-xl">&gt;</span>
-        </button>
-
+      </div>
     </div>
-    </div>
-    <script>
-    const navLinks = document.querySelectorAll(".nav-link");
-    const navScroll = document.getElementById("navScroll");
-    const navLeft = document.getElementById("navLeft");
-    const navRight = document.getElementById("navRight");
 
-    // ACTIVE TAB CHANGE
-    navLinks.forEach(link => {
-        link.addEventListener("click", () => {
+    <!-- RIGHT ARROW -->
+    <button id="navRight" class="p-2 border  bg-white shadow-sm text-gray-700">
+      <span class="text-xl">&gt;</span>
+    </button>
+
+  </div>
+</div>
+  <script>
+  const navLinks = document.querySelectorAll(".nav-link");
+  const navScroll = document.getElementById("navScroll");
+  const navLeft = document.getElementById("navLeft");
+  const navRight = document.getElementById("navRight");
+
+  // ACTIVE TAB CHANGE
+  navLinks.forEach(link => {
+    link.addEventListener("click", () => {
+      document.querySelector(".nav-link.active")?.classList.remove("active");
+      link.classList.add("active");
+
+      // center the active tab smoothly
+      const linkPos = link.offsetLeft - navScroll.offsetWidth / 2 + link.offsetWidth / 2;
+      navScroll.scrollTo({ left: linkPos, behavior: "smooth" });
+    });
+  });
+
+  // SCROLL BUTTONS
+  navLeft.addEventListener("click", () => {
+    navScroll.scrollBy({ left: -200, behavior: "smooth" });
+  });
+
+  navRight.addEventListener("click", () => {
+    navScroll.scrollBy({ left: 200, behavior: "smooth" });
+  });
+  /* ============================================
+   🔥 AUTO ACTIVE TAB ON SCROLL (Improved Logic)
+=============================================== */
+const sections = document.querySelectorAll(
+  "#overview, #configurations, #amenities, #locality, #price, #payment, #bank_offers, #developer"
+);
+
+let activeSection = null;
+
+window.addEventListener("scroll", () => {
+  let scrollPos = window.scrollY + 150; // navbar height adjustment
+
+  sections.forEach(section => {
+    if (
+      scrollPos >= section.offsetTop &&
+      scrollPos < section.offsetTop + section.offsetHeight
+    ) {
+      const id = section.getAttribute("id");
+
+      if (activeSection !== id) {
+        activeSection = id;
+
+        // remove old active
         document.querySelector(".nav-link.active")?.classList.remove("active");
-        link.classList.add("active");
 
-        // center the active tab smoothly
-        const linkPos = link.offsetLeft - navScroll.offsetWidth / 2 + link.offsetWidth / 2;
-        navScroll.scrollTo({ left: linkPos, behavior: "smooth" });
-        });
-    });
+        // add active to new tab
+        const newActive = document.querySelector(`.nav-link[href="#${id}"]`);
+        if (newActive) {
+          newActive.classList.add("active");
 
-    // SCROLL BUTTONS
-    navLeft.addEventListener("click", () => {
-        navScroll.scrollBy({ left: -200, behavior: "smooth" });
-    });
+          // auto center tab
+          const linkPos =
+            newActive.offsetLeft -
+            navScroll.offsetWidth / 2 +
+            newActive.offsetWidth / 2;
 
-    navRight.addEventListener("click", () => {
-        navScroll.scrollBy({ left: 200, behavior: "smooth" });
-    });
-    /* ============================================
-    🔥 AUTO ACTIVE TAB ON SCROLL (Improved Logic)
-        =============================================== */
-        const sections = document.querySelectorAll(
-        "#overview, #configurations, #amenities, #locality, #price, #payment, #bank_offers, #developer"
-        );
+          navScroll.scrollTo({ left: linkPos, behavior: "smooth" });
+        }
+      }
+    }
+  });
+});
 
-        let activeSection = null;
-
-        window.addEventListener("scroll", () => {
-        let scrollPos = window.scrollY + 150; // navbar height adjustment
-
-        sections.forEach(section => {
-            if (
-            scrollPos >= section.offsetTop &&
-            scrollPos < section.offsetTop + section.offsetHeight
-            ) {
-            const id = section.getAttribute("id");
-
-            if (activeSection !== id) {
-                activeSection = id;
-
-                // remove old active
-                document.querySelector(".nav-link.active")?.classList.remove("active");
-
-                // add active to new tab
-                const newActive = document.querySelector(`.nav-link[href="#${id}"]`);
-                if (newActive) {
-                newActive.classList.add("active");
-
-                // auto center tab
-                const linkPos =
-                    newActive.offsetLeft -
-                    navScroll.offsetWidth / 2 +
-                    newActive.offsetWidth / 2;
-
-                navScroll.scrollTo({ left: linkPos, behavior: "smooth" });
-                }
-            }
-            }
-        });
-        });
-
-    </script>
+</script>
 
 </THIRD-SECTION>
 
@@ -430,22 +402,22 @@
 
   const tabsNav = document.getElementById("tabsNav");
 
-    // show popup
-    imgs.forEach((img, index) => {
-        img.addEventListener("click", () => {
-            current = index;
-            popupImg.src = img.src;
-            popup.classList.remove("hidden");
-            popup.classList.add("flex");
-            tabsNav.style.display = "none";   // 🔥 HIDE NAV WHEN POPUP OPENS
-        });
+// show popup
+imgs.forEach((img, index) => {
+    img.addEventListener("click", () => {
+        current = index;
+        popupImg.src = img.src;
+        popup.classList.remove("hidden");
+        popup.classList.add("flex");
+        tabsNav.style.display = "none";   // 🔥 HIDE NAV WHEN POPUP OPENS
     });
+});
 
-    // close popup
-    document.getElementById("closeBtn").onclick = () => {
-        popup.classList.add("hidden");
-        tabsNav.style.display = "block";      // 🔥 SHOW NAV AGAIN
-    };
+// close popup
+document.getElementById("closeBtn").onclick = () => {
+    popup.classList.add("hidden");
+    tabsNav.style.display = "block";      // 🔥 SHOW NAV AGAIN
+};
 
 </script>
 
@@ -522,45 +494,16 @@
         <!-- ABOUT TEXT -->
         <div class="mt-6">
             <h3 class="font-semibold mb-2">About Mahindra Marina 64</h3>
-
-            <p class="text-gray-700 text-sm mb-2" id="aboutShort">
+            <p class="text-gray-700 text-sm mb-2">
                 Mahindra Lifespaces Malad West will be constructed on 4.7 Acres of land
-                parcel, 7 Towers with G+5P+17 floors having 2 BHK, 3 BHK, 4 BHK premium residences...
+                parcel, 7 Towers with G+5P+17 floors having 2 BHK, 3 BHK, 4 BHK premium
+                residences.
             </p>
 
-            <p class="text-gray-700 text-sm mb-2 hidden mt-2" id="aboutFull">
-                Mahindra Lifespaces Malad West will be constructed on 4.7 Acres of land parcel.
-                This premium township includes 7 Towers with G+5P+17 floors. The project will offer
-                spacious 2 BHK, 3 BHK, and 4 BHK premium residences with modern lifestyle amenities,
-                landscaped open spaces, and excellent connectivity. Residents will enjoy enhanced
-                privacy, better ventilation, and seamless access to schools, employment hubs,
-                shopping complexes, and healthcare centers in the Malad West locality.
-            </p>
-
-            <button id="readMoreBtn" class="text-green-600 font-semibold text-sm">
-                Read More...
-            </button>
+            <a href="#" class="text-green-600 font-semibold text-sm">Read More...</a>
         </div>
-
     </div>
 </section>
-
-<script>
-    document.getElementById("readMoreBtn").addEventListener("click", function () {
-        const shortText = document.getElementById("aboutShort");
-        const fullText = document.getElementById("aboutFull");
-
-        if (fullText.classList.contains("hidden")) {
-            fullText.classList.remove("hidden");
-            shortText.classList.add("hidden");
-            this.textContent = "Read Less...";
-        } else {
-            fullText.classList.add("hidden");
-            shortText.classList.remove("hidden");
-            this.textContent = "Read More...";
-        }
-    });
-</script>
 
 <!-- ========================================= -->
 <!-- 🔥 PRICING & UNIT PLANS SECTION -->
@@ -798,34 +741,14 @@
 
         <div class="border border-t-0 rounded-b-lg p-5 bg-white" id="video">
 
-             <p class="text-green-600 font-semibold mb-3">Teaser</p>
+            <p class="text-green-600 font-semibold mb-3">Teaser</p>
 
-            <div class="relative w-full h-56 bg-black rounded-lg overflow-hidden">
-
-                <!-- HTML5 VIDEO -->
-                <video id="teaserVideo" class="w-full h-full object-cover" preload="metadata">
-                    <source src="https://www.youtube.com/watch?v=VNdB9OrDKn8&t=1s" type="video/mp4">
-                </video>
-
-                <!-- PLAY BUTTON OVERLAY -->
-                <div id="playBtn"
-                    class="absolute inset-0 flex items-center justify-center bg-black/40 cursor-pointer transition hover:bg-black/50">
-                    <img src="https://housiey.com/_next/image?url=https%3A%2F%2Fresources.housiey.com%2Fadmin%2Fuploads%2Fproject_images%2FL%26T_Island_Cove_Elevation--1712469067411-img.webp&w=1080&q=75" class="w-14 opacity-90" />
-                </div>
-
-                <!-- CUSTOM CONTROLS -->
-                <div id="controls"
-                    class="absolute bottom-0 left-0 right-0 bg-black/60 text-white px-4 py-2 flex justify-between items-center opacity-0 transition">
-                    
-                    <button id="pausePlay" class="text-lg">⏵</button>
-                    <button id="fullscreenBtn" class="text-lg">⛶</button>
-                </div>
-
+            <div class="w-full h-56 bg-gray-200 rounded-lg flex items-center justify-center">
+                <span class="text-gray-500">Video Preview / Embedded Video</span>
             </div>
 
         </div>
-
-
+    </div>
 
     <!-- RIGHT SIDE: CALL ME INST. + SITE VISIT FORM -->
     <div class="space-y-5">
@@ -941,49 +864,6 @@
 
     </div>
     </div>
-    
-<script>
-    const video = document.getElementById("teaserVideo");
-    const playBtn = document.getElementById("playBtn");
-    const controls = document.getElementById("controls");
-    const pausePlay = document.getElementById("pausePlay");
-    const fullscreenBtn = document.getElementById("fullscreenBtn");
-
-    // Play button in center
-    playBtn.addEventListener("click", () => {
-        playBtn.style.display = "none";
-        controls.style.opacity = "1";
-        video.play();
-    });
-
-    // Pause / Play button bottom-left
-    pausePlay.addEventListener("click", () => {
-        if (video.paused) {
-            video.play();
-            pausePlay.textContent = "⏸";
-        } else {
-            video.pause();
-            pausePlay.textContent = "⏵";
-        }
-    });
-
-    // Fullscreen
-    fullscreenBtn.addEventListener("click", () => {
-        if (video.requestFullscreen) video.requestFullscreen();
-    });
-
-    // Auto-hide controls when paused
-    video.addEventListener("pause", () => {
-        pausePlay.textContent = "⏵";
-    });
-
-    // Auto show play button again when ended
-    video.addEventListener("ended", () => {
-        playBtn.style.display = "flex";
-        controls.style.opacity = "0";
-    });
-</script>
-
 
 </section>
 
@@ -1277,8 +1157,12 @@
 </section>
 
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 <!-- ===================== Project approved by ===================== -->
+
+
 <section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]">
 
     <!-- HEADER -->
@@ -1352,13 +1236,14 @@
 
 <!-- ===================== EMI CALCULATOR ===================== -->
 
+<!-- PAYMENT CALCULATOR -->
   <section class="bg-white border-b" id="emi_calculator">
     <div class="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-8">
       <div>
         <h2 class="text-2xl font-semibold mb-4 flex items-center gap-2">
     <i class="fa-solid fa-calculator text-gray-700 text-xl"></i>
     EMI Calculator
-        </h2>
+</h2>
         <p class="text-sm text-gray-700 mb-4">
           Estimate your monthly EMI based on loan amount, interest rate and tenure.
         </p>
@@ -1405,61 +1290,24 @@
     </div>
   </section>
 
-<script>
-    // ---------------------- EMI CALCULATION LOGIC ----------------------
-    document.getElementById("emiBtn").addEventListener("click", function () {
-    
-    let price = parseFloat(document.getElementById("priceInput").value) || 0;
-    let down = parseFloat(document.getElementById("downInput").value) || 0;
-    let rate = parseFloat(document.getElementById("rateInput").value) || 0;
-    let tenureYears = parseFloat(document.getElementById("tenureInput").value) || 0;
-
-    // Loan Amount
-    let loanAmount = price - down;
-    if (loanAmount <= 0) {
-        document.getElementById("emiResult").innerHTML = "Invalid Inputs";
-        return;
-    }
-
-    // Convert annual rate to monthly
-    let monthlyRate = rate / 12 / 100;
-
-    // Total months
-    let months = tenureYears * 12;
-
-    // EMI Formula
-    let emi =
-        (loanAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
-        (Math.pow(1 + monthlyRate, months) - 1);
-
-    if (!emi || emi < 0) {
-        document.getElementById("emiResult").innerHTML = "Invalid Inputs";
-        return;
-    }
-
-    // Format output
-    document.getElementById("emiResult").innerHTML =
-        "₹" + emi.toLocaleString("en-IN", { maximumFractionDigits: 0 }) + " / month";
-    });
-</script>
 
 
 <script>
-    var swiper = new Swiper(".bankSwiper", {
-        slidesPerView: 5,
-        spaceBetween: 20,
-        loop: true,
-        autoplay: {
-            delay: 1500,
-            disableOnInteraction: false,
-        },
-        breakpoints: {
-            0: { slidesPerView: 2 },
-            480: { slidesPerView: 3 },
-            768: { slidesPerView: 4 },
-            1024: { slidesPerView: 5 }
-        }
-    });
+var swiper = new Swiper(".bankSwiper", {
+    slidesPerView: 5,
+    spaceBetween: 20,
+    loop: true,
+    autoplay: {
+        delay: 1500,
+        disableOnInteraction: false,
+    },
+    breakpoints: {
+        0: { slidesPerView: 2 },
+        480: { slidesPerView: 3 },
+        768: { slidesPerView: 4 },
+        1024: { slidesPerView: 5 }
+    }
+});
 </script>
 
 
@@ -1626,25 +1474,25 @@
 
 
 <script>
-    document.querySelectorAll(".faq-item").forEach((item) => {
-        const q = item.querySelector(".faq-question");
-        const ans = item.querySelector(".faq-answer");
-        const icon = item.querySelector(".faq-icon");
+document.querySelectorAll(".faq-item").forEach((item) => {
+    const q = item.querySelector(".faq-question");
+    const ans = item.querySelector(".faq-answer");
+    const icon = item.querySelector(".faq-icon");
 
-        q.addEventListener("click", () => {
-            const isOpen = !ans.classList.contains("hidden");
+    q.addEventListener("click", () => {
+        const isOpen = !ans.classList.contains("hidden");
 
-            // Close all FAQs
-            document.querySelectorAll(".faq-answer").forEach(a => a.classList.add("hidden"));
-            document.querySelectorAll(".faq-icon").forEach(i => i.style.transform = "rotate(0deg)");
+        // Close all FAQs
+        document.querySelectorAll(".faq-answer").forEach(a => a.classList.add("hidden"));
+        document.querySelectorAll(".faq-icon").forEach(i => i.style.transform = "rotate(0deg)");
 
-            // Toggle current faq
-            if (!isOpen) {
-                ans.classList.remove("hidden");
-                icon.style.transform = "rotate(180deg)";
-            }
-        });
+        // Toggle current faq
+        if (!isOpen) {
+            ans.classList.remove("hidden");
+            icon.style.transform = "rotate(180deg)";
+        }
     });
+});
 </script>
 
 
@@ -1962,49 +1810,6 @@ var swiper = new Swiper(".relatedSwiper", {
         }
     });
 </script>
-
-<script>
-    const video = document.getElementById("teaserVideo");
-    const playBtn = document.getElementById("playBtn");
-    const controls = document.getElementById("controls");
-    const pausePlay = document.getElementById("pausePlay");
-    const fullscreenBtn = document.getElementById("fullscreenBtn");
-
-    // Play button in center
-    playBtn.addEventListener("click", () => {
-        playBtn.style.display = "none";
-        controls.style.opacity = "1";
-        video.play();
-    });
-
-    // Pause / Play button bottom-left
-    pausePlay.addEventListener("click", () => {
-        if (video.paused) {
-            video.play();
-            pausePlay.textContent = "⏸";
-        } else {
-            video.pause();
-            pausePlay.textContent = "⏵";
-        }
-    });
-
-    // Fullscreen
-    fullscreenBtn.addEventListener("click", () => {
-        if (video.requestFullscreen) video.requestFullscreen();
-    });
-
-    // Auto-hide controls when paused
-    video.addEventListener("pause", () => {
-        pausePlay.textContent = "⏵";
-    });
-
-    // Auto show play button again when ended
-    video.addEventListener("ended", () => {
-        playBtn.style.display = "flex";
-        controls.style.opacity = "0";
-    });
-</script>
-
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />

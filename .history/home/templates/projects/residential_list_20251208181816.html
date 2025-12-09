@@ -4,32 +4,7 @@
 {% load humanize %} 
 {% block title %}{{ site_settings.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
 
-<style>
-  /* Auto sliding gallery */
-.slider-animation {
-    display: flex;
-    animation: slide 12s infinite linear;
-}
-.slider-animation img {
-    width: 100%;
-    flex-shrink: 0;
-    object-fit: cover;
-}
 
-@keyframes slide {
-    0% { transform: translateX(0); }
-    20% { transform: translateX(0); }
-
-    25% { transform: translateX(-100%); }
-    45% { transform: translateX(-100%); }
-
-    50% { transform: translateX(-200%); }
-    70% { transform: translateX(-200%); }
-
-    75% { transform: translateX(-300%); }
-    100% { transform: translateX(-300%); }
-}
-</style>
 
 {% block content %}
 
@@ -205,112 +180,29 @@
 <!-- ✅ List View -->
 <div id="listView" class="space-y-6">
   {% for project in projects %}
-  
-  <div class="flex flex-col sm:flex-row bg-white rounded-2xl shadow border hover:border-orange-500 hover:shadow-xl transition-all p-4">
-
-    <!-- Project Image -->
+  <div class="flex flex-col sm:flex-row bg-white rounded-lg shadow p-4 border hover:shadow-lg hover:border-orange-500 transition">
     {% if project.image %}
-      <img src="{{ project.image.url }}" 
-           class="w-full sm:w-64 h-48 object-cover rounded-lg mt-0"
-           style="height: 250px;" 
-           alt="{{ project.project_name }}">
+    <img src="{{ project.image.url }}" class="w-full w-64 h-48 object-cover rounded" alt="{{ project.project_name }}" style="height: 250px;">
     {% else %}
-      <img src="{% static 'images/no-images.jpg' %}" 
-           class="w-full sm:w-64 h-48 object-cover rounded-lg"
-           style="height: 250px;" 
-           alt="No Image">
+    <img src="{% static 'images/no-images.jpg' %}" class="w-full sm:w-64 h-50 object-cover rounded" alt="No Image" style="height: 250px;">
     {% endif %}
-
-    <!-- Right Section -->
-    <div class="sm:ml-5 mt-4 sm:mt-0 flex-1 space-y-2">
-
-      <!-- Title + Location -->
-      <div>
-        <h2 class="text-xl font-semibold text-gray-900">{{ project.project_name }}</h2>
-        <p class="text-sm text-gray-500 flex items-center gap-1">
-          <i class="fas fa-map-marker-alt text-orange-500"></i> 
-          <span>{{ project.locality }}, {{ project.city }}</span>
-        </p>
-      </div>
-
-      <!-- Badges -->
-      <div class="flex flex-wrap gap-2 text-xs text-gray-700">
-        <span class="px-2 py-1 rounded-full bg-gray-100">{{ project.construction_status }}</span>
-        <span class="px-2 py-1 rounded-full bg-gray-100">{{ project.propert_type }}</span>
-        <span class="px-2 py-1 rounded-full bg-gray-100">Land Parcel: {{ project.land_parce|default:"N/A" }}</span>
-      </div>
-
-
-
-      <!-- Divider -->
-      <div class="border-t border-gray-200"></div>
-
-      <!-- 🔸 KEY HIGHLIGHTS BLOCK -->
-      <div class="bg-orange-50 rounded-xl p-2">
-        <p class="text-xs font-semibold text-orange-700 uppercase tracking-wider mb-2">
-          Key Highlights
-        </p>
-
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs text-gray-700">
-
-          <!-- Developer -->
-          <div class="flex gap-1 items-start">
-            <div class="w-7 h-7 rounded-md bg-white shadow flex items-center justify-center">
-              <i class="fas fa-user-tie text-orange-500 text-xs"></i>
-            </div>
-            <div>
-              <p class="font-semibold">Developer</p>
-              <p class="text-gray-600">Lodha Group</p>
-            </div>
-          </div>
-
-          <!-- Towers -->
-          <div class="flex gap-1 items-start">
-            <div class="w-7 h-7 rounded-md bg-white shadow flex items-center justify-center">
-              <i class="fas fa-building text-orange-500 text-xs"></i>
-            </div>
-            <div>
-              <p class="font-semibold">Towers</p>
-              <p class="text-gray-600">5 Residential Towers</p>
-            </div>
-          </div>
-
-          <!-- Floors -->
-          <div class="flex gap-1 items-start">
-            <div class="w-7 h-7 rounded-md bg-white shadow flex items-center justify-center">
-              <i class="fas fa-layer-group text-orange-500 text-xs"></i>
-            </div>
-            <div>
-              <p class="font-semibold">Floors</p>
-              <p class="text-gray-600">G + 32 Storeys</p>
-            </div>
-          </div>
-
-          <!-- Area -->
-          <div class="flex gap-1 items-start">
-            <div class="w-7 h-7 rounded-md bg-white shadow flex items-center justify-center">
-              <i class="fas fa-th-large text-orange-500 text-xs"></i>
-            </div>
-            <div>
-              <p class="font-semibold">Project Area</p>
-              <p class="text-gray-600">5 Acres</p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- CTA -->
-      <div class="pt-1">
-        <a href="{{ project.get_absolute_url }}" 
-           class="inline-flex items-center text-orange-600 font-semibold text-sm hover:text-orange-700">
-          View Details <i class="fas fa-arrow-right ml-1"></i>
-        </a>
-      </div>
-
+    
+    <div class="sm:ml-4 mt-4 sm:mt-0 flex-1">
+      <h2 class="text-xl font-semibold text-gray-800">{{ project.project_name }}</h2>
+      <p class="text-sm text-gray-500 mb-2">
+        <i class="fas fa-map-marker-alt text-orange-500"></i> {{ project.locality }}, {{ project.city }}
+      </p>
+      <p class="text-gray-600 text-sm mb-2">
+        {{ project.construction_status }} | {{ project.propert_type }} | Land Parcel: {{ project.land_parce|default:"N/A" }}
+      </p>
+      <p class="text-gray-600 text-sm mb-2">
+        {{ project.get_configuration_summary }}
+      </p>
+      <p class="text-gray-700 text-sm mb-2 font-medium">Price: {{ project.get_price_range }}</p>
+      <p class="text-gray-600 text-sm mb-3">Possession: {{ project.possession_month }}, {{ project.possession_year }}</p>
+      <a href="{{ project.get_absolute_url }}" class="text-orange-500 font-semibold underline">View Details →</a>
     </div>
   </div>
-
   {% empty %}
   <div class="text-center text-gray-500 py-10">No projects found.</div>
   {% endfor %}
@@ -318,132 +210,44 @@
 
 
 <!-- ✅ Grid View -->
+<!-- ✅ Grid View (Dynamic Django Version) -->
 <div id="gridView" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
 
   {% for project in projects %}
   <div class="bg-white rounded-lg shadow p-4 border hover:shadow-lg hover:border-orange-500 transition">
-
-    <!-- Project Image -->
+    
     {% if project.image %}
-      <img src="{{ project.image.url }}"
-           class="w-full h-48 object-cover rounded"
-           alt="{{ project.project_name }}"
-           style="height: 250px;">
+    <img src="{{ project.image.url }}" class="w-full h-48 object-cover rounded" alt="{{ project.project_name }}"style="height: 250px;">
     {% else %}
-      <img src="{% static 'images/no-images.jpg' %}"
-           class="w-full h-48 object-cover rounded"
-           alt="No Image"
-           style="height: 250px;">
+    <img src="{% static 'images/no-images.jpg' %}" class="w-full h-48 object-cover rounded" alt="No Image"style="height: 250px;">
     {% endif %}
 
-    <!-- Content -->
-    <div class="mt-4 space-y-2">
+    <div class="mt-4">
+      <h2 class="text-xl font-semibold text-gray-800">{{ project.project_name }}</h2>
+      <p class="text-sm text-gray-500 mb-2">
+        <i class="fas fa-map-marker-alt text-orange-500"></i> {{ project.locality }}, {{ project.city }}
+      </p>
+      <p class="text-gray-600 text-sm mb-2">
+        {{ project.construction_status }} | {{ project.propert_type.name }} | Land Parcel: {{ project.land_parce|default:"N/A" }}
+      </p>
+      <p class="text-gray-600 text-sm mb-2">
+        {{ project.get_configuration_summary }}
+      </p>
+      <p class="text-gray-700 text-sm mb-2 font-medium">Price: {{ project.get_price_range }}</p>
+      <p class="text-gray-600 text-sm mb-3">
+        Possession: {{ project.possession_month }}, {{ project.possession_year }}
+      </p>
 
-      <!-- Title + Location -->
-      <div>
-        <h2 class="text-lg font-semibold text-gray-900 line-clamp-1">
-          {{ project.project_name }}
-        </h2>
-        <p class="text-sm text-gray-500 flex items-center gap-1 mt-1">
-          <i class="fas fa-map-marker-alt text-orange-500 text-sm"></i>
-          <span class="line-clamp-1">{{ project.locality }}, {{ project.city }}</span>
-        </p>
-      </div>
-
-      <!-- Status / Type / Land (Badges) -->
-      <div class="flex flex-wrap gap-2 text-xs text-gray-700">
-        <span class="px-2 py-0.5 rounded-full bg-gray-100">
-          {{ project.construction_status }}
-        </span>
-        <span class="px-2 py-0.5 rounded-full bg-gray-100">
-          {{ project.propert_type.name }}
-        </span>
-        <span class="px-2 py-0.5 rounded-full bg-gray-100">
-          Land Parcel: {{ project.land_parce|default:"N/A" }}
-        </span>
-      </div>
-
-  
-
-      <!-- Divider -->
-      <div class="border-t border-gray-100 pt-3 mt-1"></div>
-
-      <!-- 🔸 Key Highlights -->
-      <div class="bg-orange-50 rounded-xl px-3 py-3">
-        <p class="text-xs font-semibold text-orange-700 uppercase tracking-[0.16em] mb-2">
-          Key Highlights
-        </p>
-
-        <div class="grid grid-cols-2 gap-x-4 gap-y-3 text-xs text-gray-700">
-
-          <!-- Developer -->
-          <div class="flex items-start gap-2">
-            <div class="w-7 h-7 rounded-lg bg-white shadow flex items-center justify-center">
-              <i class="fas fa-user-tie text-orange-500 text-xs"></i>
-            </div>
-            <div>
-              <p class="font-semibold leading-tight">Developer</p>
-              <p class="text-gray-600 leading-tight">{{project.developer}}</p>
-            </div>
-          </div>
-
-          <!-- Total Towers -->
-          <div class="flex items-start gap-2">
-            <div class="w-7 h-7 rounded-lg bg-white shadow flex items-center justify-center">
-              <i class="fas fa-building text-orange-500 text-xs"></i>
-            </div>
-            <div>
-              <p class="font-semibold leading-tight">Towers</p>
-              <p class="text-gray-600 leading-tight">5 Residential Towers</p>
-            </div>
-          </div>
-
-          <!-- Total Floors -->
-          <div class="flex items-start gap-2">
-            <div class="w-7 h-7 rounded-lg bg-white shadow flex items-center justify-center">
-              <i class="fas fa-layer-group text-orange-500 text-xs"></i>
-            </div>
-            <div>
-              <p class="font-semibold leading-tight">Floors</p>
-              <p class="text-gray-600 leading-tight">{{project.floor}}</p>
-            </div>
-          </div>
-
-          <!-- Project Area -->
-          <div class="flex items-start gap-2">
-            <div class="w-7 h-7 rounded-lg bg-white shadow flex items-center justify-center">
-              <i class="fas fa-th-large text-orange-500 text-xs"></i>
-            </div>
-            <div>
-              <p class="font-semibold leading-tight">Project Area</p>
-              <p class="text-gray-600 leading-tight">{{project.land_parce}}</p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- CTA -->
-      <div class="flex justify-between items-center pt-2">
-        <span class="text-[11px] text-gray-500 hidden sm:inline">
-          Limited inventory • Book your site visit
-        </span>
-
-        <a href="{{ project.get_absolute_url }}"
-           class="inline-flex items-center text-sm text-white bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded-full transition">
-          View Details
-          <i class="fas fa-arrow-right ml-2 text-xs"></i>
-        </a>
-      </div>
-
+      <a href="{{ project.get_absolute_url }}" 
+         class="inline-block mt-2 text-sm text-white bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded transition">
+         View Details
+      </a>
     </div>
   </div>
-
   {% empty %}
-    <div class="text-center text-gray-500 py-10 col-span-2">No projects found.</div>
+  <div class="text-center text-gray-500 py-10 col-span-2">No projects found.</div>
   {% endfor %}
 </div>
-
 
 
 <!-- Pagination Section -->
