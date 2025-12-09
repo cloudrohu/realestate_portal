@@ -24,7 +24,7 @@
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4 bg-white">
 
         <!-- LOGO -->
-        <a href="#" class="flex items-center gap-2">
+        <a href="/" class="flex items-center gap-2">
             <img src="https://housiey.com/_next/static/media/logo.dfea690a.svg" 
                  class="w-36" alt="Cloud Rohu Logo">
         </a>
@@ -262,38 +262,58 @@
                 </div>
 
         <br>
-     <script>
-            const imgs = document.querySelectorAll(".gallery-img");
-            const popup = document.getElementById("popup");
-            const popupImg = document.getElementById("popupImg");
-            let current = 0;
+<script>
+        const imgs = document.querySelectorAll(".gallery-img");
+        const popup = document.getElementById("popup");
+        const popupImg = document.getElementById("popupImg");
+        let current = 0;
 
-            imgs.forEach((img, index) => {
-                img.addEventListener("click", () => {
-                    current = index;
-                    popupImg.src = img.src;
-                    popup.classList.remove("hidden");
-                    popup.classList.add("flex");
-                    document.body.style.overflow = "hidden"; // prevent scroll behind
-                });
+        const tabsNav = document.getElementById("tabsNav");
+
+        // OPEN POPUP
+        imgs.forEach((img, index) => {
+            img.addEventListener("click", () => {
+                current = index;
+                popupImg.src = img.src;
+
+                popup.classList.remove("hidden");
+                popup.classList.add("flex");
+
+                // Disable scroll on both tags
+                document.body.style.overflow = "hidden";
+                document.documentElement.style.overflow = "hidden";
+
+                // Hide sticky nav
+                if (tabsNav) tabsNav.style.display = "none";
             });
+        });
 
-            document.getElementById("nextBtn").onclick = () => {
-                current = (current + 1) % imgs.length;
-                popupImg.src = imgs[current].src;
-            };
+        // NEXT IMAGE
+        document.getElementById("nextBtn").onclick = () => {
+            current = (current + 1) % imgs.length;
+            popupImg.src = imgs[current].src;
+        };
 
-            document.getElementById("prevBtn").onclick = () => {
-                current = (current - 1 + imgs.length) % imgs.length;
-                popupImg.src = imgs[current].src;
-            };
+        // PREVIOUS IMAGE
+        document.getElementById("prevBtn").onclick = () => {
+            current = (current - 1 + imgs.length) % imgs.length;
+            popupImg.src = imgs[current].src;
+        };
 
-            document.getElementById("closeBtn").onclick = () => {
-                popup.classList.add("hidden");
-                popup.classList.remove("flex");
-                document.body.style.overflow = "auto"; // restore scroll
-            };
-        </script>
+        // CLOSE POPUP
+        document.getElementById("closeBtn").onclick = () => {
+            popup.classList.add("hidden");
+            popup.classList.remove("flex");
+
+            // Restore scroll completely
+            document.body.style.overflow = "";
+            document.documentElement.style.overflow = "";
+
+            // Show sticky nav again
+            if (tabsNav) tabsNav.style.display = "block";
+        };
+</script>
+
 
         <style>
             #popup {
