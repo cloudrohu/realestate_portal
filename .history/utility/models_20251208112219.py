@@ -46,8 +46,6 @@ class City(MPTTModel):
 class Locality(MPTTModel):
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     name = models.CharField(max_length=150)
-    featured_locality = models.BooleanField(default=False)
-    
     slug = models.SlugField(max_length=150, unique=True, null=True, blank=True)
 
     parent = TreeForeignKey(
