@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>L&T Island Cove
 </title>
+
+
 </head>
 
 <style>
@@ -17,14 +19,14 @@
     width: 100%;
   }
 </style>
-<body>
+    <body>
 
   <!-- ======================== TOP HEADER ======================== -->
 <header class="w-full bg-white border-b sticky top-0 z-[999]">
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4 bg-white">
 
         <!-- LOGO -->
-        <a href="#" class="flex items-center gap-2">
+        <a href="/" class="flex items-center gap-2">
             <img src="https://housiey.com/_next/static/media/logo.dfea690a.svg" 
                  class="w-36" alt="Cloud Rohu Logo">
         </a>
@@ -228,7 +230,7 @@
                         data-index="2">
 
                 <!-- OVERLAY -->
-                <div class="absolute inset-0 bg-black/40  flex items-center justify-center text-white text-lg font-medium cursor-pointer">
+                <div data-index="3" class="absolute inset-0 bg-black/40  flex items-center justify-center text-white text-lg font-medium cursor-pointer">
                     View all images
                 </div>
             </div>
@@ -236,6 +238,7 @@
         </div>
 
         </div>
+
             <!-- POPUP -->
                 <div id="popup" class="fixed inset-0 bg-black/90 hidden items-center justify-center z-[9999] backdrop-blur-sm transition">
 
@@ -262,53 +265,199 @@
                 </div>
 
         <br>
-     <script>
-            const imgs = document.querySelectorAll(".gallery-img");
-            const popup = document.getElementById("popup");
-            const popupImg = document.getElementById("popupImg");
-            let current = 0;
 
-            imgs.forEach((img, index) => {
-                img.addEventListener("click", () => {
-                    current = index;
-                    popupImg.src = img.src;
-                    popup.classList.remove("hidden");
-                    popup.classList.add("flex");
-                    document.body.style.overflow = "hidden"; // prevent scroll behind
-                });
+
+  
+
+        <br>
+    <style>
+    /* small improvements for popup */
+    #popup {
+        animation: fadeIn 0.18s ease-out;
+    }
+    @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+
+    /* make overlay clickable but closeBtn stays clickable */
+    #popup .popup-inner {
+        position: relative;
+        max-width: 90vw;
+        max-height: 90vh;
+    }
+
+    /* optional: prevent image selection when dragging */
+    #popupImg { user-select: none; -webkit-user-drag: none; }
+    </style>
+
+    <script>
+        (function(){
+        // --- elements ---
+        const imgs = Array.from(document.querySelectorAll(".gallery-img"));
+        const popup = document.getElementById("popup");
+        const popupImg = document.getElementById("popupImg");
+        const closeBtn = document.getElementById("closeBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const prevBtn = document.getElementById("prevBtn");
+        const tabsNav = document.getElementById("tabsNav");
+
+        if (!popup || imgs.length === 0) return; // nothing to do
+
+        let current = 0;
+        let scrollBarWidth = 0;
+
+        // utility: lock / unlock scroll (safe)
+        function lockScroll() {
+            // compute scrollbar width to avoid layout jump
+            scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+            if (scrollBarWidth > 0) {
+            document.documentElement.style.paddingRight = scrollBarWidth + 'px';
+            document.body.style.paddingRight = scrollBarWidth + 'px';
+            }
+            // use fixed to avoid double scroll on iOS/mobile
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+            document.body.classList.add('popup-open');
+        }
+
+        function unlockScroll() {
+            document.documentElement.style.overflow = '';
+            document.body.style.overflow = '';
+            document.documentElement.style.paddingRight = '';
+            document.body.style.paddingRight = '';
+            document.body.classList.remove('popup-open');
+        }
+
+        // open popup at index
+        function openAt(index) {
+            current = ((index % imgs.length) + imgs.length) % imgs.length; // safe wrap
+            popupImg.src = imgs[current].src;
+            popup.classList.remove('hidden');
+            popup.classList.add('flex');
+            lockScroll();
+
+            // hide nav if present
+            if (tabsNav) tabsNav.style.display = 'none';
+            // focus for keyboard
+            closeBtn.focus();
+        }
+
+        // close popup
+        function closePopup() {
+            popup.classList.remove('flex');
+            popup.classList.add('hidden');
+            unlockScroll();
+            if (tabsNav) tabsNav.style.display = '';
+        }
+
+        // image click to open
+        imgs.forEach((img, idx) => {
+            img.addEventListener('click', (e) => {
+            e.preventDefault();
+            openAt(idx);
             });
+        });
 
-            document.getElementById("nextBtn").onclick = () => {
-                current = (current + 1) % imgs.length;
-                popupImg.src = imgs[current].src;
-            };
+        // next / prev handlers
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            current = (current + 1) % imgs.length;
+            popupImg.src = imgs[current].src;
+        });
 
-            document.getElementById("prevBtn").onclick = () => {
-                current = (current - 1 + imgs.length) % imgs.length;
-                popupImg.src = imgs[current].src;
-            };
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            current = (current - 1 + imgs.length) % imgs.length;
+            popupImg.src = imgs[current].src;
+        });
 
-            document.getElementById("closeBtn").onclick = () => {
-                popup.classList.add("hidden");
-                popup.classList.remove("flex");
-                document.body.style.overflow = "auto"; // restore scroll
-            };
-        </script>
+        // close button
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closePopup();
+        });
+=======
+<script>
+        const imgs = document.querySelectorAll(".gallery-img");
+        const popup = document.getElementById("popup");
+        const popupImg = document.getElementById("popupImg");
+        let current = 0;
 
-        <style>
-            #popup {
-                animation: fadeIn 0.25s ease-out;
+        const tabsNav = document.getElementById("tabsNav");
+
+        // OPEN POPUP
+        imgs.forEach((img, index) => {
+            img.addEventListener("click", () => {
+                current = index;
+                popupImg.src = img.src;
+
+                popup.classList.remove("hidden");
+                popup.classList.add("flex");
+
+                // Disable scroll on both tags
+                document.body.style.overflow = "hidden";
+                document.documentElement.style.overflow = "hidden";
+
+                // Hide sticky nav
+                if (tabsNav) tabsNav.style.display = "none";
+            });
+        });
+
+        // NEXT IMAGE
+        document.getElementById("nextBtn").onclick = () => {
+            current = (current + 1) % imgs.length;
+            popupImg.src = imgs[current].src;
+        };
+
+        // PREVIOUS IMAGE
+        document.getElementById("prevBtn").onclick = () => {
+            current = (current - 1 + imgs.length) % imgs.length;
+            popupImg.src = imgs[current].src;
+        };
+
+        // CLOSE POPUP
+        document.getElementById("closeBtn").onclick = () => {
+            popup.classList.add("hidden");
+            popup.classList.remove("flex");
+
+            // Restore scroll completely
+            document.body.style.overflow = "";
+            document.documentElement.style.overflow = "";
+
+            // Show sticky nav again
+            if (tabsNav) tabsNav.style.display = "block";
+        };
+</script>
+
+>>>>>>> 51785904ba271cc8a682071efda7ac6f600a2a62
+
+        // click on overlay (but ignore clicks on image or controls)
+        popup.addEventListener('click', (e) => {
+            if (e.target === popup) closePopup();
+        });
+
+        // keyboard support: Esc to close, Arrow keys to navigate
+        document.addEventListener('keydown', (e) => {
+            if (popup.classList.contains('hidden')) return;
+
+            if (e.key === 'Escape') {
+            closePopup();
+            } else if (e.key === 'ArrowRight') {
+            current = (current + 1) % imgs.length;
+            popupImg.src = imgs[current].src;
+            } else if (e.key === 'ArrowLeft') {
+            current = (current - 1 + imgs.length) % imgs.length;
+            popupImg.src = imgs[current].src;
             }
-            @keyframes fadeIn {
-                from { opacity: 0; }
-                to   { opacity: 1; }
-            }
-        </style>
+        });
+
+        // defensive: if images change dynamically, update list (optional)
+        // MutationObserver could be added here if needed.
+
+        })();
+    </script>
 
 
-        <!-- IMAGES END-->
 
-
+   
 </SECTION-FIRST>
 
 
@@ -574,7 +723,7 @@
             Mahindra Marina 64 Pricing & Unit Plans
         </h2>
 
-        <button class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded">
+        <button id="openPricePopup" class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded">
             Price Sheet
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
                 viewBox="0 0 24 24" stroke="currentColor">
@@ -755,11 +904,73 @@
         </div>
 
     </div>
+
+
+    <!-- PRICE SHEET POPUP -->
+    <div id="pricePopup" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-[9999] transition duration-300">
+
+        <!-- MODAL BOX -->
+        <div class="bg-white w-96 rounded-2xl shadow-2xl p-7 relative animate-[fadeInScale_.25s_ease]">
+
+            <!-- CLOSE BTN -->
+            <button id="closePricePopup" 
+                class="absolute top-3 right-4 text-2xl text-gray-500 hover:text-gray-800 transition">
+                ✕
+            </button>
+
+            <!-- Heading -->
+            <h2 class="text-2xl font-bold text-gray-900 mb-1 text-center">Enquiry For</h2>
+            <p class="text-green-600 font-semibold mb-6 text-center text-lg" id="projectTitle">
+                Project Name
+            </p>
+
+            <!-- FORM -->
+            <form id="priceForm" class="space-y-4">
+
+                <!-- Input Field -->
+                <div>
+                    <label class="text-gray-700 text-sm font-medium">Your Name</label>
+                    <input type="text" id="pName" placeholder="Enter your name"
+                        class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:border-green-600 focus:ring-green-200 focus:ring-2 outline-none transition"
+                        required>
+                </div>
+
+                <div>
+                    <label class="text-gray-700 text-sm font-medium">Your Email</label>
+                    <input type="email" id="pEmail" placeholder="Enter your email"
+                        class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:border-green-600 focus:ring-green-200 focus:ring-2 outline-none transition"
+                        required name="email">
+                </div>
+
+                <div>
+                    <label class="text-gray-700 text-sm font-medium">Phone Number</label>
+                    <input type="text" id="pPhone" placeholder="Enter phone number"
+                        class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:border-green-600 focus:ring-green-200 focus:ring-2 outline-none transition"
+                        required name="phone">
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition">
+                    Download Price Sheet
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- ANIMATION -->
+    <style>
+    @keyframes fadeInScale {
+        0%   { opacity: 0; transform: scale(0.85); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+    </style>
+
+
 </section>
 
 
 <!-- ===================== Location BOX ===================== -->
-
 <section class="max-w-7xl mx-auto p-4 scroll-mt-[130px] grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6" id="location">
 
     <!-- ===================== MIDDLE COLUMN ===================== -->
@@ -779,16 +990,24 @@
             <br>
 
             <!-- ADDRESS -->
-            <p class="text-gray-700 text-sm mb-3">
+            <p class="text-gray-800 font-semibold text-sm mb-3">
                 Nr New Link Rd, Liberty Garden, Malad West, Mumbai
             </p>
 
-            <!-- Bullet Points -->
-            <ul class="text-sm space-y-2 text-gray-800 list-disc pl-5 mb-4">
+             <ul class="grid grid-cols-1 md:grid-cols-2 gap-y-2 text-sm text-gray-800 pl-5 mb-4 list-disc">
+
                 <li>Malad West Metro Station - 500m</li>
                 <li>DMart - 850m</li>
+
                 <li>Malad Railway Station - 1.2km</li>
+                <li>Inorbit Mall - 1.5km</li>
+
+                <li>Link Road - 600m</li>
+                <li>Schools & Colleges Nearby</li>
+
             </ul>
+
+
 
         </div>
 
@@ -981,11 +1200,7 @@
     });
 </script>
 
-
-
-
 <!-- ===================== AMENITIES SECTION ===================== -->
-
 <section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="amenities">
 
     <!-- HEADER BAR -->
@@ -998,109 +1213,151 @@
         <!-- EXTERNAL AMENITIES -->
         <h3 class="text-sm font-semibold text-gray-700 mb-3">External Amenities</h3>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3" id="amenitiesGrid">
 
-            <!-- AMENITY CARD -->
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/727/727598.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Swimming Pool</p>
+            <!-- VISIBLE AMENITIES -->
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/727/727598.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Swimming Pool</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Club House</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Club House</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/3076/3076409.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Kids Play Area</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3076/3076409.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Kids Play Area</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Kids Pool</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Kids Pool</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/1016/1016133.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Skating Rink</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/1016/1016133.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Skating Rink</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/841/841389.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Amphitheater</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/841/841389.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Amphitheater</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/2964/2964514.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Yoga Zone</p>
+                 <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/727/727598.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Swimming Pool</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/1057/1057431.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Rock Climbing</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Club House</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/745/745361.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Cycling Track</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/3076/3076409.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Kids Play Area</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/3081/3081377.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">BBQ Lawn</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Kids Pool</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/4603/4603911.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Pet Park</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/1016/1016133.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Skating Rink</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/1710/1710737.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Indoor Games</p>
+            <div class="amenity-card">
+                <img src="https://cdn-icons-png.flaticon.com/512/841/841389.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Amphitheater</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/6030/6030093.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Yoga Deck</p>
+            <!-- ========= HIDDEN AMENITIES (Initially Hidden) ========= -->
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/2964/2964514.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Yoga Zone</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/1046/1046804.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Badminton Court</p>
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/1057/1057431.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Rock Climbing</p>
             </div>
 
-            <div
-                class="border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition">
-                <img src="https://cdn-icons-png.flaticon.com/512/3003/3003985.png" class="w-8 opacity-80" alt="">
-                <p class="text-xs text-gray-800">Gymnasium</p>
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/745/745361.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Cycling Track</p>
             </div>
 
-            <!-- +4 MORE CARD -->
-            <div
-                class="border rounded-lg flex items-center justify-center text-center p-3 h-28 bg-[#e8eff5] text-gray-700 font-semibold">
-                +4 More
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/3081/3081377.png" class="w-8 opacity-80 mt-1">
+                <p class="label">BBQ Lawn</p>
+            </div>
+
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/4603/4603911.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Pet Park</p>
+            </div>
+
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/1710/1710737.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Indoor Games</p>
+            </div>
+
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/6030/6030093.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Yoga Deck</p>
+            </div>
+
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/1046/1046804.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Badminton Court</p>
+            </div>
+
+            <div class="amenity-card hidden more-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/3003/3003985.png" class="w-8 opacity-80 mt-1">
+                <p class="label">Gymnasium</p>
+            </div>
+
+            <!-- SHOW MORE BUTTON -->
+            <div id="showMoreBtn"
+                class="border rounded-lg flex items-center justify-center text-center p-2 h-10 bg-[#e8eff5] text-gray-700 font-semibold cursor-pointer">
+                + 4 More
             </div>
 
         </div>
     </div>
-
 </section>
+
+<!-- ===================== JS FOR SHOW MORE ===================== -->
+<script>
+    const btn = document.getElementById("showMoreBtn");
+    const hiddenItems = document.querySelectorAll(".more-item");
+    let expanded = false;
+
+    btn.addEventListener("click", () => {
+        expanded = !expanded;
+
+        hiddenItems.forEach(item => {
+            item.classList.toggle("hidden");
+        });
+
+        btn.textContent = expanded ? "- Show Less" : "+ 4 More";
+    });
+</script>
+
+<!-- ===================== CARD STYLE (Tailwind classes) ===================== -->
+<style>
+    .amenity-card {
+        @apply border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition;
+    }
+    .amenity-card .label {
+        @apply text-xs text-gray-800;
+    }
+</style>
 
 
 <!-- ===================== MASTER & FLOOR PLAN SECTION ===================== -->
@@ -1220,7 +1477,6 @@
 
 
 <!-- ===================== PAYMENT SCHEME SECTION ===================== -->
-
 <section class="max-w-7xl mx-auto p-6 scroll-mt-[130px]" id="paymentscheme">
     <!-- HEADER -->
     <div class="bg-[#e8eff5] px-6 py-4 border rounded-t-lg flex items-center justify-between">
@@ -1348,7 +1604,6 @@
 
 
 <!-- ===================== EMI CALCULATOR ===================== -->
-
   <section class="bg-white border-b" id="emi_calculator">
     <div class="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-8">
       <div>
@@ -1539,7 +1794,6 @@
 </section>
 
 <!-- ===================== Faq's ===================== -->
-
 <section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="faqs">
 
     <!-- HEADER -->
@@ -1550,7 +1804,7 @@
     <div class="bg-white border border-t-0 rounded-b-lg p-4">
 
         <!-- FAQ WRAPPER -->
-        <div id="faqContainer" class="space-y-3">
+        <div id="faqContainer" class="space-y-3 max-h-[400px] overflow-y-auto pr-2">
 
             <!-- FAQ ITEM TEMPLATE -->
             <!-- Copy this block to add more -->
@@ -1559,7 +1813,7 @@
                     <p class="font-medium text-gray-800">
                         Can I see the sample flat of Mahindra Marina 64? Is it ready?
                     </p>
-                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">⌄</span>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300"><i class="fa-solid fa-caret-down"></i></span>
                 </div>
                 <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
                     Yes, sample flat visits are allowed based on builder availability. Contact us to book a free guided visit.
@@ -1571,7 +1825,7 @@
                     <p class="font-medium text-gray-800">
                         When is the expected possession of Mahindra Marina 64?
                     </p>
-                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">⌄</span>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300"><i class="fa-solid fa-caret-down"></i></span>
                 </div>
                 <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
                     The project is expected to be delivered by December 2029 as per the current construction schedule.
@@ -1583,7 +1837,7 @@
                     <p class="font-medium text-gray-800">
                         Is Mahindra Marina 64 RERA registered? What is the RERA number?
                     </p>
-                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">⌄</span>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300"><i class="fa-solid fa-caret-down"></i></span>
                 </div>
                 <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
                     Yes, the project is RERA registered with number PR1181012500087.
@@ -1595,7 +1849,7 @@
                     <p class="font-medium text-gray-800">
                         What amenities are offered at Mahindra Marina 64?
                     </p>
-                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">⌄</span>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300"><i class="fa-solid fa-caret-down"></i></span>
                 </div>
                 <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
                     Amenities include pool, gymnasium, clubhouse, skating rink, yoga deck, kids play area & more.
@@ -1607,7 +1861,7 @@
                     <p class="font-medium text-gray-800">
                         What is the carpet area of a 2BHK in Mahindra Marina 64?
                     </p>
-                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">⌄</span>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300"><i class="fa-solid fa-caret-down"></i></span>
                 </div>
                 <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
                     The carpet area of 2BHK ranges from approx. 761–775 sq.ft.
@@ -1615,6 +1869,157 @@
             </div>
 
             <!-- Add more FAQ items like above -->
+
+                            <!-- FAQ 6 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        Does Mahindra Marina 64 offer home loan assistance?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Yes, loans are available through all major banks with dedicated assistance from our mortgage experts.
+                </div>
+            </div>
+
+            <!-- FAQ 7 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        What is the booking amount for Mahindra Marina 64?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    The standard booking amount is between ₹50,000 to ₹1,00,000 depending on the unit type.
+                </div>
+            </div>
+
+            <!-- FAQ 8 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        Can I customize the interior in Mahindra Marina 64?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Basic customization may be allowed depending on construction stage. Contact us for detailed options.
+                </div>
+            </div>
+
+            <!-- FAQ 9 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        How many towers and floors does the project have?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    The project consists of multiple high-rise towers with premium elevation designs. Exact tower count varies by phase.
+                </div>
+            </div>
+
+            <!-- FAQ 10 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        Is car parking available for residents?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Yes, both open and covered parking options are available depending on the unit type and tower.
+                </div>
+            </div>
+
+            <!-- FAQ 11 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        Are there schools, malls & hospitals nearby?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Yes, several reputed schools, shopping malls, and multispeciality hospitals are available within a 2–5 km radius.
+                </div>
+            </div>
+
+            <!-- FAQ 12 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        What are the maintenance charges for the units?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Maintenance charges depend on carpet area and amenities. Final charges will be shared at possession.
+                </div>
+            </div>
+
+            <!-- FAQ 13 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        Is there 24×7 security and CCTV surveillance?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Yes, the project offers round-the-clock security, CCTV monitoring and controlled access points.
+                </div>
+            </div>
+
+            <!-- FAQ 14 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        Are pets allowed inside the society?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Yes, pets are allowed as per society guidelines, provided they follow hygiene and safety rules.
+                </div>
+            </div>
+
+            <!-- FAQ 15 -->
+            <div class="faq-item border rounded-lg bg-[#f4f8fb] p-4 cursor-pointer">
+                <div class="flex justify-between items-center faq-question">
+                    <p class="font-medium text-gray-800">
+                        Does the builder provide after-sales support?
+                    </p>
+                    <span class="faq-icon text-gray-600 text-xl transition-transform duration-300">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </div>
+                <div class="faq-answer hidden mt-3 text-sm text-gray-600 leading-relaxed">
+                    Yes, dedicated after-sales support is available for residents regarding possession, documentation, and service requests.
+                </div>
+            </div>
+
         </div>
 
     </div>
@@ -1960,47 +2365,51 @@ var swiper = new Swiper(".relatedSwiper", {
     });
 </script>
 
+
 <script>
-    const video = document.getElementById("teaserVideo");
-    const playBtn = document.getElementById("playBtn");
-    const controls = document.getElementById("controls");
-    const pausePlay = document.getElementById("pausePlay");
-    const fullscreenBtn = document.getElementById("fullscreenBtn");
+const openBtn = document.getElementById("openPricePopup");
+const closeBtn = document.getElementById("closePricePopup");
+const popup = document.getElementById("pricePopup");
+const priceForm = document.getElementById("priceForm");
 
-    // Play button in center
-    playBtn.addEventListener("click", () => {
-        playBtn.style.display = "none";
-        controls.style.opacity = "1";
-        video.play();
-    });
+// OPEN POPUP
+openBtn.addEventListener("click", () => {
+    popup.classList.remove("hidden");
+    popup.classList.add("flex");
+    document.body.style.overflow = "hidden";
+});
 
-    // Pause / Play button bottom-left
-    pausePlay.addEventListener("click", () => {
-        if (video.paused) {
-            video.play();
-            pausePlay.textContent = "⏸";
-        } else {
-            video.pause();
-            pausePlay.textContent = "⏵";
-        }
-    });
+// CLOSE POPUP
+closeBtn.addEventListener("click", () => {
+    popup.classList.add("hidden");
+    popup.classList.remove("flex");
+    document.body.style.overflow = "auto";
+});
 
-    // Fullscreen
-    fullscreenBtn.addEventListener("click", () => {
-        if (video.requestFullscreen) video.requestFullscreen();
-    });
+// FORM SUBMIT
+priceForm.addEventListener("submit", function(e) {
+    e.preventDefault();
 
-    // Auto-hide controls when paused
-    video.addEventListener("pause", () => {
-        pausePlay.textContent = "⏵";
-    });
+    // Yaha backend ko send karna ho to AJAX bhi laga sakte hain
+    // Abhi direct file download karwa rahe hain:
 
-    // Auto show play button again when ended
-    video.addEventListener("ended", () => {
-        playBtn.style.display = "flex";
-        controls.style.opacity = "0";
-    });
+    const downloadLink = document.createElement("a");
+    downloadLink.href = "static/pdf/price-sheet.pdf";  // <<< YOUR FILE PATH
+    downloadLink.download = "Price-Sheet.pdf";
+    downloadLink.click();
+
+    // Close popup after download
+    popup.classList.add("hidden");
+    popup.classList.remove("flex");
+    document.body.style.overflow = "auto";
+
+    // Clear form
+    priceForm.reset();
+});
 </script>
+
+=======
+>>>>>>> 51785904ba271cc8a682071efda7ac6f600a2a62
 
 
 

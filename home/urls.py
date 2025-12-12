@@ -14,7 +14,5 @@ urlpatterns = [
     path('terms-conditions/', views.terms_conditions, name='terms_conditions'),
     path('disclaimer/', views.disclaimer, name='disclaimer'),
     path('terms-cookies/', views.cookies, name='cookies'),
-    path('post_properties/', views.property_posting, name='post_properties'),
-
 
 ]

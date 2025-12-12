@@ -1,5 +1,7 @@
 {% load static %}
 {% load humanize %}
+
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 <section class="bg-[#f8fafc] py-16 relative overflow-hidden">
   <div class="max-w-7xl mx-auto px-4">
@@ -26,7 +28,8 @@
               <!-- Image Section -->
               <div class="relative h-60 w-full overflow-hidden">
                 {% if rs.image %}
-                  <img src="{{ rs.image.url }}" alt="{{ rs.project_name }}  "
+                  
+                <img src="{{ rs.image.url }}" alt="{{ rs.project_name }}  "
                     class="w-full h-full object-cover transition-transform duration-500 hover:scale-200">
                 {% else %}
                   <img src="{% static 'images/default-placeholder.jpg' %}" alt="No image"
@@ -108,6 +111,7 @@
 </section>
 
 
+
 <!-- SwiperJS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
@@ -141,143 +145,306 @@
    
 
 
-<section class="bg-[#f8fafc] py-2 relative overflow-hidden">
-  <div class="max-w-7xl mx-auto px-4">
+<!-- NEW LAUCH PROJECTS -->
+<section class="py-12" data-aos="fade-up">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    
+    <!-- Title -->
+    <h2 class="text-2xl sm:text-3xl font-extrabold text-center mb-8 text-orange-600 uppercase">
+      NEW LAUCH PROJECTS
+    </h2>
 
-    <!-- Section Title -->
-    <div class="text-center mb-10">
-      <h2 class="text-3xl md:text-4xl font-bold text-orange-400 uppercase tracking-wide">
-          New Launch Projects
-      </h2>
-      <p class="text-gray-300 mt-1 text-sm md:text-base">
-        Explore our best and most popular real estate New Launch projects
-      </p>
+    <!-- Tabs -->
+    <div class="flex flex-wrap justify-center mb-8 gap-3">
+      <button data-tab="buy" class="tab-btn active px-6 py-2 rounded-full font-semibold shadow transition">
+        Residential
+      </button>
+      <button data-tab="rent" class="tab-btn bg-gray-200 text-gray-800 px-6 py-2 rounded-full font-semibold hover:bg-orange-200 transition">
+        Commercial
+      </button>
     </div>
 
-    <!-- Swiper Container -->
-    <div class="relative">
-      <div class="swiper mySwiper px-8"> <!-- Added padding so arrows stay outside cards -->
+    <!-- BUY TAB -->
+    <div id="buy" class="tab-content">
+      <div class="swiper mySwiper">
         <div class="swiper-wrapper">
-
-             <!-- Card 1 -->
-          <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
-            <div class="relative">
-              <img src="https://dummyimage.com/400x250/cccccc/000000&text=Buy+1" class="w-full h-48 object-cover">
-              <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">FEATURED</span>
-              <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">Residential</span>
-            </div>
-            <div class="p-4">
-              <p class="text-lg font-bold text-gray-700">Sunshine Residency</p>
-              <h3 class="text-orange-600 font-semibold mt-1 mb-1">2 BHK Luxury Apartment</h3>
-              <p class="text-gray-800 font-bold">₹80 Lakh</p>
-              <p class="text-sm text-gray-600 mt-1"><i class="fas fa-map-marker-alt text-orange-500"></i> Andheri (West), Mumbai</p>
-              <div class="grid grid-cols-2 gap-3 text-xs text-gray-600 mt-3">
-                <div><strong>Area</strong><br>800 Sq.Ft.</div>
-                <div><strong>Status</strong><br>Available</div>
-                <div><strong>Transaction</strong><br>New</div>
-                <div><strong>Type</strong><br>Residential</div>
-              </div>
-              <div class="flex items-center gap-2 mt-3">
-                <img src="https://dummyimage.com/40x40/ffa500/fff&text=D" class="h-10 w-10 rounded-full border">
-                <p class="text-sm text-green-600 font-medium">Malhotra Developers</p>
-              </div>
-            </div>
-            <div class="bg-orange-500 text-center">
-              <button class="text-white font-bold w-full py-3 uppercase">See Details</button>
-            </div>
-          </div>
-          <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
-            <div class="relative">
-              <img src="https://dummyimage.com/400x250/cccccc/000000&text=Buy+1" class="w-full h-48 object-cover">
-              <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">FEATURED</span>
-              <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">Residential</span>
-            </div>
-            <div class="p-4">
-              <p class="text-lg font-bold text-gray-700">Sunshine Residency</p>
-              <h3 class="text-orange-600 font-semibold mt-1 mb-1">2 BHK Luxury Apartment</h3>
-              <p class="text-gray-800 font-bold">₹80 Lakh</p>
-              <p class="text-sm text-gray-600 mt-1"><i class="fas fa-map-marker-alt text-orange-500"></i> Andheri (West), Mumbai</p>
-              <div class="grid grid-cols-2 gap-3 text-xs text-gray-600 mt-3">
-                <div><strong>Area</strong><br>800 Sq.Ft.</div>
-                <div><strong>Status</strong><br>Available</div>
-                <div><strong>Transaction</strong><br>New</div>
-                <div><strong>Type</strong><br>Residential</div>
-              </div>
-              <div class="flex items-center gap-2 mt-3">
-                <img src="https://dummyimage.com/40x40/ffa500/fff&text=D" class="h-10 w-10 rounded-full border">
-                <p class="text-sm text-green-600 font-medium">Malhotra Developers</p>
-              </div>
-            </div>
-            <div class="bg-orange-500 text-center">
-              <button class="text-white font-bold w-full py-3 uppercase">See Details</button>
-            </div>
-          </div>
-          <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
-            <div class="relative">
-              <img src="https://dummyimage.com/400x250/cccccc/000000&text=Buy+1" class="w-full h-48 object-cover">
-              <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">FEATURED</span>
-              <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">Residential</span>
-            </div>
-            <div class="p-4">
-              <p class="text-lg font-bold text-gray-700">Sunshine Residency</p>
-              <h3 class="text-orange-600 font-semibold mt-1 mb-1">2 BHK Luxury Apartment</h3>
-              <p class="text-gray-800 font-bold">₹80 Lakh</p>
-              <p class="text-sm text-gray-600 mt-1"><i class="fas fa-map-marker-alt text-orange-500"></i> Andheri (West), Mumbai</p>
-              <div class="grid grid-cols-2 gap-3 text-xs text-gray-600 mt-3">
-                <div><strong>Area</strong><br>800 Sq.Ft.</div>
-                <div><strong>Status</strong><br>Available</div>
-                <div><strong>Transaction</strong><br>New</div>
-                <div><strong>Type</strong><br>Residential</div>
-              </div>
-              <div class="flex items-center gap-2 mt-3">
-                <img src="https://dummyimage.com/40x40/ffa500/fff&text=D" class="h-10 w-10 rounded-full border">
-                <p class="text-sm text-green-600 font-medium">Malhotra Developers</p>
-              </div>
-            </div>
-            <div class="bg-orange-500 text-center">
-              <button class="text-white font-bold w-full py-3 uppercase">See Details</button>
-            </div>
-          </div>
-          <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
-            <div class="relative">
-              <img src="https://dummyimage.com/400x250/cccccc/000000&text=Buy+1" class="w-full h-48 object-cover">
-              <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">FEATURED</span>
-              <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">Residential</span>
-            </div>
-            <div class="p-4">
-              <p class="text-lg font-bold text-gray-700">Sunshine Residency</p>
-              <h3 class="text-orange-600 font-semibold mt-1 mb-1">2 BHK Luxury Apartment</h3>
-              <p class="text-gray-800 font-bold">₹80 Lakh</p>
-              <p class="text-sm text-gray-600 mt-1"><i class="fas fa-map-marker-alt text-orange-500"></i> Andheri (West), Mumbai</p>
-              <div class="grid grid-cols-2 gap-3 text-xs text-gray-600 mt-3">
-                <div><strong>Area</strong><br>800 Sq.Ft.</div>
-                <div><strong>Status</strong><br>Available</div>
-                <div><strong>Transaction</strong><br>New</div>
-                <div><strong>Type</strong><br>Residential</div>
-              </div>
-              <div class="flex items-center gap-2 mt-3">
-                <img src="https://dummyimage.com/40x40/ffa500/fff&text=D" class="h-10 w-10 rounded-full border">
-                <p class="text-sm text-green-600 font-medium">Malhotra Developers</p>
-              </div>
-            </div>
-            <div class="bg-orange-500 text-center">
-              <button class="text-white font-bold w-full py-3 uppercase">See Details</button>
-            </div>
-          </div>
-
           
+          <!-- Card 1 -->
+          <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://dummyimage.com/400x250/cccccc/000000&text=Buy+1" class="w-full h-48 object-cover">
+              <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">FEATURED</span>
+              <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">Residential</span>
+            </div>
+            <div class="p-4">
+              <p class="text-lg font-bold text-gray-700">Sunshine Residency</p>
+              <h3 class="text-orange-600 font-semibold mt-1 mb-1">2 BHK Luxury Apartment</h3>
+              <p class="text-gray-800 font-bold">₹80 Lakh</p>
+              <p class="text-sm text-gray-600 mt-1"><i class="fas fa-map-marker-alt text-orange-500"></i> Andheri (West), Mumbai</p>
+              <div class="grid grid-cols-2 gap-3 text-xs text-gray-600 mt-3">
+                <div><strong>Area</strong><br>800 Sq.Ft.</div>
+                <div><strong>Status</strong><br>Available</div>
+                <div><strong>Transaction</strong><br>New</div>
+                <div><strong>Type</strong><br>Residential</div>
+              </div>
+              <div class="flex items-center gap-2 mt-3">
+                <img src="https://dummyimage.com/40x40/ffa500/fff&text=D" class="h-10 w-10 rounded-full border">
+                <p class="text-sm text-green-600 font-medium">Malhotra Developers</p>
+              </div>
+            </div>
+            <div class="bg-orange-500 text-center">
+              <button class="text-white font-bold w-full py-3 uppercase">See Details</button>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://dummyimage.com/400x250/cccccc/000000&text=Buy+2" class="w-full h-48 object-cover">
+              <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">FEATURED</span>
+              <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">Residential</span>
+            </div>
+            <div class="p-4">
+              <p class="text-lg font-bold text-gray-700">Greenwood Towers</p>
+              <h3 class="text-orange-600 font-semibold mt-1 mb-1">3 BHK Apartment</h3>
+              <p class="text-gray-800 font-bold">₹1.2 Cr</p>
+              <p class="text-sm text-gray-600 mt-1"><i class="fas fa-map-marker-alt text-orange-500"></i> Goregaon (East), Mumbai</p>
+            </div>
+            <div class="bg-orange-500 text-center">
+              <button class="text-white font-bold w-full py-3 uppercase">See Details</button>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://dummyimage.com/400x250/cccccc/000000&text=Buy+3" class="w-full h-48 object-cover">
+              <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">FEATURED</span>
+              <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">Residential</span>
+            </div>
+            <div class="p-4">
+              <p class="text-lg font-bold text-gray-700">Palm Residency</p>
+              <h3 class="text-orange-600 font-semibold mt-1 mb-1">2 BHK Flat</h3>
+              <p class="text-gray-800 font-bold">₹95 Lakh</p>
+              <p class="text-sm text-gray-600 mt-1"><i class="fas fa-map-marker-alt text-orange-500"></i> Kandivali, Mumbai</p>
+            </div>
+            <div class="bg-orange-500 text-center">
+              <button class="text-white font-bold w-full py-3 uppercase">See Details</button>
+            </div>
+          </div>
+
+          <!-- Card 1 -->
+          <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://dummyimage.com/400x250/cccccc/000000&text=Buy+1" class="w-full h-48 object-cover">
+              <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">FEATURED</span>
+              <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">Residential</span>
+            </div>
+            <div class="p-4">
+              <p class="text-lg font-bold text-gray-700">Sunshine Residency</p>
+              <h3 class="text-orange-600 font-semibold mt-1 mb-1">2 BHK Luxury Apartment</h3>
+              <p class="text-gray-800 font-bold">₹80 Lakh</p>
+              <p class="text-sm text-gray-600 mt-1"><i class="fas fa-map-marker-alt text-orange-500"></i> Andheri (West), Mumbai</p>
+              <div class="grid grid-cols-2 gap-3 text-xs text-gray-600 mt-3">
+                <div><strong>Area</strong><br>800 Sq.Ft.</div>
+                <div><strong>Status</strong><br>Available</div>
+                <div><strong>Transaction</strong><br>New</div>
+                <div><strong>Type</strong><br>Residential</div>
+              </div>
+              <div class="flex items-center gap-2 mt-3">
+                <img src="https://dummyimage.com/40x40/ffa500/fff&text=D" class="h-10 w-10 rounded-full border">
+                <p class="text-sm text-green-600 font-medium">Malhotra Developers</p>
+              </div>
+            </div>
+            <div class="bg-orange-500 text-center">
+              <button class="text-white font-bold w-full py-3 uppercase">See Details</button>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://dummyimage.com/400x250/cccccc/000000&text=Buy+2" class="w-full h-48 object-cover">
+              <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">FEATURED</span>
+              <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">Residential</span>
+            </div>
+            <div class="p-4">
+              <p class="text-lg font-bold text-gray-700">Greenwood Towers</p>
+              <h3 class="text-orange-600 font-semibold mt-1 mb-1">3 BHK Apartment</h3>
+              <p class="text-gray-800 font-bold">₹1.2 Cr</p>
+              <p class="text-sm text-gray-600 mt-1"><i class="fas fa-map-marker-alt text-orange-500"></i> Goregaon (East), Mumbai</p>
+            </div>
+            <div class="bg-orange-500 text-center">
+              <button class="text-white font-bold w-full py-3 uppercase">See Details</button>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://dummyimage.com/400x250/cccccc/000000&text=Buy+3" class="w-full h-48 object-cover">
+              <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">FEATURED</span>
+              <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">Residential</span>
+            </div>
+            <div class="p-4">
+              <p class="text-lg font-bold text-gray-700">Palm Residency</p>
+              <h3 class="text-orange-600 font-semibold mt-1 mb-1">2 BHK Flat</h3>
+              <p class="text-gray-800 font-bold">₹95 Lakh</p>
+              <p class="text-sm text-gray-600 mt-1"><i class="fas fa-map-marker-alt text-orange-500"></i> Kandivali, Mumbai</p>
+            </div>
+            <div class="bg-orange-500 text-center">
+              <button class="text-white font-bold w-full py-3 uppercase">See Details</button>
+            </div>
+          </div>
+
         </div>
+
+        <br><br><br>
+
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
       </div>
-      <br><br>
-      <!-- Swiper Pagination & Arrows -->
-      <div class="swiper-pagination mt-6"></div>
-      <div class="swiper-button-prev !text-orange-500 !left-0 -translate-x-8 scale-90"></div>
-      <div class="swiper-button-next !text-orange-500 !right-0 translate-x-8 scale-90"></div>
+    </div>
+
+    <!-- RENT TAB -->
+    <div id="rent" class="tab-content hidden">
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+          
+          <!-- Rent Card -->
+          <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://dummyimage.com/400x250/cccccc/000000&text=Rent+1" class="w-full h-48 object-cover">
+              <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">RENT</span>
+              <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">Residential</span>
+            </div>
+            <div class="p-4">
+              <p class="text-lg font-bold text-gray-700">Blue Pearl Residency</p>
+              <h3 class="text-orange-600 font-semibold mt-1 mb-1">2 BHK Flat in Bandra</h3>
+              <p class="text-gray-800 font-bold">₹40,000 /mo</p>
+              <p class="text-sm text-gray-600 mt-1"><i class="fas fa-map-marker-alt text-orange-500"></i> Bandra, Mumbai</p>
+            </div>
+            <div class="bg-orange-500 text-center">
+              <button class="text-white font-bold w-full py-3 uppercase">See Details</button>
+            </div>
+          </div>
+
+          <!-- Card 1 -->
+          <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://dummyimage.com/400x250/cccccc/000000&text=Buy+1" class="w-full h-48 object-cover">
+              <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">FEATURED</span>
+              <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">Residential</span>
+            </div>
+            <div class="p-4">
+              <p class="text-lg font-bold text-gray-700">Sunshine Residency</p>
+              <h3 class="text-orange-600 font-semibold mt-1 mb-1">2 BHK Luxury Apartment</h3>
+              <p class="text-gray-800 font-bold">₹80 Lakh</p>
+              <p class="text-sm text-gray-600 mt-1"><i class="fas fa-map-marker-alt text-orange-500"></i> Andheri (West), Mumbai</p>
+              <div class="grid grid-cols-2 gap-3 text-xs text-gray-600 mt-3">
+                <div><strong>Area</strong><br>800 Sq.Ft.</div>
+                <div><strong>Status</strong><br>Available</div>
+                <div><strong>Transaction</strong><br>New</div>
+                <div><strong>Type</strong><br>Residential</div>
+              </div>
+              <div class="flex items-center gap-2 mt-3">
+                <img src="https://dummyimage.com/40x40/ffa500/fff&text=D" class="h-10 w-10 rounded-full border">
+                <p class="text-sm text-green-600 font-medium">Malhotra Developers</p>
+              </div>
+            </div>
+            <div class="bg-orange-500 text-center">
+              <button class="text-white font-bold w-full py-3 uppercase">See Details</button>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://dummyimage.com/400x250/cccccc/000000&text=Buy+2" class="w-full h-48 object-cover">
+              <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">FEATURED</span>
+              <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">Residential</span>
+            </div>
+            <div class="p-4">
+              <p class="text-lg font-bold text-gray-700">Greenwood Towers</p>
+              <h3 class="text-orange-600 font-semibold mt-1 mb-1">3 BHK Apartment</h3>
+              <p class="text-gray-800 font-bold">₹1.2 Cr</p>
+              <p class="text-sm text-gray-600 mt-1"><i class="fas fa-map-marker-alt text-orange-500"></i> Goregaon (East), Mumbai</p>
+            </div>
+            <div class="bg-orange-500 text-center">
+              <button class="text-white font-bold w-full py-3 uppercase">See Details</button>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
+            <div class="relative">
+              <img src="https://dummyimage.com/400x250/cccccc/000000&text=Buy+3" class="w-full h-48 object-cover">
+              <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">FEATURED</span>
+              <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">Residential</span>
+            </div>
+            <div class="p-4">
+              <p class="text-lg font-bold text-gray-700">Palm Residency</p>
+              <h3 class="text-orange-600 font-semibold mt-1 mb-1">2 BHK Flat</h3>
+              <p class="text-gray-800 font-bold">₹95 Lakh</p>
+              <p class="text-sm text-gray-600 mt-1"><i class="fas fa-map-marker-alt text-orange-500"></i> Kandivali, Mumbai</p>
+            </div>
+            <div class="bg-orange-500 text-center">
+              <button class="text-white font-bold w-full py-3 uppercase">See Details</button>
+            </div>
+          </div>
+
+        </div>
+
+        <br><br><br>
+
+
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
     </div>
 
   </div>
 </section>
 
+<!-- Swiper JS -->
+<script>
+  // Swiper Init
+  function initSwiper() {
+    document.querySelectorAll(".mySwiper").forEach(swiperEl => {
+      new Swiper(swiperEl, {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        pagination: {
+          el: swiperEl.querySelector(".swiper-pagination"),
+          clickable: true,
+        },
+        navigation: {
+          nextEl: swiperEl.querySelector(".swiper-button-next"),
+          prevEl: swiperEl.querySelector(".swiper-button-prev"),
+        },
+        breakpoints: {
+          768: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+        },
+      });
+    });
+  }
+  initSwiper();
+
+  // Tabs functionality
+  document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      this.classList.add("active");
+
+      document.querySelectorAll(".tab-content").forEach(tab => tab.classList.add("hidden"));
+      document.getElementById(this.dataset.tab).classList.remove("hidden");
+    });
+  });
+</script>
 
 
 <!-- POSSESSION START SECTION -->
@@ -355,31 +522,191 @@ relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
 <!-- POSSESSION END SECTION -->
 
 <!-- ===================== FULL WIDTH SECTION ======================= -->
-<section class="bg-[#071220] text-white py-16">
-  <div class="max-w-7xl mx-auto px-6 text-center">
+<section class="w-full py text-white bg-cover bg-center relative" style="background-image: url('https://sigmahomes.co.in/media/about/Prithvi_Pride.jpg');">
 
-    <!-- Heading -->
-    <h2 class="text-3xl md:text-4xl font-bold mb-2">How it Works</h2>
-    <p class="text-gray-300 mb-12">Your Hassle-Free Property Buying Process</p>
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/40"></div>
 
-    <!-- GRID -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+    <div class="relative max-w-7xl mx-auto px-6 text-center">
 
-      
+        <h2 class="text-3xl md:text-4xl font-semibold mb-12">End To End Assistance</h2>
 
+        <!-- MAIN ROW -->
+          <div class="grid grid-cols-5 gap-6 relative">
+
+              <!-- LINE Behind Icons -->
+              <div class="absolute top-[38px] left-0 right-0 h-[2px] bg-white/40"></div>
+
+              <!-- ITEM 1 -->
+              <div class="group flex flex-col items-center text-center relative w-full">
+                  <div class="w-20 h-20 rounded-full border-2 border-white/40 flex items-center justify-center group-hover:bg-orange-500 transition">
+                      <i class="fa-solid fa-building text-2xl cursor-pointer"></i>
+                  </div>
+                  <h3 class="mt-4 font-semibold cursor-pointer">Search & Shortlisting</h3>
+                  <p class="mt-2 text-sm opacity-0 group-hover:opacity-100 transition">
+                      Lacs of verified listings from 500+ developers
+                  </p>
+                  <button class="mt-3 px-4 py-2 border rounded text-sm opacity-0 group-hover:opacity-100 transition">
+                      Get in touch
+                  </button>
+              </div>
+
+              <!-- ITEM 2 -->
+              <div class="group flex flex-col items-center text-center relative w-full">
+                  <div class="w-20 h-20 rounded-full border-2 border-white/40 flex items-center justify-center group-hover:bg-orange-500 transition">
+                      <i class="fa-solid fa-car text-2xl cursor-pointer"></i>
+                  </div>
+                  <h3 class="mt-4 font-semibold cursor-pointer">Site Visit</h3>
+                  <p class="mt-2 text-sm opacity-0 group-hover:opacity-100 transition">
+                      Guided site visits with experts
+                  </p>
+                  <button class="mt-3 px-4 py-2 border rounded text-sm opacity-0 group-hover:opacity-100 transition">
+                      Book site visit
+                  </button>
+              </div>
+
+              <!-- ITEM 3 -->
+              <div class="group flex flex-col items-center text-center relative w-full">
+                  <div class="w-20 h-20 rounded-full border-2 border-white/40 flex items-center justify-center group-hover:bg-orange-500 transition">
+                      <i class="fa-solid fa-sack-dollar text-2xl cursor-pointer"></i>
+                  </div>
+                  <h3 class="mt-4 font-semibold">Home Loan Assistance</h3>
+                  <p class="mt-2 text-sm opacity-0 group-hover:opacity-100 transition">
+                      Loan guidance from top banks
+                  </p>
+                  <button class="mt-3 px-4 py-2 border rounded text-sm opacity-0 group-hover:opacity-100 transition">
+                      Apply Homeloan
+                  </button>
+              </div>
+
+              <!-- ITEM 4 -->
+              <div class="group flex flex-col items-center text-center relative w-full">
+                  <div class="w-20 h-20 rounded-full border-2 border-white/40 flex items-center justify-center group-hover:bg-orange-500 transition">
+                      <i class="fa-solid fa-file-lines text-2xl cursor-pointer"></i>
+                  </div>
+                  <h3 class="mt-4 font-semibold">Legal Advice</h3>
+                  <p class="mt-2 text-sm opacity-0 group-hover:opacity-100 transition">
+                      Legal and documentation support
+                  </p>
+                  <button class="mt-3 px-4 py-2 border rounded text-sm opacity-0 group-hover:opacity-100 transition">
+                      Get in touch
+                  </button>
+              </div>
+
+              <!-- ITEM 5 -->
+              <div class="group flex flex-col items-center text-center relative w-full">
+                  <div class="w-20 h-20 rounded-full border-2 border-white/40 flex items-center justify-center group-hover:bg-orange-500 transition">
+                      <i class="fa-solid fa-key text-2xl cursor-pointer"></i>
+                  </div>
+                  <h3 class="mt-4 font-semibold">Unit Booking</h3>
+                  <p class="mt-2 text-sm opacity-0 group-hover:opacity-100 transition duration-300">
+                      Assistance till final possession
+                  </p>
+                  <button class="mt-3 px-4 py-2 border rounded text-sm opacity-0 group-hover:opacity-100 transition">
+                      Get in touch
+                  </button>
+              </div>
+
+          </div>
+
+<section class="relative w-full bg-cover bg-center py-16"
+    style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=60');">
+
+    <div class="absolute inset-0 bg-black/30"></div>
+
+    <div class="relative max-w-7xl mx-auto px-6 text-white">
+
+        <h2 class="text-3xl font-semibold text-center mb-12">End To End Assistance</h2>
+
+        <div class="flex flex-col md:flex-row items-center justify-between gap-10">
+
+            <!-- BOX 1 -->
+            <div class="group flex flex-col items-center cursor-pointer">
+                <div class="w-20 h-20 rounded-full flex items-center justify-center border border-white/40 
+                            group-hover:bg-orange-500 group-hover:border-orange-500 transition-all">
+                    <i class="fa-solid fa-building text-2xl group-hover:text-white"></i>
+                </div>
+
+                <p class="mt-4 text-lg font-semibold">Search & Shortlisting</p>
+
+                <p class="text-sm text-center opacity-0 group-hover:opacity-100 translate-y-2 
+                           group-hover:translate-y-0 transition-all duration-300">
+                    Lacs of verified listings from reputed developers
+                </p>
+            </div>
+
+            <!-- LINE -->
+            <div class="hidden md:block w-32 h-[2px] bg-white/40"></div>
+
+            <!-- BOX 2 -->
+            <div class="group flex flex-col items-center cursor-pointer">
+                <div class="w-20 h-20 rounded-full flex items-center justify-center border border-white/40 
+                            group-hover:bg-orange-500 group-hover:border-orange-500 transition-all">
+                    <i class="fa-solid fa-car text-2xl group-hover:text-white"></i>
+                </div>
+
+                <p class="mt-4 text-lg font-semibold">Site Visit</p>
+
+                <p class="text-sm text-center opacity-0 group-hover:opacity-100 translate-y-2 
+                           group-hover:translate-y-0 transition-all duration-300">
+                    Guided visits with expert managers
+                </p>
+            </div>
+
+            <div class="hidden md:block w-32 h-[2px] bg-white/40"></div>
+
+            <!-- BOX 3 -->
+            <div class="group flex flex-col items-center cursor-pointer">
+                <div class="w-20 h-20 rounded-full flex items-center justify-center border border-white/40 
+                            group-hover:bg-orange-500 group-hover:border-orange-500 transition-all">
+                    <i class="fa-solid fa-hand-holding-dollar text-2xl group-hover:text-white"></i>
+                </div>
+
+                <p class="mt-4 text-lg font-semibold">Home Loan Assistance</p>
+
+                <p class="text-sm text-center opacity-0 group-hover:opacity-100 translate-y-2
+                           group-hover:translate-y-0 transition-all duration-300">
+                    Best loan facilitation across major banks
+                </p>
+            </div>
+
+            <div class="hidden md:block w-32 h-[2px] bg-white/40"></div>
+
+            <!-- BOX 4 -->
+            <div class="group flex flex-col items-center cursor-pointer">
+                <div class="w-20 h-20 rounded-full flex items-center justify-center border border-white/40 
+                            group-hover:bg-orange-500 group-hover:border-orange-500 transition-all">
+                    <i class="fa-solid fa-file-contract text-2xl group-hover:text-white"></i>
+                </div>
+
+                <p class="mt-4 text-lg font-semibold">Legal Advice</p>
+
+                <p class="text-sm text-center opacity-0 group-hover:opacity-100 translate-y-2
+                           group-hover:translate-y-0 transition-all duration-300">
+                    Complete documentation support
+                </p>
+            </div>
+
+            <div class="hidden md:block w-32 h-[2px] bg-white/40"></div>
+
+            <!-- BOX 5 -->
+            <div class="group flex flex-col items-center cursor-pointer">
+                <div class="w-20 h-20 rounded-full flex items-center justify-center border border-white/40 
+                            group-hover:bg-orange-500 group-hover:border-orange-500 transition-all">
+                    <i class="fa-solid fa-key text-2xl group-hover:text-white"></i>
+                </div>
+
+                <p class="mt-4 text-lg font-semibold">Unit Booking</p>
+
+                <p class="text-sm text-center opacity-0 group-hover:opacity-100 translate-y-2
+                           group-hover:translate-y-0 transition-all duration-300">
+                    Complete guidance till possession
+                </p>
+            </div>
+
+        </div>
     </div>
-
-    <!-- BUTTON -->
-    <div class="mt-12">
-      <a href="#contact"
-        class="bg-blue-900 hover:bg-blue-800 px-8 py-3 rounded-full inline-block font-semibold">
-        Contact Us Now
-      </a>
-    </div>
-
-  </div>
 </section>
-
 
 
 <!-- 🏡 ULTRA LUXURY REAL ESTATE ABOUT SECTION (WHITE THEME) -->

@@ -144,9 +144,3 @@ def disclaimer(request):
 
 def cookies(request):
     return render(request, 'terms/cookies-policy.html')
-
-
-def property_posting(request):
-    return render(request, 'property_posting/projects_post.html')
-
-
