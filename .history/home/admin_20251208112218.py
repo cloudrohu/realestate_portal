@@ -16,56 +16,19 @@ class SettingAdmin(admin.ModelAdmin):
     readonly_fields = ("logo_preview",)
 
     fieldsets = (
-        ("🧠 Basic Info", {
-            "fields": ("site_name", "logo", "favicon", "logo_preview")
-        }),
-
-        ("🎨 Theme Colors", {
-            "fields": (
-                "header_footer_color",
-                "text_color",
-                "button_color",
-                "rera_color",
-            )
-        }),
-
-        ("📍 Contact Details", {
-            "fields": (
-                "address",
-                "phone",
-                "whatsapp",
-                "email",
-                "google_map"
-            )
-        }),
-
-        ("✉️ SMTP Settings", {
-            "fields": ("smtpserver", "smtpemail", "smtppassword", "smtpport")
-        }),
-
-        ("🌐 Social Links", {
-            "fields": ("facebook", "instagram", "twitter", "youtube")
-        }),
-
-        ("🔍 SEO & Footer", {
-            "fields": ("meta_title", "meta_description", "footer_text", "copy_right")
-        }),
-
-        ("⚙️ Other Settings", {
-            "fields": (
-                "search_bg",
-                "testmonial_bg",
-                "rera_number",
-                "status",
-            )
-        }),
+        ("🧠 Basic Info", {"fields": ("site_name", "logo", "favicon", "logo_preview")}),
+        ("🎨 Theme Colors", {"fields": ("header_footer_color", "text_color")}),
+        ("📍 Contact Details", {"fields": ("address", "phone", "whatsapp", "email", "google_map")}),
+        ("✉️ SMTP Settings", {"fields": ("smtpserver", "smtpemail", "smtppassword", "smtpport")}),
+        ("🌐 Social Links", {"fields": ("facebook", "instagram", "twitter", "youtube")}),
+        ("🔍 SEO & Footer", {"fields": ("meta_title", "meta_description", "footer_text", "copy_right")}),
+        ("⚙️ Other Settings", {"fields": ("search_bg", "testmonial_bg", "status")}),
     )
 
     def logo_preview(self, obj):
         if obj.logo:
             return f'<img src="{obj.logo.url}" width="80" style="border-radius:6px;">'
         return "No Logo"
-
     logo_preview.allow_tags = True
     logo_preview.short_description = "Logo Preview"
 
