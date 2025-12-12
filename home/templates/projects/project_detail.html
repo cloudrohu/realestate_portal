@@ -26,7 +26,7 @@
     <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4 bg-white">
 
         <!-- LOGO -->
-        <a href="#" class="flex items-center gap-2">
+        <a href="/" class="flex items-center gap-2">
             <img src="https://housiey.com/_next/static/media/logo.dfea690a.svg" 
                  class="w-36" alt="Cloud Rohu Logo">
         </a>
@@ -265,6 +265,7 @@
                 </div>
 
         <br>
+<<<<<<< HEAD
 
   
 
@@ -373,6 +374,60 @@
             e.stopPropagation();
             closePopup();
         });
+=======
+<script>
+        const imgs = document.querySelectorAll(".gallery-img");
+        const popup = document.getElementById("popup");
+        const popupImg = document.getElementById("popupImg");
+        let current = 0;
+
+        const tabsNav = document.getElementById("tabsNav");
+
+        // OPEN POPUP
+        imgs.forEach((img, index) => {
+            img.addEventListener("click", () => {
+                current = index;
+                popupImg.src = img.src;
+
+                popup.classList.remove("hidden");
+                popup.classList.add("flex");
+
+                // Disable scroll on both tags
+                document.body.style.overflow = "hidden";
+                document.documentElement.style.overflow = "hidden";
+
+                // Hide sticky nav
+                if (tabsNav) tabsNav.style.display = "none";
+            });
+        });
+
+        // NEXT IMAGE
+        document.getElementById("nextBtn").onclick = () => {
+            current = (current + 1) % imgs.length;
+            popupImg.src = imgs[current].src;
+        };
+
+        // PREVIOUS IMAGE
+        document.getElementById("prevBtn").onclick = () => {
+            current = (current - 1 + imgs.length) % imgs.length;
+            popupImg.src = imgs[current].src;
+        };
+
+        // CLOSE POPUP
+        document.getElementById("closeBtn").onclick = () => {
+            popup.classList.add("hidden");
+            popup.classList.remove("flex");
+
+            // Restore scroll completely
+            document.body.style.overflow = "";
+            document.documentElement.style.overflow = "";
+
+            // Show sticky nav again
+            if (tabsNav) tabsNav.style.display = "block";
+        };
+</script>
+
+>>>>>>> 51785904ba271cc8a682071efda7ac6f600a2a62
 
         // click on overlay (but ignore clicks on image or controls)
         popup.addEventListener('click', (e) => {
@@ -2310,6 +2365,7 @@ var swiper = new Swiper(".relatedSwiper", {
     });
 </script>
 
+<<<<<<< HEAD
 <script>
 const openBtn = document.getElementById("openPricePopup");
 const closeBtn = document.getElementById("closePricePopup");
@@ -2352,6 +2408,8 @@ priceForm.addEventListener("submit", function(e) {
 });
 </script>
 
+=======
+>>>>>>> 51785904ba271cc8a682071efda7ac6f600a2a62
 
 
 

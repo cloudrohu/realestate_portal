@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'user',
     'blog',
 
-    'thumbnails',
+    'easy_thumbnails',
 ]
 
 # 🧠 5️⃣ Middleware
