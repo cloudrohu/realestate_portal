@@ -133,8 +133,6 @@ def faq_view(request):
     return render(request, 'home/faq.html', context)
 
 
-#-----------------------------------------------------------------------------------------------
-
 def privacy_policy(request):
     return render(request, 'terms/privacy_policy.html')
 
