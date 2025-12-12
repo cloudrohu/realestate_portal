@@ -2,7 +2,6 @@ from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
 from django.utils.html import mark_safe
 import admin_thumbnails
-from mptt.admin import DraggableMPTTAdmin
 
 from .models import City, Locality, PropertyType, PossessionIn, ProjectAmenities, Bank
 
@@ -31,11 +30,19 @@ class CityAdmin(MPTTModelAdmin):
 # 📍 Locality Admin (MPTT)
 # =======================================================
 @admin.register(Locality)
-class LocalityAdmin(DraggableMPTTAdmin):
-    list_display = ('id','tree_actions', 'indented_title', 'city', 'featured_locality')
-    list_display_links = ('indented_title',)
+class LocalityAdmin(MPTTModelAdmin):
+    list_display = ('name', 'city', 'parent')
+    list_filter = ('city',)
     search_fields = ('name', 'city__name')
-    list_filter = ('city', 'featured_locality')
+    prepopulated_fields = {"slug": ("name",)}
+    mptt_level_indent = 20
+
+    fieldsets = (
+        ('Basic Info', {
+            'fields': ('city', 'name', 'slug', 'parent')
+        }),
+    )
+
 # =======================================================
 # 🏠 PropertyType Admin (MPTT)
 # =======================================================

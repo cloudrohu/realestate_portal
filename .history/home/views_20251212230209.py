@@ -137,20 +137,17 @@ def faq_view(request):
 
 #-----------------------------------------------------------------------------------------------
 
-def get_setting():
-    return Setting.objects.first()
-
 def privacy_policy(request):
-    return render(request, 'terms/privacy_policy.html', {"setting": get_setting()})
+    return render(request, 'terms/privacy_policy.html')
 
 def terms_conditions(request):
-    return render(request, 'terms/terms_conditions.html', {"setting": get_setting()})
+    return render(request, 'terms/terms_conditions.html')
 
 def disclaimer(request):
-    return render(request, 'terms/disclaimer.html', {"setting": get_setting()})
+    return render(request, 'terms/disclaimer.html')
 
 def cookies(request):
-    return render(request, 'terms/cookies-policy.html', {"setting": get_setting()})
+    return render(request, 'terms/cookies-policy.html')
 
 
 

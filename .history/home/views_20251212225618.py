@@ -28,7 +28,7 @@ def index(request):
 
     # Featured Developers (from user app)
     featured_developers = Developer.objects.filter(featured_builder=True).order_by('-create_at')[:8]
-    featured_locality = Locality.objects.filter(featured_locality=True)[:20]
+    featured_locality = Locality.objects.filter(featured_locality=True).order_by('-create_at')[:20]
 
     # Other sections
     about_page = About.objects.filter(is_active=True).first()
@@ -137,20 +137,17 @@ def faq_view(request):
 
 #-----------------------------------------------------------------------------------------------
 
-def get_setting():
-    return Setting.objects.first()
-
 def privacy_policy(request):
-    return render(request, 'terms/privacy_policy.html', {"setting": get_setting()})
+    return render(request, 'terms/privacy_policy.html')
 
 def terms_conditions(request):
-    return render(request, 'terms/terms_conditions.html', {"setting": get_setting()})
+    return render(request, 'terms/terms_conditions.html')
 
 def disclaimer(request):
-    return render(request, 'terms/disclaimer.html', {"setting": get_setting()})
+    return render(request, 'terms/disclaimer.html')
 
 def cookies(request):
-    return render(request, 'terms/cookies-policy.html', {"setting": get_setting()})
+    return render(request, 'terms/cookies-policy.html')
 
 
 

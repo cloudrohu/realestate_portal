@@ -32,7 +32,7 @@ class CityAdmin(MPTTModelAdmin):
 # =======================================================
 @admin.register(Locality)
 class LocalityAdmin(DraggableMPTTAdmin):
-    list_display = ('id','tree_actions', 'indented_title', 'city', 'featured_locality')
+    list_display = ('tree_actions', 'indented_title', 'city', 'featured_locality')
     list_display_links = ('indented_title',)
     search_fields = ('name', 'city__name')
     list_filter = ('city', 'featured_locality')
