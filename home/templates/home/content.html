@@ -437,81 +437,67 @@
     });
   });
 </script>
+<hr>
+<!-- 🌟 WHY CHOOSE US -->
+<section class="py-14 bg-white" id="why-choose">
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
+    <!-- IMAGE SIDE -->
+    <div class="relative group" data-aos="zoom-in-right">
 
-<!-- POSSESSION START SECTION -->
-<section class="py-16 bg-gray-50">
-  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-10 items-center">
+      <div class="absolute -inset-2 bg-orange-500/10 blur-xl rounded-3xl opacity-0 group-hover:opacity-100 transition"></div>
 
-    <!-- LEFT TEXT SECTION -->
-    <div class="md:col-span-1">
-      <h2 class="text-4xl font-extrabold text-yellow-600 leading-tight">
-        Possession Status
+      <img src="{{ about_page.home_bg.url|default:'https://dummyimage.com/600x380/cccccc/000&text=Why+Choose+Us' }}"
+           class="relative w-full h-[450px] object-cover rounded-3xl shadow-xl transition group-hover:scale-[1.01]"
+           alt="Why Choose">
+
+      <div class="absolute inset-0 rounded-3xl border border-white/20 pointer-events-none"></div>
+    </div>
+
+    <!-- TEXT SIDE WITH INTERNAL SCROLL -->
+    <div data-aos="fade-left">
+
+      <h2 class="text-3xl font-bold text-orange-600 mb-4">
+        Why Choose Us
       </h2>
-      <p class="text-gray-700 mt-2">
-        Project According to Possession Status in Mumbai
-      </p>
 
-      <button class="mt-6 bg-[#002D62] text-white font-semibold px-8 py-3 rounded-full shadow hover:bg-[#001A3C] transition">
-        View All
-      </button>
-    </div>
+      <!-- SCROLL CONTAINER -->
+      <div class="max-h-[350px] overflow-y-auto pr-3 custom-scroll space-y-4 text-gray-800 text-[15px] leading-relaxed">
 
-    <!-- RIGHT SIDE CARDS -->
-    <div class="md:col-span-3 grid md:grid-cols-3 gap-6">
+        {% for item in why_choose_items %}
+        <div class="flex gap-3">
 
-      <!-- CARD 1 - READY TO MOVE -->
-      <div class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
-        <img src="https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg" 
-             class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
-        
-        <!-- Gradient Overlay -->
-        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-
-        <!-- Text -->
-        <div class="absolute bottom-5 left-5 text-white">
-          <h3 class="text-xl font-semibold">Ready to Move</h3>
-          <span class="bg-[#002D62] px-4 py-1 rounded-full text-sm font-semibold inline-block mt-2">
-            975 Projects
+          <span class="text-green-600 text-xl leading-none">
+            {% if item.icon %} {{ item.icon }} {% else %} ✔ {% endif %}
           </span>
-        </div>
-      </div>
 
-      <!-- CARD 2 - DER EARLY POSSESSION -->
-      <div class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
-        <img src="https://images.pexels.com/photos/439416/pexels-photo-439416.jpeg" 
-             class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
-
-        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-
-        <div class="absolute bottom-5 left-5 text-white">
-          <h3 class="text-xl font-semibold">EARLY POSSESSION</h3>
-          <span class="bg-[#002D62] px-4 py-1 rounded-full text-sm font-semibold inline-block mt-2">
-            3904 Projects
+          <span class="font-medium">
+            {{ item.title }}
+            {% if item.subtitle %}
+            <span class="text-gray-600 font-normal"> — {{ item.subtitle }}</span>
+            {% endif %}
           </span>
+
         </div>
-      </div>
+        {% empty %}
 
-      <!-- CARD 3 - NEW LAUNCH -->
-      <div class="Find Your Dream Property
-relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
-        <img src="https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg" 
-             class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
-
-        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-
-        <div class="absolute bottom-5 left-5 text-white">
-          <h3 class="text-xl font-semibold">New Launch</h3>
-          <span class="bg-[#002D62] px-4 py-1 rounded-full text-sm font-semibold inline-block mt-2">
-            512 Projects
-          </span>
+        <div class="flex gap-3">
+          <span class="text-green-600 text-xl leading-none">✔</span>
+          <span class="font-medium">15+ Years of Experience</span>
         </div>
+
+        <div class="flex gap-3">
+          <span class="text-green-600 text-xl leading-none">✔</span>
+          <span class="font-medium">Verified Properties Only</span>
+        </div>
+
+        {% endfor %}
       </div>
 
     </div>
+
   </div>
 </section>
-<!-- POSSESSION END SECTION -->
 
 <!-- ===================== FULL WIDTH SECTION ======================= -->
 <section class="w-full py-20 text-white bg-cover bg-center relative" style="background-image: url('https://sigmahomes.co.in/media/about/Prithvi_Pride.jpg');">
@@ -606,6 +592,82 @@ relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
 </section>
 
 
+<!-- POSSESSION START SECTION -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-10 items-center">
+
+    <!-- LEFT TEXT SECTION -->
+    <div class="md:col-span-1">
+      <h2 class="text-4xl font-extrabold text-yellow-600 leading-tight">
+        Possession Status
+      </h2>
+      <p class="text-gray-700 mt-2">
+        Project According to Possession Status in Mumbai
+      </p>
+
+      <button class="mt-6 bg-[#002D62] text-white font-semibold px-8 py-3 rounded-full shadow hover:bg-[#001A3C] transition">
+        View All
+      </button>
+    </div>
+
+    <!-- RIGHT SIDE CARDS -->
+    <div class="md:col-span-3 grid md:grid-cols-3 gap-6">
+
+      <!-- CARD 1 - READY TO MOVE -->
+      <div class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+        <img src="https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg" 
+             class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+        
+        <!-- Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+        <!-- Text -->
+        <div class="absolute bottom-5 left-5 text-white">
+          <h3 class="text-xl font-semibold">Ready to Move</h3>
+          <span class="bg-[#002D62] px-4 py-1 rounded-full text-sm font-semibold inline-block mt-2">
+            975 Projects
+          </span>
+        </div>
+      </div>
+
+      <!-- CARD 2 - DER EARLY POSSESSION -->
+      <div class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+        <img src="https://images.pexels.com/photos/439416/pexels-photo-439416.jpeg" 
+             class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+        <div class="absolute bottom-5 left-5 text-white">
+          <h3 class="text-xl font-semibold">EARLY POSSESSION</h3>
+          <span class="bg-[#002D62] px-4 py-1 rounded-full text-sm font-semibold inline-block mt-2">
+            3904 Projects
+          </span>
+        </div>
+      </div>
+
+      <!-- CARD 3 - NEW LAUNCH -->
+      <div class="Find Your Dream Property
+relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+        <img src="https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg" 
+             class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
+
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+        <div class="absolute bottom-5 left-5 text-white">
+          <h3 class="text-xl font-semibold">New Launch</h3>
+          <span class="bg-[#002D62] px-4 py-1 rounded-full text-sm font-semibold inline-block mt-2">
+            512 Projects
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- POSSESSION END SECTION -->
+
+
+
 <!-- 🏡 ULTRA LUXURY REAL ESTATE ABOUT SECTION (WHITE THEME) -->
 <section class="relative py-24 bg-white text-gray-900" id="about">
 
@@ -670,30 +732,7 @@ relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
 
 
 
-<!-- USP -->
-<section class="py-16 bg-gray-100" id="usp">
-  <div class="max-w-7xl mx-auto px-6 text-center">
-    <h2 class="text-3xl font-bold text-orange-600 mb-10">Our USP</h2>
-    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
-      <div class="bg-white shadow p-6 rounded">
-        <h3 class="font-bold text-lg mb-2">Trusted Agents</h3>
-        <p>Our certified experts guide you with every step.</p>
-      </div>
-      <div class="bg-white shadow p-6 rounded">
-        <h3 class="font-bold text-lg mb-2">Prime Locations</h3>
-        <p>Exclusive properties in top cities.</p>
-      </div>
-      <div class="bg-white shadow p-6 rounded">
-        <h3 class="font-bold text-lg mb-2">Best Deals</h3>
-        <p>We ensure best value for your investment.</p>
-      </div>
-      <div class="bg-white shadow p-6 rounded">
-        <h3 class="font-bold text-lg mb-2">Full Support</h3>
-        <p>End-to-end property management services.</p>
-      </div>
-    </div>
-  </div>
-</section>
+
 <br>
 <!-- STATS COUNTER -->
 <section class="relative text-white py-20 bg-gradient-to-r from-orange-600 to-orange-500 overflow-hidden">
@@ -723,67 +762,6 @@ relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
       <i class="fas fa-trophy text-4xl mb-3 text-orange-300 animate-pulseSlow"></i>
       <h3 class="text-4xl font-bold" id="awards-recognitions">{{ about_page.awards_recognitions|intcomma }}+</h3>
       <p class="mt-2 text-lg">Awards & Recognitions</p>
-    </div>
-
-  </div>
-</section>
-
-<!-- 🌟 WHY CHOOSE US -->
-<section class="py-14 bg-white" id="why-choose">
-  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-
-    <!-- IMAGE SIDE -->
-    <div class="relative group" data-aos="zoom-in-right">
-
-      <div class="absolute -inset-2 bg-orange-500/10 blur-xl rounded-3xl opacity-0 group-hover:opacity-100 transition"></div>
-
-      <img src="{{ about_page.home_bg.url|default:'https://dummyimage.com/600x380/cccccc/000&text=Why+Choose+Us' }}"
-           class="relative w-full h-[450px] object-cover rounded-3xl shadow-xl transition group-hover:scale-[1.01]"
-           alt="Why Choose">
-
-      <div class="absolute inset-0 rounded-3xl border border-white/20 pointer-events-none"></div>
-    </div>
-
-    <!-- TEXT SIDE WITH INTERNAL SCROLL -->
-    <div data-aos="fade-left">
-
-      <h2 class="text-3xl font-bold text-orange-600 mb-4">
-        Why Choose Us
-      </h2>
-
-      <!-- SCROLL CONTAINER -->
-      <div class="max-h-[350px] overflow-y-auto pr-3 custom-scroll space-y-4 text-gray-800 text-[15px] leading-relaxed">
-
-        {% for item in why_choose_items %}
-        <div class="flex gap-3">
-
-          <span class="text-green-600 text-xl leading-none">
-            {% if item.icon %} {{ item.icon }} {% else %} ✔ {% endif %}
-          </span>
-
-          <span class="font-medium">
-            {{ item.title }}
-            {% if item.subtitle %}
-            <span class="text-gray-600 font-normal"> — {{ item.subtitle }}</span>
-            {% endif %}
-          </span>
-
-        </div>
-        {% empty %}
-
-        <div class="flex gap-3">
-          <span class="text-green-600 text-xl leading-none">✔</span>
-          <span class="font-medium">15+ Years of Experience</span>
-        </div>
-
-        <div class="flex gap-3">
-          <span class="text-green-600 text-xl leading-none">✔</span>
-          <span class="font-medium">Verified Properties Only</span>
-        </div>
-
-        {% endfor %}
-      </div>
-
     </div>
 
   </div>
@@ -968,7 +946,7 @@ relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
 
       <button id="showLessBtn"
         class="px-3 py-2 bg-gray-400 text-white rounded-lg font-semibold hover:bg-gray-500 transition hidden">
-        Show Less
+        Show Less   
       </button>
     </div>
 

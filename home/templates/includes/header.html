@@ -1,5 +1,44 @@
 {% load static %}
 
+<style>
+.whatsapp-float {
+    position: fixed;
+    width: 80px; /* Adjust size as needed */
+    height: 80px; /* Adjust size as needed */
+    right: 20px; /* Distance from the right edge */
+    transform: translateY(-50%); /* Pulls the button up by half its height to perfectly center it */
+    background-color: #25d366; /* WhatsApp brand color */
+    color: #FFF;
+    border-radius: 50%; /* Makes the button round */
+    text-align: center;
+    font-size: 30px; /* Icon size */
+    box-shadow: 2px 2px 3px #999;
+    z-index: 100; /* Ensures it stays on top of other elements */
+    display: flex; /* Helps in centering the icon inside the button */
+    align-items: center; /* Vertically centers the icon */
+    justify-content: center; /* Horizontally centers the icon */
+}
+
+.my-float {
+    /* No additional styling needed here due to flexbox centering in the parent */
+}
+
+/* Optional: Add a hover effect */
+.whatsapp-float:hover {
+    opacity: 0.8;
+}
+
+/* Optional: Media query for mobile responsiveness (adjust as needed) */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        width: 80px;
+        height: 80px;
+        right: 15px;
+        font-size: 24px;
+    }
+}
+</style>
+
 
 <!-- ====================== -->
 <!-- DESKTOP VIEW -->
@@ -98,20 +137,13 @@
       <div class="flex items-center gap-4">
 
         <!-- SELL / RENT BUTTON -->
-        <button
-          class="px-5 py-2.5 font-semibold rounded-xl
-          bg-gradient-to-r from-orange-500 to-red-500 text-white
-          shadow-lg hover:scale-105 transition-all duration-300">
-          Sell / Rent Property
-        </button>
-
-        <!-- WHATSAPP -->
-        <a href="https://wa.me/{{ rs.whatsapp }}" target="_blank"
-          class="flex items-center gap-2 px-5 py-2 rounded-xl font-semibold
-          text-white border border-white/20 bg-white/10 backdrop-blur-md
-          hover:bg-white/20 hover:scale-105 transition-all duration-300">
-          <i class="fa-brands fa-whatsapp text-green-500 text-xl"></i>
-          Chat
+        <a href="#">
+            <button
+              class="px-5 py-2.5 font-semibold rounded-xl
+              bg-gradient-to-r from-orange-500 to-red-500 text-white
+              shadow-lg hover:scale-105 transition-all duration-300">
+              Login / Register
+            </button>
         </a>
 
       </div>
@@ -119,6 +151,12 @@
     </div>
   </header>
 </div>
+
+<a id="myElement" href="api.whatsapp.com" class="whatsapp-float bottom-20" target="_blank" rel="noopener noreferrer">
+    <!-- WhatsApp SVG Icon (for clean, scalable display) -->
+     <i class="fa-brands fa-whatsapp text-5xl p-2"></i>
+</a>
+
 
 <!-- ====================== -->
 <!-- MOBILE VIEW -->
@@ -275,4 +313,23 @@
     mobileMenu.classList.add("translate-x-full");
     overlay.classList.add("hidden");
   });
+  const myElement = document.getElementById('myElement');
+  let position = 0;
+  let direction = 1; // 1 for down, -1 for up
+
+  function floatAnimation() {
+    // Move the element up and down
+    position += direction * 0.5; // Adjust speed
+    if (position >= 20 || position <= 0) {
+    direction *= -1; // Reverse direction at limits
+  }
+
+   myElement.style.transform = `translateY(${position}px)`;
+
+    // Call the function again on the next frame
+      requestAnimationFrame(floatAnimation);
+    }
+
+    // Start the animation when the script loads
+    floatAnimation();
 </script>
