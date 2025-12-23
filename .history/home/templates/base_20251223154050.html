@@ -4,11 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ settings_obj.site_name }}</title>
+  <title>{{rs.title}}</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <title>{% block title %}{{ settings_obj.meta_title }}{% endblock %}</title>
-  <meta name="description" content="{{ settings_obj.meta_title }}">
-  <meta name="keywords" content="">
+  <title>{% block title %}{{ settings_obj.site_name }}{% endblock %}</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
