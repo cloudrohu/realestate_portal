@@ -163,7 +163,7 @@
 <!-- ====================== -->
 <div class="md:hidden text-white">
   <div class="md:hidden text-white">
-  <header class="flex items-center justify-between px-4 py-2 bg-black">
+  <header class="flex items-center justify-between px-4 py-2 bg-[{{settings_obj.header_footer_color}}]">
   <!-- LEFT SECTION -->
   <div class="flex items-center gap-2">
     <!-- Menu Icon -->
@@ -178,7 +178,7 @@
     <!-- City Dropdown -->
     <div class="relative ml-2">
       <select
-        class="bg-black text-white text-sm font-medium focus:outline-none appearance-none cursor-pointer pr-5"
+        class="bg-[{{settings_obj.header_footer_color   }}] text-white text-sm font-medium focus:outline-none appearance-none cursor-pointer pr-5"
         style="background-image: url('data:image/svg+xml;utf8,<svg fill=\'white\' height=\'12\' viewBox=\'0 0 24 24\' width=\'12\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>'); background-repeat: no-repeat; background-position: right center;">
         
         {% for city in cities %}
