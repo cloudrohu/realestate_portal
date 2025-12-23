@@ -74,7 +74,15 @@
                   {% endfor %}
                 </div>
 
-              
+                <!-- Developer -->
+                <div class="flex items-center gap-3 pt-3">
+                  {% if rs.developer.logo %}
+                    <img src="{{ rs.developer.logo.url }}" alt="Developer" class="h-10 w-10 rounded-full border object-cover">
+                  {% else %}
+                    <img src="{% static 'images/user-placeholder.png' %}" alt="Developer" class="h-10 w-10 rounded-full border object-cover">
+                  {% endif %}
+                  <span class="text-green-600 font-medium text-sm">{{ rs.developer }}</span>
+                </div>
               </div>
 
               <!-- Footer Button -->
@@ -207,8 +215,6 @@
       {% endfor %}
 
     </div>
-
-    
   </div>
 </div>
 
