@@ -14,53 +14,42 @@ from user.models import Developer  # 👈 import your Developer model
 from django.shortcuts import render
 from projects.models import Project  # import your Project model
 
-
-
 def index(request):
+
     settings_obj = Setting.objects.first()
     cities = City.objects.filter(level_type="CITY").order_by("name")
 
     # ===============================
-    # 🔑 PROPERTY TYPES (TOP LEVEL)
+    # 🔑 PROPERTY TYPES (MPTT PARENT)
     # ===============================
-    residential_type = PropertyType.objects.filter(
-        name__iexact="Residential",
-        is_top_level=True
-    ).first()
+    residential_type = PropertyType.objects.filter(slug="residential").first()
+    commercial_type = PropertyType.objects.filter(slug="commercial").first()
 
-    commercial_type = PropertyType.objects.filter(
-        name__iexact="Commercial",
-        is_top_level=True
-    ).first()
-
-    residential_types = (
-        residential_type.get_descendants(include_self=True)
-        if residential_type else PropertyType.objects.none()
-    )
-
-    commercial_types = (
-        commercial_type.get_descendants(include_self=True)
-        if commercial_type else PropertyType.objects.none()
-    )
+    residential_types = residential_type.get_descendants(include_self=True) if residential_type else []
+    commercial_types = commercial_type.get_descendants(include_self=True) if commercial_type else []
 
     # ===============================
     # 🔥 NEW LAUNCH PROJECTS
     # ===============================
     new_launch_residential = Project.objects.filter(
-        construction_status__iexact="New Launch",
-        active=True,
-        propert_type__in=residential_types
+        construction_status="New Launch",
+        propert_type__in=residential_types,
+        active=True
     ).select_related(
         "city", "locality", "developer", "propert_type"
-    ).prefetch_related("configurations").order_by("-create_at")
+    ).prefetch_related(
+        "configurations"
+    ).order_by("-create_at")
 
     new_launch_commercial = Project.objects.filter(
-        construction_status__iexact="New Launch",
-        active=True,
-        propert_type__in=commercial_types
+        construction_status="New Launch",
+        propert_type__in=commercial_types,
+        active=True
     ).select_related(
         "city", "locality", "developer", "propert_type"
-    ).prefetch_related("configurations").order_by("-create_at")
+    ).prefetch_related(
+        "configurations"
+    ).order_by("-create_at")
 
     # ===============================
     # ⭐ FEATURED PROJECTS
@@ -75,13 +64,8 @@ def index(request):
     # ===============================
     # OTHER SECTIONS
     # ===============================
-    featured_developers = Developer.objects.filter(
-        featured_builder=True
-    ).order_by("-create_at")[:8]
-
-    featured_locality = Locality.objects.filter(
-        featured_locality=True
-    )[:20]
+    featured_developers = Developer.objects.filter(featured_builder=True).order_by("-create_at")[:8]
+    featured_locality = Locality.objects.filter(featured_locality=True)[:20]
 
     about_page = About.objects.filter(is_active=True).first()
     why_choose_items = Why_Choose.objects.filter(is_active=True).order_by("order")
@@ -111,8 +95,6 @@ def index(request):
     }
 
     return render(request, "home/index.html", context)
-
-
 
 def robots_txt(request):
     """

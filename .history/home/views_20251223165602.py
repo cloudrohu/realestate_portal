@@ -15,99 +15,87 @@ from django.shortcuts import render
 from projects.models import Project  # import your Project model
 
 
-
 def index(request):
-    settings_obj = Setting.objects.first()
-    cities = City.objects.filter(level_type="CITY").order_by("name")
 
-    # ===============================
-    # 🔑 PROPERTY TYPES (TOP LEVEL)
-    # ===============================
+     # 🔑 Parent Property Types
     residential_type = PropertyType.objects.filter(
-        name__iexact="Residential",
-        is_top_level=True
+        slug="residential"
     ).first()
 
     commercial_type = PropertyType.objects.filter(
-        name__iexact="Commercial",
-        is_top_level=True
+        slug="commercial"
     ).first()
 
-    residential_types = (
-        residential_type.get_descendants(include_self=True)
-        if residential_type else PropertyType.objects.none()
-    )
+    # 🔥 RESIDENTIAL + CHILD TYPES
+    residential_types = []
+    if residential_type:
+        residential_types = residential_type.get_descendants(include_self=True)
 
-    commercial_types = (
-        commercial_type.get_descendants(include_self=True)
-        if commercial_type else PropertyType.objects.none()
-    )
-
-    # ===============================
-    # 🔥 NEW LAUNCH PROJECTS
-    # ===============================
     new_launch_residential = Project.objects.filter(
-        construction_status__iexact="New Launch",
-        active=True,
-        propert_type__in=residential_types
-    ).select_related(
-        "city", "locality", "developer", "propert_type"
-    ).prefetch_related("configurations").order_by("-create_at")
-
-    new_launch_commercial = Project.objects.filter(
-        construction_status__iexact="New Launch",
-        active=True,
-        propert_type__in=commercial_types
-    ).select_related(
-        "city", "locality", "developer", "propert_type"
-    ).prefetch_related("configurations").order_by("-create_at")
-
-    # ===============================
-    # ⭐ FEATURED PROJECTS
-    # ===============================
-    project_featured = Project.objects.filter(
-        featured_property=True,
+        construction_status="New Launch",
+        propert_type__in=residential_types,
         active=True
     ).select_related(
         "city", "locality", "developer", "propert_type"
-    ).prefetch_related("configurations")[:6]
+    ).prefetch_related(
+        "configurations"
+    ).order_by("-create_at")
 
-    # ===============================
-    # OTHER SECTIONS
-    # ===============================
-    featured_developers = Developer.objects.filter(
-        featured_builder=True
-    ).order_by("-create_at")[:8]
+    # 🔥 COMMERCIAL + CHILD TYPES
+    commercial_types = []
+    if commercial_type:
+        commercial_types = commercial_type.get_descendants(include_self=True)
 
-    featured_locality = Locality.objects.filter(
-        featured_locality=True
-    )[:20]
+    new_launch_commercial = Project.objects.filter(
+        construction_status="New Launch",
+        propert_type__in=commercial_types,
+        active=True
+    ).select_related(
+        "city", "locality", "developer", "propert_type"
+    ).prefetch_related(
+        "configurations"
+    ).order_by("-create_at")
 
+
+
+    settings_obj = Setting.objects.first()
+    cities = City.objects.filter(level_type="CITY").order_by("name")
+
+    # Featured Projects
+    project_featured = (
+        Project.objects.filter(featured_property=True, active=True)
+        .select_related("city", "locality", "developer", "propert_type")
+        .prefetch_related("configurations")[:6]
+    )
+
+    # Featured Developers (from user app)
+    featured_developers = Developer.objects.filter(featured_builder=True).order_by('-create_at')[:8]
+    featured_locality = Locality.objects.filter(featured_locality=True)[:20]
+
+    # Other sections
     about_page = About.objects.filter(is_active=True).first()
     why_choose_items = Why_Choose.objects.filter(is_active=True).order_by("order")
     testimonials = Testimonial.objects.all().order_by("-id")
     faqs = FAQ.objects.all().order_by("id")
 
-    current_city = project_featured[0].city.name if project_featured.exists() else "Mumbai"
+    current_city = None
+    if project_featured.exists() and project_featured[0].city:
+        current_city = project_featured[0].city.name
 
-    # ===============================
-    # CONTEXT
-    # ===============================
     context = {
         "settings_obj": settings_obj,
-        "cities": cities,
-        "current_city": current_city,
-
         "project_featured": project_featured,
-        "new_launch_residential": new_launch_residential,
-        "new_launch_commercial": new_launch_commercial,
-
-        "featured_developers": featured_developers,
-        "featured_locality": featured_locality,
+        "featured_developers": featured_developers,  # 👈 added
+        "cities": cities,
+        "current_city": current_city or "Mumbai",
         "about_page": about_page,
         "why_choose_items": why_choose_items,
         "testimonials": testimonials,
         "faqs": faqs,
+        "featured_locality": featured_locality,
+
+        "new_launch_residential": new_launch_residential,
+        "new_launch_commercial": new_launch_commercial,
     }
 
     return render(request, "home/index.html", context)
