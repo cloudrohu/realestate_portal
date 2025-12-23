@@ -52,7 +52,7 @@ def index(request):
         propert_type__in=residential_types
     ).select_related(
         "city", "locality", "developer", "propert_type"
-    ).prefetch_related("configurations").order_by("-create_at")[:10]
+    ).prefetch_related("configurations").order_by("-create_at")[:2]
 
     new_launch_commercial = Project.objects.filter(
         construction_status__iexact="New Launch",
@@ -60,7 +60,7 @@ def index(request):
         propert_type__in=commercial_types
     ).select_related(
         "city", "locality", "developer", "propert_type"
-    ).prefetch_related("configurations").order_by("-create_at")[:10]
+    ).prefetch_related("configurations").order_by("-create_at")
 
     # ===============================
     # ⭐ FEATURED PROJECTS
