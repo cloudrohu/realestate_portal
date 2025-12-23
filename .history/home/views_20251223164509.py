@@ -78,9 +78,6 @@ def index(request):
         "testimonials": testimonials,
         "faqs": faqs,
         "featured_locality": featured_locality,
-
-        "new_launch_residential": new_launch_residential,
-        "new_launch_commercial": new_launch_commercial,
     }
 
     return render(request, "home/index.html", context)
