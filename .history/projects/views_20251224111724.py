@@ -80,7 +80,6 @@ def index(request):
 
 
 
-from django.db.models import Q
 
 def search_projects(request):
     settings_obj = Setting.objects.first()
@@ -101,24 +100,13 @@ def search_projects(request):
         except PropertyType.DoesNotExist:
             pass
 
-    # ✅ CITY + LOCALITY SMART SPLIT
+    # ✅ City OR Locality intelligent search
     if query:
-        parts = [p.strip() for p in query.split(",")]
-
-        if len(parts) == 2:
-            locality_part, city_part = parts
-            projects = projects.filter(
-                Q(locality__name__icontains=locality_part) &
-                Q(city__name__icontains=city_part)
-            )
-        else:
-            projects = projects.filter(
-                Q(project_name__icontains=query) |
-                Q(locality__name__icontains=query) |
-                Q(city__name__icontains=query)
-            )
-
-    projects = projects.distinct()
+        projects = projects.filter(
+            Q(project_name__icontains=query) |
+            Q(city__name__icontains=query) |
+            Q(locality__name__icontains=query)
+        ).distinct()
 
     # ✅ Pagination
     page = request.GET.get("page", 1)
@@ -126,8 +114,10 @@ def search_projects(request):
 
     try:
         projects_page = paginator.page(page)
-    except:
+    except PageNotAnInteger:
         projects_page = paginator.page(1)
+    except EmptyPage:
+        projects_page = paginator.page(paginator.num_pages)
 
     context = {
         "settings_obj": settings_obj,
@@ -144,7 +134,6 @@ def search_projects(request):
     )
 
     return render(request, template, context)
-
 
 # 🏠 Residential Projects
 def residential_projects(request):
