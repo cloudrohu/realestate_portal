@@ -276,6 +276,26 @@ class USP(models.Model):
         return self.point
 
 class Configuration(models.Model):
+    def get_price_range(self):
+        qs = self.configurations.all()
+
+        if not qs.exists():
+            return "Price on Request"
+
+        price_min = qs.aggregate(Min("price_in_rupees"))["price_in_rupees__min"]
+        price_max = qs.aggregate(Max("price_in_rupees"))["price_in_rupees__max"]
+
+        def fmt(value):
+            if value >= 10000000:
+                return f"{value / 10000000:.2f} Cr"
+            elif value >= 100000:
+                return f"{value / 100000:.0f} L"
+            return f"{value:,}"
+
+        if price_min == price_max:
+            return f"₹ {fmt(price_min)}"
+
+        return f"₹ {fmt(price_min)} – {fmt(price_max)}"
     Project = models.ForeignKey("Project", on_delete=models.CASCADE, related_name="configurations")
     bhk_type = models.CharField(max_length=50)
     area_sqft = models.IntegerField(

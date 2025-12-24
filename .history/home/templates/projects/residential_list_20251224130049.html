@@ -223,6 +223,16 @@
             {{ project.get_price_range }}
           </span>
 
+
+          <span class="text-xl font-bold">
+            {% if project.min_price and project.max_price %}
+              ₹ {{ project.min_price|floatformat:2 }} – {{ project.max_price|floatformat:2 }}
+            {% else %}
+              Price on Request
+            {% endif %}
+          </span>
+
+
         </div>
 
           <!-- Row 2: Location -->

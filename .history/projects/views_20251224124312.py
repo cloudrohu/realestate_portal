@@ -146,15 +146,12 @@ def search_projects(request):
     return render(request, template, context)
 
 
+# 🏠 Residential Projects
 def residential_projects(request):
     query = request.GET.get('q', '')
-
     projects = Project.objects.filter(
         propert_type__parent__name__iexact='Residential',
         active=True
-    ).annotate(
-        min_price=Min("configurations__price_in_rupees"),
-        max_price=Max("configurations__price_in_rupees"),
     ).select_related('city', 'locality', 'propert_type')
 
     if query:
@@ -166,8 +163,29 @@ def residential_projects(request):
         'breadcrumb': 'Residential',
     }
 
-    return render(request, 'projects/residential_list.html', context)
 
+
+    def get_price_range(self):
+        configs = self.configurations.all()
+        if not configs.exists():
+            return ""
+
+        price_min = configs.aggregate(Min("price_in_rupees"))["price_in_rupees__min"]
+        price_max = configs.aggregate(Max("price_in_rupees"))["price_in_rupees__max"]
+
+        def fmt(price):
+            if price >= 10000000:
+                return f"{price / 10000000:.2f} Cr"
+            elif price >= 100000:
+                return f"{price / 100000:.0f} L"
+            return f"{price:,}"
+
+        if price_min == price_max:
+            return f"₹ {fmt(price_min)}"
+
+        return f"₹ {fmt(price_min)} – {fmt(price_max)}"
+
+    return render(request, 'projects/residential_list.html', context)
 
 
 # 🏢 Commercial Projects

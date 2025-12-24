@@ -169,7 +169,6 @@ def residential_projects(request):
     return render(request, 'projects/residential_list.html', context)
 
 
-
 # 🏢 Commercial Projects
 def commercial_projects(request):
     query = request.GET.get('q', '')

@@ -146,15 +146,12 @@ def search_projects(request):
     return render(request, template, context)
 
 
+# 🏠 Residential Projects
 def residential_projects(request):
     query = request.GET.get('q', '')
-
     projects = Project.objects.filter(
         propert_type__parent__name__iexact='Residential',
         active=True
-    ).annotate(
-        min_price=Min("configurations__price_in_rupees"),
-        max_price=Max("configurations__price_in_rupees"),
     ).select_related('city', 'locality', 'propert_type')
 
     if query:
@@ -166,8 +163,12 @@ def residential_projects(request):
         'breadcrumb': 'Residential',
     }
 
-    return render(request, 'projects/residential_list.html', context)
 
+    projects = Project.objects.filter(active=True).annotate(
+    min_price=Min("configurations__price_in_rupees"),
+    max_price=Max("configurations__price_in_rupees"),
+)
+    return render(request, 'projects/residential_list.html', context)
 
 
 # 🏢 Commercial Projects
