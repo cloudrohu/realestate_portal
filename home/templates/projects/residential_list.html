@@ -5,30 +5,30 @@
 {% block title %}{{ site_settings.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
 
 <style>
-  /* Auto sliding gallery */
-.slider-animation {
-    display: flex;
-    animation: slide 12s infinite linear;
-}
-.slider-animation img {
-    width: 100%;
-    flex-shrink: 0;
-    object-fit: cover;
-}
+    /* Auto sliding gallery */
+  .slider-animation {
+      display: flex;
+      animation: slide 12s infinite linear;
+  }
+  .slider-animation img {
+      width: 100%;
+      flex-shrink: 0;
+      object-fit: cover;
+  }
 
-@keyframes slide {
-    0% { transform: translateX(0); }
-    20% { transform: translateX(0); }
+  @keyframes slide {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(0); }
 
-    25% { transform: translateX(-100%); }
-    45% { transform: translateX(-100%); }
+      25% { transform: translateX(-100%); }
+      45% { transform: translateX(-100%); }
 
-    50% { transform: translateX(-200%); }
-    70% { transform: translateX(-200%); }
+      50% { transform: translateX(-200%); }
+      70% { transform: translateX(-200%); }
 
-    75% { transform: translateX(-300%); }
-    100% { transform: translateX(-300%); }
-}
+      75% { transform: translateX(-300%); }
+      100% { transform: translateX(-300%); }
+  }
 </style>
 
 {% block content %}
@@ -186,369 +186,409 @@
     
 
 
-<!-- ✅ List View -->
-<div id="listView" class="space-y-6">
-  {% for project in projects %}
-  
-  <a href="{{ project.get_absolute_url }}">
-    <div class="flex flex-col sm:flex-row bg-white  shadow border p-3 hover:border-orange-500 hover:shadow-xl transition-all ">
+    <!-- ✅ List View -->
+    <div id="listView" class="space-y-6">
+      {% for project in projects %}
+      
+      <a href="{{ project.get_absolute_url }}">
+        <div class="flex flex-col sm:flex-row bg-white  shadow border p-3 hover:border-orange-500 hover:shadow-xl transition-all ">
 
-      <!-- Project Image -->
-      {% if project.image %}
-        <img src="{{ project.image.url }}" 
-            class="w-full sm:w-64 h-48 object-cover mt-0"
-            style="height: 250px;" 
-            alt="{{ project.project_name }}" class="h-80">
-      {% else %}
-        <img src="{% static 'images/no-images.jpg' %}" 
-            class="w-full sm:w-64 h-48 object-cover"
-            style="height: 250px;" 
-            alt="No Image">
-      {% endif %}
+          <!-- Project Image -->
+          {% if project.image %}
+            <img src="{{ project.image.url }}" 
+                class="w-full sm:w-64 h-48 object-cover mt-0"
+                style="height: 250px;" 
+                alt="{{ project.project_name }}" class="h-80">
+          {% else %}
+            <img src="{% static 'images/no-images.jpg' %}" 
+                class="w-full sm:w-64 h-48 object-cover"
+                style="height: 250px;" 
+                alt="No Image">
+          {% endif %}
 
-      <!-- Right Section -->
-      <div class="sm:ml-5 sm:mt-0 flex-1 space-y-2">
+          <!-- Right Section -->
+          <div class="sm:ml-5 sm:mt-0 flex-1 space-y-2">
 
-            <!-- Title + Price + Location -->
-      <div class="flex flex-col gap-1">
+                <!-- Title + Price + Location -->
+          <div class="flex flex-col gap-1">
 
-        <!-- Row 1: Project Name + Price -->
-        <div class="flex items-start justify-between gap-4">
-          <h2 class="text-xl font-semibold text-gray-900 leading-tight">
-            {{ project.project_name }}
-          </h2>
-
-
-          <span class="text-xl font-bold text-gray-900 whitespace-nowrap">
-            {{ project.get_price_range }}
-          </span>
-
-        </div>
-
-          <!-- Row 2: Location -->
-          <p class="text-sm text-gray-500 flex items-center gap-1 mb-2">
-            <i class="fas fa-map-marker-alt text-orange-500"></i>
-            <span>{{ project.locality }}</span>
-          </p>
-
-      </div>
+            <!-- Row 1: Project Name + Price -->
+            <div class="flex items-start justify-between gap-4">
+              <h2 class="text-xl font-semibold text-gray-900 leading-tight">
+                {{ project.project_name }}
+              </h2>
 
 
-        <!-- Badges -->
-        <div class="flex flex-wrap gap-2 text-xs text-gray-700 mb-[10px]">
-          <span class="px-2 py-1 rounded-full bg-gray-100">{{ project.construction_status }}</span>
-          <span class="px-2 py-1 rounded-full bg-gray-100">{{ project.propert_type }}</span>
-          <span class="px-2 py-1 rounded-full bg-gray-100">Possession {{ project.possession_month|default:"N/A" }}--{{ project.possession_year|default:"N/A" }}</span>
-        </div>
-
-        
-
-        <!-- Divider -->
-        <div class="border-t border-gray-200"></div>
-
-        <div class="border rounded-xl bg-white shadow-sm text-sm">
-
-              <!-- HEADER -->
-              <div class="grid grid-cols-3 px-4 py-2 bg-gray-50 border-b text-xs font-semibold text-gray-600 uppercase">
-                <span>BHK</span>
-                <span>Area (Sq.ft)</span>
-                <span class="text-right">Price</span>
-              </div>
-
-              <!-- SCROLLABLE BODY -->
-              <div class="max-h-[120px] overflow-y-auto divide-y">
-
-                <!-- Row -->
-                <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
-                  <span class="font-medium text-gray-700">2 BHK + 2T</span>
-                  <span class="text-gray-500">On Request</span>
-                  <span class="text-right font-semibold text-gray-900">₹ 3.6 Cr</span>
-                </div>
-
-                <!-- Row -->
-                <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
-                  <span class="font-medium text-gray-700">2 BHK + 2T</span>
-                  <span class="text-gray-500">On Request</span>
-                  <span class="text-right font-semibold text-gray-900">₹ 2.9 Cr</span>
-                </div>
-
-                <!-- Row (extra demo for scroll) -->
-                <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
-                  <span class="font-medium text-gray-700">3 BHK + 3T</span>
-                  <span class="text-gray-500">On Request</span>
-                  <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
-                </div>
-
-                <!-- Row (extra demo for scroll) -->
-                <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
-                  <span class="font-medium text-gray-700">3 BHK + 3T</span>
-                  <span class="text-gray-500">On Request</span>
-                  <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
-                </div>
-
-                                <!-- Row (extra demo for scroll) -->
-                <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
-                  <span class="font-medium text-gray-700">3 BHK + 3T</span>
-                  <span class="text-gray-500">On Request</span>
-                  <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
-                </div>
-
-                                <!-- Row (extra demo for scroll) -->
-                <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
-                  <span class="font-medium text-gray-700">3 BHK + 3T</span>
-                  <span class="text-gray-500">On Request</span>
-                  <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
-                </div>
-
-              </div>
-        </div>
-
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2.5 items-center">
-
-            <!-- Developer -->
-            <div class="flex items-center gap-2">
-              <span class="h-8 w-8 flex items-center justify-center rounded-full overflow-hidden border">
-                <img src="https://srv.carbonads.net/static/30242/afe67427d375248a92b1cda7f8a979fd91961d39"
-                    alt="Lodha Group"
-                    class="h-full w-full object-cover">
+              <span class="text-xl font-bold text-gray-900 whitespace-nowrap">
+                {{ project.get_price_range }}
               </span>
-              <span class="text-blue-600 text-sm font-medium">
-                By Lodha Group
-              </span>
-            </div>
-
-            <!-- CTA BUTTONS -->
-            <div class="flex gap-3 md:justify-end">
-
-              <!-- View Details -->
-              <a href="{{ project.get_absolute_url }}"
-                class="flex-1 md:flex-none inline-flex items-center justify-center gap-2
-                        px-4 py-2 bg-orange-500 text-white text-sm font-semibold
-                        rounded-3xl hover:bg-orange-600 transition">
-                View Details
-                <i class="fas fa-arrow-right text-xs"></i>
-              </a>
-
-              <!-- Contact Us -->
-              <a href="javascript:void(0)"
-                id="openContactPopup"
-                class="flex-1 md:flex-none inline-flex items-center justify-center gap-2
-                        px-4 py-2 border border-orange-500 text-orange-600
-                        text-sm font-semibold rounded-3xl hover:bg-orange-50 transition">
-                Contact Us
-              </a>
 
             </div>
+
+              <!-- Row 2: Location -->
+              <p class="text-sm text-gray-500 flex items-center gap-1 mb-2">
+                <i class="fas fa-map-marker-alt text-orange-500"></i>
+                <span>{{ project.locality }}</span>
+              </p>
+
           </div>
-      </div>
+
+
+            <!-- Badges -->
+            <div class="flex flex-wrap gap-2 text-xs text-gray-700 mb-[10px]">
+              <span class="px-2 py-1 rounded-full bg-gray-100">{{ project.construction_status }}</span>
+              <span class="px-2 py-1 rounded-full bg-gray-100">{{ project.propert_type }}</span>
+              <span class="px-2 py-1 rounded-full bg-gray-100">Possession {{ project.possession_month|default:"N/A" }}--{{ project.possession_year|default:"N/A" }}</span>
+            </div>
+
+            
+
+            <!-- Divider -->
+            <div class="border-t border-gray-200"></div>
+
+            <div class="border rounded-xl bg-white shadow-sm text-sm">
+
+                  <!-- HEADER -->
+                  <div class="grid grid-cols-3 px-4 py-2 bg-gray-50 border-b text-xs font-semibold text-gray-600 uppercase">
+                    <span>BHK</span>
+                    <span>Area (Sq.ft)</span>
+                    <span class="text-right">Price</span>
+                  </div>
+
+                  <!-- SCROLLABLE BODY -->
+                  <div class="max-h-[120px] overflow-y-auto divide-y">
+
+                    <!-- Row -->
+                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
+                      <span class="font-medium text-gray-700">2 BHK + 2T</span>
+                      <span class="text-gray-500">On Request</span>
+                      <span class="text-right font-semibold text-gray-900">₹ 3.6 Cr</span>
+                    </div>
+
+                    <!-- Row -->
+                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
+                      <span class="font-medium text-gray-700">2 BHK + 2T</span>
+                      <span class="text-gray-500">On Request</span>
+                      <span class="text-right font-semibold text-gray-900">₹ 2.9 Cr</span>
+                    </div>
+
+                    <!-- Row (extra demo for scroll) -->
+                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
+                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
+                      <span class="text-gray-500">On Request</span>
+                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
+                    </div>
+
+                    <!-- Row (extra demo for scroll) -->
+                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
+                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
+                      <span class="text-gray-500">On Request</span>
+                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
+                    </div>
+
+                                    <!-- Row (extra demo for scroll) -->
+                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
+                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
+                      <span class="text-gray-500">On Request</span>
+                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
+                    </div>
+
+                                    <!-- Row (extra demo for scroll) -->
+                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
+                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
+                      <span class="text-gray-500">On Request</span>
+                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
+                    </div>
+
+                  </div>
+            </div>
+
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2.5 items-center">
+
+                <!-- Developer -->
+                <div class="flex items-center gap-2">
+                  <span class="h-8 w-8 flex items-center justify-center rounded-full overflow-hidden border">
+                    <img src="https://srv.carbonads.net/static/30242/afe67427d375248a92b1cda7f8a979fd91961d39"
+                        alt="Lodha Group"
+                        class="h-full w-full object-cover">
+                  </span>
+                  <span class="text-blue-600 text-sm font-medium">
+                    By Lodha Group
+                  </span>
+                </div>
+
+                <!-- CTA BUTTONS -->
+                <div class="flex gap-3 md:justify-end">
+
+                      <!-- View Details -->
+                      <a href="{{ project.get_absolute_url }}"
+                        class="flex-1 md:flex-none inline-flex items-center justify-center gap-2
+                                px-4 py-2 bg-orange-500 text-white text-sm font-semibold
+                                rounded-3xl hover:bg-orange-600 transition">
+                        View Details
+                        <i class="fas fa-arrow-right text-xs"></i>
+                      </a>
+
+                      <!-- Contact Us -->
+                      <a href="javascript:void(0)"
+                        data-project="{{ project.project_name }}"
+                        data-project-id="{{ project.id }}"
+                        class="openContactPopup flex-1 md:flex-none inline-flex items-center justify-center gap-2
+                                px-4 py-2 border border-orange-500 text-orange-600
+                                text-sm font-semibold rounded-3xl hover:bg-orange-50 transition">
+                        Contact Us
+                      </a>
+
+                </div>
+              </div>
+          </div>
+        </div>
+      </a>
+
+      {% empty %}
+      <div class="text-center text-gray-500 py-10">No projects found.</div>
+      {% endfor %}
     </div>
-  </a>
-
-  {% empty %}
-  <div class="text-center text-gray-500 py-10">No projects found.</div>
-  {% endfor %}
-</div>
 
 
-<!-- ✅ Grid View -->
-<div id="gridView" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+    <!-- ✅ Grid View -->
+    <div id="gridView" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
 
-  {% for project in projects %}
-  <div class="bg-white rounded-lg shadow p-4 border hover:shadow-lg hover:border-orange-500 transition">
+      {% for project in projects %}
+      <div class="bg-white rounded-lg shadow p-4 border hover:shadow-lg hover:border-orange-500 transition">
 
-    <!-- Project Image -->
-    {% if project.image %}
-      <img src="{{ project.image.url }}"
-           class="w-full h-48 object-cover rounded"
-           alt="{{ project.project_name }}"
-           style="height: 250px;">
-    {% else %}
-      <img src="{% static 'images/no-images.jpg' %}"
-           class="w-full h-48 object-cover rounded"
-           alt="No Image"
-           style="height: 250px;">
-    {% endif %}
+        <!-- Project Image -->
+        {% if project.image %}
+          <img src="{{ project.image.url }}"
+              class="w-full h-48 object-cover rounded"
+              alt="{{ project.project_name }}"
+              style="height: 250px;">
+        {% else %}
+          <img src="{% static 'images/no-images.jpg' %}"
+              class="w-full h-48 object-cover rounded"
+              alt="No Image"
+              style="height: 250px;">
+        {% endif %}
 
-    <!-- Content -->
-    <div class="mt-4 space-y-2">
+        <!-- Content -->
+        <div class="mt-4 space-y-2">
 
-      <!-- Title + Location -->
-      <div>
-        <h2 class="text-lg font-semibold text-gray-900 line-clamp-1">
-          {{ project.project_name }}
-        </h2>
-        <p class="text-sm text-gray-500 flex items-center gap-1 mt-1">
-          <i class="fas fa-map-marker-alt text-orange-500 text-sm"></i>
-          <span class="line-clamp-1">{{ project.locality }}, {{ project.city }}</span>
-        </p>
-      </div>
+          <!-- Title + Location -->
+          <div>
+            <!-- Row 1: Project Name + Price -->
+            <div class="flex items-start justify-between gap-4">
+              <h2 class="text-xl font-semibold text-gray-900 leading-tight">
+                {{ project.project_name }}
+              </h2>
 
-      <!-- Status / Type / Land (Badges) -->
-      <div class="flex flex-wrap gap-2 text-xs text-gray-700">
-        <span class="px-2 py-0.5 rounded-full bg-gray-100">
-          {{ project.construction_status }}
-        </span>
-        <span class="px-2 py-0.5 rounded-full bg-gray-100">
-          {{ project.propert_type.name }}
-        </span>
-        <span class="px-2 py-0.5 rounded-full bg-gray-100">
-          Land Parcel: {{ project.land_parce|default:"N/A" }}
-        </span>
-      </div>
 
-  
+              <span class="text-lg font-semibold text-gray-900 whitespace-nowrap">
+                {{ project.get_price_range }}
+              </span>
 
-      <!-- Divider -->
-      <div class="border-t border-gray-100 pt-3 mt-1"></div>
-
-      <!-- 🔸 Key Highlights -->
-      <div class="bg-orange-50 rounded-xl px-3 py-3">
-        <p class="text-xs font-semibold text-orange-700 uppercase tracking-[0.16em] mb-2">
-          Key Highlights
-        </p>
-
-        <div class="grid grid-cols-2 gap-x-4 gap-y-3 text-xs text-gray-700">
-
-          <!-- Developer -->
-          <div class="flex items-start gap-2">
-            <div class="w-7 h-7 rounded-lg bg-white shadow flex items-center justify-center">
-              <i class="fas fa-user-tie text-orange-500 text-xs"></i>
             </div>
-            <div>
-              <p class="font-semibold leading-tight">Developer</p>
-              <p class="text-gray-600 leading-tight">{{project.developer}}</p>
-            </div>
+            <p class="text-sm text-gray-500 flex items-center gap-1 mt-1">
+              <i class="fas fa-map-marker-alt text-orange-500 text-sm"></i>
+              <span class="line-clamp-1">{{ project.locality }}, {{ project.city }}</span>
+            </p>
           </div>
 
-          <!-- Total Towers -->
-          <div class="flex items-start gap-2">
-            <div class="w-7 h-7 rounded-lg bg-white shadow flex items-center justify-center">
-              <i class="fas fa-building text-orange-500 text-xs"></i>
-            </div>
-            <div>
-              <p class="font-semibold leading-tight">Towers</p>
-              <p class="text-gray-600 leading-tight">5 Residential Towers</p>
-            </div>
+          <!-- Status / Type / Land (Badges) -->
+          <div class="flex flex-wrap gap-2 text-xs text-gray-700">
+            <span class="px-2 py-0.5 rounded-full bg-gray-100">
+              {{ project.construction_status }}
+            </span>
+            <span class="px-2 py-0.5 rounded-full bg-gray-100">
+              {{ project.propert_type.name }}
+            </span>
+            <span class="px-2 py-0.5 rounded-full bg-gray-100">
+              Land Parcel: {{ project.land_parce|default:"N/A" }}
+            </span>
           </div>
 
-          <!-- Total Floors -->
-          <div class="flex items-start gap-2">
-            <div class="w-7 h-7 rounded-lg bg-white shadow flex items-center justify-center">
-              <i class="fas fa-layer-group text-orange-500 text-xs"></i>
+      
+
+          <!-- Divider -->
+          <div class="border-t border-gray-100 pt-3 mt-1"></div>
+
+              <div class="border rounded-xl bg-white shadow-sm text-sm">
+
+                  <!-- HEADER -->
+                  <div class="grid grid-cols-3 px-4 py-2 bg-gray-50 border-b text-xs font-semibold text-gray-600 uppercase">
+                    <span>BHK</span>
+                    <span>Area (Sq.ft)</span>
+                    <span class="text-right">Price</span>
+                  </div>
+
+                  <!-- SCROLLABLE BODY -->
+                  <div class="max-h-[120px] overflow-y-auto divide-y">
+
+                    <!-- Row -->
+                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
+                      <span class="font-medium text-gray-700">2 BHK + 2T</span>
+                      <span class="text-gray-500">On Request</span>
+                      <span class="text-right font-semibold text-gray-900">₹ 3.6 Cr</span>
+                    </div>
+
+                    <!-- Row -->
+                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
+                      <span class="font-medium text-gray-700">2 BHK + 2T</span>
+                      <span class="text-gray-500">On Request</span>
+                      <span class="text-right font-semibold text-gray-900">₹ 2.9 Cr</span>
+                    </div>
+
+                    <!-- Row (extra demo for scroll) -->
+                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
+                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
+                      <span class="text-gray-500">On Request</span>
+                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
+                    </div>
+
+                    <!-- Row (extra demo for scroll) -->
+                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
+                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
+                      <span class="text-gray-500">On Request</span>
+                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
+                    </div>
+
+                                    <!-- Row (extra demo for scroll) -->
+                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
+                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
+                      <span class="text-gray-500">On Request</span>
+                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
+                    </div>
+
+                                    <!-- Row (extra demo for scroll) -->
+                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
+                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
+                      <span class="text-gray-500">On Request</span>
+                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
+                    </div>
+
+                  </div>
             </div>
-            <div>
-              <p class="font-semibold leading-tight">Floors</p>
-              <p class="text-gray-600 leading-tight">{{project.floor}}</p>
-            </div>
+
+
+              <div class="grid grid-cols-1  gap-3 mt-2.5 items-center">
+
+                <!-- Developer -->
+                <div class="flex items-center gap-2">
+                  <span class="h-8 w-8 flex items-center justify-center rounded-full overflow-hidden border">
+                    <img src="https://srv.carbonads.net/static/30242/afe67427d375248a92b1cda7f8a979fd91961d39"
+                        alt="Lodha Group"
+                        class="h-full w-full object-cover">
+                  </span>
+                  <span class="text-blue-600 text-sm font-medium">
+                    By Lodha Group
+                  </span>
+                </div>
+
+                <!-- CTA BUTTONS -->
+                <div class="flex gap-3 md:justify-end">
+
+                  <!-- View Details -->
+                  <a href="{{ project.get_absolute_url }}"
+                    class="flex-1 md:flex-none inline-flex items-center justify-center gap-2
+                            px-4 py-2 bg-orange-500 text-white text-sm font-semibold
+                            rounded-3xl hover:bg-orange-600 transition">
+                    View Details
+                    <i class="fas fa-arrow-right text-xs"></i>
+                  </a>
+
+                  <!-- Contact Us -->
+                  <a href="javascript:void(0)"
+                    id="openContactPopup"
+                    class="flex-1 md:flex-none inline-flex items-center justify-center gap-2
+                            px-4 py-2 border border-orange-500 text-orange-600
+                            text-sm font-semibold rounded-3xl hover:bg-orange-50 transition">
+                    Contact Us
+                  </a>
+
+                </div>
           </div>
 
-          <!-- Project Area -->
-          <div class="flex items-start gap-2">
-            <div class="w-7 h-7 rounded-lg bg-white shadow flex items-center justify-center">
-              <i class="fas fa-th-large text-orange-500 text-xs"></i>
-            </div>
-            <div>
-              <p class="font-semibold leading-tight">Project Area</p>
-              <p class="text-gray-600 leading-tight">{{project.land_parce}}</p>
-            </div>
-          </div>
+      
 
         </div>
       </div>
 
-      <!-- CTA -->
-      <div class="flex justify-between items-center pt-2">
-        <span class="text-[11px] text-gray-500 hidden sm:inline">
-          Limited inventory • Book your site visit
-        </span>
-
-        <a href="{{ project.get_absolute_url }}"
-           class="inline-flex items-center text-sm text-white bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded-full transition">
-          View Details
-          <i class="fas fa-arrow-right ml-2 text-xs"></i>
-        </a>
-      </div>
-
+      {% empty %}
+        <div class="text-center text-gray-500 py-10 col-span-2">No projects found.</div>
+      {% endfor %}
     </div>
-  </div>
-
-  {% empty %}
-    <div class="text-center text-gray-500 py-10 col-span-2">No projects found.</div>
-  {% endfor %}
-</div>
 
 
 
-<!-- Pagination Section -->
-{% if projects.has_other_pages %}
-<nav class="flex justify-center mt-10">
-  <ul class="flex items-center gap-2 text-gray-700">
+  <!-- Pagination Section -->
+  {% if projects.has_other_pages %}
+  <nav class="flex justify-center mt-10">
+    <ul class="flex items-center gap-2 text-gray-700">
 
-    {% if projects.has_previous %}
-      <li>
-        <a href="?q={{ query }}&type={{ property_type }}&page={{ projects.previous_page_number }}" 
-           class="px-3 py-1 border rounded hover:bg-gray-200">&laquo; Prev</a>
-      </li>
-    {% else %}
-      <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">&laquo; Prev</li>
-    {% endif %}
-
-    {% for num in projects.paginator.page_range %}
-      {% if num == projects.number %}
-        <li class="px-3 py-1 bg-[#00E0FF] text-white rounded">{{ num }}</li>
-      {% elif num > projects.number|add:'-3' and num < projects.number|add:'3' %}
+      {% if projects.has_previous %}
         <li>
-          <a href="?q={{ query }}&type={{ property_type }}&page={{ num }}" 
-             class="px-3 py-1 border rounded hover:bg-gray-200">{{ num }}</a>
+          <a href="?q={{ query }}&type={{ property_type }}&page={{ projects.previous_page_number }}" 
+            class="px-3 py-1 border rounded hover:bg-gray-200">&laquo; Prev</a>
         </li>
+      {% else %}
+        <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">&laquo; Prev</li>
       {% endif %}
-    {% endfor %}
 
-    {% if projects.has_next %}
-      <li>
-        <a href="?q={{ query }}&type={{ property_type }}&page={{ projects.next_page_number }}" 
-           class="px-3 py-1 border rounded hover:bg-gray-200">Next &raquo;</a>
-      </li>
-    {% else %}
-      <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">Next &raquo;</li>
-    {% endif %}
+      {% for num in projects.paginator.page_range %}
+        {% if num == projects.number %}
+          <li class="px-3 py-1 bg-[#00E0FF] text-white rounded">{{ num }}</li>
+        {% elif num > projects.number|add:'-3' and num < projects.number|add:'3' %}
+          <li>
+            <a href="?q={{ query }}&type={{ property_type }}&page={{ num }}" 
+              class="px-3 py-1 border rounded hover:bg-gray-200">{{ num }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
 
-  </ul>
-</nav>
-{% endif %}
+      {% if projects.has_next %}
+        <li>
+          <a href="?q={{ query }}&type={{ property_type }}&page={{ projects.next_page_number }}" 
+            class="px-3 py-1 border rounded hover:bg-gray-200">Next &raquo;</a>
+        </li>
+      {% else %}
+        <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">Next &raquo;</li>
+      {% endif %}
+
+    </ul>
+  </nav>
+  {% endif %}
 
 
-<!-- ✅ JS Toggle -->
-<script>
-  const listViewBtn = document.getElementById("listViewBtn");
-  const gridViewBtn = document.getElementById("gridViewBtn");
-  const listView = document.getElementById("listView");
-  const gridView = document.getElementById("gridView");
+  <!-- ✅ JS Toggle -->
+  <script>
+    const listViewBtn = document.getElementById("listViewBtn");
+    const gridViewBtn = document.getElementById("gridViewBtn");
+    const listView = document.getElementById("listView");
+    const gridView = document.getElementById("gridView");
 
-  listViewBtn.addEventListener("click", () => {
-    listView.classList.remove("hidden");
-    gridView.classList.add("hidden");
+    listViewBtn.addEventListener("click", () => {
+      listView.classList.remove("hidden");
+      gridView.classList.add("hidden");
 
-    listViewBtn.classList.add("bg-orange-500", "text-white");
-    listViewBtn.classList.remove("bg-gray-200", "text-gray-700");
+      listViewBtn.classList.add("bg-orange-500", "text-white");
+      listViewBtn.classList.remove("bg-gray-200", "text-gray-700");
 
-    gridViewBtn.classList.remove("bg-orange-500", "text-white");
-    gridViewBtn.classList.add("bg-gray-200", "text-gray-700");
-  });
+      gridViewBtn.classList.remove("bg-orange-500", "text-white");
+      gridViewBtn.classList.add("bg-gray-200", "text-gray-700");
+    });
 
-  gridViewBtn.addEventListener("click", () => {
-    gridView.classList.remove("hidden");
-    listView.classList.add("hidden");
+    gridViewBtn.addEventListener("click", () => {
+      gridView.classList.remove("hidden");
+      listView.classList.add("hidden");
 
-    gridViewBtn.classList.add("bg-orange-500", "text-white");
-    gridViewBtn.classList.remove("bg-gray-200", "text-gray-700");
+      gridViewBtn.classList.add("bg-orange-500", "text-white");
+      gridViewBtn.classList.remove("bg-gray-200", "text-gray-700");
 
-    
-    listViewBtn.classList.remove("bg-orange-500", "text-white");
-    listViewBtn.classList.add("bg-gray-200", "text-gray-700");
-  });
-</script>
+      
+      listViewBtn.classList.remove("bg-orange-500", "text-white");
+      listViewBtn.classList.add("bg-gray-200", "text-gray-700");
+    });
+  </script>
 
 
 
@@ -658,70 +698,136 @@
 
 <!-- FOOTER END HERE -->
 
-
-
- <!-- CONTACT POPUP -->
+<!-- ================= CONTACT POPUP ================= -->
 <div id="contactPopup"
-     class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+     class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50 px-3">
 
-  <div class="bg-white w-[90%] max-w-sm shadow-lg p-5 relative">
+  <div class="relative w-full max-w-sm rounded-xl shadow-2xl bg-white overflow-hidden">
 
-    <!-- Close Button -->
+    <!-- HEADER -->
+    <div class="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3 text-white">
+      <h3 class="text-base font-semibold">Enquiry For</h3>
+      <p id="enquiryProjectName" class="text-xs opacity-90 mt-0.5">
+        Project Name
+      </p>
+    </div>
+
+    <!-- CLOSE -->
     <button id="closeContactPopup"
-            class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
+            class="absolute top-3 right-3 text-white text-lg">
       ✕
     </button>
 
-    <h3 class="text-lg font-bold text-gray-800 mb-3">
-      Contact Us
-    </h3>
+    <!-- FORM -->
+    <form method="post" id="enquiryForm"
+          class="p-4 space-y-3 text-sm bg-white">
+      {% csrf_token %}
 
-    <form class="space-y-3">
+      <!-- Honeypot -->
+      <input type="text" name="company" class="hidden">
 
-      <input type="text"
-             placeholder="Your Name"
-             class="w-full border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-orange-400 outline-none">
+      <!-- reCAPTCHA token -->
+      <input type="hidden" name="g-recaptcha-response" id="recaptchaToken">
 
-      <input type="tel"
-             placeholder="Phone Number"
-             class="w-full border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-orange-400 outline-none">
+      <input type="hidden" name="project_id" id="projectIdInput">
 
-      <textarea placeholder="Message"
-                rows="3"
-                class="w-full border rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-orange-400 outline-none"></textarea>
+      <!-- NAME -->
+      <div>
+        <label class="font-medium text-gray-600">Full Name</label>
+        <input type="text" name="name" required
+               class="mt-1 w-full border rounded-md px-3 py-2">
+      </div>
 
+      <!-- EMAIL -->
+      <div>
+        <label class="font-medium text-gray-600">Email</label>
+        <input type="email" name="email"
+               class="mt-1 w-full border rounded-md px-3 py-2">
+      </div>
+
+      <!-- PHONE -->
+      <div>
+        <label class="font-medium text-gray-600">Mobile</label>
+        <input type="tel" name="phone" required
+               class="mt-1 w-full border rounded-md px-3 py-2">
+      </div>
+
+      <!-- MESSAGE -->
+      <div>
+        <label class="font-medium text-gray-600">Message</label>
+        <textarea name="message" rows="2"
+                  class="mt-1 w-full border rounded-md px-3 py-2"></textarea>
+      </div>
+
+      <!-- SUBMIT -->
       <button type="submit"
-              class="w-full bg-orange-500 text-white py-2 rounded-md font-semibold hover:bg-orange-600 transition">
-        Submit
+              class="w-full bg-orange-500 text-white py-2.5 rounded-lg font-semibold">
+        Submit Enquiry
       </button>
 
+      <p class="text-[11px] text-center text-gray-400">
+        🔒 100% Privacy Protected
+      </p>
     </form>
+
   </div>
 </div>
+<!-- ================= END POPUP ================= -->
+
+
+
+
 
 <script>
-  const openBtn = document.getElementById("openContactPopup");
-  const closeBtn = document.getElementById("closeContactPopup");
-  const popup = document.getElementById("contactPopup");
+document.addEventListener("DOMContentLoaded", function () {
 
-  openBtn.addEventListener("click", () => {
-    popup.classList.remove("hidden");
-    popup.classList.add("flex");
+  const popup = document.getElementById("contactPopup");
+  const closeBtn = document.getElementById("closeContactPopup");
+  const projectNameText = document.getElementById("enquiryProjectName");
+  const projectIdInput = document.getElementById("projectIdInput");
+  const enquiryForm = document.getElementById("enquiryForm");
+
+  document.querySelectorAll(".openContactPopup").forEach(btn => {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      const projectName = this.dataset.project;
+      const projectId = this.dataset.projectId;
+
+      projectNameText.textContent = projectName;
+      projectIdInput.value = projectId;
+
+      enquiryForm.action = `/projects/submit-enquiry/${projectId}/`;
+
+      popup.classList.remove("hidden");
+      popup.classList.add("flex");
+      document.body.style.overflow = "hidden";
+    });
   });
 
-  closeBtn.addEventListener("click", () => {
+  closeBtn.addEventListener("click", closePopup);
+
+  popup.addEventListener("click", e => {
+    if (e.target === popup) closePopup();
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closePopup();
+  });
+
+  function closePopup() {
     popup.classList.add("hidden");
     popup.classList.remove("flex");
-  });
+    document.body.style.overflow = "";
+  }
 
-  // close on outside click
-  popup.addEventListener("click", (e) => {
-    if (e.target === popup) {
-      popup.classList.add("hidden");
-      popup.classList.remove("flex");
-    }
-  });
+});
 </script>
+
+
+
+
+
 
 
 {% endblock %}

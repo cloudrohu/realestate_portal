@@ -29,6 +29,7 @@ class Setting(ImageCompressionMixin, models.Model):
     smtpport = models.CharField(blank=True, max_length=5)
     meta_title = models.CharField(max_length=200, blank=True, null=True)
     meta_description = models.TextField(blank=True, null=True)
+    meta_keywords = models.TextField(blank=True, null=True)
     footer_text = models.CharField(max_length=250, blank=True, null=True)
     copy_right = models.CharField(blank=True, max_length=100)
     privacy_policy = RichTextUploadingField(blank=True)

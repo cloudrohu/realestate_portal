@@ -51,7 +51,7 @@ def format_price_range(price_min, price_max):
 class Project(MPTTModel):
     
     BHK_CHOICES = (
-        ('1 BHK', '1 BHK'), ('2 BHK', '2 BHK'), ('3 BHK', '3 BHK'), ('5 BHK', '5 BHK'), 
+        ('1 BHK', '1 BHK'), ('2 BHK', '2 BHK'), ('3 BHK', '3 BHK'), ('4 BHK', '4 BHK'),('5 BHK', '5 BHK'), 
         ('6 BHK', '6 BHK'), ('7 BHK', '7 BHK'), ('8 BHK', '8 BHK'), ('9 BHK', '9 BHK'),
         ('10 BHK', '10 BHK'), ('10+ BHK', '10+ BHK'),
     )
@@ -104,6 +104,7 @@ class Project(MPTTModel):
     )
     
     featured_property = models.BooleanField(default=False)
+    balcony = models.BooleanField(default=False)
     active = models.BooleanField(default=False)
     image = models.ImageField(null=True, blank=True,upload_to='images/')
     google_map_iframe = models.TextField(null=True, blank=True,)
