@@ -186,6 +186,8 @@
     
 
 
+
+
 <!-- ✅ List View -->
 <div id="listView" class="space-y-6">
   {% for project in projects %}
@@ -302,44 +304,42 @@
         </div>
 
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2.5 items-center">
+          <div class="flex grid grid-cols-1 md:grid-cols-2 items-center justify-between gap-4 mt-2.5">
 
-            <!-- Developer -->
-            <div class="flex items-center gap-2">
-              <span class="h-8 w-8 flex items-center justify-center rounded-full overflow-hidden border">
-                <img src="https://srv.carbonads.net/static/30242/afe67427d375248a92b1cda7f8a979fd91961d39"
-                    alt="Lodha Group"
-                    class="h-full w-full object-cover">
-              </span>
-              <span class="text-blue-600 text-sm font-medium">
-                By Lodha Group
-              </span>
-            </div>
+              <div class="inline-flex items-center gap-2">
+                <span class="h-8 w-8 flex items-center justify-center rounded-full overflow-hidden border">
+                  <img src="https://srv.carbonads.net/static/30242/afe67427d375248a92b1cda7f8a979fd91961d39"
+                      alt="Lodha Group"
+                      class="h-full w-full object-cover">
+                </span>
+                <span class="text-blue-600 text-sm font-medium">
+                  By Lodha Group
+                </span>
+              </div>
 
-            <!-- CTA BUTTONS -->
-            <div class="flex gap-3 md:justify-end">
+              <!-- RIGHT: Buttons -->
+              <div class="flex items-center gap-3">
 
-              <!-- View Details -->
-              <a href="{{ project.get_absolute_url }}"
-                class="flex-1 md:flex-none inline-flex items-center justify-center gap-2
-                        px-4 py-2 bg-orange-500 text-white text-sm font-semibold
-                        rounded-3xl hover:bg-orange-600 transition">
-                View Details
-                <i class="fas fa-arrow-right text-xs"></i>
-              </a>
+                <!-- View Details -->
+                <a href="{{ project.get_absolute_url }}"
+                  class="inline-flex items-center justify-center gap-2 px-4 py-2
+                          bg-orange-500 text-white text-sm font-semibold rounded-3xl
+                          hover:bg-orange-600 transition">
+                  View Details
+                  <i class="fas fa-arrow-right text-xs"></i>
+                </a>
 
-              <!-- Contact Us -->
-              <a href="javascript:void(0)"
-                id="openContactPopup"
-                class="flex-1 md:flex-none inline-flex items-center justify-center gap-2
-                        px-4 py-2 border border-orange-500 text-orange-600
-                        text-sm font-semibold rounded-3xl hover:bg-orange-50 transition">
-                Contact Us
-              </a>
+                <!-- Contact Us -->
+                <a href="javascript:void(0)"
+                  id="openContactPopup"
+                  class="inline-flex items-center justify-center gap-2 px-4 py-2
+                          border border-orange-500 text-orange-600 text-sm font-semibold rounded-3xl
+                          hover:bg-orange-50 transition">
+                  Contact Us
+                </a>
 
-            </div>
+              </div>
           </div>
-
 
 
 
@@ -359,129 +359,226 @@
 <!-- ✅ Grid View -->
 <div id="gridView" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
 
-  {% for project in projects %}
-  <div class="bg-white rounded-lg shadow p-4 border hover:shadow-lg hover:border-orange-500 transition">
+{% for project in projects %}
+<a href="{{ project.get_absolute_url }}">
+  <div class="bg-white rounded-xl shadow border hover:border-orange-500 hover:shadow-xl transition overflow-hidden">
 
-    <!-- Project Image -->
+    <!-- IMAGE -->
     {% if project.image %}
       <img src="{{ project.image.url }}"
-           class="w-full h-48 object-cover rounded"
-           alt="{{ project.project_name }}"
-           style="height: 250px;">
+           class="w-full h-[250px] object-cover"
+           alt="{{ project.project_name }}">
     {% else %}
       <img src="{% static 'images/no-images.jpg' %}"
-           class="w-full h-48 object-cover rounded"
-           alt="No Image"
-           style="height: 250px;">
+           class="w-full h-[250px] object-cover"
+           alt="No Image">
     {% endif %}
 
-    <!-- Content -->
-    <div class="mt-4 space-y-2">
+    <!-- CONTENT -->
+    <div class="p-4 space-y-3">
 
-      <!-- Title + Location -->
-      <div>
-        <h2 class="text-lg font-semibold text-gray-900 line-clamp-1">
+      <!-- TITLE + PRICE -->
+      <div class="flex justify-between items-start gap-3">
+        <h2 class="text-lg font-semibold text-gray-900 leading-tight line-clamp-2">
           {{ project.project_name }}
         </h2>
-        <p class="text-sm text-gray-500 flex items-center gap-1 mt-1">
-          <i class="fas fa-map-marker-alt text-orange-500 text-sm"></i>
-          <span class="line-clamp-1">{{ project.locality }}, {{ project.city }}</span>
-        </p>
+        <span class="text-lg font-bold text-gray-900 whitespace-nowrap">
+          1.85 – 4.58 Cr
+        </span>
       </div>
 
-      <!-- Status / Type / Land (Badges) -->
+      <!-- LOCATION -->
+      <p class="text-sm text-gray-500 flex items-center gap-1">
+        <i class="fas fa-map-marker-alt text-orange-500"></i>
+        {{ project.locality }}, {{ project.city }}
+      </p>
+
+      <!-- BADGES -->
       <div class="flex flex-wrap gap-2 text-xs text-gray-700">
-        <span class="px-2 py-0.5 rounded-full bg-gray-100">
+        <span class="px-2 py-1 rounded-full bg-gray-100">
           {{ project.construction_status }}
         </span>
-        <span class="px-2 py-0.5 rounded-full bg-gray-100">
-          {{ project.propert_type.name }}
+        <span class="px-2 py-1 rounded-full bg-gray-100">
+          {{ project.propert_type }}
         </span>
-        <span class="px-2 py-0.5 rounded-full bg-gray-100">
-          Land Parcel: {{ project.land_parce|default:"N/A" }}
+        <span class="px-2 py-1 rounded-full bg-gray-100">
+          Possession {{ project.possession_month|default:"N/A" }}-{{ project.possession_year|default:"N/A" }}
         </span>
       </div>
 
-  
+      <!-- CONFIG TABLE -->
+      <div class="border rounded-xl bg-white shadow-sm text-sm">
 
-      <!-- Divider -->
-      <div class="border-t border-gray-100 pt-3 mt-1"></div>
+        <div class="grid grid-cols-3 px-3 py-2 bg-gray-50 border-b text-[11px] font-semibold text-gray-600 uppercase">
+          <span>BHK</span>
+          <span>Area</span>
+          <span class="text-right">Price</span>
+        </div>
 
-      <!-- 🔸 Key Highlights -->
-      <div class="bg-orange-50 rounded-xl px-3 py-3">
-        <p class="text-xs font-semibold text-orange-700 uppercase tracking-[0.16em] mb-2">
-          Key Highlights
-        </p>
+        <div class="max-h-[110px] overflow-y-auto divide-y">
 
-        <div class="grid grid-cols-2 gap-x-4 gap-y-3 text-xs text-gray-700">
-
-          <!-- Developer -->
-          <div class="flex items-start gap-2">
-            <div class="w-7 h-7 rounded-lg bg-white shadow flex items-center justify-center">
-              <i class="fas fa-user-tie text-orange-500 text-xs"></i>
-            </div>
-            <div>
-              <p class="font-semibold leading-tight">Developer</p>
-              <p class="text-gray-600 leading-tight">{{project.developer}}</p>
-            </div>
+          <div class="grid grid-cols-3 px-3 py-1 items-center">
+            <span class="font-medium text-gray-700">2 BHK</span>
+            <span class="text-gray-500">On Request</span>
+            <span class="text-right font-semibold">₹ 3.6 Cr</span>
           </div>
 
-          <!-- Total Towers -->
-          <div class="flex items-start gap-2">
-            <div class="w-7 h-7 rounded-lg bg-white shadow flex items-center justify-center">
-              <i class="fas fa-building text-orange-500 text-xs"></i>
-            </div>
-            <div>
-              <p class="font-semibold leading-tight">Towers</p>
-              <p class="text-gray-600 leading-tight">5 Residential Towers</p>
-            </div>
-          </div>
-
-          <!-- Total Floors -->
-          <div class="flex items-start gap-2">
-            <div class="w-7 h-7 rounded-lg bg-white shadow flex items-center justify-center">
-              <i class="fas fa-layer-group text-orange-500 text-xs"></i>
-            </div>
-            <div>
-              <p class="font-semibold leading-tight">Floors</p>
-              <p class="text-gray-600 leading-tight">{{project.floor}}</p>
-            </div>
-          </div>
-
-          <!-- Project Area -->
-          <div class="flex items-start gap-2">
-            <div class="w-7 h-7 rounded-lg bg-white shadow flex items-center justify-center">
-              <i class="fas fa-th-large text-orange-500 text-xs"></i>
-            </div>
-            <div>
-              <p class="font-semibold leading-tight">Project Area</p>
-              <p class="text-gray-600 leading-tight">{{project.land_parce}}</p>
-            </div>
+          <div class="grid grid-cols-3 px-3 py-1 items-center">
+            <span class="font-medium text-gray-700">3 BHK</span>
+            <span class="text-gray-500">On Request</span>
+            <span class="text-right font-semibold">₹ 4.2 Cr</span>
           </div>
 
         </div>
       </div>
 
-      <!-- CTA -->
-      <div class="flex justify-between items-center pt-2">
-        <span class="text-[11px] text-gray-500 hidden sm:inline">
-          Limited inventory • Book your site visit
+      <!-- FOOTER -->
+      <div class="flex items-center justify-between pt-3">
+
+        <!-- Developer -->
+        <div class="flex items-center gap-2">
+          <span class="h-8 w-8 rounded-full overflow-hidden border">
+            <img src="https://srv.carbonads.net/static/30242/afe67427d375248a92b1cda7f8a979fd91961d39"
+                 class="h-full w-full object-cover">
+          </span>
+          <span class="text-blue-600 text-sm font-medium">
+            By Lodha Group
+          </span>
+        </div>
+
+        <!-- CTA -->
+        <span class="inline-flex items-center gap-2 px-4 py-2
+                     bg-orange-500 text-white text-sm font-semibold rounded-3xl
+                     hover:bg-orange-600 transition">
+          View Details
+          <i class="fas fa-arrow-right text-xs"></i>
         </span>
 
-        <a href="{{ project.get_absolute_url }}"
-           class="inline-flex items-center text-sm text-white bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded-full transition">
-          View Details
-          <i class="fas fa-arrow-right ml-2 text-xs"></i>
-        </a>
       </div>
 
     </div>
   </div>
-
-  {% empty %}
-    <div class="text-center text-gray-500 py-10 col-span-2">No projects found.</div>
-  {% endfor %}
+</a>
+{% empty %}
+<div class="text-center text-gray-500 py-10 col-span-2">
+  No projects found.
 </div>
+{% endfor %}
+
+</div>
+
+
+<!-- ✅ Grid View -->
+<div id="gridView" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+
+{% for project in projects %}
+<a href="{{ project.get_absolute_url }}">
+  <div class="bg-white rounded-xl shadow border hover:border-orange-500 hover:shadow-xl transition overflow-hidden">
+
+    <!-- IMAGE -->
+    {% if project.image %}
+      <img src="{{ project.image.url }}"
+           class="w-full h-[250px] object-cover"
+           alt="{{ project.project_name }}">
+    {% else %}
+      <img src="{% static 'images/no-images.jpg' %}"
+           class="w-full h-[250px] object-cover"
+           alt="No Image">
+    {% endif %}
+
+    <!-- CONTENT -->
+    <div class="p-4 space-y-3">
+
+      <!-- TITLE + PRICE -->
+      <div class="flex justify-between items-start gap-3">
+        <h2 class="text-lg font-semibold text-gray-900 leading-tight line-clamp-2">
+          {{ project.project_name }}
+        </h2>
+        <span class="text-lg font-bold text-gray-900 whitespace-nowrap">
+          1.85 – 4.58 Cr
+        </span>
+      </div>
+
+      <!-- LOCATION -->
+      <p class="text-sm text-gray-500 flex items-center gap-1">
+        <i class="fas fa-map-marker-alt text-orange-500"></i>
+        {{ project.locality }}, {{ project.city }}
+      </p>
+
+      <!-- BADGES -->
+      <div class="flex flex-wrap gap-2 text-xs text-gray-700">
+        <span class="px-2 py-1 rounded-full bg-gray-100">
+          {{ project.construction_status }}
+        </span>
+        <span class="px-2 py-1 rounded-full bg-gray-100">
+          {{ project.propert_type }}
+        </span>
+        <span class="px-2 py-1 rounded-full bg-gray-100">
+          Possession {{ project.possession_month|default:"N/A" }}-{{ project.possession_year|default:"N/A" }}
+        </span>
+      </div>
+
+      <!-- CONFIG TABLE -->
+      <div class="border rounded-xl bg-white shadow-sm text-sm">
+
+        <div class="grid grid-cols-3 px-3 py-2 bg-gray-50 border-b text-[11px] font-semibold text-gray-600 uppercase">
+          <span>BHK</span>
+          <span>Area</span>
+          <span class="text-right">Price</span>
+        </div>
+
+        <div class="max-h-[110px] overflow-y-auto divide-y">
+
+          <div class="grid grid-cols-3 px-3 py-1 items-center">
+            <span class="font-medium text-gray-700">2 BHK</span>
+            <span class="text-gray-500">On Request</span>
+            <span class="text-right font-semibold">₹ 3.6 Cr</span>
+          </div>
+
+          <div class="grid grid-cols-3 px-3 py-1 items-center">
+            <span class="font-medium text-gray-700">3 BHK</span>
+            <span class="text-gray-500">On Request</span>
+            <span class="text-right font-semibold">₹ 4.2 Cr</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="flex items-center justify-between pt-3">
+
+        <!-- Developer -->
+        <div class="flex items-center gap-2">
+          <span class="h-8 w-8 rounded-full overflow-hidden border">
+            <img src="https://srv.carbonads.net/static/30242/afe67427d375248a92b1cda7f8a979fd91961d39"
+                 class="h-full w-full object-cover">
+          </span>
+          <span class="text-blue-600 text-sm font-medium">
+            By Lodha Group
+          </span>
+        </div>
+
+        <!-- CTA -->
+        <span class="inline-flex items-center gap-2 px-4 py-2
+                     bg-orange-500 text-white text-sm font-semibold rounded-3xl
+                     hover:bg-orange-600 transition">
+          View Details
+          <i class="fas fa-arrow-right text-xs"></i>
+        </span>
+
+      </div>
+
+    </div>
+  </div>
+</a>
+{% empty %}
+<div class="text-center text-gray-500 py-10 col-span-2">
+  No projects found.
+</div>
+{% endfor %}
+
+</div>
+
 
 
 
