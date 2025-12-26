@@ -2,10 +2,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse 
 from properties.models import Property 
-from utility.models import Locality,PropertyType,City
+from utility.models import Locality,PropertyType,City,Bank
 from .models import (
     Setting, Slider, Testimonial, About, Leadership,
-    Contact_Page, FAQ, Our_Team,Why_Choose
+    Contact_Page, FAQ, Our_Team,Why_Choose,
 )
 from user.models import Developer  # 👈 import your Developer model
 # NOTE: The manual function get_global_context() has been removed 
@@ -20,97 +20,54 @@ def index(request):
     settings_obj = Setting.objects.first()
     cities = City.objects.filter(level_type="CITY").order_by("name")
 
-    # ===============================
-    # 🔑 PROPERTY TYPES (TOP LEVEL)
-    # ===============================
-    residential_type = PropertyType.objects.filter(
-        name__iexact="Residential",
-        is_top_level=True
-    ).first()
+    residential_type = PropertyType.objects.filter(name__iexact="Residential", is_top_level=True).first()
+    commercial_type = PropertyType.objects.filter(name__iexact="Commercial", is_top_level=True).first()
 
-    commercial_type = PropertyType.objects.filter(
-        name__iexact="Commercial",
-        is_top_level=True
-    ).first()
+    residential_types = residential_type.get_descendants(include_self=True) if residential_type else PropertyType.objects.none()
+    commercial_types = commercial_type.get_descendants(include_self=True) if commercial_type else PropertyType.objects.none()
 
-    residential_types = (
-        residential_type.get_descendants(include_self=True)
-        if residential_type else PropertyType.objects.none()
-    )
-
-    commercial_types = (
-        commercial_type.get_descendants(include_self=True)
-        if commercial_type else PropertyType.objects.none()
-    )
-
-    # ===============================
-    # 🔥 NEW LAUNCH PROJECTS
-    # ===============================
     new_launch_residential = Project.objects.filter(
-        construction_status__iexact="New Launch",
-        active=True,
-        propert_type__in=residential_types
-    ).select_related(
-        "city", "locality", "developer", "propert_type"
-    ).prefetch_related("configurations").order_by("-create_at")[:10]
+        active=True, construction_status__iexact="New Launch", propert_type__in=residential_types
+    ).select_related("city", "locality", "developer", "propert_type").prefetch_related("configurations").order_by("-create_at")[:10]
 
     new_launch_commercial = Project.objects.filter(
-        construction_status__iexact="New Launch",
-        active=True,
-        propert_type__in=commercial_types
-    ).select_related(
-        "city", "locality", "developer", "propert_type"
-    ).prefetch_related("configurations").order_by("-create_at")[:10]
+        active=True, construction_status__iexact="New Launch", propert_type__in=commercial_types
+    ).select_related("city", "locality", "developer", "propert_type").prefetch_related("configurations").order_by("-create_at")[:10]
 
-    # ===============================
-    # ⭐ FEATURED PROJECTS
-    # ===============================
     project_featured = Project.objects.filter(
-        featured_property=True,
-        active=True
-    ).select_related(
-        "city", "locality", "developer", "propert_type"
-    ).prefetch_related("configurations")[:6]
+        active=True, featured_property=True
+    ).select_related("city", "locality", "developer", "propert_type").prefetch_related("configurations").order_by("-create_at")[:6]
 
-    # ===============================
-    # OTHER SECTIONS
-    # ===============================
-    featured_developers = Developer.objects.filter(
-        featured_builder=True
-    ).order_by("-create_at")[:8]
-
-    featured_locality = Locality.objects.filter(
-        featured_locality=True
-    )[:20]
+    featured_developers = Developer.objects.filter(featured_builder=True).order_by("-create_at")[:8]
+    featured_locality = Locality.objects.filter(featured_locality=True).order_by("name")[:20]
+    bank = Bank.objects.all().order_by("title")
 
     about_page = About.objects.filter(is_active=True).first()
     why_choose_items = Why_Choose.objects.filter(is_active=True).order_by("order")
     testimonials = Testimonial.objects.all().order_by("-id")
     faqs = FAQ.objects.all().order_by("id")
 
-    current_city = project_featured[0].city.name if project_featured.exists() else "Mumbai"
+    current_city = project_featured.first().city.name if project_featured.exists() else "Mumbai"
 
-    # ===============================
-    # CONTEXT
-    # ===============================
-    context = {
-        "settings_obj": settings_obj,
-        "cities": cities,
-        "current_city": current_city,
-
-        "project_featured": project_featured,
-        "new_launch_residential": new_launch_residential,
-        "new_launch_commercial": new_launch_commercial,
-
-        "featured_developers": featured_developers,
-        "featured_locality": featured_locality,
-        "about_page": about_page,
-        "why_choose_items": why_choose_items,
-        "testimonials": testimonials,
-        "faqs": faqs,
-    }
-
-    return render(request, "home/index.html", context)
+    return render(
+        request,
+        "home/index.html",
+        {
+            "settings_obj": settings_obj,
+            "bank": bank,
+            "cities": cities,
+            "current_city": current_city,
+            "project_featured": project_featured,
+            "new_launch_residential": new_launch_residential,
+            "new_launch_commercial": new_launch_commercial,
+            "featured_developers": featured_developers,
+            "featured_locality": featured_locality,
+            "about_page": about_page,
+            "why_choose_items": why_choose_items,
+            "testimonials": testimonials,
+            "faqs": faqs,
+        }
+    )
 
 
 def robots_txt(request):

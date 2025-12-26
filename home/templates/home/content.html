@@ -671,7 +671,87 @@ relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
   </div>
 </section>
 
+<!-- 🏦 HOME LOAN PARTNERS SLIDER -->
+<section class="py-20 bg-white" id="home-loan-partners">
+  <div class="max-w-7xl mx-auto px-6 text-center">
 
+    <h2 class="text-3xl md:text-4xl font-bold text-orange-600 mb-3">
+      Home Loan Partners
+    </h2>
+    <p class="text-gray-600 max-w-2xl mx-auto mb-12">
+      We are associated with India’s most trusted banks to help you
+      get the best home loan deals.
+    </p>
+
+    <!-- Swiper -->
+    <div class="swiper loanPartnerSwiper">
+      <div class="swiper-wrapper">
+
+        <!-- PARTNER CARD -->
+        <div class="swiper-slide">
+          <div class="partner-card">
+            <img src="{% static 'assets/images/banks/sbi.png' %}" alt="SBI Home Loan">
+            <p>SBI Home Loan</p>
+          </div>
+        </div>
+
+        <div class="swiper-slide">
+          <div class="partner-card">
+            <img src="{% static 'assets/images/banks/hdfc.png' %}" alt="HDFC Home Loan">
+            <p>HDFC Home Loan</p>
+          </div>
+        </div>
+
+        <div class="swiper-slide">
+          <div class="partner-card">
+            <img src="{% static 'assets/images/banks/icici.png' %}" alt="ICICI Home Loan">
+            <p>ICICI Home Loan</p>
+          </div>
+        </div>
+
+        <div class="swiper-slide">
+          <div class="partner-card">
+            <img src="{% static 'assets/images/banks/axis.png' %}" alt="Axis Bank Home Loan">
+            <p>Axis Bank</p>
+          </div>
+        </div>
+
+        <div class="swiper-slide">
+          <div class="partner-card">
+            <img src="{% static 'assets/images/banks/lic.png' %}" alt="LIC Housing Finance">
+            <p>LIC Housing Finance</p>
+          </div>
+        </div>
+
+        <div class="swiper-slide">
+          <div class="partner-card">
+            <img src="{% static 'assets/images/banks/pnb.png' %}" alt="PNB Housing Finance">
+            <p>PNB Housing</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  var loanPartnerSwiper = new Swiper(".loanPartnerSwiper", {
+    slidesPerView: 2,
+    spaceBetween: 20,
+    loop: true,
+    autoplay: {
+      delay: 2500,
+      disableOnInteraction: false,
+    },
+    breakpoints: {
+      640: { slidesPerView: 3 },
+      768: { slidesPerView: 4 },
+      1024: { slidesPerView: 5 },
+    },
+  });
+</script>
 
 <!-- 🏢 FEATURED DEVELOPERS -->
 <section class="py-16 bg-gray-100" id="developers">
@@ -878,20 +958,7 @@ relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
   </div>
   {% endfor %}
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
 
 <!-- POPUS START -->
 <div class="modal fade" id="commonModal" tabindex="-1">
@@ -973,3 +1040,48 @@ document.addEventListener("DOMContentLoaded", function () {
   color:black;
 }
 </style>
+
+<style>
+.partner-card{
+  background:#f8fafc;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  padding:28px 20px;
+  height:140px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  transition:0.35s ease;
+}
+
+.partner-card img{
+  height:42px;
+  object-fit:contain;
+  transition:0.35s ease;
+}
+
+.partner-card p{
+  font-size:14px;
+  font-weight:600;
+  color:#1f2937;
+  transition:0.35s ease;
+}
+
+/* HOVER EFFECT */
+.partner-card:hover{
+  background:#000;
+  transform:translateY(-6px);
+  box-shadow:0 20px 40px rgba(0,0,0,0.25);
+}
+
+.partner-card:hover img{
+  filter:brightness(0) invert(1);
+}
+
+.partner-card:hover p{
+  color:#fff;
+}
+</style>
+<!-- NEW LAUNCH SECTION -->

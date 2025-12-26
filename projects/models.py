@@ -96,15 +96,11 @@ class Project(MPTTModel):
     
     luxurious = models.CharField(max_length=50,null=True, blank=True)
     priceing = models.CharField(max_length=50,null=True, blank=True) 
-    youtube_embed_id = models.CharField(
-        max_length=50, 
-        blank=True, 
-        null=True,
-        verbose_name="YouTube Video ID"
-    )
+    youtube_embed_id = models.CharField(max_length=50, blank=True, null=True,verbose_name="YouTube Video ID")
     
     featured_property = models.BooleanField(default=False)
     balcony = models.BooleanField(default=False)
+    sold_out = models.BooleanField(default=False)
     active = models.BooleanField(default=False)
     image = models.ImageField(null=True, blank=True,upload_to='images/')
     google_map_iframe = models.TextField(null=True, blank=True,)

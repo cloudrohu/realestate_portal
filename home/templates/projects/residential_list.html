@@ -186,170 +186,253 @@
     
 
 
-    <!-- ✅ List View -->
-    <div id="listView" class="space-y-6">
-      {% for project in projects %}
-      
-      <a href="{{ project.get_absolute_url }}">
-        <div class="flex flex-col sm:flex-row bg-white  shadow border p-3 hover:border-orange-500 hover:shadow-xl transition-all ">
+      <!-- ✅ List View -->
+      <div id="listView" class="space-y-6">
+        {% for project in projects %}
 
-          <!-- Project Image -->
-          {% if project.image %}
-            <img src="{{ project.image.url }}" 
-                class="w-full sm:w-64 h-48 object-cover mt-0"
-                style="height: 250px;" 
-                alt="{{ project.project_name }}" class="h-80">
-          {% else %}
-            <img src="{% static 'images/no-images.jpg' %}" 
-                class="w-full sm:w-64 h-48 object-cover"
-                style="height: 250px;" 
-                alt="No Image">
-          {% endif %}
+          <div class="flex flex-col sm:flex-row bg-white  shadow border p-3 hover:border-orange-500 hover:shadow-xl transition-all ">
 
-          <!-- Right Section -->
-          <div class="sm:ml-5 sm:mt-0 flex-1 space-y-2">
+            <a href="{{ project.get_absolute_url }}">
+            <!-- Project Image -->
+            {% if project.image %}
+              <img src="{{ project.image.url }}" 
+                  class="w-full sm:w-64 h-48 object-cover mt-0"
+                  style="height: 250px;" 
+                  alt="{{ project.project_name }}" class="h-80">
+            {% else %}
+              <img src="{% static 'images/no-images.jpg' %}" 
+                  class="w-full sm:w-64 h-48 object-cover"
+                  style="height: 250px;" 
+                  alt="No Image">
+            {% endif %}
 
-                <!-- Title + Price + Location -->
-          <div class="flex flex-col gap-1">
+            </a>
+            <!-- Right Section -->
+            <div class="sm:ml-5 sm:mt-0 flex-1 space-y-2">
 
-            <!-- Row 1: Project Name + Price -->
-            <div class="flex items-start justify-between gap-4">
-              <h2 class="text-xl font-semibold text-gray-900 leading-tight">
-                {{ project.project_name }}
-              </h2>
+                  <!-- Title + Price + Location -->
+            <div class="flex flex-col gap-1">
+
+            <a href="{{ project.get_absolute_url }}">
+              <!-- Row 1: Project Name + Price -->
+              <div class="flex items-start justify-between gap-4">
+                <h2 class="text-xl font-semibold text-gray-900 leading-tight">
+                  {{ project.project_name }}
+                </h2>
 
 
-              <span class="text-xl font-bold text-gray-900 whitespace-nowrap">
-                {{ project.get_price_range }}
-              </span>
+                <span class="text-xl font-bold text-gray-900 whitespace-nowrap">
+                  {{ project.get_price_range }}
+                </span>
+
+              </div>
+
+                <!-- Row 2: Location -->
+                <p class="text-sm text-gray-500 flex items-center gap-1 mb-2">
+                  <i class="fas fa-map-marker-alt text-orange-500"></i>
+                  <span>{{ project.locality }}</span>
+                </p>
+
+            </a>
 
             </div>
 
-              <!-- Row 2: Location -->
-              <p class="text-sm text-gray-500 flex items-center gap-1 mb-2">
-                <i class="fas fa-map-marker-alt text-orange-500"></i>
-                <span>{{ project.locality }}</span>
-              </p>
 
-          </div>
+              <!-- Badges -->
+              <div class="flex flex-wrap gap-2 text-xs text-gray-700 mb-[10px]">
+                <span class="px-2 py-1 rounded-full bg-gray-100">{{ project.construction_status }}</span>
+                <span class="px-2 py-1 rounded-full bg-gray-100">{{ project.propert_type }}</span>
+                <span class="px-2 py-1 rounded-full bg-gray-100">Possession {{ project.possession_month|default:"N/A" }}--{{ project.possession_year|default:"N/A" }}</span>
+              </div>
 
+              
 
-            <!-- Badges -->
-            <div class="flex flex-wrap gap-2 text-xs text-gray-700 mb-[10px]">
-              <span class="px-2 py-1 rounded-full bg-gray-100">{{ project.construction_status }}</span>
-              <span class="px-2 py-1 rounded-full bg-gray-100">{{ project.propert_type }}</span>
-              <span class="px-2 py-1 rounded-full bg-gray-100">Possession {{ project.possession_month|default:"N/A" }}--{{ project.possession_year|default:"N/A" }}</span>
-            </div>
+              <!-- Divider -->
+              <div class="border-t border-gray-200"></div>
 
-            
-
-            <!-- Divider -->
-            <div class="border-t border-gray-200"></div>
-
-            <div class="border rounded-xl bg-white shadow-sm text-sm">
-
-                  <!-- HEADER -->
-                  <div class="grid grid-cols-3 px-4 py-2 bg-gray-50 border-b text-xs font-semibold text-gray-600 uppercase">
-                    <span>BHK</span>
-                    <span>Area (Sq.ft)</span>
-                    <span class="text-right">Price</span>
-                  </div>
-
-                  <!-- SCROLLABLE BODY -->
-                  <div class="max-h-[120px] overflow-y-auto divide-y">
-
-                    <!-- Row -->
-                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
-                      <span class="font-medium text-gray-700">2 BHK + 2T</span>
-                      <span class="text-gray-500">On Request</span>
-                      <span class="text-right font-semibold text-gray-900">₹ 3.6 Cr</span>
-                    </div>
-
-                    <!-- Row -->
-                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
-                      <span class="font-medium text-gray-700">2 BHK + 2T</span>
-                      <span class="text-gray-500">On Request</span>
-                      <span class="text-right font-semibold text-gray-900">₹ 2.9 Cr</span>
-                    </div>
-
-                    <!-- Row (extra demo for scroll) -->
-                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
-                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
-                      <span class="text-gray-500">On Request</span>
-                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
-                    </div>
-
-                    <!-- Row (extra demo for scroll) -->
-                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
-                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
-                      <span class="text-gray-500">On Request</span>
-                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
-                    </div>
-
-                                    <!-- Row (extra demo for scroll) -->
-                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
-                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
-                      <span class="text-gray-500">On Request</span>
-                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
-                    </div>
-
-                                    <!-- Row (extra demo for scroll) -->
-                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
-                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
-                      <span class="text-gray-500">On Request</span>
-                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
-                    </div>
-
-                  </div>
-            </div>
-
-
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2.5 items-center">
-
-                <!-- Developer -->
-                <div class="flex items-center gap-2">
-                  <span class="h-8 w-8 flex items-center justify-center rounded-full overflow-hidden border">
-                    <img src="https://srv.carbonads.net/static/30242/afe67427d375248a92b1cda7f8a979fd91961d39"
-                        alt="Lodha Group"
-                        class="h-full w-full object-cover">
-                  </span>
-                  <span class="text-blue-600 text-sm font-medium">
-                    By Lodha Group
-                  </span>
+            <!-- ================= TABS ================= -->
+              <div class="border-b mb-2">
+                <div class="flex gap-4 text-sm font-medium text-gray-600">
+                  <button onclick="switchBHK('bhk2', this)"
+                    class="bhk-tab pb-1 border-b-2 border-green-600 text-green-600">
+                    2 BHK
+                  </button>
+                  <button onclick="switchBHK('bhk3', this)"
+                    class="bhk-tab pb-1 border-b-2 border-transparent hover:text-green-600">
+                    3 BHK
+                  </button>
+                  <button onclick="switchBHK('bhk4', this)"
+                    class="bhk-tab pb-1 border-b-2 border-transparent hover:text-green-600">
+                    4 BHK
+                  </button>
                 </div>
+              </div>
 
-                <!-- CTA BUTTONS -->
-                <div class="flex gap-3 md:justify-end">
+              <!-- ================= 2 BHK ================= -->
+              <div id="bhk2" class="bhk-panel">
+                <div class="max-h-[120px] overflow-y-auto border rounded bg-white">
 
-                      <!-- View Details -->
-                      <a href="{{ project.get_absolute_url }}"
-                        class="flex-1 md:flex-none inline-flex items-center justify-center gap-2
-                                px-4 py-2 bg-orange-500 text-white text-sm font-semibold
-                                rounded-3xl hover:bg-orange-600 transition">
-                        View Details
-                        <i class="fas fa-arrow-right text-xs"></i>
-                      </a>
+               <table class="w-full text-sm border-collapse">
+                        <thead class="bg-gray-100 sticky top-0">
+                          <tr class="text-center font-semibold">
+                            <th class="px-1 py-1 border">Carpet Area</th>
+                            <th class="px-1 py-1 border">Price</th>
+                            <th class="px-1 py-1 border">Parking</th>
+                            <th class="px-1 py-1 border">Balcony</th>
+                          </tr>
+                        </thead>
+                <tbody class="text-center">
+                  <tr>
+                  <td class="px-1 py-1 border">500 sqft</td>
+                  <td class="px-1 py-1 border">₹8,500,000</td>
+                  <td class="px-1 py-1 border">No</td>
+                  <td class="px-1 py-1 border">1</td>
+                </tr>
+              </tbody>
+            </table>
 
-                      <!-- Contact Us -->
-                      <a href="javascript:void(0)"
-                        data-project="{{ project.project_name }}"
-                        data-project-id="{{ project.id }}"
-                        class="openContactPopup flex-1 md:flex-none inline-flex items-center justify-center gap-2
-                                px-4 py-2 border border-orange-500 text-orange-600
-                                text-sm font-semibold rounded-3xl hover:bg-orange-50 transition">
-                        Contact Us
-                      </a>
 
                 </div>
               </div>
-          </div>
-        </div>
-      </a>
 
-      {% empty %}
-      <div class="text-center text-gray-500 py-10">No projects found.</div>
-      {% endfor %}
-    </div>
+              <!-- ================= 3 BHK ================= -->
+              <div id="bhk3" class="bhk-panel hidden">
+                <div class="max-h-[120px] overflow-y-auto border rounded bg-white">
+
+                <table class="w-full text-sm border-collapse">
+                  <thead class="bg-gray-100 sticky top-0">
+                    <tr class="text-center font-semibold">
+                      <th class="px-1 py-1 border">Carpet Area</th>
+                      <th class="px-1 py-1 border">Price</th>
+                      <th class="px-1 py-1 border">Parking</th>
+                      <th class="px-1 py-1 border">Balcony</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-center">
+                    <tr>
+                      <td class="px-1 py-1 border">1200 sqft</td>
+                      <td class="px-1 py-1 border">₹14,500,000</td>
+                      <td class="px-1 py-1 border">Yes</td>
+                      <td class="px-1 py-1 border">2</td>
+                    </tr>
+                                        <tr>
+                      <td class="px-1 py-1 border">1200 sqft</td>
+                      <td class="px-1 py-1 border">₹14,500,000</td>
+                      <td class="px-1 py-1 border">Yes</td>
+                      <td class="px-1 py-1 border">2</td>
+                    </tr>
+                                        <tr>
+                      <td class="px-1 py-1 border">1200 sqft</td>
+                      <td class="px-1 py-1 border">₹14,500,000</td>
+                      <td class="px-1 py-1 border">Yes</td>
+                      <td class="px-1 py-1 border">2</td>
+                    </tr>
+                                        <tr>
+                      <td class="px-1 py-1 border">1200 sqft</td>
+                      <td class="px-1 py-1 border">₹14,500,000</td>
+                      <td class="px-1 py-1 border">Yes</td>
+                      <td class="px-1 py-1 border">2</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+
+                </div>
+              </div>
+
+              <!-- ================= 4 BHK ================= -->
+              <div id="bhk4" class="bhk-panel hidden">
+                <div class="max-h-[120px] overflow-y-auto border rounded bg-white">
+
+                  <table class="w-full text-sm border-collapse">
+                      <thead class="bg-gray-100 sticky top-0">
+                        <tr class="text-center font-semibold">
+                          <th class="px-1 py-1 border">Carpet Area</th>
+                          <th class="px-1 py-1 border">Price</th>
+                          <th class="px-1 py-1 border">Parking</th>
+                          <th class="px-1 py-1 border">Balcony</th>
+                        </tr>
+                      </thead>
+                      <tbody class="text-center">
+                        <tr>
+                          <td class="px-1 py-1 border">1600 sqft</td>
+                          <td class="px-1 py-1 border">₹22,000,000</td>
+                          <td class="px-1 py-1 border">Yes</td>
+                          <td class="px-1 py-1 border">3</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+
+                </div>
+              </div>
+
+              <!-- ================= JS ================= -->
+              <script>
+                function switchBHK(id, btn) {
+                  document.querySelectorAll('.bhk-panel')
+                    .forEach(el => el.classList.add('hidden'));
+
+                  document.querySelectorAll('.bhk-tab')
+                    .forEach(tab => {
+                      tab.classList.remove('border-green-600','text-green-600');
+                      tab.classList.add('border-transparent','text-gray-600');
+                    });
+
+                  document.getElementById(id).classList.remove('hidden');
+                  btn.classList.add('border-green-600','text-green-600');
+                }
+              </script>
+
+
+
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2.5 items-center">
+
+                  <!-- Developer -->
+                  <div class="flex items-center gap-2">
+                    <span class="h-8 w-8 flex items-center justify-center rounded-full overflow-hidden border">
+                      <img src="https://srv.carbonads.net/static/30242/afe67427d375248a92b1cda7f8a979fd91961d39"
+                          alt="Lodha Group"
+                          class="h-full w-full object-cover">
+                    </span>
+                    <span class="text-blue-600 text-sm font-medium">
+                      By Lodha Group
+                    </span>
+                  </div>
+
+                  <!-- CTA BUTTONS -->
+                  <div class="flex gap-3 md:justify-end">
+
+                        <!-- View Details -->
+                        <a href="{{ project.get_absolute_url }}"
+                          class="flex-1 md:flex-none inline-flex items-center justify-center gap-2
+                                  px-4 py-2 bg-orange-500 text-white text-sm font-semibold
+                                  rounded-3xl hover:bg-orange-600 transition">
+                          View Details
+                          <i class="fas fa-arrow-right text-xs"></i>
+                        </a>
+
+                        <!-- Contact Us -->
+                        <a href="javascript:void(0)"
+                          data-project="{{ project.project_name }}"
+                          data-project-id="{{ project.id }}"
+                          class="openContactPopup flex-1 md:flex-none inline-flex items-center justify-center gap-2
+                                  px-4 py-2 border border-orange-500 text-orange-600
+                                  text-sm font-semibold rounded-3xl hover:bg-orange-50 transition">
+                          Contact Us
+                        </a>
+
+                  </div>
+                </div>
+            </div>
+          </div>
+        
+
+        {% empty %}
+        <div class="text-center text-gray-500 py-10">No projects found.</div>
+        {% endfor %}
+      </div>
 
 
     <!-- ✅ Grid View -->
@@ -774,8 +857,72 @@
 </div>
 <!-- ================= END POPUP ================= -->
 
+<style>
+  /* ===== TABS ===== */
+  .bhk-tabs {
+    display: flex;
+    gap: 32px;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 16px;
+    font-size: 14px;
+    font-weight: 500;
+  }
 
+  .bhk-tab {
+    padding: 10px 0;
+    color: #4b5563;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    background: none;
+    outline: none;
+  }
 
+  .bhk-tab.active {
+    color: #16a34a;
+    border-color: #16a34a;
+  }
+
+  /* ===== TABLE ===== */
+  .bhk-scroll {
+    max-height: 220px;          /* ⬅ zyada rows pe scroll */
+    overflow-y: auto;
+  }
+
+  .bhk-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .bhk-table th {
+    background: #f7f7f7;
+    padding: 10px 8px;          /* ⬅ compact padding */
+    text-align: center;
+    font-weight: 600;
+    color: #1f2937;
+    border: 1px solid #e5e7eb;
+  }
+
+  .bhk-table td {
+    padding: 12px 8px;          /* ⬅ compact padding */
+    text-align: center;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+  }
+
+  /* ===== SCROLLBAR (OPTIONAL CLEAN) ===== */
+  .bhk-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+  .bhk-scroll::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 10px;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
 
 
 <script>
@@ -824,12 +971,16 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
+<script>
+function openBHK(e, id) {
+  document.querySelectorAll('.bhk-content').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.bhk-tab').forEach(el => el.classList.remove('active'));
 
-
-
-
+  document.getElementById(id).classList.remove('hidden');
+  e.target.classList.add('active');
+}
+</script>
 
 
 {% endblock %}
-
 
