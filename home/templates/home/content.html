@@ -743,33 +743,21 @@ relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
   <div class="absolute inset-0 bg-[url('/static/assets/images/pattern.svg')] opacity-10 animate-floatPattern"></div>
   <div class="max-w-6xl mx-auto grid md:grid-cols-4 gap-8 text-center relative z-10">
 
+    {% for rs in impactmetric %}
     <!-- Single stat -->
-    <div class="bg-white/10 backdrop-blur-lg rounded-2xl py-10 px-4 hover:bg-white/20 transition-transform transform hover:scale-105" data-aos="zoom-in">
-      <i class="fas fa-building text-4xl mb-3 text-orange-300 animate-pulseSlow"></i>
-      <h3 class="text-4xl font-bold" id="projects-delivered">{{ about_page.projects_delivered|intcomma }}+</h3>
-      <p class="mt-2 text-lg">Projects Delivered</p>
+    <div class="bg-white/10 backdrop-blur-lg rounded-2xl py-6 px-4 hover:bg-white/20 transition-transform transform hover:scale-105" data-aos="zoom-in">
+      <i class="{{rs.icon}} text-4xl mb-3 text-orange-300 animate-pulseSlow"></i>
+      <h3 class="text-4xl font-bold" id="projects-delivered">{{ rs.value }}+</h3>
+      <p class="mt-2 text-lg">{{rs.title}}</p>
     </div>
 
-    <div class="bg-white/10 backdrop-blur-lg rounded-2xl py-10 px-4 hover:bg-white/20 transition-transform transform hover:scale-105" data-aos="zoom-in" data-aos-delay="100">
-      <i class="fas fa-users text-4xl mb-3 text-orange-300 animate-pulseSlow"></i>
-      <h3 class="text-4xl font-bold" id="happy-families">{{ about_page.happy_families|intcomma }}+</h3>
-      <p class="mt-2 text-lg">Happy Families</p>
-    </div>
-
-    <div class="bg-white/10 backdrop-blur-lg rounded-2xl py-10 px-4 hover:bg-white/20 transition-transform transform hover:scale-105" data-aos="zoom-in" data-aos-delay="200">
-      <i class="fas fa-clock text-4xl mb-3 text-orange-300 animate-pulseSlow"></i>
-      <h3 class="text-4xl font-bold" id="years-of-excellence">{{ about_page.years_of_excellence|intcomma }}+</h3>
-      <p class="mt-2 text-lg">Years of Excellence</p>
-    </div>
-
-    <div class="bg-white/10 backdrop-blur-lg rounded-2xl py-10 px-4 hover:bg-white/20 transition-transform transform hover:scale-105" data-aos="zoom-in" data-aos-delay="300">
-      <i class="fas fa-trophy text-4xl mb-3 text-orange-300 animate-pulseSlow"></i>
-      <h3 class="text-4xl font-bold" id="awards-recognitions">{{ about_page.awards_recognitions|intcomma }}+</h3>
-      <p class="mt-2 text-lg">Awards & Recognitions</p>
-    </div>
+    {% endfor %}
 
   </div>
 </section>
+
+
+
 
 <!-- 🏦 HOME LOAN PARTNERS SLIDER -->
 <section class="py-20 bg-white" id="home-loan-partners">

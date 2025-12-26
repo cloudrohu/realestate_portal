@@ -5,7 +5,7 @@ from properties.models import Property
 from utility.models import Locality,PropertyType,City,Bank
 from .models import (
     Setting, Slider, Testimonial, About, Leadership,
-    Contact_Page, FAQ, Our_Team,Why_Choose,
+    Contact_Page, FAQ, Our_Team,Why_Choose,ImpactMetric
 )
 from user.models import Developer  # 👈 import your Developer model
 # NOTE: The manual function get_global_context() has been removed 
@@ -43,6 +43,7 @@ def index(request):
     bank = Bank.objects.all().order_by("title")
 
     about_page = About.objects.filter(is_active=True).first()
+    impactmetric = ImpactMetric.objects.all()
     why_choose_items = Why_Choose.objects.filter(is_active=True).order_by("order")
     testimonials = Testimonial.objects.all().order_by("-id")
     faqs = FAQ.objects.all().order_by("id")
@@ -57,6 +58,7 @@ def index(request):
             "bank": bank,
             "cities": cities,
             "current_city": current_city,
+            "impactmetric": impactmetric,
             "project_featured": project_featured,
             "new_launch_residential": new_launch_residential,
             "new_launch_commercial": new_launch_commercial,
