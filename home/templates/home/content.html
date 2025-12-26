@@ -572,67 +572,7 @@ relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
 
 
 
-<!-- 🏡 ULTRA LUXURY REAL ESTATE ABOUT SECTION (WHITE THEME) -->
-<section class="relative py-24 bg-white text-gray-900" id="about">
-
-  <!-- Soft radial shimmer (gold luxury glow) -->
-  <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,190,122,0.12),transparent_70%)] pointer-events-none"></div>
-
-  <div class="relative max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-20 items-center">
-
-    <!-- LEFT IMAGE -->
-    <div class="relative group" data-aos="fade-right">
-
-      <!-- Gold Frame Glow -->
-      <div class="absolute -top-6 -left-6 w-full h-full rounded-2xl 
-                  bg-gradient-to-br from-yellow-400/30 to-transparent blur-2xl opacity-40 
-                  group-hover:blur-xl group-hover:opacity-70 transition-all duration-700">
-      </div>
-
-      <!-- Image -->
-      <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-yellow-500/20 bg-white">
-        <img src="{{ about_page.image.url }}"
-             alt="{{ about_page.title }}"
-             class="w-full h-[600px] object-cover rounded-2xl 
-                    group-hover:scale-105 transition-all duration-700" />
-      </div>
-
-    </div>
-
-    <!-- RIGHT CONTENT -->
-    <div data-aos="fade-left">
-
-      <!-- Luxury Header Line -->
-      <div class="flex items-center gap-4 mb-4">
-        <div class="w-12 h-[2px] bg-yellow-500"></div>
-        <span class="tracking-[0.25em] text-yellow-600 text-sm uppercase">About Us</span>
-      </div>
-
-      <!-- Title -->
-      <h2 class="text-5xl font-bold leading-tight mb-8">
-        {{ about_page.title }}
-      </h2>
-
-      <!-- Sub Description -->
-      <p class="text-gray-700 text-lg leading-relaxed mb-10">
-        {{ about_page.content|safe }}
-      </p>
-
-      <!-- GOLD DIVIDER -->
-      <div class="w-24 h-[3px] bg-gradient-to-r from-yellow-500 to-orange-500 mb-10 rounded-full"></div>
-
-      <!-- CTA BUTTON -->
-      <a href="{% url 'about' %}"
-         class="inline-block px-8 py-3 text-lg font-semibold rounded-xl
-                bg-gradient-to-r from-yellow-500 to-orange-400 text-black 
-                shadow-xl hover:shadow-yellow-400/50 hover:scale-105 transition-all duration-300">
-        Explore More →
-      </a>
-
-    </div>
-
-  </div>
-</section>
+  
 
 <!-- Blog Section Start -->
 <section id="blog" class="py-16 bg-gray-50">
