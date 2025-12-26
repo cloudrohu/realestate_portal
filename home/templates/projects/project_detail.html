@@ -1,13 +1,17 @@
-
 {% extends 'base.html' %} 
-
 {% load price_filters %}
 {% load humanize %}
-
-
 {% block content %}
 
+<style>
+    /* Popup open hone par header ke upar ke chips hide */
+body.popup-open .project-badges,
+body.popup-open .header-badges,
+body.popup-open .rera-badges {
+  display: none !important;
+}
 
+</style>
 
 <head>
     <meta charset="UTF-8">
@@ -16,14 +20,10 @@
     <link rel="stylesheet" href="assets/css/projects_details.css">
     <script src="assets/js/projects_details.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>{{ project.project_name }} by {{ project.developer }} {{ project.locality }} ,{{ project.city }}
-</title>
-
-
+    <title>{{ project.project_name }} by {{ project.developer }} {{ project.locality }} ,{{ project.city }}</title>
 </head>
 
 <style>
-
   iframe{
     width: 100%;
   }
@@ -70,7 +70,7 @@
             </p>
 
             <!-- RERA TAGS -->
-            <div class="mt-3 flex flex-wrap items-center gap-2">
+            <div class="mt-3 flex flex-wrap items-center gap-2 project-badges">
 
                 {% if project.rera.exists %}
                 <span class="inline-flex items-center gap-2 text-xs sm:text-sm border px-3 py-1.5 bg-white text-gray-700">
@@ -126,11 +126,15 @@
                     Brochure
                 </a>
 
-                <!-- contact seller -->
-                <a href="#enquiry"
-                   class="inline-flex items-center justify-center px-5 h-9 text-sm font-semibold bg-orange-500 hover:bg-orange-600 text-white">
-                    Contact Seller
-                </a>
+                 <!-- Contact Us -->
+                      <a href="javascript:void(0)"
+                        data-project="{{ project.project_name }}"
+                        data-project-id="{{ project.id }}"
+                        class="openContactPopup flex-1 md:flex-none inline-flex items-center justify-center gap-2
+                                px-4 py-2 border border-orange-500 text-orange-600
+                                text-sm font-semibold rounded-3xl hover:bg-orange-50 transition">
+                        Contact Us
+                      </a>
 
             </div>
         </div>
@@ -155,11 +159,15 @@
             Brochure
         </a>
 
-        <!-- Contact Seller -->
-        <a href="#enquiry"
-           class="flex-1 h-10 flex items-center justify-center text-white font-semibold bg-orange-500 hover:bg-orange-600">
-            Contact Seller
-        </a>
+          <!-- Contact Us -->
+            <a href="javascript:void(0)"
+                data-project="{{ project.project_name }}"
+                data-project-id="{{ project.id }}"
+                class="openContactPopup flex-1 md:flex-none inline-flex items-center justify-center gap-2
+                        px-4 py-2 border border-orange-500 text-orange-600
+                        text-sm font-semibold rounded-3xl hover:bg-orange-50 transition">
+                Contact Us
+            </a>
 
     </div>
 
@@ -210,34 +218,34 @@
 
         {% endwith %}
 
+        </div>
+
+        </div>
+
+<!-- POPUP -->
+    <div id="popup" class="fixed inset-0 bg-black/90 hidden items-center justify-center z-[9999] backdrop-blur-sm transition">
+
+        <!-- CLOSE BUTTON -->
+        <button id="closeBtn"
+            class="absolute top-5 right-5 text-white text-4xl font-light hover:scale-110 transition">
+            ✕
+        </button>
+
+        <!-- PREV -->
+        <button id="prevBtn"
+            class="absolute left-6 text-white text-5xl hover:scale-110 transition select-none">
+            ❮
+        </button>
+
+        <!-- NEXT -->
+        <button id="nextBtn"
+            class="absolute right-6 text-white text-5xl hover:scale-110 transition select-none">
+            ❯
+        </button>
+
+        <!-- CENTER IMAGE -->
+        <img id="popupImg" class="max-h-[90vh] max-w-[90vw] rounded-no shadow-2xl transition">
     </div>
-
-    </div>
-
-            <!-- POPUP -->
-                <div id="popup" class="fixed inset-0 bg-black/90 hidden items-center justify-center z-[9999] backdrop-blur-sm transition">
-
-                    <!-- CLOSE BUTTON -->
-                    <button id="closeBtn"
-                        class="absolute top-5 right-5 text-white text-4xl font-light hover:scale-110 transition">
-                        ✕
-                    </button>
-
-                    <!-- PREV -->
-                    <button id="prevBtn"
-                        class="absolute left-6 text-white text-5xl hover:scale-110 transition select-none">
-                        ❮
-                    </button>
-
-                    <!-- NEXT -->
-                    <button id="nextBtn"
-                        class="absolute right-6 text-white text-5xl hover:scale-110 transition select-none">
-                        ❯
-                    </button>
-
-                    <!-- CENTER IMAGE -->
-                    <img id="popupImg" class="max-h-[90vh] max-w-[90vw] rounded-no shadow-2xl transition">
-                </div>
 
         <br>
 
@@ -390,41 +398,41 @@
     <div class="w-full border-t border-b bg-white sticky top-[0px] z-50">
 
 
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
 
-        <!-- LEFT ARROW -->
-        <button id="navLeft" class="p-2 border  bg-white shadow-sm text-gray-700">
-        <span class="text-xl">&lt;</span>
-        </button>
+            <!-- LEFT ARROW -->
+            <button id="navLeft" class="p-2 border  bg-white shadow-sm text-gray-700">
+            <span class="text-xl">&lt;</span>
+            </button>
 
-        <!-- SCROLLABLE NAV -->
-        <div id="navScroll" class="flex-1 overflow-x-auto mx-4 no-scrollbar">
-        <div class="flex items-center gap-10 whitespace-nowrap text-gray-700 font-medium py-4">
+            <!-- SCROLLABLE NAV -->
+            <div id="navScroll" class="flex-1 overflow-x-auto mx-4 no-scrollbar">
+            <div class="flex items-center gap-10 whitespace-nowrap text-gray-700 font-medium py-4">
 
-            <a href="#overview" class="nav-link active">Overview</a>
-            <a href="#pricing" class="nav-link">Pricing & Unit Plans</a>
-            <a href="#location" class="nav-link">Location</a>
-            <a href="#video" class="nav-link"> Video</a>
+                <a href="#overview" class="nav-link active">Overview</a>
+                <a href="#pricing" class="nav-link">Pricing & Unit Plans</a>
+                <a href="#location" class="nav-link">Location</a>
+                <a href="#video" class="nav-link"> Video</a>
 
-            <a href="#amenities" class="nav-link">Amenities</a>
-            <a href="#floorplan" class="nav-link">Floor Plan</a>
-            <a href="#paymentscheme" class="nav-link">Payment Scheme</a>
-            <a href="#bank_offers" class="nav-link">Bank</a>
+                <a href="#amenities" class="nav-link">Amenities</a>
+                <a href="#floorplan" class="nav-link">Floor Plan</a>
+                <a href="#paymentscheme" class="nav-link">Payment Scheme</a>
+                <a href="#bank_offers" class="nav-link">Bank</a>
 
-            <a href="#emi_calculator" class="nav-link">EMI Calculator</a>
-            <a href="#about_developer" class="nav-link">About Developer</a>
-            <a href="#faqs" class="nav-link">Faq's</a>
+                <a href="#emi_calculator" class="nav-link">EMI Calculator</a>
+                <a href="#about_developer" class="nav-link">About Developer</a>
+                <a href="#faqs" class="nav-link">Faq's</a>
 
+
+            </div>
+            </div>
+
+            <!-- RIGHT ARROW -->
+            <button id="navRight" class="p-2 border  bg-white shadow-sm text-gray-700">
+            <span class="text-xl">&gt;</span>
+            </button>
 
         </div>
-        </div>
-
-        <!-- RIGHT ARROW -->
-        <button id="navRight" class="p-2 border  bg-white shadow-sm text-gray-700">
-        <span class="text-xl">&gt;</span>
-        </button>
-
-    </div>
     </div>
     <script>
     const navLinks = document.querySelectorAll(".nav-link");
@@ -501,7 +509,6 @@
 
 <script>
 
-
   const tabsNav = document.getElementById("tabsNav");
 
     // show popup
@@ -544,14 +551,7 @@
         </a>
         {% endif %}
 
-        <button class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded">
-            Brochure
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
-            </svg>
-        </button>
+    
     </div>
 
     <div class="bg-white border border-t-0 rounded-b-lg p-6">
@@ -825,57 +825,123 @@
     <!-- ===================== RIGHT COLUMN ===================== -->
     <div class="space-y-5">
 
-        <!-- CALL ME INSTANTLY -->
-        <div class="bg-gradient-to-br from-blue-900 to-green-600 text-white rounded-2xl p-6 shadow-xl">
+            <!-- CALL ME INSTANTLY (PREMIUM + DEPTH DESIGN) -->
+            <div class="relative rounded-3xl 
+                        bg-slate-50 
+                        border border-gray-200
+                        shadow-[0_25px_70px_rgba(0,0,0,0.15)]
+                        overflow-hidden">
 
-            <h3 class="text-2xl font-semibold mb-1 flex items-center gap-2">
-                <i class="fa-solid fa-bolt text-yellow-300"></i> Call Me Instantly
-            </h3>
+                <!-- TOP ACCENT -->
+                <div class="absolute inset-x-0 top-0 h-1.5 
+                            bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600"></div>
 
-            <p class="text-sm opacity-90 mb-5">Our Executive will contact you within seconds!</p>
+                <!-- SOFT INNER GLOW -->
+                <div class="absolute inset-0 pointer-events-none 
+                            bg-gradient-to-br from-white/60 via-transparent to-transparent"></div>
 
-            <!-- INPUTS -->
-            <div class="space-y-3">
+                <div class="relative p-7">
 
-                <!-- NAME -->
-                <div
-                    class="group flex items-center gap-3 bg-white/90 text-gray-700 rounded-xl px-4 py-3 border border-transparent focus-within:border-yellow-400 transition">
-                    <span class="text-lg text-blue-700 group-focus-within:text-yellow-500">
-                        <i class="fa-solid fa-user"></i>
-                    </span>
-                    <input type="text" name="name" placeholder="Enter Your Name"
-                        class="flex-1 bg-transparent outline-none text-sm" />
+                    <!-- HEADER -->
+                    <div class="flex items-start gap-4 mb-6 pb-5 border-b border-gray-200">
+
+                        <div class="h-12 w-12 flex items-center justify-center rounded-xl
+                                    bg-gradient-to-br from-orange-500 to-orange-600
+                                    text-white shadow-md">
+                            <i class="fa-solid fa-phone-volume text-lg"></i>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-900">
+                                Call Me Instantly
+                            </h3>
+                            <p class="text-sm text-gray-500 leading-snug">
+                                Get a callback from our property expert within seconds
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- FORM -->
+                    <form method="post"
+                        action="{% url 'submit_enquiry' project.id %}"
+                        id="inlineEnquiryForm"
+                        class="space-y-4">
+
+                        {% csrf_token %}
+                        <input type="text" name="company" class="hidden">
+                        <input type="hidden" name="project_id" id="inlineProjectId">
+                        <input type="hidden" name="message" value="Call Me Instantly Request">
+
+                        <!-- NAME -->
+                        <div class="relative">
+                            <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" name="name" required
+                                placeholder="Your Full Name"
+                                class="w-full pl-11 pr-4 py-3 rounded-xl
+                                        bg-white
+                                        border border-gray-300
+                                        shadow-inner
+                                        focus:ring-2 focus:ring-orange-500
+                                        focus:border-orange-500
+                                        outline-none text-sm text-gray-700">
+                        </div>
+
+                        <!-- EMAIL -->
+                        <div class="relative">
+                            <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input type="email" name="email"
+                                placeholder="Email Address (Optional)"
+                                class="w-full pl-11 pr-4 py-3 rounded-xl
+                                        bg-white
+                                        border border-gray-300
+                                        shadow-inner
+                                        focus:ring-2 focus:ring-orange-500
+                                        focus:border-orange-500
+                                        outline-none text-sm text-gray-700">
+                        </div>
+
+                        <!-- PHONE -->
+                        <div class="relative">
+                            <i class="fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input type="tel" name="phone" required
+                                placeholder="Mobile Number"
+                                class="w-full pl-11 pr-4 py-3 rounded-xl
+                                        bg-white
+                                        border border-gray-300
+                                        shadow-inner
+                                        focus:ring-2 focus:ring-orange-500
+                                        focus:border-orange-500
+                                        outline-none text-sm text-gray-700">
+                        </div>
+
+                        <!-- CTA BUTTON -->
+                        <button type="submit"
+                                class="group relative w-full overflow-hidden rounded-xl
+                                    bg-gradient-to-r from-orange-500 to-orange-600
+                                    py-3.5 font-semibold text-white text-sm
+                                    shadow-md transition-all duration-300
+                                    hover:shadow-orange-500/40 hover:scale-[1.01]">
+
+                            <span class="relative z-10 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-bolt"></i>
+                                Get Instant Call Back
+                            </span>
+
+                            <span class="absolute inset-0 bg-gradient-to-r
+                                        from-orange-600 to-pink-600
+                                        opacity-0 group-hover:opacity-100 transition"></span>
+                        </button>
+
+                        <!-- TRUST -->
+                        <p class="text-[11px] text-center text-gray-400 mt-2">
+                            🔒 Your details are safe & never shared
+                        </p>
+
+                    </form>
                 </div>
-
-                <!-- EMAIL -->
-                <div
-                    class="group flex items-center gap-3 bg-white/90 text-gray-700 rounded-xl px-4 py-3 border border-transparent focus-within:border-yellow-400 transition">
-                    <span class="text-lg text-blue-700 group-focus-within:text-yellow-500">
-                        <i class="fa-solid fa-envelope"></i>
-                    </span>
-                    <input type="email" name="email" placeholder="Enter Your Email"
-                        class="flex-1 bg-transparent outline-none text-sm" />
-                </div>
-
-                <!-- PHONE -->
-                <div
-                    class="group flex items-center gap-3 bg-white/90 text-gray-700 rounded-xl px-4 py-3 border border-transparent focus-within:border-yellow-400 transition">
-                    <span class="text-lg text-blue-700 group-focus-within:text-yellow-500">
-                        <i class="fa-solid fa-phone"></i>
-                    </span>
-                    <input type="text" name="phone" placeholder="Enter Mobile Number"
-                        class="flex-1 bg-transparent outline-none text-sm" />
-                </div>
-
             </div>
 
-            <!-- BUTTON -->
-            <button
-                class="mt-6 w-full py-3 bg-yellow-300 hover:bg-yellow-400 text-gray-900 font-semibold rounded-xl text-sm shadow-lg transition transform hover:scale-[1.02] active:scale-95">
-                Get Instant Call Back
-            </button>
 
-        </div>
 
         <!-- BOOK SITE VISIT -->
         <div class="bg-white rounded-xl border p-5">
@@ -1749,6 +1815,133 @@ new Swiper(".relatedSwiper", {
 </script>
 
 
+<!-- ================= CONTACT POPUP ================= -->
+<div id="contactPopup"
+     class="fixed inset-0 bg-black/70 hidden z-[9999] flex items-center justify-center px-3">
+
+
+  <div class="relative w-full max-w-sm rounded-xl shadow-2xl bg-white overflow-hidden">
+
+    <!-- HEADER -->
+    <div class="relative bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3 text-white">
+      <h3 class="text-sm font-semibold">Enquiry For</h3>
+      <p id="enquiryProjectName" class="text-xs opacity-90 mt-0.5">
+        Project Name
+      </p>
+
+      <!-- CLOSE BUTTON (INSIDE HEADER) -->
+      <button id="closeContactPopup"
+              type="button"
+              class="absolute top-2 right-2 h-7 w-7 rounded-full
+                     flex items-center justify-center
+                     bg-white/20 hover:bg-white/30
+                     text-white text-sm transition">
+        ✕
+      </button>
+    </div>
+
+    <!-- FORM -->
+    <form method="post" id="enquiryForm"
+          class="p-4 space-y-3 text-sm bg-white">
+      {% csrf_token %}
+
+      <!-- Honeypot -->
+      <input type="text" name="company" class="hidden">
+
+      <input type="hidden" name="project_id" id="projectIdInput">
+
+      <!-- NAME -->
+      <div>
+        <label class="font-medium text-gray-600">Full Name</label>
+        <input type="text" name="name" required
+               class="mt-1 w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-orange-400 outline-none">
+      </div>
+
+      <!-- EMAIL -->
+      <div>
+        <label class="font-medium text-gray-600">Email</label>
+        <input type="email" name="email"
+               class="mt-1 w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-orange-400 outline-none">
+      </div>
+
+      <!-- PHONE -->
+      <div>
+        <label class="font-medium text-gray-600">Mobile</label>
+        <input type="tel" name="phone" required
+               class="mt-1 w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-orange-400 outline-none">
+      </div>
+
+      <!-- MESSAGE -->
+      <div>
+        <label class="font-medium text-gray-600">Message</label>
+        <textarea name="message" rows="2"
+                  class="mt-1 w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-orange-400 outline-none"></textarea>
+      </div>
+
+      <!-- SUBMIT -->
+      <button type="submit"
+              class="w-full bg-orange-500 hover:bg-orange-600
+                     text-white py-2.5 rounded-lg font-semibold transition">
+        Submit Enquiry
+      </button>
+
+      <p class="text-[11px] text-center text-gray-400">
+        🔒 100% Privacy Protected
+      </p>
+    </form>
+
+  </div>
+</div>
+<!-- ================= END POPUP ================= -->
+
+
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const popup = document.getElementById("contactPopup");
+  const closeBtn = document.getElementById("closeContactPopup");
+  const projectNameText = document.getElementById("enquiryProjectName");
+  const projectIdInput = document.getElementById("projectIdInput");
+  const enquiryForm = document.getElementById("enquiryForm");
+
+  document.querySelectorAll(".openContactPopup").forEach(btn => {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      projectNameText.textContent = this.dataset.project || "Enquiry";
+      projectIdInput.value = this.dataset.projectId || "";
+
+      enquiryForm.action = `/projects/submit-enquiry/${this.dataset.projectId}/`;
+
+      popup.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    });
+  });
+
+  closeBtn.addEventListener("click", closePopup);
+
+  popup.addEventListener("click", function (e) {
+    if (e.target === popup) closePopup();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closePopup();
+  });
+
+  function closePopup() {
+    popup.classList.add("hidden");
+    document.body.style.overflow = "";
+  }
+
+});
+</script>
+
+
+
 <!-- ========================================= -->
 <!-- 🔥 SIMPLE TAB SWITCHER -->
 <!-- ========================================= -->
@@ -1801,56 +1994,48 @@ new Swiper(".relatedSwiper", {
 </script>
 
 <script>
-const openBtn = document.getElementById("openPricePopup");
-const closeBtn = document.getElementById("closePricePopup");
-const popup = document.getElementById("pricePopup");
-const priceForm = document.getElementById("priceForm");
+    const openBtn = document.getElementById("openPricePopup");
+    const closeBtn = document.getElementById("closePricePopup");
+    const popup = document.getElementById("pricePopup");
+    const priceForm = document.getElementById("priceForm");
 
-// OPEN POPUP
-openBtn.addEventListener("click", () => {
-    popup.classList.remove("hidden");
-    popup.classList.add("flex");
-    document.body.style.overflow = "hidden";
-});
+    // OPEN POPUP
+    openBtn.addEventListener("click", () => {
+        popup.classList.remove("hidden");
+        popup.classList.add("flex");
+        document.body.style.overflow = "hidden";
+    });
 
-// CLOSE POPUP
-closeBtn.addEventListener("click", () => {
-    popup.classList.add("hidden");
-    popup.classList.remove("flex");
-    document.body.style.overflow = "auto";
-});
+    // CLOSE POPUP
+    closeBtn.addEventListener("click", () => {
+        popup.classList.add("hidden");
+        popup.classList.remove("flex");
+        document.body.style.overflow = "auto";
+    });
 
-// FORM SUBMIT
-priceForm.addEventListener("submit", function(e) {
-    e.preventDefault();
+    // FORM SUBMIT
+    priceForm.addEventListener("submit", function(e) {
+        e.preventDefault();
 
-    // Yaha backend ko send karna ho to AJAX bhi laga sakte hain
-    // Abhi direct file download karwa rahe hain:
+        // Yaha backend ko send karna ho to AJAX bhi laga sakte hain
+        // Abhi direct file download karwa rahe hain:
 
-    const downloadLink = document.createElement("a");
-    downloadLink.href = "static/pdf/price-sheet.pdf";  // <<< YOUR FILE PATH
-    downloadLink.download = "Price-Sheet.pdf";
-    downloadLink.click();
+        const downloadLink = document.createElement("a");
+        downloadLink.href = "static/pdf/price-sheet.pdf";  // <<< YOUR FILE PATH
+        downloadLink.download = "Price-Sheet.pdf";
+        downloadLink.click();
 
-    // Close popup after download
-    popup.classList.add("hidden");
-    popup.classList.remove("flex");
-    document.body.style.overflow = "auto";
+        // Close popup after download
+        popup.classList.add("hidden");
+        popup.classList.remove("flex");
+        document.body.style.overflow = "auto";
 
-    // Clear form
-    priceForm.reset();
-});
+        // Clear form
+        priceForm.reset();
+    });
 </script>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
 <script src="assets/js/project_details.js"></script>
-
-
-
-
 {% endblock %}
-
-
-
