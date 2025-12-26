@@ -103,6 +103,8 @@ class Project(MPTTModel):
     sold_out = models.BooleanField(default=False)
     active = models.BooleanField(default=False)
     image = models.ImageField(null=True, blank=True,upload_to='images/')
+    master_plan = models.ImageField(null=True, blank=True,upload_to='images/')
+    floor_plan = models.ImageField(null=True, blank=True,upload_to='images/')
     google_map_iframe = models.TextField(null=True, blank=True,)
 
     
@@ -118,13 +120,6 @@ class Project(MPTTModel):
     
     class Meta:
         verbose_name_plural='1. Project'
-    
-        # models.py
-    def image_tag(self):
-        if self.image:
-            return mark_safe(f'<img src="{self.image.url}" height="60">')
-        return ""
-
 
     # 🔑 CRITICAL FIX: Handling object-to-string conversion for slug creation
     def save(self, *args, **kwargs):
@@ -298,7 +293,7 @@ class Configuration(models.Model):
         ordering = ['bhk_type']
 
 class Connectivity(models.Model):
-    Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="configs")
+    Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="connectivity")
     title = models.CharField(max_length=50)
 
 
@@ -354,14 +349,7 @@ class WhyInvest(models.Model):
 
     def __str__(self):
         return f"Why Invest - {self.pk}"
- 
-class BankOffer(models.Model):
-    Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="amenities")
-    bank = models.ForeignKey(Bank, on_delete=models.CASCADE, related_name="amenities")
-    
-    def __str__(self):
-        return f"{self.Project.project_name} - {self.bank.title}"
-  
+   
 
 class BankOffer(models.Model):
     Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="bank_offers")

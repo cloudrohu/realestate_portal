@@ -1,19 +1,19 @@
 from django.contrib import admin
 from django.utils.html import mark_safe
 from mptt.admin import MPTTModelAdmin
+
 from .models import (
     Project, BookingOffer, WelcomeTo, WebSlider, Overview, AboutUs,
     USP, Configuration, Connectivity, Amenities, Gallery, Header,
-    RERA_Info, WhyInvest, BankOffer,Enquiry,ProjectFAQ
+    RERA_Info, WhyInvest, BankOffer, Enquiry, ProjectFAQ
 )
 
+NO_IMAGE_URL = "https://via.placeholder.com/80x50.png?text=No+Image"
 
-# 🟡 Placeholder image for fallback
-NO_IMAGE_URL = "https://via.placeholder.com/80x80.png?text=No+Image"
 
-# ----------------------------- #
-# 📌 INLINE ADMIN DEFINITIONS
-# ----------------------------- #
+# =======================
+# INLINES
+# =======================
 
 class BookingOfferInline(admin.TabularInline):
     model = BookingOffer
@@ -24,6 +24,7 @@ class WelcomeToInline(admin.StackedInline):
     model = WelcomeTo
     extra = 1
 
+
 class ProjectFAQInline(admin.TabularInline):
     model = ProjectFAQ
     extra = 1
@@ -33,14 +34,15 @@ class ProjectFAQInline(admin.TabularInline):
 class WebSliderInline(admin.TabularInline):
     model = WebSlider
     extra = 1
-    readonly_fields = ['image_preview']
+    readonly_fields = ('image_preview',)
 
     def image_preview(self, obj):
-        if obj.image and hasattr(obj.image, 'url'):
-            url = obj.image.url
-        else:
-            url = NO_IMAGE_URL
-        return mark_safe(f'<img src="{url}" width="80" height="50" style="object-fit:cover;border-radius:6px;">')
+        if obj.image:
+            return mark_safe(
+                f'<img src="{obj.image.url}" width="80" height="50" style="object-fit:cover;border-radius:6px;">'
+            )
+        return mark_safe(f'<img src="{NO_IMAGE_URL}">')
+
     image_preview.short_description = "Preview"
 
 
@@ -62,6 +64,13 @@ class USPInline(admin.TabularInline):
 class ConfigurationInline(admin.TabularInline):
     model = Configuration
     extra = 1
+    fields = (
+        'bhk_type',
+        'area_sqft',
+        'price_in_rupees',
+        'parking',
+        'unit_plan',
+    )
 
 
 class ConnectivityInline(admin.TabularInline):
@@ -77,14 +86,15 @@ class AmenitiesInline(admin.TabularInline):
 class GalleryInline(admin.TabularInline):
     model = Gallery
     extra = 1
-    readonly_fields = ['image_preview']
+    readonly_fields = ('image_preview',)
 
     def image_preview(self, obj):
-        if obj.image and hasattr(obj.image, 'url'):
-            url = obj.image.url
-        else:
-            url = NO_IMAGE_URL
-        return mark_safe(f'<img src="{url}" width="80" height="50" style="object-fit:cover;border-radius:6px;">')
+        if obj.image:
+            return mark_safe(
+                f'<img src="{obj.image.url}" width="80" height="50" style="object-fit:cover;border-radius:6px;">'
+            )
+        return mark_safe(f'<img src="{NO_IMAGE_URL}">')
+
     image_preview.short_description = "Preview"
 
 
@@ -108,66 +118,140 @@ class BankOfferInline(admin.TabularInline):
     extra = 1
 
 
+# =======================
+# PROJECT ADMIN
+# =======================
+
 @admin.register(Project)
 class ProjectAdmin(MPTTModelAdmin):
+
     list_display = (
-        'project_name', 'city', 'locality', 'developer',
-        'construction_status', 'possession_month', 'possession_year',
-        'featured_property', 'active', 'image_preview', 'youtube_preview'
+        'project_name',
+        'city',
+        'locality',
+        'developer',
+        'construction_status',
+        'featured_property',
+        'sold_out',
+        'active',
+        'image_preview',
     )
 
     list_filter = (
-        'city', 'developer', 'propert_type',
-        'construction_status', 'featured_property', 'active'
+        'city',
+        'locality',
+        'developer',
+        'propert_type',
+        'construction_status',
+        'featured_property',
+        'sold_out',
+        'active',
     )
 
     search_fields = (
         'project_name',
         'city__name',
         'locality__name',
-        'developer__title'
+        'developer__title',
     )
 
-    prepopulated_fields = {"slug": ("project_name",)}
-
     readonly_fields = (
+        'slug',
+        'image_preview',
+        'youtube_preview',
         'create_at',
         'update_at',
-        'image_preview',
-        'youtube_preview'
     )
 
     fieldsets = (
-        ('Basic Info', {
+
+        # =====================
+        # BASIC PROJECT INFO
+        # =====================
+        ('Basic Project Info', {
             'fields': (
-                'project_name', 'slug', 'parent', 'developer',
-                'city', 'locality', 'propert_type',
-                'construction_status', 'bhk_type',
-                'floor', 'land_parce', 'luxurious', 'priceing'
+                'project_name',
+                'slug',
+                'parent',
+                'developer',
+                'propert_type',
+                'city',
+                'locality',
             )
         }),
-        ('Possession & Status', {
+
+        # =====================
+        # CONFIGURATION & DETAILS
+        # =====================
+        ('Project Details', {
             'fields': (
-                'possession_month', 'possession_year',
+                'construction_status',
+                'bhk_type',
+                'floor',
+                'land_parce',
+                'luxurious',
+                'priceing',
+            )
+        }),
+
+        # =====================
+        # POSSESSION & LEGAL
+        # =====================
+        ('Possession & Legal', {
+            'fields': (
+                'possession_month',
+                'possession_year',
                 'Occupancy_Certificate',
                 'Commencement_Certificate',
-                'featured_property', 'active'
             )
         }),
-        ('Media & Map', {
+
+        # =====================
+        # FEATURES & STATUS
+        # =====================
+        ('Status & Flags', {
             'fields': (
-                'image', 'image_preview',
-                'youtube_embed_id',
-                'google_map_iframe',
-                'youtube_preview'
+                'featured_property',
+                'balcony',
+                'sold_out',
+                'active',
             )
         }),
-        ('Timestamps', {
-            'fields': ('create_at', 'update_at')
+
+        # =====================
+        # MEDIA
+        # =====================
+        ('Images & Media', {
+            'fields': (
+                'image',
+                'image_preview',
+                'master_plan',
+                'floor_plan',
+                'youtube_embed_id',
+                'youtube_preview',
+            )
+        }),
+
+        # =====================
+        # MAP
+        # =====================
+        ('Google Map', {
+            'fields': (
+                'google_map_iframe',
+            )
+        }),
+
+        # =====================
+        # TIMESTAMPS
+        # =====================
+        ('System Info', {
+            'fields': (
+                'create_at',
+                'update_at',
+            )
         }),
     )
 
-    # 🔥 UPDATED INLINES (FAQ ADDED)
     inlines = [
         BookingOfferInline,
         WelcomeToInline,
@@ -183,42 +267,54 @@ class ProjectAdmin(MPTTModelAdmin):
         RERAInfoInline,
         WhyInvestInline,
         BankOfferInline,
-        ProjectFAQInline,   # ✅ FAQ INLINE
+        ProjectFAQInline,
     ]
 
-    class MPTTMeta:
-        order_insertion_by = ['project_name']
-
-    # ---------- PREVIEWS ----------
+    # =====================
+    # PREVIEW METHODS
+    # =====================
     def image_preview(self, obj):
-        if obj.image and hasattr(obj.image, 'url'):
+        if obj.image:
             return mark_safe(
-                f'<img src="{obj.image.url}" width="80" height="50" '
-                f'style="object-fit:cover;border-radius:6px;">'
+                f'<img src="{obj.image.url}" width="100" height="70" '
+                f'style="object-fit:cover;border-radius:8px;">'
             )
-        return mark_safe(
-            '<img src="https://via.placeholder.com/80x50.png?text=No+Image">'
-        )
-    image_preview.short_description = "Preview"
+        return mark_safe(f'<img src="{NO_IMAGE_URL}">')
+
+    image_preview.short_description = "Main Image"
 
     def youtube_preview(self, obj):
         if obj.youtube_embed_id:
             vid = obj.youtube_embed_id.strip()
             thumb = f"https://img.youtube.com/vi/{vid}/hqdefault.jpg"
-            url = f"https://www.youtube.com/watch?v={vid}"
             return mark_safe(
-                f'<a href="{url}" target="_blank">'
-                f'<img src="{thumb}" width="120" height="80" '
-                f'style="object-fit:cover;border-radius:6px;">'
+                f'<a href="https://www.youtube.com/watch?v={vid}" target="_blank">'
+                f'<img src="{thumb}" width="140" height="90" style="border-radius:8px;">'
                 f'</a>'
             )
         return "No Video"
-    youtube_preview.short_description = "YouTube Preview"
 
+    youtube_preview.short_description = "YouTube Video"
+
+# =======================
+# ENQUIRY ADMIN
+# =======================
 
 @admin.register(Enquiry)
 class EnquiryAdmin(admin.ModelAdmin):
-    list_display = ['id','name', 'phone', 'email', 'project', 'message', 'contacted_on']
+    list_display = (
+        'id',
+        'name',
+        'phone',
+        'email',
+        'project',
+        'contacted_on',
+    )
     list_filter = ('project', 'contacted_on')
-    search_fields = ('name', 'email', 'phone', 'message', 'project__project_name')
+    search_fields = (
+        'name',
+        'phone',
+        'email',
+        'project__project_name',
+    )
     ordering = ('-contacted_on',)

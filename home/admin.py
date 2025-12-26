@@ -1,23 +1,38 @@
 from django.contrib import admin
+from django.utils.html import mark_safe
 from .models import (
     Setting, Slider, Leadership, Why_Choose,
-    About, Contact_Page, Our_Team, Testimonial, FAQ
+    About, Contact_Page, Our_Team,
+    Testimonial, FAQ, ImpactMetric
 )
-
 
 # =============================
 # 🌐 WEBSITE SETTINGS ADMIN
 # =============================
 @admin.register(Setting)
 class SettingAdmin(admin.ModelAdmin):
-    list_display = ("site_name", "status", "phone", "email", "logo_preview")
+
+    list_display = (
+        "site_name",
+        "status",
+        "phone",
+        "email",
+        "logo_preview",
+    )
+
     list_filter = ("status",)
     search_fields = ("site_name", "email", "phone")
     readonly_fields = ("logo_preview",)
 
     fieldsets = (
-        ("🧠 Basic Info", {
-            "fields": ("site_name", "logo", "favicon", "logo_preview")
+
+        ("🧠 Basic Branding", {
+            "fields": (
+                "site_name",
+                "logo",
+                "favicon",
+                "logo_preview",
+            )
         }),
 
         ("🎨 Theme Colors", {
@@ -35,20 +50,34 @@ class SettingAdmin(admin.ModelAdmin):
                 "phone",
                 "whatsapp",
                 "email",
-                "google_map"
+                "google_map",
             )
         }),
 
-        ("✉️ SMTP Settings", {
-            "fields": ("smtpserver", "smtpemail", "smtppassword", "smtpport")
+        ("✉️ SMTP / Email Settings", {
+            "fields": (
+                "smtpserver",
+                "smtpemail",
+                "smtppassword",
+                "smtpport",
+            )
         }),
 
-        ("🌐 Social Links", {
-            "fields": ("facebook", "instagram", "twitter", "youtube")
+        ("🌐 Social Media", {
+            "fields": (
+                "facebook",
+                "instagram",
+                "twitter",
+                "youtube",
+            )
         }),
 
-        ("🔍 SEO & Footer", {
-            "fields": ("meta_title", "meta_description", "footer_text", "copy_right")
+        ("🔍 SEO Settings", {
+            "fields": (
+                "meta_title",
+                "meta_description",
+                "meta_keywords",
+            )
         }),
 
         ("📑 Legal Pages", {
@@ -60,11 +89,13 @@ class SettingAdmin(admin.ModelAdmin):
             )
         }),
 
-        ("⚙️ Other Settings", {
+        ("⚙️ Extra Settings", {
             "fields": (
                 "search_bg",
                 "testmonial_bg",
                 "rera_number",
+                "footer_text",
+                "copy_right",
                 "status",
             )
         }),
@@ -72,11 +103,13 @@ class SettingAdmin(admin.ModelAdmin):
 
     def logo_preview(self, obj):
         if obj.logo:
-            return f'<img src="{obj.logo.url}" width="80" style="border-radius:6px;">'
+            return mark_safe(
+                f'<img src="{obj.logo.url}" width="100" style="border-radius:8px;">'
+            )
         return "No Logo"
 
-    logo_preview.allow_tags = True
     logo_preview.short_description = "Logo Preview"
+
 
 # =============================
 # 🖼️ SLIDER ADMIN
@@ -86,17 +119,8 @@ class SliderAdmin(admin.ModelAdmin):
     list_display = ("title", "order", "is_active")
     list_editable = ("order", "is_active")
     search_fields = ("title", "subtitle")
-    ordering = ("order",)
     list_filter = ("is_active",)
-
-
-# =============================
-# 💡 WHY CHOOSE US ADMIN
-# =============================
-@admin.register(Why_Choose)
-class WhyChooseAdmin(admin.ModelAdmin):
-    list_display = ("title", "subtitle")
-    search_fields = ("title", "subtitle")
+    ordering = ("order",)
 
 
 # =============================
@@ -104,18 +128,43 @@ class WhyChooseAdmin(admin.ModelAdmin):
 # =============================
 @admin.register(Leadership)
 class LeadershipAdmin(admin.ModelAdmin):
-    list_display = ("name", "designation", "display_order", "is_active")
+    list_display = (
+        "name",
+        "designation",
+        "display_order",
+        "is_active",
+    )
     list_editable = ("display_order", "is_active")
     search_fields = ("name", "designation")
     list_filter = ("is_active",)
-    ordering = ("display_order",)
     readonly_fields = ("created_at", "updated_at")
 
     fieldsets = (
-        ("👤 Profile Info", {"fields": ("name", "designation", "image", "bio")}),
-        ("🔗 Links", {"fields": ("linkedin_url", "email")}),
-        ("⚙️ Settings", {"fields": ("display_order", "is_active", "created_at", "updated_at")}),
+        ("👤 Profile", {
+            "fields": ("name", "designation", "image", "bio")
+        }),
+        ("🔗 Links", {
+            "fields": ("linkedin_url", "email")
+        }),
+        ("⚙️ Settings", {
+            "fields": (
+                "display_order",
+                "is_active",
+                "created_at",
+                "updated_at",
+            )
+        }),
     )
+
+
+# =============================
+# 💡 WHY CHOOSE ADMIN
+# =============================
+@admin.register(Why_Choose)
+class WhyChooseAdmin(admin.ModelAdmin):
+    list_display = ("title", "order", "is_active")
+    list_editable = ("order", "is_active")
+    search_fields = ("title",)
 
 
 # =============================
@@ -123,31 +172,82 @@ class LeadershipAdmin(admin.ModelAdmin):
 # =============================
 @admin.register(About)
 class AboutAdmin(admin.ModelAdmin):
-    list_display = ("title", "is_active", "created_at", "updated_at")
+
+    list_display = (
+        "title",
+        "is_active",
+        "created_at",
+        "updated_at",
+    )
+
     list_filter = ("is_active",)
     search_fields = ("title", "meta_title", "meta_keywords")
     readonly_fields = ("created_at", "updated_at")
 
     fieldsets = (
-        ("🏠 Main Section", {"fields": ("title", "subtitle", "content", "image")}),
-        ("👥 Who We Are", {"fields": ("who_we_are_title", "who_we_are_subtitle", "who_we_are_description")}),
-        ("📊 Highlights", {"fields": (
-            "projects_delivered",
-            "happy_families",
-            "years_of_excellence",
-            "awards_recognitions",
-            "highlight_icon_color"
-        )}),
-        ("🎯 Mission & Vision", {"fields": (
-            "our_mission_title", "our_mission",
-            "our_vision_title", "our_vision"
-        )}),
-        ("💼 Looking To Section", {"fields": (
-            "looking_to_title", "looking_to_description",
-            "looking_to_button_text", "looking_to_button_link"
-        )}),
-        ("🌐 SEO", {"fields": ("meta_title", "meta_description", "meta_keywords")}),
-        ("⚙️ Settings", {"fields": ("home_bg", "search_bg", "is_active", "created_at", "updated_at")}),
+
+        ("🏠 Main About", {
+            "fields": (
+                "title",
+                "subtitle",
+                "content",
+                "image",
+            )
+        }),
+
+        ("👥 Who We Are", {
+            "fields": (
+                "who_we_are_title",
+                "who_we_are_subtitle",
+                "who_we_are_description",
+            )
+        }),
+
+        ("📊 Highlights", {
+            "fields": (
+                "projects_delivered",
+                "happy_families",
+                "years_of_excellence",
+                "awards_recognitions",
+                "highlight_icon_color",
+            )
+        }),
+
+        ("🎯 Mission & Vision", {
+            "fields": (
+                "our_mission_title",
+                "our_mission",
+                "our_vision_title",
+                "our_vision",
+            )
+        }),
+
+        ("💼 Looking To", {
+            "fields": (
+                "looking_to_title",
+                "looking_to_description",
+                "looking_to_button_text",
+                "looking_to_button_link",
+            )
+        }),
+
+        ("🌐 SEO", {
+            "fields": (
+                "meta_title",
+                "meta_description",
+                "meta_keywords",
+            )
+        }),
+
+        ("⚙️ Background & Status", {
+            "fields": (
+                "home_bg",
+                "search_bg",
+                "is_active",
+                "created_at",
+                "updated_at",
+            )
+        }),
     )
 
 
@@ -157,11 +257,7 @@ class AboutAdmin(admin.ModelAdmin):
 @admin.register(Contact_Page)
 class ContactPageAdmin(admin.ModelAdmin):
     list_display = ("heading", "phone", "email")
-    search_fields = ("heading", "email", "phone")
-    fieldsets = (
-        ("📍 Contact Info", {"fields": ("heading", "sub_heading", "address", "phone", "email")}),
-        ("🗺️ Map Integration", {"fields": ("map_iframe",)}),
-    )
+    search_fields = ("heading", "phone", "email")
 
 
 # =============================
@@ -171,7 +267,6 @@ class ContactPageAdmin(admin.ModelAdmin):
 class OurTeamAdmin(admin.ModelAdmin):
     list_display = ("name", "designation")
     search_fields = ("name", "designation")
-    list_filter = ("designation",)
 
 
 # =============================
@@ -182,7 +277,6 @@ class TestimonialAdmin(admin.ModelAdmin):
     list_display = ("name", "designation", "rating")
     list_filter = ("rating",)
     search_fields = ("name", "designation", "message")
-    ordering = ("-rating",)
 
 
 # =============================
@@ -192,3 +286,14 @@ class TestimonialAdmin(admin.ModelAdmin):
 class FAQAdmin(admin.ModelAdmin):
     list_display = ("question",)
     search_fields = ("question", "answer")
+
+
+# =============================
+# 📊 IMPACT METRICS ADMIN
+# =============================
+@admin.register(ImpactMetric)
+class ImpactMetricAdmin(admin.ModelAdmin):
+    list_display = ("title", "value", "order", "created_on")
+    list_editable = ("order",)
+    ordering = ("order",)
+    search_fields = ("title", "value")

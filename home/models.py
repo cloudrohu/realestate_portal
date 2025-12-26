@@ -273,3 +273,18 @@ class FAQ(models.Model):
 
     def __str__(self):
         return self.question
+
+
+
+class ImpactMetric(models.Model):
+    title = models.CharField(max_length=255)
+    value = models.CharField(max_length=100, help_text='E.g. "10,000+" or "95%"')
+    icon = models.CharField(max_length=500, blank=True)
+    order = models.PositiveIntegerField(default=0)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order', '-created_on']
+
+    def __str__(self):
+        return f"{self.title}: {self.value}"
