@@ -250,54 +250,60 @@
               <!-- Divider -->
               <div class="border-t border-gray-200"></div>
 
-            <!-- ================= TABS ================= -->
+              <!-- ================= BHK TABS ================= -->
               <div class="border-b mb-2">
                 <div class="flex gap-4 text-sm font-medium text-gray-600">
-                  <button onclick="switchBHK('bhk2', this)"
-                    class="bhk-tab pb-1 border-b-2 border-green-600 text-green-600">
+                  <button type="button"
+                    class="bhk-tab pb-1 border-b-2 border-green-600 text-green-600"
+                    data-target="bhk-2">
                     2 BHK
                   </button>
-                  <button onclick="switchBHK('bhk3', this)"
-                    class="bhk-tab pb-1 border-b-2 border-transparent hover:text-green-600">
+
+                  <button type="button"
+                    class="bhk-tab pb-1 border-b-2 border-transparent hover:text-green-600"
+                    data-target="bhk-3">
                     3 BHK
                   </button>
-                  <button onclick="switchBHK('bhk4', this)"
-                    class="bhk-tab pb-1 border-b-2 border-transparent hover:text-green-600">
+
+                  <button type="button"
+                    class="bhk-tab pb-1 border-b-2 border-transparent hover:text-green-600"
+                    data-target="bhk-4">
                     4 BHK
                   </button>
                 </div>
               </div>
 
+
               <!-- ================= 2 BHK ================= -->
-              <div id="bhk2" class="bhk-panel">
+             <div class="bhk-panel" data-panel="bhk-2">
                 <div class="max-h-[120px] overflow-y-auto border rounded bg-white">
 
-               <table class="w-full text-sm border-collapse">
-                        <thead class="bg-gray-100 sticky top-0">
-                          <tr class="text-center font-semibold">
-                            <th class="px-1 py-1 border">Carpet Area</th>
-                            <th class="px-1 py-1 border">Price</th>
-                            <th class="px-1 py-1 border">Parking</th>
-                            <th class="px-1 py-1 border">Balcony</th>
-                          </tr>
-                        </thead>
-                <tbody class="text-center">
-                  <tr>
-                  <td class="px-1 py-1 border">500 sqft</td>
-                  <td class="px-1 py-1 border">₹8,500,000</td>
-                  <td class="px-1 py-1 border">No</td>
-                  <td class="px-1 py-1 border">1</td>
-                </tr>
-              </tbody>
-            </table>
-
+                  <table class="w-full text-sm border-collapse">
+                    <thead class="bg-gray-100 sticky top-0">
+                      <tr class="text-center font-semibold">
+                        <th class="px-1 py-1 border">Carpet Area</th>
+                        <th class="px-1 py-1 border">Price</th>
+                        <th class="px-1 py-1 border">Parking</th>
+                        <th class="px-1 py-1 border">Balcony</th>
+                      </tr>
+                    </thead>
+                    <tbody class="text-center">
+                      <tr>
+                        <td class="px-1 py-1 border">500 sqft</td>
+                        <td class="px-1 py-1 border">₹8,500,000</td>
+                        <td class="px-1 py-1 border">No</td>
+                        <td class="px-1 py-1 border">1</td>
+                      </tr>
+                    </tbody>
+                  </table>
 
                 </div>
               </div>
 
+
               <!-- ================= 3 BHK ================= -->
-              <div id="bhk3" class="bhk-panel hidden">
-                <div class="max-h-[120px] overflow-y-auto border rounded bg-white">
+            <div class="bhk-panel hidden" data-panel="bhk-3">
+              <div class="max-h-[120px] overflow-y-auto border rounded bg-white">
 
                 <table class="w-full text-sm border-collapse">
                   <thead class="bg-gray-100 sticky top-0">
@@ -315,36 +321,24 @@
                       <td class="px-1 py-1 border">Yes</td>
                       <td class="px-1 py-1 border">2</td>
                     </tr>
-                                        <tr>
-                      <td class="px-1 py-1 border">1200 sqft</td>
-                      <td class="px-1 py-1 border">₹14,500,000</td>
-                      <td class="px-1 py-1 border">Yes</td>
-                      <td class="px-1 py-1 border">2</td>
-                    </tr>
-                                        <tr>
-                      <td class="px-1 py-1 border">1200 sqft</td>
-                      <td class="px-1 py-1 border">₹14,500,000</td>
-                      <td class="px-1 py-1 border">Yes</td>
-                      <td class="px-1 py-1 border">2</td>
-                    </tr>
-                                        <tr>
-                      <td class="px-1 py-1 border">1200 sqft</td>
-                      <td class="px-1 py-1 border">₹14,500,000</td>
+                    <tr>
+                      <td class="px-1 py-1 border">1250 sqft</td>
+                      <td class="px-1 py-1 border">₹15,200,000</td>
                       <td class="px-1 py-1 border">Yes</td>
                       <td class="px-1 py-1 border">2</td>
                     </tr>
                   </tbody>
                 </table>
 
-
-                </div>
               </div>
+            </div>
+
 
               <!-- ================= 4 BHK ================= -->
-              <div id="bhk4" class="bhk-panel hidden">
-                <div class="max-h-[120px] overflow-y-auto border rounded bg-white">
+                <div class="bhk-panel hidden" data-panel="bhk-4">
+                  <div class="max-h-[120px] overflow-y-auto border rounded bg-white">
 
-                  <table class="w-full text-sm border-collapse">
+                    <table class="w-full text-sm border-collapse">
                       <thead class="bg-gray-100 sticky top-0">
                         <tr class="text-center font-semibold">
                           <th class="px-1 py-1 border">Carpet Area</th>
@@ -363,26 +357,41 @@
                       </tbody>
                     </table>
 
-
+                  </div>
                 </div>
-              </div>
+
 
               <!-- ================= JS ================= -->
               <script>
-                function switchBHK(id, btn) {
-                  document.querySelectorAll('.bhk-panel')
-                    .forEach(el => el.classList.add('hidden'));
+                  document.addEventListener("click", function (e) {
 
-                  document.querySelectorAll('.bhk-tab')
-                    .forEach(tab => {
-                      tab.classList.remove('border-green-600','text-green-600');
-                      tab.classList.add('border-transparent','text-gray-600');
+                    const tab = e.target.closest(".bhk-tab");
+                    if (!tab) return;
+
+                    // current card scope
+                    const card = tab.closest(".sm\\:ml-5, .flex-1, .space-y-2") || tab.closest("div");
+
+                    // reset tabs
+                    card.querySelectorAll(".bhk-tab").forEach(t => {
+                      t.classList.remove("border-green-600", "text-green-600");
+                      t.classList.add("border-transparent", "text-gray-600");
                     });
 
-                  document.getElementById(id).classList.remove('hidden');
-                  btn.classList.add('border-green-600','text-green-600');
-                }
-              </script>
+                    // reset panels
+                    card.querySelectorAll(".bhk-panel").forEach(p => {
+                      p.classList.add("hidden");
+                    });
+
+                    // activate current
+                    tab.classList.add("border-green-600", "text-green-600");
+                    tab.classList.remove("border-transparent", "text-gray-600");
+
+                    const target = tab.dataset.target;
+                    card.querySelector(`[data-panel="${target}"]`).classList.remove("hidden");
+
+                  });
+                  </script>
+
 
 
 
@@ -676,7 +685,6 @@
 
 
 
-    <!-- ✅ Repeat more project cards like above (they’ll stack nicely on mobile) -->
 
   </div>
 
@@ -685,90 +693,159 @@
 
 
 
-  <!-- Right Side - Sidebar -->
-  <aside class="space-y-6 md:hidden hidden lg:block">
+          <!-- ================= RIGHT SIDEBAR ================= -->
+          <aside class="space-y-6 lg:sticky lg:top-24">
 
-    <!-- Advanced Search -->
-    <div class="bg-white shadow rounded p-6">
-      <h3 class="font-bold text-gray-700 mb-4 text-lg">ADVANCED SEARCH</h3>
-      <select class="w-full border px-3 py-2 rounded mb-3 text-sm">
-        <option>For Sale</option>
-        <option>For Rent</option>
-      </select>
-      <select class="w-full border px-3 py-2 rounded mb-3 text-sm">
-        <option>Types</option>
-        <option>Residential</option>
-        <option>Commercial</option>
-      </select>
-      <select class="w-full border px-3 py-2 rounded mb-3 text-sm">
-        <option>Property Types</option>
-        <option>Apartment</option>
-        <option>Villa</option>
-        <option>Plot</option>
-      </select>
-      <input type="text" placeholder="Location" class="w-full border px-3 py-2 rounded mb-3 text-sm">
-      <div class="flex flex-col sm:flex-row gap-3 mb-3">
-        <select class="w-full sm:w-1/2 border px-3 py-2 rounded text-sm">
-          <option>BHK</option>
-          <option>1 BHK</option>
-          <option>2 BHK</option>
-          <option>3 BHK</option>
-        </select>
-        <select class="w-full sm:w-1/2 border px-3 py-2 rounded text-sm">
-          <option>Transaction</option>
-          <option>New</option>
-          <option>Resale</option>
-        </select>
-      </div>
-      <div class="flex flex-col sm:flex-row gap-3 mb-3">
-        <input type="text" placeholder="Min Budget" class="w-full sm:w-1/2 border px-3 py-2 rounded text-sm">
-        <input type="text" placeholder="Max Budget" class="w-full sm:w-1/2 border px-3 py-2 rounded text-sm">
-      </div>
-      <label class="block text-sm text-gray-600 mb-1">Area</label>
-      <input type="range" min="0" max="1000000" value="2000" class="w-full accent-orange-500">
-      <div class="flex justify-between text-xs text-gray-600 mb-3">
-        <span>0 Sq.ft</span>
-        <span>1000000 Sq.ft</span>
-      </div>
-      <a href="#" class="text-orange-600 text-sm font-semibold block mb-4">+ Show More Options</a>
-      <button class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded">SEARCH</button>
-    </div>
+            <!-- ================= ADVANCED SEARCH ================= -->
+            <form method="get"
+                  class="bg-white shadow-lg rounded-xl p-6 space-y-4">
 
-    <!-- Popular Category -->
-    <div class="bg-white shadow rounded p-6">
-      <h3 class="font-bold text-gray-700 mb-3 text-lg">POPULAR CATEGORY</h3>
-      <p class="text-gray-600 text-sm flex justify-between">Residential Apartment <span>(14)</span></p>
-    </div>
+              <h3 class="font-bold text-gray-800 text-lg border-b pb-3">
+                Advanced Search
+              </h3>
 
-    <!-- Recent Properties -->
-    <div class="bg-white shadow rounded p-6">
-      <h3 class="font-bold text-gray-700 mb-3 text-lg">RECENT PROPERTIES</h3>
-      <div class="space-y-3 text-sm">
-        <div class="flex gap-3">
-          <img src="https://dummyimage.com/80x60/aaaaaa/000000" class="w-20 h-14 object-cover rounded">
-          <div>
-            <p class="text-orange-600">700 Sq.Ft. 2 BHK Apartment</p>
-            <p class="text-gray-600">₹65.00 Th</p>
-          </div>
-        </div>
-        <div class="flex gap-3">
-          <img src="https://dummyimage.com/80x60/cccccc/000000" class="w-20 h-14 object-cover rounded">
-          <div>
-            <p class="text-orange-600">610 Sq.Ft. 2 BHK Apartment</p>
-            <p class="text-gray-600">₹70.00 Th</p>
-          </div>
-        </div>
-      </div>
-    </div>
+              <!-- Sale / Rent -->
+              <select name="listing_type"
+                class="w-full border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
+                <option value="">For Sale</option>
+                <option value="rent">For Rent</option>
+              </select>
 
-    <!-- Helping Center -->
-    <div class="bg-white shadow rounded p-6">
-      <h3 class="font-bold text-gray-700 mb-3 text-lg">HELPING CENTER</h3>
-      <p class="text-gray-700 text-sm mb-2"><strong>Address</strong><br> {{ settings_obj.address}}</p>
-      <p class="text-gray-700 text-sm"><strong>Phone</strong><br> {{ settings_obj.phone}}</p>
-    </div>
+              <!-- Category -->
+              <select name="category"
+                class="w-full border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
+                <option value="">Residential</option>
+                <option value="commercial">Commercial</option>
+              </select>
 
-  </aside>
+              <!-- Property Type -->
+              <select name="property_type"
+                class="w-full border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
+                <option value="">Property Type</option>
+                <option value="apartment">Apartment</option>
+                <option value="villa">Villa</option>
+                <option value="plot">Plot</option>
+              </select>
+
+              <!-- Location -->
+              <input type="text"
+                name="location"
+                placeholder="Enter Location"
+                class="w-full border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
+
+              <!-- BHK + Transaction -->
+              <div class="grid grid-cols-2 gap-3">
+                <select name="bhk"
+                  class="border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
+                  <option value="">BHK</option>
+                  <option value="1">1 BHK</option>
+                  <option value="2">2 BHK</option>
+                  <option value="3">3 BHK</option>
+                </select>
+
+                <select name="transaction"
+                  class="border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
+                  <option value="">Transaction</option>
+                  <option value="new">New</option>
+                  <option value="resale">Resale</option>
+                </select>
+              </div>
+
+              <!-- Budget -->
+              <div class="grid grid-cols-2 gap-3">
+                <input type="number"
+                  name="min_price"
+                  placeholder="Min Budget"
+                  class="border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
+                <input type="number"
+                  name="max_price"
+                  placeholder="Max Budget"
+                  class="border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
+              </div>
+
+              <!-- Area -->
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">
+                  Carpet Area (Sq.ft)
+                </label>
+                <input type="range"
+                  name="area"
+                  min="0"
+                  max="5000"
+                  class="w-full accent-orange-500">
+                <div class="flex justify-between text-[11px] text-gray-500 mt-1">
+                  <span>0</span>
+                  <span>5000+</span>
+                </div>
+              </div>
+
+              <!-- Submit -->
+              <button
+                class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-xl transition">
+                Search Properties
+              </button>
+
+            </form>
+
+            <!-- ================= POPULAR CATEGORY ================= -->
+            <div class="bg-white shadow-lg rounded-xl p-6">
+              <h3 class="font-bold text-gray-800 text-lg mb-3">
+                Popular Category
+              </h3>
+              <p class="flex justify-between text-sm text-gray-600">
+                Residential Apartment <span>(14)</span>
+              </p>
+            </div>
+
+            <!-- ================= RECENT PROPERTIES ================= -->
+            <div class="bg-white shadow-lg rounded-xl p-6">
+              <h3 class="font-bold text-gray-800 text-lg mb-4">
+                Recent Properties
+              </h3>
+
+              <div class="space-y-4 text-sm">
+                <div class="flex gap-3">
+                  <img src="https://dummyimage.com/80x60/cccccc/000000"
+                      class="w-20 h-14 object-cover rounded-lg">
+                  <div>
+                    <p class="text-orange-600 font-medium">
+                      2 BHK Apartment
+                    </p>
+                    <p class="text-gray-500">₹65.00 L</p>
+                  </div>
+                </div>
+
+                <div class="flex gap-3">
+                  <img src="https://dummyimage.com/80x60/bbbbbb/000000"
+                      class="w-20 h-14 object-cover rounded-lg">
+                  <div>
+                    <p class="text-orange-600 font-medium">
+                      2 BHK Apartment
+                    </p>
+                    <p class="text-gray-500">₹70.00 L</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ================= HELPING CENTER ================= -->
+            <div class="bg-white shadow-lg rounded-xl p-6">
+              <h3 class="font-bold text-gray-800 text-lg mb-3">
+                Helping Center
+              </h3>
+              <p class="text-sm text-gray-600 mb-2">
+                <strong>Address</strong><br>
+                {{ settings_obj.address }}
+              </p>
+              <p class="text-sm text-gray-600">
+                <strong>Phone</strong><br>
+                {{ settings_obj.phone }}
+              </p>
+            </div>
+
+          </aside>
+          <!-- ================= END RIGHT SIDEBAR ================= -->
+
 </div>
 
 
