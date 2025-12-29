@@ -692,182 +692,124 @@
 
 
 
+    <!-- ================= RIGHT SIDEBAR ================= -->
+    <aside class="space-y-6 lg:sticky lg:top-24">
 
-      <!-- ================= RIGHT SIDEBAR ================= -->
-      <aside class="space-y-6 lg:sticky lg:top-24">
+      <!-- ================= ADVANCED SEARCH ================= -->
+      <form method="get" id="filterForm"
+            class="bg-white shadow-lg rounded-xl p-6 space-y-4">
 
-        <!-- ================= ADVANCED SEARCH ================= -->
-        <form method="get"
-              class="bg-white shadow-lg rounded-xl p-6 space-y-4">
+        <h3 class="font-bold text-gray-800 text-lg border-b pb-3">
+          Advanced Search
+        </h3>
 
-          <h3 class="font-bold text-gray-800 text-lg border-b pb-3">
-            Advanced Search
-          </h3>
+        <!-- Sale / Rent (UI ONLY – backend ignore) -->
+        <select
+          class="w-full border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
+          <option value="">For Sale</option>
+          <option value="rent">For Rent</option>
+        </select>
 
-          <!-- Sale / Rent -->
-          <select name="listing_type"
-            class="w-full border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
-            <option value="">For Sale</option>
-            <option value="rent">For Rent</option>
-          </select>
+        <!-- Category -->
+        <select name="category"
+          class="w-full border px-3 py-2 rounded-lg text-sm">
+          <option value="">Residential</option>
+          <option value="commercial"
+            {% if selected.category == "commercial" %}selected{% endif %}>
+            Commercial
+          </option>
+        </select>
 
-          <!-- Category -->
-          <select name="category"
-            class="w-full border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
-            <option value="">Residential</option>
-            <option value="commercial">Commercial</option>
-          </select>
+        <!-- Property Type -->
+        <select name="property_type"
+          class="w-full border px-3 py-2 rounded-lg text-sm">
+          <option value="">Property Type</option>
+          <option value="apartment">Apartment</option>
+          <option value="villa">Villa</option>
+          <option value="plot">Plot</option>
+        </select>
 
-          <!-- Property Type -->
-          <select name="property_type"
-            class="w-full border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
-            <option value="">Property Type</option>
-            <option value="apartment">Apartment</option>
-            <option value="villa">Villa</option>
-            <option value="plot">Plot</option>
-          </select>
+        <!-- City -->
+        <select name="city" class="w-full border rounded px-3 py-2">
+          <option value="">Select City</option>
+          {% for city in cities %}
+            <option value="{{ city.id }}"
+              {% if selected.city == city.id|stringformat:"s" %}selected{% endif %}>
+              {{ city.name }}
+            </option>
+          {% endfor %}
+        </select>
 
-          <select id="city" name="city" class="w-full border rounded px-3 py-2">
-            <option value="">Select City</option>
-            {% for city in cities %}
-              <option value="{{ city.id }}">{{ city.name }}</option>
-            {% endfor %}
-          </select>
+        <!-- Locality -->
+        <select name="locality" class="w-full border rounded px-3 py-2">
+          <option value="">Select Locality</option>
+        </select>
 
-          <select id="locality" name="locality" class="w-full border rounded px-3 py-2">
-            <option value="">Select Locality</option>
-          </select>
+        <!-- Location -->
+        <input type="text"
+          name="location"
+          placeholder="Enter Location"
+          class="w-full border px-3 py-2 rounded-lg text-sm">
 
-          <select name="sort" class="w-full border rounded px-3 py-2">
-            <option value="">Sort By</option>
-            <option value="price_low">Price: Low to High</option>
-            <option value="price_high">Price: High to Low</option>
-            <option value="latest">Latest</option>
-            <option value="possession">Possession</option>
-          </select>
+        <!-- BHK -->
+        <select name="bhk"
+          class="w-full border px-3 py-2 rounded-lg text-sm">
+          <option value="">BHK</option>
+          <option value="1">1 BHK</option>
+          <option value="2" {% if selected.bhk == "2" %}selected{% endif %}>2 BHK</option>
+          <option value="3">3 BHK</option>
+        </select>
 
+        <!-- ================= BUDGET UI (VISIBLE) ================= -->
+        <div class="grid grid-cols-2 gap-3">
+          <input type="number"
+            id="minBudgetUI"
+            value="{{ selected.min_price }}"
+            placeholder="Min Budget"
+            class="border px-3 py-2 rounded-lg">
 
-
-          <!-- Location -->
-          <input type="text"
-            name="location"
-            placeholder="Enter Location"
-            class="w-full border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
-
-          <!-- BHK + Transaction -->
-          <div class="grid grid-cols-2 gap-3">
-            <select name="bhk"
-              class="border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
-              <option value="">BHK</option>
-              <option value="1">1 BHK</option>
-              <option value="2">2 BHK</option>
-              <option value="3">3 BHK</option>
-            </select>
-
-            <select name="transaction"
-              class="border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
-              <option value="">Transaction</option>
-              <option value="new">New</option>
-              <option value="resale">Resale</option>
-            </select>
-          </div>
-
-          <!-- Budget -->
-          <div class="grid grid-cols-2 gap-3">
-            <input type="number"
-              name="min_price"
-              placeholder="Min Budget"
-              class="border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
-            <input type="number"
-              name="max_price"
-              placeholder="Max Budget"
-              class="border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
-          </div>
-
-          
-
-          <!-- Area -->
-          <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1">
-              Carpet Area (Sq.ft)
-            </label>
-            <input type="range"
-              name="area"
-              min="0"
-              max="5000"
-              class="w-full accent-orange-500">
-            <div class="flex justify-between text-[11px] text-gray-500 mt-1">
-              <span>0</span>
-              <span>5000+</span>
-            </div>
-          </div>
-
-          <!-- Submit -->
-          <button
-            class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-xl transition">
-            Search Properties
-          </button>
-
-        </form>
-
-        <!-- ================= POPULAR CATEGORY ================= -->
-        <div class="bg-white shadow-lg rounded-xl p-6">
-          <h3 class="font-bold text-gray-800 text-lg mb-3">
-            Popular Category
-          </h3>
-          <p class="flex justify-between text-sm text-gray-600">
-            Residential Apartment <span>(14)</span>
-          </p>
+          <input type="number"
+            id="maxBudgetUI"
+            value="{{ selected.max_price}}"
+            placeholder="Max Budget"
+            class="border px-3 py-2 rounded-lg">
         </div>
 
-        <!-- ================= RECENT PROPERTIES ================= -->
-        <div class="bg-white shadow-lg rounded-xl p-6">
-          <h3 class="font-bold text-gray-800 text-lg mb-4">
-            Recent Properties
-          </h3>
+        <!-- ================= REAL SUBMIT VALUES ================= -->
+        <input type="hidden" name="min_price" id="min_price"
+              value="{{ selected.min_price }}">
+        <input type="hidden" name="max_price" id="max_price"
+              value="{{ selected.max_price }}">
 
-          <div class="space-y-4 text-sm">
-            <div class="flex gap-3">
-              <img src="https://dummyimage.com/80x60/cccccc/000000"
-                  class="w-20 h-14 object-cover rounded-lg">
-              <div>
-                <p class="text-orange-600 font-medium">
-                  2 BHK Apartment
-                </p>
-                <p class="text-gray-500">₹65.00 L</p>
-              </div>
-            </div>
-
-            <div class="flex gap-3">
-              <img src="https://dummyimage.com/80x60/bbbbbb/000000"
-                  class="w-20 h-14 object-cover rounded-lg">
-              <div>
-                <p class="text-orange-600 font-medium">
-                  2 BHK Apartment
-                </p>
-                <p class="text-gray-500">₹70.00 L</p>
-              </div>
-            </div>
+        <!-- Carpet Area -->
+        <div>
+          <label class="block text-xs font-medium text-gray-600 mb-1">
+            Carpet Area (Sq.ft)
+          </label>
+          <input type="range"
+            name="area"
+            min="0"
+            max="5000"
+            value="{{ selected.area|default:0 }}"
+            class="w-full accent-orange-500">
+          <div class="flex justify-between text-[11px] text-gray-500 mt-1">
+            <span>0</span>
+            <span>5000+</span>
           </div>
         </div>
 
-        <!-- ================= HELPING CENTER ================= -->
-        <div class="bg-white shadow-lg rounded-xl p-6">
-          <h3 class="font-bold text-gray-800 text-lg mb-3">
-            Helping Center
-          </h3>
-          <p class="text-sm text-gray-600 mb-2">
-            <strong>Address</strong><br>
-            {{ settings_obj.address }}
-          </p>
-          <p class="text-sm text-gray-600">
-            <strong>Phone</strong><br>
-            {{ settings_obj.phone }}
-          </p>
-        </div>
+        <!-- Submit -->
+        <button
+          class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-xl">
+          Search Properties
+        </button>
 
-      </aside>
-      <!-- ================= END RIGHT SIDEBAR ================= -->
+      </form>
+
+    </aside>
+    <!-- ================= END RIGHT SIDEBAR ================= -->
+
+
 
 </div>
 

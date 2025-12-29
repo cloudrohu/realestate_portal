@@ -79,126 +79,70 @@ def index(request):
     return render(request, 'projects/projects.html', context)
 
 
-
 def search_projects(request):
     settings_obj = Setting.objects.first()
 
-    # ===========================
-    # GET PARAMETERS
-    # ===========================
-    query = request.GET.get("q", "").strip()
-    selected_type = request.GET.get("type", "").strip().lower()
-
+    # ================= GET PARAMS =================
+    category = request.GET.get("category")
+    property_type = request.GET.get("property_type")
+    city = request.GET.get("city")
+    locality = request.GET.get("locality")
     bhk = request.GET.get("bhk")
-    transaction = request.GET.get("transaction")
     min_price = request.GET.get("min_price")
     max_price = request.GET.get("max_price")
     area = request.GET.get("area")
-    listing_type = request.GET.get("listing_type")
-    category = request.GET.get("category")
-    property_type = request.GET.get("property_type")
     sort = request.GET.get("sort")
 
-    # ===========================
-    # BASE QUERYSET
-    # ===========================
+    # ================= BASE QUERY =================
     projects = Project.objects.filter(active=True)
 
-    # ===========================
-    # PROPERTY TYPE (MPTT SAFE)
-    # ===========================
-    if selected_type:
-        try:
-            parent_type = PropertyType.objects.get(
-                name__iexact=selected_type.capitalize()
-            )
-            all_types = parent_type.get_descendants(include_self=True)
-            projects = projects.filter(propert_type__in=all_types)
-        except PropertyType.DoesNotExist:
-            pass
+    # ================= PROJECT LEVEL =================
+    if category:
+        projects = projects.filter(
+            propert_type__name__iexact=category
+        )
 
     if property_type:
         projects = projects.filter(
             propert_type__name__iexact=property_type
         )
 
-    # ===========================
-    # CATEGORY / LISTING TYPE
-    # ===========================
-    if category:
-        projects = projects.filter(category__iexact=category)
+    if city:
+        projects = projects.filter(city_id=city)
 
-    if listing_type:
-        projects = projects.filter(listing_type__iexact=listing_type)
+    if locality:
+        projects = projects.filter(locality_id=locality)
 
-    # ===========================
-    # SMART CITY + LOCALITY SEARCH
-    # ===========================
-    if query:
-        parts = [p.strip() for p in query.split(",")]
-
-        if len(parts) == 2:
-            locality_part, city_part = parts
-            projects = projects.filter(
-                Q(locality__name__icontains=locality_part) &
-                Q(city__name__icontains=city_part)
-            )
-        else:
-            projects = projects.filter(
-                Q(project_name__icontains=query) |
-                Q(locality__name__icontains=query) |
-                Q(city__name__icontains=query)
-            )
-
-    # ===========================
-    # BHK / TRANSACTION
-    # ===========================
+    # ================= CONFIG LEVEL =================
     if bhk:
         projects = projects.filter(
             configurations__bhk=bhk
         )
 
-    if transaction:
-        projects = projects.filter(
-            transaction_type__iexact=transaction
-        )
-
-    # ===========================
-    # PRICE RANGE (CONFIG MODEL)
-    # ===========================
-    if min_price:
-        projects = projects.filter(
-            configurations__price_in_rupees__gte=min_price
-        )
-
-    if max_price:
-        projects = projects.filter(
-            configurations__price_in_rupees__lte=max_price
-        )
-
-    # ===========================
-    # AREA FILTER (FIXED FIELD)
-    # ===========================
     if area:
         projects = projects.filter(
             configurations__area_sqft__lte=area
         )
 
-    # ===========================
-    # 🔥 ANNOTATE (FOR PRICE SORT)
-    # ===========================
+    # ================= PRICE ANNOTATION =================
     projects = projects.annotate(
-        min_price=Min("configurations__price_in_rupees")
+        min_price_val=Min("configurations__price_in_rupees"),
+        max_price_val=Max("configurations__price_in_rupees"),
     )
 
-    # ===========================
-    # 🔥 SORTING
-    # ===========================
+    # ================= PRICE FILTER =================
+    if min_price:
+        projects = projects.filter(min_price_val__gte=min_price)
+
+    if max_price:
+        projects = projects.filter(max_price_val__lte=max_price)
+
+    # ================= SORT =================
     if sort == "price_low":
-        projects = projects.order_by("min_price")
+        projects = projects.order_by("min_price_val")
 
     elif sort == "price_high":
-        projects = projects.order_by("-min_price")
+        projects = projects.order_by("-min_price_val")
 
     elif sort == "latest":
         projects = projects.order_by("-create_at")
@@ -209,40 +153,26 @@ def search_projects(request):
         )
 
     else:
-        # Default sorting
         projects = projects.order_by("-create_at")
 
-    # ===========================
-    # DISTINCT + PAGINATION
-    # ===========================
     projects = projects.distinct()
 
+    # ================= PAGINATION =================
     paginator = Paginator(projects, 9)
-    page = request.GET.get("page", 1)
+    page = request.GET.get("page")
+    projects_page = paginator.get_page(page)
 
-    try:
-        projects_page = paginator.page(page)
-    except:
-        projects_page = paginator.page(1)
-
-    # ===========================
-    # CONTEXT
-    # ===========================
     context = {
         "settings_obj": settings_obj,
         "projects": projects_page,
-        "query": query,
-        "property_type": selected_type,
-        "paginator": paginator,
+        "cities": City.objects.all(),
+        "selected": request.GET,
     }
 
-    template = (
-        "projects/commercial_list.html"
-        if selected_type == "commercial"
-        else "projects/residential_list.html"
-    )
+    return render(request, "projects/residential_list.html", context)
 
-    return render(request, template, context)
+
+
 
 
 def residential_projects(request):
