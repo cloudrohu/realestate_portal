@@ -12,6 +12,7 @@ from .models import (
     Project, Configuration, Gallery, RERA_Info, BookingOffer, Overview,
     USP, Amenities, Header, WelcomeTo, Connectivity, WhyInvest,Enquiry,ProjectFAQ
 ) 
+from django.http import JsonResponse
 from django.contrib import messages
 
 from django.db.models import Min, Max
@@ -79,18 +80,33 @@ def index(request):
 
 
 
-
-from django.db.models import Q
-
 def search_projects(request):
     settings_obj = Setting.objects.first()
 
+    # ===========================
+    # GET PARAMETERS
+    # ===========================
     query = request.GET.get("q", "").strip()
     selected_type = request.GET.get("type", "").strip().lower()
 
+    bhk = request.GET.get("bhk")
+    transaction = request.GET.get("transaction")
+    min_price = request.GET.get("min_price")
+    max_price = request.GET.get("max_price")
+    area = request.GET.get("area")
+    listing_type = request.GET.get("listing_type")
+    category = request.GET.get("category")
+    property_type = request.GET.get("property_type")
+    sort = request.GET.get("sort")
+
+    # ===========================
+    # BASE QUERYSET
+    # ===========================
     projects = Project.objects.filter(active=True)
 
-    # ✅ Property type filter
+    # ===========================
+    # PROPERTY TYPE (MPTT SAFE)
+    # ===========================
     if selected_type:
         try:
             parent_type = PropertyType.objects.get(
@@ -101,7 +117,23 @@ def search_projects(request):
         except PropertyType.DoesNotExist:
             pass
 
-    # ✅ CITY + LOCALITY SMART SPLIT
+    if property_type:
+        projects = projects.filter(
+            propert_type__name__iexact=property_type
+        )
+
+    # ===========================
+    # CATEGORY / LISTING TYPE
+    # ===========================
+    if category:
+        projects = projects.filter(category__iexact=category)
+
+    if listing_type:
+        projects = projects.filter(listing_type__iexact=listing_type)
+
+    # ===========================
+    # SMART CITY + LOCALITY SEARCH
+    # ===========================
     if query:
         parts = [p.strip() for p in query.split(",")]
 
@@ -118,17 +150,84 @@ def search_projects(request):
                 Q(city__name__icontains=query)
             )
 
+    # ===========================
+    # BHK / TRANSACTION
+    # ===========================
+    if bhk:
+        projects = projects.filter(
+            configurations__bhk=bhk
+        )
+
+    if transaction:
+        projects = projects.filter(
+            transaction_type__iexact=transaction
+        )
+
+    # ===========================
+    # PRICE RANGE (CONFIG MODEL)
+    # ===========================
+    if min_price:
+        projects = projects.filter(
+            configurations__price_in_rupees__gte=min_price
+        )
+
+    if max_price:
+        projects = projects.filter(
+            configurations__price_in_rupees__lte=max_price
+        )
+
+    # ===========================
+    # AREA FILTER (FIXED FIELD)
+    # ===========================
+    if area:
+        projects = projects.filter(
+            configurations__area_sqft__lte=area
+        )
+
+    # ===========================
+    # 🔥 ANNOTATE (FOR PRICE SORT)
+    # ===========================
+    projects = projects.annotate(
+        min_price=Min("configurations__price_in_rupees")
+    )
+
+    # ===========================
+    # 🔥 SORTING
+    # ===========================
+    if sort == "price_low":
+        projects = projects.order_by("min_price")
+
+    elif sort == "price_high":
+        projects = projects.order_by("-min_price")
+
+    elif sort == "latest":
+        projects = projects.order_by("-create_at")
+
+    elif sort == "possession":
+        projects = projects.order_by(
+            "possession_year", "possession_month"
+        )
+
+    else:
+        # Default sorting
+        projects = projects.order_by("-create_at")
+
+    # ===========================
+    # DISTINCT + PAGINATION
+    # ===========================
     projects = projects.distinct()
 
-    # ✅ Pagination
-    page = request.GET.get("page", 1)
     paginator = Paginator(projects, 9)
+    page = request.GET.get("page", 1)
 
     try:
         projects_page = paginator.page(page)
     except:
         projects_page = paginator.page(1)
 
+    # ===========================
+    # CONTEXT
+    # ===========================
     context = {
         "settings_obj": settings_obj,
         "projects": projects_page,
@@ -148,6 +247,9 @@ def search_projects(request):
 
 def residential_projects(request):
     query = request.GET.get('q', '')
+    bhk = request.GET.get("bhk")
+    min_price = request.GET.get("min_price")
+    max_price = request.GET.get("max_price")
 
     projects = Project.objects.filter(
         propert_type__parent__name__iexact='Residential',
@@ -155,19 +257,33 @@ def residential_projects(request):
     ).annotate(
         min_price=Min("configurations__price_in_rupees"),
         max_price=Max("configurations__price_in_rupees"),
-    ).select_related('city', 'locality', 'propert_type')
+    ).select_related(
+        'city', 'locality', 'propert_type'
+    )
 
     if query:
         projects = projects.filter(project_name__icontains=query)
 
+    if bhk:
+        projects = projects.filter(configurations__bhk=bhk)
+
+    if min_price:
+        projects = projects.filter(
+            configurations__price_in_rupees__gte=min_price
+        )
+
+    if max_price:
+        projects = projects.filter(
+            configurations__price_in_rupees__lte=max_price
+        )
+
     context = {
-        'projects': projects,
+        'projects': projects.distinct(),
         'page_title': 'Residential Projects',
         'breadcrumb': 'Residential',
     }
 
     return render(request, 'projects/residential_list.html', context)
-
 
 
 # 🏢 Commercial Projects
@@ -281,3 +397,9 @@ def submit_enquiry(request, id):
 
 def thank_you(request):
     return render(request, 'projects/thank_you.html')
+
+def load_localities(request):
+    city_id = request.GET.get("city_id")
+    localities = Locality.objects.filter(city_id=city_id).values("id", "name")
+    return JsonResponse(list(localities), safe=False)
+

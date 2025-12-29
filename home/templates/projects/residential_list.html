@@ -213,27 +213,27 @@
                   <!-- Title + Price + Location -->
             <div class="flex flex-col gap-1">
 
-            <a href="{{ project.get_absolute_url }}">
-              <!-- Row 1: Project Name + Price -->
-              <div class="flex items-start justify-between gap-4">
-                <h2 class="text-xl font-semibold text-gray-900 leading-tight">
-                  {{ project.project_name }}
-                </h2>
+              <a href="{{ project.get_absolute_url }}">
+                <!-- Row 1: Project Name + Price -->
+                <div class="flex items-start justify-between gap-4">
+                  <h2 class="text-xl font-semibold text-gray-900 leading-tight">
+                    {{ project.project_name }}
+                  </h2>
 
 
-                <span class="text-xl font-bold text-gray-900 whitespace-nowrap">
-                  {{ project.get_price_range }}
-                </span>
+                  <span class="text-xl font-bold text-gray-900 whitespace-nowrap">
+                    {{ project.get_price_range }}
+                  </span>
 
-              </div>
+                </div>
 
-                <!-- Row 2: Location -->
-                <p class="text-sm text-gray-500 flex items-center gap-1 mb-2">
-                  <i class="fas fa-map-marker-alt text-orange-500"></i>
-                  <span>{{ project.locality }}</span>
-                </p>
+                  <!-- Row 2: Location -->
+                  <p class="text-sm text-gray-500 flex items-center gap-1 mb-2">
+                    <i class="fas fa-map-marker-alt text-orange-500"></i>
+                    <span>{{ project.locality }}</span>
+                  </p>
 
-            </a>
+              </a>
 
             </div>
 
@@ -612,47 +612,47 @@
 
 
 
-  <!-- Pagination Section -->
-  {% if projects.has_other_pages %}
-  <nav class="flex justify-center mt-10">
-    <ul class="flex items-center gap-2 text-gray-700">
+    <!-- Pagination Section -->
+    {% if projects.has_other_pages %}
+    <nav class="flex justify-center mt-10">
+      <ul class="flex items-center gap-2 text-gray-700">
 
-      {% if projects.has_previous %}
-        <li>
-          <a href="?q={{ query }}&type={{ property_type }}&page={{ projects.previous_page_number }}" 
-            class="px-3 py-1 border rounded hover:bg-gray-200">&laquo; Prev</a>
-        </li>
-      {% else %}
-        <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">&laquo; Prev</li>
-      {% endif %}
-
-      {% for num in projects.paginator.page_range %}
-        {% if num == projects.number %}
-          <li class="px-3 py-1 bg-[#00E0FF] text-white rounded">{{ num }}</li>
-        {% elif num > projects.number|add:'-3' and num < projects.number|add:'3' %}
+        {% if projects.has_previous %}
           <li>
-            <a href="?q={{ query }}&type={{ property_type }}&page={{ num }}" 
-              class="px-3 py-1 border rounded hover:bg-gray-200">{{ num }}</a>
+            <a href="?q={{ query }}&type={{ property_type }}&page={{ projects.previous_page_number }}" 
+              class="px-3 py-1 border rounded hover:bg-gray-200">&laquo; Prev</a>
           </li>
+        {% else %}
+          <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">&laquo; Prev</li>
         {% endif %}
-      {% endfor %}
 
-      {% if projects.has_next %}
-        <li>
-          <a href="?q={{ query }}&type={{ property_type }}&page={{ projects.next_page_number }}" 
-            class="px-3 py-1 border rounded hover:bg-gray-200">Next &raquo;</a>
-        </li>
-      {% else %}
-        <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">Next &raquo;</li>
-      {% endif %}
+        {% for num in projects.paginator.page_range %}
+          {% if num == projects.number %}
+            <li class="px-3 py-1 bg-[#00E0FF] text-white rounded">{{ num }}</li>
+          {% elif num > projects.number|add:'-3' and num < projects.number|add:'3' %}
+            <li>
+              <a href="?q={{ query }}&type={{ property_type }}&page={{ num }}" 
+                class="px-3 py-1 border rounded hover:bg-gray-200">{{ num }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
 
-    </ul>
-  </nav>
-  {% endif %}
+        {% if projects.has_next %}
+          <li>
+            <a href="?q={{ query }}&type={{ property_type }}&page={{ projects.next_page_number }}" 
+              class="px-3 py-1 border rounded hover:bg-gray-200">Next &raquo;</a>
+          </li>
+        {% else %}
+          <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">Next &raquo;</li>
+        {% endif %}
+
+      </ul>
+    </nav>
+    {% endif %}
 
 
-  <!-- ✅ JS Toggle -->
-  <script>
+    <!-- ✅ JS Toggle -->
+    <script>
     const listViewBtn = document.getElementById("listViewBtn");
     const gridViewBtn = document.getElementById("gridViewBtn");
     const listView = document.getElementById("listView");
@@ -680,7 +680,7 @@
       listViewBtn.classList.remove("bg-orange-500", "text-white");
       listViewBtn.classList.add("bg-gray-200", "text-gray-700");
     });
-  </script>
+    </script>
 
 
 
@@ -693,158 +693,181 @@
 
 
 
-          <!-- ================= RIGHT SIDEBAR ================= -->
-          <aside class="space-y-6 lg:sticky lg:top-24">
+      <!-- ================= RIGHT SIDEBAR ================= -->
+      <aside class="space-y-6 lg:sticky lg:top-24">
 
-            <!-- ================= ADVANCED SEARCH ================= -->
-            <form method="get"
-                  class="bg-white shadow-lg rounded-xl p-6 space-y-4">
+        <!-- ================= ADVANCED SEARCH ================= -->
+        <form method="get"
+              class="bg-white shadow-lg rounded-xl p-6 space-y-4">
 
-              <h3 class="font-bold text-gray-800 text-lg border-b pb-3">
-                Advanced Search
-              </h3>
+          <h3 class="font-bold text-gray-800 text-lg border-b pb-3">
+            Advanced Search
+          </h3>
 
-              <!-- Sale / Rent -->
-              <select name="listing_type"
-                class="w-full border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
-                <option value="">For Sale</option>
-                <option value="rent">For Rent</option>
-              </select>
+          <!-- Sale / Rent -->
+          <select name="listing_type"
+            class="w-full border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
+            <option value="">For Sale</option>
+            <option value="rent">For Rent</option>
+          </select>
 
-              <!-- Category -->
-              <select name="category"
-                class="w-full border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
-                <option value="">Residential</option>
-                <option value="commercial">Commercial</option>
-              </select>
+          <!-- Category -->
+          <select name="category"
+            class="w-full border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
+            <option value="">Residential</option>
+            <option value="commercial">Commercial</option>
+          </select>
 
-              <!-- Property Type -->
-              <select name="property_type"
-                class="w-full border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
-                <option value="">Property Type</option>
-                <option value="apartment">Apartment</option>
-                <option value="villa">Villa</option>
-                <option value="plot">Plot</option>
-              </select>
+          <!-- Property Type -->
+          <select name="property_type"
+            class="w-full border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
+            <option value="">Property Type</option>
+            <option value="apartment">Apartment</option>
+            <option value="villa">Villa</option>
+            <option value="plot">Plot</option>
+          </select>
 
-              <!-- Location -->
-              <input type="text"
-                name="location"
-                placeholder="Enter Location"
-                class="w-full border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
+          <select id="city" name="city" class="w-full border rounded px-3 py-2">
+            <option value="">Select City</option>
+            {% for city in cities %}
+              <option value="{{ city.id }}">{{ city.name }}</option>
+            {% endfor %}
+          </select>
 
-              <!-- BHK + Transaction -->
-              <div class="grid grid-cols-2 gap-3">
-                <select name="bhk"
-                  class="border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
-                  <option value="">BHK</option>
-                  <option value="1">1 BHK</option>
-                  <option value="2">2 BHK</option>
-                  <option value="3">3 BHK</option>
-                </select>
+          <select id="locality" name="locality" class="w-full border rounded px-3 py-2">
+            <option value="">Select Locality</option>
+          </select>
 
-                <select name="transaction"
-                  class="border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
-                  <option value="">Transaction</option>
-                  <option value="new">New</option>
-                  <option value="resale">Resale</option>
-                </select>
-              </div>
+          <select name="sort" class="w-full border rounded px-3 py-2">
+            <option value="">Sort By</option>
+            <option value="price_low">Price: Low to High</option>
+            <option value="price_high">Price: High to Low</option>
+            <option value="latest">Latest</option>
+            <option value="possession">Possession</option>
+          </select>
 
-              <!-- Budget -->
-              <div class="grid grid-cols-2 gap-3">
-                <input type="number"
-                  name="min_price"
-                  placeholder="Min Budget"
-                  class="border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
-                <input type="number"
-                  name="max_price"
-                  placeholder="Max Budget"
-                  class="border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
-              </div>
 
-              <!-- Area -->
+
+          <!-- Location -->
+          <input type="text"
+            name="location"
+            placeholder="Enter Location"
+            class="w-full border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
+
+          <!-- BHK + Transaction -->
+          <div class="grid grid-cols-2 gap-3">
+            <select name="bhk"
+              class="border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
+              <option value="">BHK</option>
+              <option value="1">1 BHK</option>
+              <option value="2">2 BHK</option>
+              <option value="3">3 BHK</option>
+            </select>
+
+            <select name="transaction"
+              class="border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
+              <option value="">Transaction</option>
+              <option value="new">New</option>
+              <option value="resale">Resale</option>
+            </select>
+          </div>
+
+          <!-- Budget -->
+          <div class="grid grid-cols-2 gap-3">
+            <input type="number"
+              name="min_price"
+              placeholder="Min Budget"
+              class="border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
+            <input type="number"
+              name="max_price"
+              placeholder="Max Budget"
+              class="border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400">
+          </div>
+
+          
+
+          <!-- Area -->
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">
+              Carpet Area (Sq.ft)
+            </label>
+            <input type="range"
+              name="area"
+              min="0"
+              max="5000"
+              class="w-full accent-orange-500">
+            <div class="flex justify-between text-[11px] text-gray-500 mt-1">
+              <span>0</span>
+              <span>5000+</span>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <button
+            class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-xl transition">
+            Search Properties
+          </button>
+
+        </form>
+
+        <!-- ================= POPULAR CATEGORY ================= -->
+        <div class="bg-white shadow-lg rounded-xl p-6">
+          <h3 class="font-bold text-gray-800 text-lg mb-3">
+            Popular Category
+          </h3>
+          <p class="flex justify-between text-sm text-gray-600">
+            Residential Apartment <span>(14)</span>
+          </p>
+        </div>
+
+        <!-- ================= RECENT PROPERTIES ================= -->
+        <div class="bg-white shadow-lg rounded-xl p-6">
+          <h3 class="font-bold text-gray-800 text-lg mb-4">
+            Recent Properties
+          </h3>
+
+          <div class="space-y-4 text-sm">
+            <div class="flex gap-3">
+              <img src="https://dummyimage.com/80x60/cccccc/000000"
+                  class="w-20 h-14 object-cover rounded-lg">
               <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">
-                  Carpet Area (Sq.ft)
-                </label>
-                <input type="range"
-                  name="area"
-                  min="0"
-                  max="5000"
-                  class="w-full accent-orange-500">
-                <div class="flex justify-between text-[11px] text-gray-500 mt-1">
-                  <span>0</span>
-                  <span>5000+</span>
-                </div>
-              </div>
-
-              <!-- Submit -->
-              <button
-                class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-xl transition">
-                Search Properties
-              </button>
-
-            </form>
-
-            <!-- ================= POPULAR CATEGORY ================= -->
-            <div class="bg-white shadow-lg rounded-xl p-6">
-              <h3 class="font-bold text-gray-800 text-lg mb-3">
-                Popular Category
-              </h3>
-              <p class="flex justify-between text-sm text-gray-600">
-                Residential Apartment <span>(14)</span>
-              </p>
-            </div>
-
-            <!-- ================= RECENT PROPERTIES ================= -->
-            <div class="bg-white shadow-lg rounded-xl p-6">
-              <h3 class="font-bold text-gray-800 text-lg mb-4">
-                Recent Properties
-              </h3>
-
-              <div class="space-y-4 text-sm">
-                <div class="flex gap-3">
-                  <img src="https://dummyimage.com/80x60/cccccc/000000"
-                      class="w-20 h-14 object-cover rounded-lg">
-                  <div>
-                    <p class="text-orange-600 font-medium">
-                      2 BHK Apartment
-                    </p>
-                    <p class="text-gray-500">₹65.00 L</p>
-                  </div>
-                </div>
-
-                <div class="flex gap-3">
-                  <img src="https://dummyimage.com/80x60/bbbbbb/000000"
-                      class="w-20 h-14 object-cover rounded-lg">
-                  <div>
-                    <p class="text-orange-600 font-medium">
-                      2 BHK Apartment
-                    </p>
-                    <p class="text-gray-500">₹70.00 L</p>
-                  </div>
-                </div>
+                <p class="text-orange-600 font-medium">
+                  2 BHK Apartment
+                </p>
+                <p class="text-gray-500">₹65.00 L</p>
               </div>
             </div>
 
-            <!-- ================= HELPING CENTER ================= -->
-            <div class="bg-white shadow-lg rounded-xl p-6">
-              <h3 class="font-bold text-gray-800 text-lg mb-3">
-                Helping Center
-              </h3>
-              <p class="text-sm text-gray-600 mb-2">
-                <strong>Address</strong><br>
-                {{ settings_obj.address }}
-              </p>
-              <p class="text-sm text-gray-600">
-                <strong>Phone</strong><br>
-                {{ settings_obj.phone }}
-              </p>
+            <div class="flex gap-3">
+              <img src="https://dummyimage.com/80x60/bbbbbb/000000"
+                  class="w-20 h-14 object-cover rounded-lg">
+              <div>
+                <p class="text-orange-600 font-medium">
+                  2 BHK Apartment
+                </p>
+                <p class="text-gray-500">₹70.00 L</p>
+              </div>
             </div>
+          </div>
+        </div>
 
-          </aside>
-          <!-- ================= END RIGHT SIDEBAR ================= -->
+        <!-- ================= HELPING CENTER ================= -->
+        <div class="bg-white shadow-lg rounded-xl p-6">
+          <h3 class="font-bold text-gray-800 text-lg mb-3">
+            Helping Center
+          </h3>
+          <p class="text-sm text-gray-600 mb-2">
+            <strong>Address</strong><br>
+            {{ settings_obj.address }}
+          </p>
+          <p class="text-sm text-gray-600">
+            <strong>Phone</strong><br>
+            {{ settings_obj.phone }}
+          </p>
+        </div>
+
+      </aside>
+      <!-- ================= END RIGHT SIDEBAR ================= -->
 
 </div>
 
@@ -1057,6 +1080,21 @@ function openBHK(e, id) {
   e.target.classList.add('active');
 }
 </script>
+
+<script>
+document.getElementById("city").addEventListener("change", function () {
+  fetch(`/ajax/load-localities/?city_id=${this.value}`)
+    .then(res => res.json())
+    .then(data => {
+      let locality = document.getElementById("locality");
+      locality.innerHTML = '<option value="">Select Locality</option>';
+      data.forEach(l => {
+        locality.innerHTML += `<option value="${l.id}">${l.name}</option>`;
+      });
+    });
+});
+</script>
+
 
 
 {% endblock %}

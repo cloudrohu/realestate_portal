@@ -10,6 +10,8 @@ from django.contrib.sitemaps.views import sitemap
 from projects.sitemaps import ProjectSitemap 
 from properties.sitemaps import PropertySitemap, BlogSitemap, StaticSitemap 
 
+from projects .views import *   
+
 # Define the dictionary of sitemaps
 sitemaps = {
     'static': StaticSitemap,
@@ -24,6 +26,7 @@ urlpatterns = [
     path('projects/', include('projects.urls')),
     path('properties/', include('properties.urls')),
     path('accounts/', include('user.urls')),
+    path("ajax/load-localities/", load_localities, name="ajax_load_localities"),
     path('blog/', include('blog.urls')),
     
     path('ckeditor/', include('ckeditor_uploader.urls')),
