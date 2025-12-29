@@ -42,145 +42,120 @@
   <div class="lg:col-span-2 space-y-6">
 
     <!-- Header -->
-      <div class="flex items-center gap-2 bg-white shadow p-3 rounded mb-4">
-        <!-- List Button -->
-        <button id="listViewBtn" class="bg-orange-500 text-white p-2 rounded">
-          <i class="fas fa-list"></i>
-        </button>
+    <div class="flex items-center gap-2 bg-white shadow p-3 rounded mb-4">
 
-        <!-- Grid Button -->
-        <button id="gridViewBtn" class="bg-gray-200 text-gray-700 p-2 rounded">
-          <i class="fas fa-th"></i>
-        </button>
+      <button id="listViewBtn"
+              class="bg-orange-500 text-white p-2 rounded">
+        <i class="fas fa-list"></i>
+      </button>
 
-        <span class="font-semibold text-orange-600">Properties</span>
-      </div>
+      <!-- Grid Button (Desktop only) -->
+      <button id="gridViewBtn"
+              class="hidden sm:hidden md:inline-flex
+                    items-center justify-center
+                    bg-gray-200 text-gray-700 p-2 rounded
+                    hover:bg-orange-100 hover:text-orange-600 transition">
+        <i class="fas fa-th"></i>
+      </button>
+
+      <span class="font-semibold text-orange-600">
+        Properties
+      </span>
+
+    </div>
+
 
 
     <!-- Property Filters Start -->
      <filter-section>
 
-      <div class="bg-white shadow rounded p-4 flex flex-wrap gap-4 items-center lg:hidden">
+      <form method="get"
+            id="mobileFilterForm"
+            class="bg-white shadow rounded-xl p-4 flex flex-wrap gap-3 items-center lg:hidden">
 
-        <!-- Location -->
-        <select class="border px-3 py-2 rounded text-sm">
-          <option>All Locations</option>
-          <option>Mira Road</option>
-          <option>Andheri</option>
-          <option>Borivali</option>
+        <!-- ================= CATEGORY ================= -->
+        <select name="category" class="border px-3 py-2 rounded text-sm w-full">
+          <option value="">Residential</option>
+          <option value="commercial"
+            {% if selected.category == "commercial" %}selected{% endif %}>
+            Commercial
+          </option>
         </select>
 
-        <!-- Property Type -->
-        <select class="border px-3 py-2 rounded text-sm">
-          <option>Property Type</option>
-          <option>Apartment</option>
-          <option>Plot</option>
-          <option>Villa</option>
-          <option>Builder Floor</option>
+        <!-- ================= PROPERTY TYPE ================= -->
+        <select name="property_type" class="border px-3 py-2 rounded text-sm w-full">
+          <option value="">Property Type</option>
+          <option value="apartment"
+            {% if selected.property_type == "apartment" %}selected{% endif %}>
+            Apartment
+          </option>
+          <option value="villa">Villa</option>
+          <option value="plot">Plot</option>
         </select>
 
-        <!-- BHK -->
-        <select class="border px-3 py-2 rounded text-sm">
-          <option>BHK</option>
-          <option>1 RK</option>
-          <option>1 BHK</option>
-          <option>1.5 BHK</option>
-          <option>2 BHK</option>
-          <option>2.5 BHK</option>
-          <option>3 BHK</option>
-          <option>3.5 BHK</option>
+        <!-- ================= CITY ================= -->
+        <select name="city" class="border px-3 py-2 rounded text-sm w-full">
+          <option value="">Select City</option>
+          {% for city in cities %}
+            <option value="{{ city.id }}"
+              {% if selected.city == city.id|stringformat:"s" %}selected{% endif %}>
+              {{ city.name }}
+            </option>
+          {% endfor %}
         </select>
 
-        <!-- Price -->
-        <div class="flex gap-2">
-          <input type="text" placeholder="Min Price" class="border px-3 py-2 rounded text-sm w-28">
-          <input type="text" placeholder="Max Price" class="border px-3 py-2 rounded text-sm w-28">
+        <!-- ================= LOCATION ================= -->
+        <input type="text"
+              name="location"
+              value="{{ selected.location }}"
+              placeholder="Search by Project / Locality"
+              class="border px-3 py-2 rounded text-sm w-full">
+
+        <!-- ================= BHK ================= -->
+        <select name="bhk" class="border px-3 py-2 rounded text-sm w-full">
+          <option value="">BHK</option>
+          <option value="1">1 BHK</option>
+          <option value="2" {% if selected.bhk == "2" %}selected{% endif %}>2 BHK</option>
+          <option value="3">3 BHK</option>
+          <option value="4">4 BHK</option>
+        </select>
+
+        <!-- ================= BUDGET ================= -->
+        <div class="flex gap-2 w-full">
+          <input type="number"
+                name="min_price"
+                value="{{ selected.min_price }}"
+                placeholder="Min Budget"
+                class="border px-3 py-2 rounded text-sm w-1/2">
+
+          <input type="number"
+                name="max_price"
+                value="{{ selected.max_price }}"
+                placeholder="Max Budget"
+                class="border px-3 py-2 rounded text-sm w-1/2">
         </div>
 
-        <!-- Brokerage -->
-        <select class="border px-3 py-2 rounded text-sm">
-          <option>Brokerage Charges</option>
-          <option>No Brokerage</option>
-          <option>With Brokerage</option>
-        </select>
-
-        <!-- Carpet Area -->
-        <div class="flex gap-2">
-          <input type="text" placeholder="Min (sqft)" class="border px-3 py-2 rounded text-sm w-28">
-          <input type="text" placeholder="Max (sqft)" class="border px-3 py-2 rounded text-sm w-28">
+        <!-- ================= CARPET AREA ================= -->
+        <div class="w-full">
+          <label class="text-xs font-medium text-gray-600">
+            Minimum Carpet Area (Sq.ft)
+          </label>
+          <input type="range"
+                name="area"
+                min="0"
+                max="5000"
+                value="{{ selected.area|default:0 }}"
+                class="w-full accent-orange-500">
         </div>
-
-        <!-- More Filters Button -->
-        <button id="moreFiltersBtn"
-          class="text-orange-600 font-semibold underline text-sm ml-auto">More Filters</button>
-
-        <!-- Submit -->
-        <button
-          class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 text-sm font-semibold">
-          Filter
+        <!-- ================= SUBMIT ================= -->
+        <button type="submit"
+                class="w-full bg-orange-500 text-white px-4 py-2 rounded-xl
+                      hover:bg-orange-600 text-sm font-semibold">
+          Search Properties
         </button>
-      </div>
 
-      <!-- More Filters Panel -->
-      <div id="moreFiltersPanel" class="hidden bg-white shadow rounded p-4 mt-3">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
-          <select class="border px-3 py-2 rounded">
-            <option>Posted By</option>
-            <option>Owner</option>
-            <option>Dealer</option>
-          </select>
-          <select class="border px-3 py-2 rounded">
-            <option>Sale Type</option>
-            <option>New</option>
-            <option>Resale</option>
-          </select>
-          <select class="border px-3 py-2 rounded">
-            <option>Property Status</option>
-            <option>Ready to Move</option>
-            <option>Under Construction</option>
-          </select>
-          <select class="border px-3 py-2 rounded">
-            <option>Possession From</option>
-            <option>2024</option>
-            <option>2025</option>
-          </select>
-          <select class="border px-3 py-2 rounded">
-            <option>Property Age</option>
-            <option>0-5 Years</option>
-            <option>5-10 Years</option>
-          </select>
-          <select class="border px-3 py-2 rounded">
-            <option>Bathrooms</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3+</option>
-          </select>
-          <label class="flex items-center gap-2">
-            <input type="checkbox"> Parking
-          </label>
-          <label class="flex items-center gap-2">
-            <input type="checkbox"> Live-in Tour / Video
-          </label>
-        </div>
+      </form>
 
-        <!-- Bottom Buttons -->
-        <div class="flex justify-between items-center mt-4">
-          <button id="closeFilters" class="text-sm text-blue-600">Clear Filters & Close</button>
-          <button class="bg-orange-500 px-4 py-2 rounded text-white font-semibold">
-            Show Properties
-          </button>
-        </div>
-      </div>
-
-        <!-- JS -->
-        <script>
-          document.getElementById("moreFiltersBtn").addEventListener("click", () => {
-            document.getElementById("moreFiltersPanel").classList.toggle("hidden");
-          });
-          document.getElementById("closeFilters").addEventListener("click", () => {
-            document.getElementById("moreFiltersPanel").classList.add("hidden");
-          });
-        </script>
      </filter-section>
     <!-- Property Filters End -->
     
@@ -207,6 +182,7 @@
             {% endif %}
 
             </a>
+
             <!-- Right Section -->
             <div class="sm:ml-5 sm:mt-0 flex-1 space-y-2">
 
@@ -250,102 +226,121 @@
               <!-- Divider -->
               <div class="border-t border-gray-200"></div>
 
-     {# ================= CONFIGURATION CARD ================= #}
+      
+             <!-- ================= CONFIGURATION CARD ================= -->
           <div class="config-card border rounded-lg bg-white p-2 mt-2">
 
-          {% with project.configurations.all as configs %}
-          {% if configs %}
+            {% with project.configurations.all as configs %}
+            {% if configs %}
 
-          {% regroup configs by bhk_type as bhk_groups %}
+            {% regroup configs by bhk_type as bhk_groups %}
 
-          <!-- ================= BHK TABS ================= -->
-          <div class="border-b mb-2">
-            <div class="flex gap-4 text-sm font-medium text-gray-600">
+            <!-- ================= BHK TABS ================= -->
+            <div class="border-b mb-2 overflow-x-auto">
+              <div class="flex gap-4 text-sm font-medium text-gray-600 whitespace-nowrap">
 
-              {% for group in bhk_groups %}
-                <button type="button"
-                  class="bhk-tab pb-1 border-b-2
-                  {% if forloop.first %}
-                    border-green-600 text-green-600
-                  {% else %}
-                    border-transparent hover:text-green-600
-                  {% endif %}"
-                  data-target="bhk-{{ project.id }}-{{ forloop.counter }}">
-                  {{ group.grouper }}
-                </button>
-              {% endfor %}
+                {% for group in bhk_groups %}
+                  <button type="button"
+                    class="bhk-tab pb-1 border-b-2
+                    {% if forloop.first %}
+                      border-green-600 text-green-600
+                    {% else %}
+                      border-transparent hover:text-green-600
+                    {% endif %}"
+                    data-target="bhk-{{ project.id }}-{{ forloop.counter }}">
+                    {{ group.grouper }}
+                  </button>
+                {% endfor %}
 
+              </div>
             </div>
-          </div>
 
-          <!-- ================= BHK PANELS ================= -->
-          {% for group in bhk_groups %}
-          <div class="bhk-panel {% if not forloop.first %}hidden{% endif %}"
-              data-panel="bhk-{{ project.id }}-{{ forloop.counter }}">
+            <!-- ================= PANELS ================= -->
+            {% for group in bhk_groups %}
+            <div class="bhk-panel {% if not forloop.first %}hidden{% endif %}"
+                data-panel="bhk-{{ project.id }}-{{ forloop.counter }}">
 
-            <div class="max-h-[140px] overflow-y-auto border rounded bg-white">
+              <div class="max-h-[160px] overflow-y-auto border rounded bg-white">
 
-              <table class="w-full text-sm border-collapse">
-                <thead class="bg-gray-100 sticky top-0">
-                  <tr class="text-center font-semibold">
-                    <th class="border px-2 py-1">Area</th>
-                    <th class="border px-2 py-1">Price</th>
-                    <th class="border px-2 py-1">Parking</th>
-                    <th class="border px-2 py-1">Unit Plan</th>
-                  </tr>
-                </thead>
+                <table class="w-full text-xs sm:text-sm border-collapse">
+                  <thead class="bg-gray-100 sticky top-0">
+                    <tr class="text-center font-semibold">
+                      <th class="border px-2 py-1">Area</th>
+                      <th class="border px-2 py-1">Price</th>
+                      <th class="border px-2 py-1">Parking</th>
+                      <th class="border px-2 py-1">Balcony</th>
+                      <th class="border px-2 py-1">Unit Plan</th>
+                    </tr>
+                  </thead>
 
-                <tbody class="text-center">
-                  {% for cfg in group.list %}
-                  <tr>
-                    <!-- Area -->
-                    <td class="border px-2 py-1">
-                      {{ cfg.area_sqft }} sqft
-                    </td>
+                  <tbody class="text-center">
+                    {% for cfg in group.list %}
+                    <tr class="{% if cfg.sold_out %}bg-red-50{% endif %}">
 
-                    <!-- Price -->
-                    <td class="border px-2 py-1 font-semibold text-gray-900">
-                      {% if cfg.price_in_rupees %}
-                        ₹ {{ cfg.price_in_rupees|intcomma }}
-                      {% else %}
-                        On Request
-                      {% endif %}
-                    </td>
+                      <!-- AREA -->
+                      <td class="border px-2 py-1">
+                        {{ cfg.area_sqft }} sqft
+                      </td>
 
-                    <!-- Parking -->
-                    <td class="border px-2 py-1">
-                      {% if cfg.parking %}Yes{% else %}No{% endif %}
-                    </td>
+                      <!-- PRICE / SOLD OUT -->
+                          <td class="border px-2 py-1 font-semibold">
+                          {% if cfg.sold_out %}
+                            <span class="text-red-600 text-xs uppercase font-bold">
+                              Sold Out
+                            </span>
+                          {% else %}
+                            {{ cfg.formatted_price }}
+                          {% endif %}
+                        </td>
 
-                    <!-- Unit Plan -->
-                    <td class="border px-2 py-1">
-                      {% if cfg.unit_plan %}
-                        <a href="{{ cfg.unit_plan.url }}"
-                          target="_blank"
-                          class="text-blue-600 underline text-xs">
-                          View Plan
-                        </a>
-                      {% else %}
-                        On Request
-                      {% endif %}
-                    </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
 
-              </table>
+                      <!-- PARKING -->
+                      <td class="border px-2 py-1">
+                        {% if cfg.parking %}
+                          <span class="text-green-600 font-semibold">Yes</span>
+                        {% else %}
+                          <span class="text-gray-500">No</span>
+                        {% endif %}
+                      </td>
 
+                      <!-- BALCONY -->
+                      <td class="border px-2 py-1">
+                        {% if cfg.balcony %}
+                          <span class="text-green-600 font-semibold">Yes</span>
+                        {% else %}
+                          <span class="text-gray-500">No</span>
+                        {% endif %}
+                      </td>
+
+                      <!-- UNIT PLAN -->
+                      <td class="border px-2 py-1">
+                        {% if cfg.unit_plan %}
+                          <a href="{{ cfg.unit_plan.url }}"
+                            target="_blank"
+                            class="text-blue-600 underline text-xs">
+                            View Plan
+                          </a>
+                        {% else %}
+                          <span class="text-gray-500 text-xs">On Request</span>
+                        {% endif %}
+                      </td>
+
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+
+              </div>
             </div>
-          </div>
-          {% endfor %}
+            {% endfor %}
 
-          {% else %}
-          <!-- ================= NO CONFIG AVAILABLE ================= -->
-          <div class="text-center text-sm text-gray-500 py-3">
-            Configuration details available on request
-          </div>
-          {% endif %}
-          {% endwith %}
+            {% else %}
+            <!-- ================= NO CONFIG ================= -->
+            <div class="text-center text-sm text-gray-500 py-3">
+              Configuration details available on request
+            </div>
+            {% endif %}
+            {% endwith %}
 
           </div>
 
@@ -372,13 +367,15 @@
                   <!-- CTA BUTTONS -->
                   <div class="flex gap-3 md:justify-end">
 
+                    
+
                         <!-- View Details -->
                         <a href="{{ project.get_absolute_url }}"
                           class="flex-1 md:flex-none inline-flex items-center justify-center gap-2
                                   px-4 py-2 bg-orange-500 text-white text-sm font-semibold
                                   rounded-3xl hover:bg-orange-600 transition">
                           View Details
-                          <i class="fas fa-arrow-right text-xs"></i>
+                          
                         </a>
 
                         <!-- Contact Us -->
@@ -402,172 +399,187 @@
         {% endfor %}
       </div>
 
+      <!-- ================= GRID VIEW ================= -->
+      <div id="gridView"
+          class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
 
-    <!-- ✅ Grid View -->
-    <div id="gridView" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+            {% for project in projects %}
+            <div class="bg-white rounded-xl shadow border hover:shadow-lg hover:border-orange-500 transition">
 
-      {% for project in projects %}
-      <div class="bg-white rounded-lg shadow p-4 border hover:shadow-lg hover:border-orange-500 transition">
+              <!-- IMAGE -->
+              <a href="{{ project.get_absolute_url }}">
+                {% if project.image %}
+                  <img src="{{ project.image.url }}"
+                      class="w-full h-[230px] object-cover rounded-t-xl"
+                      alt="{{ project.project_name }}">
+                {% else %}
+                  <img src="{% static 'images/no-images.jpg' %}"
+                      class="w-full h-[230px] object-cover rounded-t-xl"
+                      alt="No Image">
+                {% endif %}
+              </a>
 
-        <!-- Project Image -->
-        {% if project.image %}
-          <img src="{{ project.image.url }}"
-              class="w-full h-48 object-cover rounded"
-              alt="{{ project.project_name }}"
-              style="height: 250px;">
-        {% else %}
-          <img src="{% static 'images/no-images.jpg' %}"
-              class="w-full h-48 object-cover rounded"
-              alt="No Image"
-              style="height: 250px;">
-        {% endif %}
+              <!-- CONTENT -->
+              <div class="p-4 space-y-3">
 
-        <!-- Content -->
-        <div class="mt-4 space-y-2">
+                <!-- TITLE + PRICE -->
+                <div class="flex justify-between items-start gap-3">
+                  <h3 class="text-lg font-semibold text-gray-900 leading-snug">
+                    {{ project.project_name }}
+                  </h3>
 
-          <!-- Title + Location -->
-          <div>
-            <!-- Row 1: Project Name + Price -->
-            <div class="flex items-start justify-between gap-4">
-              <h2 class="text-xl font-semibold text-gray-900 leading-tight">
-                {{ project.project_name }}
-              </h2>
-
-
-              <span class="text-lg font-semibold text-gray-900 whitespace-nowrap">
-                {{ project.get_price_range }}
-              </span>
-
-            </div>
-            <p class="text-sm text-gray-500 flex items-center gap-1 mt-1">
-              <i class="fas fa-map-marker-alt text-orange-500 text-sm"></i>
-              <span class="line-clamp-1">{{ project.locality }}, {{ project.city }}</span>
-            </p>
-          </div>
-
-          <!-- Status / Type / Land (Badges) -->
-          <div class="flex flex-wrap gap-2 text-xs text-gray-700">
-            <span class="px-2 py-0.5 rounded-full bg-gray-100">
-              {{ project.construction_status }}
-            </span>
-            <span class="px-2 py-0.5 rounded-full bg-gray-100">
-              {{ project.propert_type.name }}
-            </span>
-            <span class="px-2 py-0.5 rounded-full bg-gray-100">
-              Land Parcel: {{ project.land_parce|default:"N/A" }}
-            </span>
-          </div>
-
-      
-
-          <!-- Divider -->
-          <div class="border-t border-gray-100 pt-3 mt-1"></div>
-
-              <div class="border rounded-xl bg-white shadow-sm text-sm">
-
-                  <!-- HEADER -->
-                  <div class="grid grid-cols-3 px-4 py-2 bg-gray-50 border-b text-xs font-semibold text-gray-600 uppercase">
-                    <span>BHK</span>
-                    <span>Area (Sq.ft)</span>
-                    <span class="text-right">Price</span>
-                  </div>
-
-                  <!-- SCROLLABLE BODY -->
-                  <div class="max-h-[120px] overflow-y-auto divide-y">
-
-                    <!-- Row -->
-                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
-                      <span class="font-medium text-gray-700">2 BHK + 2T</span>
-                      <span class="text-gray-500">On Request</span>
-                      <span class="text-right font-semibold text-gray-900">₹ 3.6 Cr</span>
-                    </div>
-
-                    <!-- Row -->
-                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
-                      <span class="font-medium text-gray-700">2 BHK + 2T</span>
-                      <span class="text-gray-500">On Request</span>
-                      <span class="text-right font-semibold text-gray-900">₹ 2.9 Cr</span>
-                    </div>
-
-                    <!-- Row (extra demo for scroll) -->
-                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
-                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
-                      <span class="text-gray-500">On Request</span>
-                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
-                    </div>
-
-                    <!-- Row (extra demo for scroll) -->
-                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
-                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
-                      <span class="text-gray-500">On Request</span>
-                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
-                    </div>
-
-                                    <!-- Row (extra demo for scroll) -->
-                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
-                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
-                      <span class="text-gray-500">On Request</span>
-                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
-                    </div>
-
-                                    <!-- Row (extra demo for scroll) -->
-                    <div class="grid grid-cols-3 px-4 py-1 items-center hover:bg-gray-50 transition">
-                      <span class="font-medium text-gray-700">3 BHK + 3T</span>
-                      <span class="text-gray-500">On Request</span>
-                      <span class="text-right font-semibold text-gray-900">₹ 4.2 Cr</span>
-                    </div>
-
-                  </div>
-            </div>
-
-
-              <div class="grid grid-cols-1  gap-3 mt-2.5 items-center">
-
-                <!-- Developer -->
-                <div class="flex items-center gap-2">
-                  <span class="h-8 w-8 flex items-center justify-center rounded-full overflow-hidden border">
-                    <img src="https://srv.carbonads.net/static/30242/afe67427d375248a92b1cda7f8a979fd91961d39"
-                        alt="Lodha Group"
-                        class="h-full w-full object-cover">
-                  </span>
-                  <span class="text-blue-600 text-sm font-medium">
-                    By Lodha Group
+                  <span class="text-sm font-bold text-gray-900 whitespace-nowrap">
+                    {{ project.get_price_range }}
                   </span>
                 </div>
 
-                <!-- CTA BUTTONS -->
-                <div class="flex gap-3 md:justify-end">
+                <!-- LOCATION -->
+                <p class="text-xs text-gray-500 flex items-center gap-1">
+                  <i class="fas fa-map-marker-alt text-orange-500"></i>
+                  {{ project.locality }}, {{ project.city }}
+                </p>
 
-                  <!-- View Details -->
+                <!-- BADGES -->
+                <div class="flex flex-wrap gap-2 text-[11px] text-gray-700">
+                  <span class="px-2 py-0.5 rounded-full bg-gray-100">
+                    {{ project.construction_status }}
+                  </span>
+                  <span class="px-2 py-0.5 rounded-full bg-gray-100">
+                    {{ project.propert_type.name }}
+                  </span>
+                </div>
+
+                <!-- ================= CONFIGURATION BOX ================= -->
+                <div class="border rounded-lg bg-white text-xs">
+
+                  {% with project.configurations.all as configs %}
+                  {% if configs %}
+
+                  {% regroup configs by bhk_type as bhk_groups %}
+
+                  <!-- ================= TABS ================= -->
+                  <div class="border-b px-3 pt-2 overflow-x-auto whitespace-nowrap">
+                    <div class="flex gap-4 font-semibold text-gray-600">
+                      {% for group in bhk_groups %}
+                      <button type="button"
+                        class="bhk-tab pb-1 border-b-2
+                        {% if forloop.first %}
+                          border-orange-500 text-orange-600
+                        {% else %}
+                          border-transparent hover:text-orange-600
+                        {% endif %}"
+                        data-target="grid-bhk-{{ project.id }}-{{ forloop.counter }}">
+                        {{ group.grouper }}
+                      </button>
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <!-- ================= PANELS ================= -->
+                  {% for group in bhk_groups %}
+                  <div class="bhk-panel {% if not forloop.first %}hidden{% endif %}"
+                      data-panel="grid-bhk-{{ project.id }}-{{ forloop.counter }}">
+
+                    <!-- HEADER -->
+                    <div class="grid grid-cols-4 px-3 py-2 bg-gray-50 border-b
+                                font-semibold text-gray-600 uppercase text-[10px]">
+                      <span>Area</span>
+                      <span>Balcony</span>
+                      <span>Parking</span>
+                      <span class="text-right">Price</span>
+                    </div>
+
+                    <!-- BODY -->
+                    <div class="max-h-[120px] overflow-y-auto divide-y">
+
+                      {% for cfg in group.list %}
+                      <div class="grid grid-cols-4 px-3 py-1 items-center
+                                  {% if cfg.sold_out %}bg-red-50{% endif %}">
+
+                        <!-- AREA -->
+                        <span class="text-gray-700">
+                          {{ cfg.area_sqft }} sqft
+                        </span>
+
+                        <!-- BALCONY -->
+                        <span class="text-gray-500">
+                          {% if cfg.balcony %}Yes{% else %}No{% endif %}
+                        </span>
+
+                        <!-- PARKING -->
+                        <span class="text-gray-500">
+                          {% if cfg.parking %}Yes{% else %}No{% endif %}
+                        </span>
+
+                        <!-- PRICE / SOLD OUT -->
+                        <span class="text-right font-semibold">
+                          {% if cfg.sold_out %}
+                            <span class="text-red-600 uppercase text-[10px]">
+                              Sold Out
+                            </span>
+                          {% else %}
+                            {% if cfg.price_in_rupees %}
+                              ₹ {{ cfg.price_in_rupees|intcomma }}
+                            {% else %}
+                              On Request
+                            {% endif %}
+                          {% endif %}
+                        </span>
+
+                      </div>
+                      {% endfor %}
+
+                    </div>
+                  </div>
+                  {% endfor %}
+
+                  {% else %}
+                  <!-- ================= NO CONFIG ================= -->
+                  <div class="px-3 py-3 text-center text-gray-500">
+                    Configuration available on request
+                  </div>
+                  {% endif %}
+                  {% endwith %}
+
+                </div>
+
+                        <!-- Developer -->
+                  <div class="flex items-center gap-2">
+                    <span class="h-8 w-8 flex items-center justify-center rounded-full overflow-hidden border">
+                      <img src="https://srv.carbonads.net/static/30242/afe67427d375248a92b1cda7f8a979fd91961d39"
+                          alt="Lodha Group"
+                          class="h-full w-full object-cover">
+                    </span>
+                    <span class="text-blue-600 text-sm font-medium">
+                      By Lodha Group
+                    </span>
+                  </div>
+
+
+                <!-- CTA -->
+                <div class="flex gap-3 pt-2">
                   <a href="{{ project.get_absolute_url }}"
-                    class="flex-1 md:flex-none inline-flex items-center justify-center gap-2
-                            px-4 py-2 bg-orange-500 text-white text-sm font-semibold
-                            rounded-3xl hover:bg-orange-600 transition">
+                    class="flex-1 text-center px-3 py-2 bg-orange-500 text-white
+                            text-sm font-semibold rounded-full hover:bg-orange-600">
                     View Details
-                    <i class="fas fa-arrow-right text-xs"></i>
                   </a>
 
-                  <!-- Contact Us -->
                   <a href="javascript:void(0)"
-                    id="openContactPopup"
-                    class="flex-1 md:flex-none inline-flex items-center justify-center gap-2
-                            px-4 py-2 border border-orange-500 text-orange-600
-                            text-sm font-semibold rounded-3xl hover:bg-orange-50 transition">
-                    Contact Us
+                    class="flex-1 text-center px-3 py-2 border border-orange-500
+                            text-orange-600 text-sm font-semibold rounded-full">
+                    Contact
                   </a>
-
                 </div>
-          </div>
 
-      
-
+              </div>
+            </div>
+            {% empty %}
+            <div class="col-span-2 text-center text-gray-500 py-10">
+              No projects found.
+            </div>
+            {% endfor %}
         </div>
-      </div>
 
-      {% empty %}
-        <div class="text-center text-gray-500 py-10 col-span-2">No projects found.</div>
-      {% endfor %}
-    </div>
 
 
 
@@ -992,6 +1004,34 @@ document.addEventListener("click", function (e) {
 });
 </script>
 
+<script>
+document.addEventListener("click", function (e) {
+
+  const tab = e.target.closest(".bhk-tab");
+  if (!tab) return;
+
+  const card = tab.closest(".bg-white");
+  if (!card) return;
+
+  // reset tabs
+  card.querySelectorAll(".bhk-tab").forEach(t => {
+    t.classList.remove("border-orange-500", "text-orange-600");
+    t.classList.add("border-transparent", "text-gray-600");
+  });
+
+  // reset panels
+  card.querySelectorAll(".bhk-panel").forEach(p => {
+    p.classList.add("hidden");
+  });
+
+  // activate
+  tab.classList.add("border-orange-500", "text-orange-600");
+  tab.classList.remove("border-transparent", "text-gray-600");
+
+  const panel = card.querySelector(`[data-panel="${tab.dataset.target}"]`);
+  if (panel) panel.classList.remove("hidden");
+});
+</script>
 
 
 {% endblock %}

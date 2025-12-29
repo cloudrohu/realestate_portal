@@ -48,6 +48,8 @@ def format_price_range(price_min, price_max):
         return fmt(price_min)
     return f"{fmt(price_min)}–{fmt(price_max)}"
 
+
+
 class Project(MPTTModel):
     
     BHK_CHOICES = (
@@ -99,8 +101,7 @@ class Project(MPTTModel):
     youtube_embed_id = models.CharField(max_length=50, blank=True, null=True,verbose_name="YouTube Video ID")
     
     featured_property = models.BooleanField(default=False)
-    balcony = models.BooleanField(default=False)
-    sold_out = models.BooleanField(default=False)
+    
     active = models.BooleanField(default=False)
     image = models.ImageField(null=True, blank=True,upload_to='images/')
     master_plan = models.ImageField(null=True, blank=True,upload_to='images/')
@@ -268,29 +269,64 @@ class USP(models.Model):
         return self.point
 
 class Configuration(models.Model):
-    Project = models.ForeignKey("Project", on_delete=models.CASCADE, related_name="configurations")
+    Project = models.ForeignKey(
+        "Project",
+        on_delete=models.CASCADE,
+        related_name="configurations"
+    )
+
     bhk_type = models.CharField(max_length=50)
+
     area_sqft = models.IntegerField(
         verbose_name="Area (Sq.ft)",
         help_text="Enter area in numeric square feet."
-    ) 
-    parking = models.BooleanField(default=False)
-    unit_plan = models.ImageField(null=True, blank=True,upload_to='images/')
+    )
 
-    
-    # ✅ Sudhar 3: Price ko IntegerField banayein
-    # Yeh lakh/crore calculations ke liye zaroori hai.
+    parking = models.BooleanField(default=False)
+    balcony = models.BooleanField(default=False)
+    sold_out = models.BooleanField(default=False)
+
+    unit_plan = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to='images/'
+    )
+
+    # ✅ PRICE (INTEGER ONLY – VERY IMPORTANT)
     price_in_rupees = models.IntegerField(
         verbose_name="Price (in ₹)",
-        help_text="Enter price in total rupees (e.g., 5000000)."
+        help_text="Enter price in total rupees (e.g., 5000000).",
+        null=True,
+        blank=True
     )
+
+    # ✅ PRICE FORMATTER (CR / L / NORMAL)
+    def formatted_price(self):
+        """
+        Returns:
+        82400000 -> ₹ 8.24 Cr
+        4500000  -> ₹ 45.00 L
+        90000    -> ₹ 90,000
+        None     -> On Request
+        """
+        if not self.price_in_rupees:
+            return "On Request"
+
+        price = self.price_in_rupees
+
+        if price >= 10000000:
+            return f"₹ {price / 10000000:.2f} Cr"
+        elif price >= 100000:
+            return f"₹ {price / 100000:.2f} L"
+        else:
+            return f"₹ {price:,}"
 
     def __str__(self):
         return f"{self.Project.project_name} - {self.bhk_type} ({self.area_sqft} sq.ft)"
-    
+
     class Meta:
-        # Configuration ke instances ko Project aur BHK type ke hisaab se arrange karein
         ordering = ['bhk_type']
+
 
 class Connectivity(models.Model):
     Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="connectivity")

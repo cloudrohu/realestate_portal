@@ -69,6 +69,8 @@ class ConfigurationInline(admin.TabularInline):
         'area_sqft',
         'price_in_rupees',
         'parking',
+        'balcony',
+        'sold_out',
         'unit_plan',
     )
 
@@ -132,7 +134,6 @@ class ProjectAdmin(MPTTModelAdmin):
         'developer',
         'construction_status',
         'featured_property',
-        'sold_out',
         'active',
         'image_preview',
     )
@@ -144,7 +145,6 @@ class ProjectAdmin(MPTTModelAdmin):
         'propert_type',
         'construction_status',
         'featured_property',
-        'sold_out',
         'active',
     )
 
@@ -212,8 +212,6 @@ class ProjectAdmin(MPTTModelAdmin):
         ('Status & Flags', {
             'fields': (
                 'featured_property',
-                'balcony',
-                'sold_out',
                 'active',
             )
         }),
