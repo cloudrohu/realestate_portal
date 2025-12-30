@@ -105,6 +105,9 @@
           class="border px-3 py-2 rounded-lg">
       </div>
 
+      <input type="range" name="area" min="0" max="5000"
+        value="{{ selected.area|default:0 }}"
+        class="w-full accent-orange-500">
 
       <button
         class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-xl">
