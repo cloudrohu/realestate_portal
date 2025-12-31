@@ -37,82 +37,369 @@
 
 
 <!-- ================= MAIN CONTAINER ================= -->
-<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 px-4">
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
 
   <aside class="space-y-6 lg:sticky lg:top-24">
 
     <form method="get" id="filterForm"
-          class="bg-white shadow-lg rounded-xl p-6 space-y-4">
+            class="bg-white shadow-lg rounded-xl p-6 space-y-4">
 
-      <h3 class="font-bold text-gray-800 text-lg border-b pb-3">
-        Advanced Search
-      </h3>
-
-      <!-- Category -->
-      <select name="category" class="w-full border px-3 py-2 rounded-lg text-sm">
-        <option value="">Residential</option>
-        <option value="commercial"
-          {% if selected.category == "commercial" %}selected{% endif %}>
-          Commercial
-        </option>
-      </select>
-
-      <!-- Property Type -->
-      <select name="property_type" class="w-full border px-3 py-2 rounded-lg text-sm">
-        <option value="">Property Type</option>
-        <option value="apartment" {% if selected.property_type == "apartment" %}selected{% endif %}>
-          Apartment
-        </option>
-        <option value="villa">Villa</option>
-        <option value="plot">Plot</option>
-      </select>
-
-      <!-- City -->
-      <select name="city" class="w-full border px-3 py-2 rounded-lg">
-        <option value="">Select City</option>
-        {% for city in cities %}
-          <option value="{{ city.id }}"
-            {% if selected.city == city.id|stringformat:"s" %}selected{% endif %}>
-            {{ city.name }}
-          </option>
-        {% endfor %}
-      </select>
-
-      <!-- Location -->
-      <input type="text" name="location"
-        value="{{ selected.location }}"
-        placeholder="Search by Project / Locality"
-        class="w-full border px-3 py-2 rounded-lg text-sm">
-
-      <!-- BHK -->
-      <select name="bhk" class="w-full border px-3 py-2 rounded-lg text-sm">
-        <option value="">BHK</option>
-        <option value="1">1 BHK</option>
-        <option value="2" {% if selected.bhk == "2" %}selected{% endif %}>2 BHK</option>
-        <option value="3">3 BHK</option>
-      </select>
-
-      <!-- Budget -->
-      <div class="grid grid-cols-2 gap-3">
-        <input type="number" name="min_price"
-          value="{{ selected.min_price }}"
-          placeholder="Min Budget"
-          class="border px-3 py-2 rounded-lg">
-
-        <input type="number" name="max_price"
-          value="{{ selected.max_price }}"
-          placeholder="Max Budget"
-          class="border px-3 py-2 rounded-lg">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-bold text-gray-800 text-lg">Advanced Search</h3>
+        <button type="button"
+          onclick="clearAllFilters()"
+          class="text-orange-600 text-sm font-semibold">
+          Clear All Filters
+        </button>
       </div>
 
 
-      <button
-        class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-xl">
-        Search Properties
-      </button>
+        <!-- ================= CATEGORY ================= -->
+        <select name="category" class="w-full border px-3 py-2 rounded-lg text-sm">
+          <option value="">Residential</option>
+          <option value="commercial">Commercial</option>
+        </select>
 
-    </form>
+        <!-- ================= TYPE OF PROPERTY ================= -->
+          <div class="w-full border px-3 py-2 rounded-lg text-sm">
+
+            <!-- HEADER -->
+            <button type="button"
+              onclick="togglePropertyType()"
+              class="w-full flex justify-between items-center font-semibold text-gray-800">
+
+              <span>Type of property</span>
+
+              <svg id="propertyArrow"
+                class="w-4 h-4 transition-transform duration-200 font-bold"
+                fill="none" stroke="currentColor" stroke-width="2"
+                viewBox="0 0 24 24">
+                <path d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+
+            <!-- BODY -->
+            <div id="propertyTypeBody" class="mt-4 hidden">
+
+              <div class="flex flex-wrap gap-2">
+
+                <button type="button" class="property-pill">+ Residential Apartment</button>
+                <button type="button" class="property-pill">+ Independent House/Villa</button>
+                <button type="button" class="property-pill">+ Residential Land</button>
+                <button type="button" class="property-pill">+ Independent/Builder Floor</button>
+                <button type="button" class="property-pill">+ Farm House</button>
+
+              </div>
+
+              <!-- MORE -->
+              <div id="moreProperty" class="hidden mt-2">
+                <button type="button" class="property-pill">+ Serviced Apartments</button>
+              </div>
+
+              <button type="button"
+                onclick="toggleMoreProperty(this)"
+                class="text-orange-600 text-sm font-semibold mt-2">
+                + 1 more
+              </button>
+
+            </div>
+          </div>
+
+          <!-- ================= NO. OF BEDROOMS ================= -->
+          <div class="w-full border px-3 py-2 rounded-lg text-sm">
+
+            <!-- HEADER -->
+            <button type="button"
+              onclick="toggleBedrooms()"
+              class="w-full flex justify-between items-center font-semibold text-gray-800">
+
+              <span>No. of Bedrooms</span>
+
+              <svg id="bedroomArrow"
+                class="w-4 h-4 transition-transform duration-200"
+                fill="none" stroke="currentColor" stroke-width="2"
+                viewBox="0 0 24 24">
+                <path d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+
+            <!-- BODY -->
+            <div id="bedroomBody" class="mt-4 hidden">
+
+              <!-- MAIN BHK -->
+              <div class="flex flex-wrap gap-2">
+                <button type="button" class="bedroom-pill">+ 1 RK/1 BHK</button>
+                <button type="button" class="bedroom-pill">+ 2 BHK</button>
+                <button type="button" class="bedroom-pill">+ 3 BHK</button>
+                <button type="button" class="bedroom-pill">+ 4 BHK</button>
+                <button type="button" class="bedroom-pill">+ 5 BHK</button>
+              </div>
+
+              <!-- MORE -->
+              <div id="moreBedrooms" class="hidden mt-3">
+                <div class="flex flex-wrap gap-2">
+                  <button type="button" class="bedroom-pill">+ 6 BHK</button>
+                  <button type="button" class="bedroom-pill">+ 7 BHK</button>
+                  <button type="button" class="bedroom-pill">+ 8 BHK</button>
+                  <button type="button" class="bedroom-pill">+ 9 BHK</button>
+                  <button type="button" class="bedroom-pill">+ 9+ BHK</button>
+                </div>
+              </div>
+
+              <button type="button"
+                onclick="toggleMoreBedrooms(this)"
+                class="text-orange-600 text-sm font-semibold mt-3">
+                + 5 more
+              </button>
+
+            </div>
+          </div>
+
+          <!-- ================= CONSTRUCTION STATUS ================= -->
+            <div class="w-full border px-3 py-2 rounded-lg text-sm">
+
+              <!-- HEADER -->
+              <button type="button"
+                onclick="toggleConstruction()"
+                class="w-full flex justify-between items-center font-semibold text-gray-800">
+
+                <span>Construction Status</span>
+
+                <svg id="constructionArrow"
+                  class="w-4 h-4 transition-transform duration-200"
+                  fill="none" stroke="currentColor" stroke-width="2"
+                  viewBox="0 0 24 24">
+                  <path d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+
+              <!-- BODY -->
+              <div id="constructionBody" class="mt-4 hidden">
+                <div class="flex flex-wrap gap-2">
+
+                  <button type="button" class="orange-pill">+ New Launch</button>
+                  <button type="button" class="orange-pill">+ Under Construction</button>
+                  <button type="button" class="orange-pill">+ Ready to move</button>
+
+                </div>
+              </div>
+
+            </div>
+
+            <!-- ================= POSTED BY ================= -->
+            <div class="w-full border px-3 py-2 rounded-lg text-sm">
+
+              <!-- HEADER -->
+              <button type="button"
+                onclick="togglePostedBy()"
+                class="w-full flex justify-between items-center font-semibold text-gray-800">
+
+                <span>Posted by</span>
+
+                <svg id="postedByArrow"
+                  class="w-4 h-4 transition-transform duration-200"
+                  fill="none" stroke="currentColor" stroke-width="2"
+                  viewBox="0 0 24 24">
+                  <path d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+
+              <!-- BODY -->
+              <div id="postedByBody" class="mt-4 hidden">
+                <div class="flex flex-wrap gap-2">
+
+                  <button type="button" class="orange-pill">+ Owner</button>
+                  <button type="button" class="orange-pill">+ Builder</button>
+                  <button type="button" class="orange-pill">+ Dealer</button>
+                  <button type="button" class="orange-pill">+ Feature Dealer</button>
+
+                </div>
+              </div>
+
+            </div>
+
+            <!-- ================= AMENITIES ================= -->
+              <div class="w-full border px-3 py-2 rounded-lg text-sm">
+
+                <!-- HEADER -->
+                <div class="flex justify-between items-center">
+                  <button type="button"
+                    onclick="toggleAmenities()"
+                    class="w-full flex justify-between items-center font-semibold text-gray-800">
+
+                    <span>Amenities</span>
+                    <svg id="amenitiesArrow"
+                      class="w-4 h-4 transition-transform duration-200"
+                      fill="none" stroke="currentColor" stroke-width="2"
+                      viewBox="0 0 24 24">
+                      <path d="M19 9l-7 7-7-7"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- BODY -->
+                <div id="amenitiesBody" class="mt-4 hidden">
+                  <div class="flex flex-wrap gap-2">
+
+                    <button type="button" class="amenities-pill">+ Gymnasium</button>
+                    <button type="button" class="amenities-pill">+ Park</button>
+                    <button type="button" class="amenities-pill">+ Parking</button>
+                    <button type="button" class="amenities-pill">+ Swimming Pool</button>
+                    <button type="button" class="amenities-pill">+ Lift</button>
+                    <button type="button" class="amenities-pill">+ Club house</button>
+                    <button type="button" class="amenities-pill">+ Power Backup</button>
+                    <button type="button" class="amenities-pill">+ Vaastu Compliant</button>
+                    <button type="button" class="amenities-pill">+ Security Personnel</button>
+                    <button type="button" class="amenities-pill">+ Gas Pipeline</button>
+
+                  </div>
+                </div>
+              </div>
+
+              <!-- ================= FURNISHING STATUS ================= -->
+              <div class="w-full border px-3 py-2 rounded-lg text-sm">
+
+                <!-- HEADER -->
+                <button type="button"
+                  onclick="toggleFurnishing()"
+                  class="w-full flex justify-between items-center font-semibold text-gray-800">
+
+                  <span>Furnishing status</span>
+
+                  <svg id="furnishingArrow"
+                    class="w-4 h-4 transition-transform duration-200"
+                    fill="none" stroke="currentColor" stroke-width="2"
+                    viewBox="0 0 24 24">
+                    <path d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </button>
+
+                <!-- BODY -->
+                <div id="furnishingBody" class="mt-4 hidden">
+                  <div class="flex flex-wrap gap-2">
+
+                    <button type="button" class="furnishing-pill">+ Unfurnished</button>
+                    <button type="button" class="furnishing-pill">+ Semifurnished</button>
+                    <button type="button" class="furnishing-pill">+ Furnished</button>
+
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- ================= RERA APPROVED ================= -->
+              <div class="w-full border px-3 py-2 rounded-lg text-sm">
+
+                <!-- HEADER -->
+                <button type="button"
+                  onclick="toggleRera()"
+                  class="w-full flex justify-between items-center font-semibold text-gray-800">
+
+                  <span>RERA Approved</span>
+
+                  <svg id="reraArrow"
+                    class="w-4 h-4 transition-transform duration-200"
+                    fill="none" stroke="currentColor" stroke-width="2"
+                    viewBox="0 0 24 24">
+                    <path d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </button>
+
+                <!-- BODY -->
+                <div id="reraBody" class="mt-4 hidden">
+                  <div class="flex flex-wrap gap-2">
+
+                    <button type="button" class="rera-pill">+ RERA approved properties</button>
+                    <button type="button" class="rera-pill">+ RERA registered dealers</button>
+
+                  </div>
+                </div>
+
+              </div>
+
+
+              <!-- ================= LOCALITIES ================= -->
+              <div class="w-full border px-3 py-2 rounded-lg text-sm">
+
+                <!-- HEADER -->
+                <div class="flex justify-between items-center">
+                  <button type="button"
+                    onclick="toggleLocalities()"
+                    class="flex items-center gap-2 font-semibold text-gray-800">
+
+                    <span>Localities</span>
+                    <i id="localityArrow"
+                      class="fa-solid fa-chevron-down text-sm transition-transform"></i>
+                  </button>
+
+                  <button type="button"
+                    onclick="clearLocalities()"
+                    class="text-orange-600 text-sm font-semibold">
+                    Clear
+                  </button>
+                </div>
+
+                <!-- BODY -->
+                <div id="localityBody" class="mt-4 space-y-3">
+
+                  <label class="flex items-center gap-2 text-sm cursor-pointer">
+                    <input type="checkbox" class="locality-checkbox" checked>
+                    <i class="fa-solid fa-location-dot text-orange-500"></i>
+                    <span>Malad</span>
+                  </label>
+
+                  <label class="flex items-center gap-2 text-sm cursor-pointer">
+                    <input type="checkbox" class="locality-checkbox">
+                    <i class="fa-solid fa-location-dot text-orange-500"></i>
+                    <span>Kandivali</span>
+                  </label>
+
+                  <label class="flex items-center gap-2 text-sm cursor-pointer">
+                    <input type="checkbox" class="locality-checkbox">
+                    <i class="fa-solid fa-location-dot text-orange-500"></i>
+                    <span>Andheri</span>
+                  </label>
+
+                  <label class="flex items-center gap-2 text-sm cursor-pointer">
+                    <input type="checkbox" class="locality-checkbox">
+                    <i class="fa-solid fa-location-dot text-orange-500"></i>
+                    <span>Borivali</span>
+                  </label>
+
+                  <!-- MORE -->
+                  <button type="button"
+                    onclick="openLocalityModal()"
+                    class="flex items-center gap-2 text-sm text-orange-600 font-semibold mt-2">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    More Localities
+                  </button>
+
+                </div>
+              </div>
+
+
+
+          <!-- ================= BUDGET ================= -->
+          <div class="grid grid-cols-2 gap-3">
+            <input type="number" name="min_price"
+              placeholder="Min Budget"
+              class="border px-3 py-2 rounded-lg">
+
+            <input type="number" name="max_price"
+              placeholder="Max Budget"
+              class="border px-3 py-2 rounded-lg">
+          </div>
+
+        <!-- ================= BUTTON ================= -->
+        <button
+          class="w-full bg-orange-500 hover:bg-orange-600
+                text-white font-semibold py-3 rounded-xl">
+          Search Properties
+        </button>
+
+      </form>
   </aside>
+
 
   <div class="lg:col-span-2 space-y-6">
 
@@ -140,98 +427,6 @@
 
 
 
-    <!-- Property Filters Start -->
-     <filter-section>
-
-      <form method="get"
-            id="mobileFilterForm"
-            class="bg-white shadow rounded-xl p-4 flex flex-wrap gap-3 items-center lg:hidden">
-
-        <!-- ================= CATEGORY ================= -->
-        <select name="category" class="border px-3 py-2 rounded text-sm w-full">
-          <option value="">Residential</option>
-          <option value="commercial"
-            {% if selected.category == "commercial" %}selected{% endif %}>
-            Commercial
-          </option>
-        </select>
-
-        <!-- ================= PROPERTY TYPE ================= -->
-        <select name="property_type" class="border px-3 py-2 rounded text-sm w-full">
-          <option value="">Property Type</option>
-          <option value="apartment"
-            {% if selected.property_type == "apartment" %}selected{% endif %}>
-            Apartment
-          </option>
-          <option value="villa">Villa</option>
-          <option value="plot">Plot</option>
-        </select>
-
-        <!-- ================= CITY ================= -->
-        <select name="city" class="border px-3 py-2 rounded text-sm w-full">
-          <option value="">Select City</option>
-          {% for city in cities %}
-            <option value="{{ city.id }}"
-              {% if selected.city == city.id|stringformat:"s" %}selected{% endif %}>
-              {{ city.name }}
-            </option>
-          {% endfor %}
-        </select>
-
-        <!-- ================= LOCATION ================= -->
-        <input type="text"
-              name="location"
-              value="{{ selected.location }}"
-              placeholder="Search by Project / Locality"
-              class="border px-3 py-2 rounded text-sm w-full">
-
-        <!-- ================= BHK ================= -->
-        <select name="bhk" class="border px-3 py-2 rounded text-sm w-full">
-          <option value="">BHK</option>
-          <option value="1">1 BHK</option>
-          <option value="2" {% if selected.bhk == "2" %}selected{% endif %}>2 BHK</option>
-          <option value="3">3 BHK</option>
-          <option value="4">4 BHK</option>
-        </select>
-
-        <!-- ================= BUDGET ================= -->
-        <div class="flex gap-2 w-full">
-          <input type="number"
-                name="min_price"
-                value="{{ selected.min_price }}"
-                placeholder="Min Budget"
-                class="border px-3 py-2 rounded text-sm w-1/2">
-
-          <input type="number"
-                name="max_price"
-                value="{{ selected.max_price }}"
-                placeholder="Max Budget"
-                class="border px-3 py-2 rounded text-sm w-1/2">
-        </div>
-
-        <!-- ================= CARPET AREA ================= -->
-        <div class="w-full">
-          <label class="text-xs font-medium text-gray-600">
-            Minimum Carpet Area (Sq.ft)
-          </label>
-          <input type="range"
-                name="area"
-                min="0"
-                max="5000"
-                value="{{ selected.area|default:0 }}"
-                class="w-full accent-orange-500">
-        </div>
-        <!-- ================= SUBMIT ================= -->
-        <button type="submit"
-                class="w-full bg-orange-500 text-white px-4 py-2 rounded-xl
-                      hover:bg-orange-600 text-sm font-semibold">
-          Search Properties
-        </button>
-
-      </form>
-
-     </filter-section>
-    <!-- Property Filters End -->
     
 
 
@@ -1098,6 +1293,63 @@ document.querySelectorAll(".config-card").forEach(card => {
 </script>
 
 
+
+
+<style>
+  .amenities-pill {
+    padding: 6px 14px;
+    border: 1px solid #fb923c;      /* orange-400 */
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ea580c;                 /* orange-600 */
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+
+  .amenities-pill:hover {
+    background: #fff7ed;            /* orange-50 */
+    border-color: #f97316;          /* orange-500 */
+  }
+
+  .amenities-pill.active {
+    background: #f97316;            /* orange-500 */
+    color: #fff;
+    border-color: #f97316;
+  }
+</style>
+
+
+
+<script>
+  function toggleAmenities() {
+    document.getElementById("amenitiesBody").classList.toggle("hidden");
+    document.getElementById("amenitiesArrow").classList.toggle("rotate-180");
+  }
+
+  function clearAmenities() {
+    document
+      .querySelectorAll("#amenitiesBody .amenities-pill")
+      .forEach(btn => btn.classList.remove("active"));
+  }
+
+  // multi-select
+  document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("amenities-pill")) {
+      e.target.classList.toggle("active");
+    }
+  });
+</script>
+
+
+
+
+
+
+
+
+<!-- filter style and scripts  -->
+
 <style>
 /* Glass tabs */
 .bhk-tab {
@@ -1129,7 +1381,348 @@ document.querySelectorAll(".config-card").forEach(card => {
 }
 </style>
 
+<style>
+  .property-pill {
+    padding: 6px 14px;
+    border: 1px solid #fb923c; /* orange-400 */
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ea580c; /* orange-600 */
+    background: #fff;
+    transition: all 0.2s ease;
+  }
 
+  .property-pill:hover {
+    background: #fff7ed; /* orange-50 */
+    border-color: #f97316; /* orange-500 */
+  }
+
+  .property-pill.active {
+    background: #f97316; /* orange-500 */
+    color: #fff;
+    border-color: #f97316;
+  }
+</style>
+
+
+<script>
+  function togglePropertyType() {
+    const body = document.getElementById("propertyTypeBody");
+    const arrow = document.getElementById("propertyArrow");
+
+    body.classList.toggle("hidden");
+    arrow.classList.toggle("rotate-180");
+  }
+
+  function toggleMoreProperty(btn) {
+    document.getElementById("moreProperty").classList.remove("hidden");
+    btn.classList.add("hidden");
+  }
+
+  // active state (multi select)
+  document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("property-pill")) {
+      e.target.classList.toggle("active");
+    }
+  });
+</script>
+
+
+<style>
+  .bedroom-pill {
+    padding: 6px 14px;
+    border: 1px solid #fb923c;      /* orange-400 */
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ea580c;                 /* orange-600 */
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+
+  .bedroom-pill:hover {
+    background: #fff7ed;            /* orange-50 */
+    border-color: #f97316;          /* orange-500 */
+  }
+
+  .bedroom-pill.active {
+    background: #f97316;            /* orange-500 */
+    color: #fff;
+    border-color: #f97316;
+  }
+</style>
+
+<script>
+  function toggleBedrooms() {
+    const body = document.getElementById("bedroomBody");
+    const arrow = document.getElementById("bedroomArrow");
+
+    body.classList.toggle("hidden");
+    arrow.classList.toggle("rotate-180");
+  }
+
+  function toggleMoreBedrooms(btn) {
+    document.getElementById("moreBedrooms").classList.remove("hidden");
+    btn.classList.add("hidden");
+  }
+
+  // Active select (multi-select)
+  document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("bedroom-pill")) {
+      e.target.classList.toggle("active");
+    }
+  });
+</script>
+
+<style>
+  .orange-pill {
+    padding: 6px 14px;
+    border: 1px solid #fb923c;      /* orange-400 */
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ea580c;                 /* orange-600 */
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+
+  .orange-pill:hover {
+    background: #fff7ed;            /* orange-50 */
+    border-color: #f97316;          /* orange-500 */
+  }
+
+  .orange-pill.active {
+    background: #f97316;            /* orange-500 */
+    color: #fff;
+    border-color: #f97316;
+  }
+</style>
+
+<script>
+function toggleConstruction() {
+  document.getElementById("constructionBody").classList.toggle("hidden");
+  document.getElementById("constructionArrow").classList.toggle("rotate-180");
+}
+
+function togglePostedBy() {
+  document.getElementById("postedByBody").classList.toggle("hidden");
+  document.getElementById("postedByArrow").classList.toggle("rotate-180");
+}
+
+// active pill toggle (multi-select)
+document.addEventListener("click", function (e) {
+  if (e.target.classList.contains("orange-pill")) {
+    e.target.classList.toggle("active");
+  }
+});
+</script>
+
+<style>
+  /* Furnishing */
+  .furnishing-pill {
+    padding: 6px 14px;
+    border: 1px solid #fb923c;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ea580c;
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+  .furnishing-pill:hover {
+    background: #fff7ed;
+    border-color: #f97316;
+  }
+  .furnishing-pill.active {
+    background: #f97316;
+    color: #fff;
+    border-color: #f97316;
+  }
+
+  /* RERA */
+  .rera-pill {
+    padding: 6px 14px;
+    border: 1px solid #fb923c;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ea580c;
+    background: #fff;
+    transition: all 0.2s ease;
+  }
+  .rera-pill:hover {
+    background: #fff7ed;
+    border-color: #f97316;
+  }
+  .rera-pill.active {
+    background: #f97316;
+    color: #fff;
+    border-color: #f97316;
+  }
+</style>
+
+<script>
+  function toggleFurnishing() {
+    document.getyan;
+    document.getElementById("furnishingBody").classList.toggle("hidden");
+    document.getElementById("furnishingArrow").classList.toggle("rotate-180");
+  }
+
+  function toggleRera() {
+    document.getElementById("reraBody").classList.toggle("hidden");
+    document.getElementById("reraArrow").classList.toggle("rotate-180");
+  }
+
+  // active pill (multi-select)
+  document.addEventListener("click", function (e) {
+    if (
+      e.target.classList.contains("furnishing-pill") ||
+      e.target.classList.contains("rera-pill")
+    ) {
+      e.target.classList.toggle("active");
+    }
+  });
+</script>
+
+<style>
+  .locality-checkbox {
+    accent-color: #f97316; /* orange */
+  }
+</style>
+
+
+
+<script>
+  function toggleLocalities() {
+    document.getElementById("localityBody").classList.toggle("hidden");
+    document.getElementById("localityArrow").classList.toggle("rotate-180");
+  }
+
+  function openLocalityModal() {
+    document.getElementById("localityModal").classList.remove("hidden");
+  }
+
+  function closeLocalityModal() {
+    document.getElementById("localityModal").classList.add("hidden");
+  }
+
+  function clearLocalities() {
+    document
+      .querySelectorAll('.locality-checkbox')
+      .forEach(cb => cb.checked = false);
+  }
+</script>
+
+<script>
+  function clearAllFilters() {
+
+    /* ================= CHECKBOXES ================= */
+    document
+      .querySelectorAll('input[type="checkbox"]')
+      .forEach(cb => cb.checked = false);
+
+    /* ================= TEXT / NUMBER INPUTS ================= */
+    document
+      .querySelectorAll('input[type="text"], input[type="number"]')
+      .forEach(input => input.value = "");
+
+    /* ================= SELECT DROPDOWNS ================= */
+    document
+      .querySelectorAll('select')
+      .forEach(select => select.selectedIndex = 0);
+
+    /* ================= PILLS (ALL TYPES) ================= */
+    document
+      .querySelectorAll(
+        '.property-pill, .bedroom-pill, .amenities-pill, ' +
+        '.furnishing-pill, .rera-pill, .orange-pill'
+      )
+      .forEach(pill => pill.classList.remove("active"));
+
+    /* ================= OPTIONAL: CLOSE ALL ACCORDIONS ================= */
+    document
+      .querySelectorAll('[id$="Body"]')
+      .forEach(body => body.classList.add("hidden"));
+
+    document
+      .querySelectorAll('[id$="Arrow"]')
+      .forEach(arrow => arrow.classList.remove("rotate-180"));
+  }
+</script>
+
+
+<!-- ================= LOCALITY MODAL ================= -->
+<div id="localityModal"
+  class="fixed inset-0 bg-black/40 hidden z-50 flex items-center justify-center">
+
+  <div class="bg-white w-full max-w-3xl rounded-xl shadow-lg p-6 relative">
+
+    <!-- CLOSE -->
+    <button onclick="closeLocalityModal()"
+      class="absolute top-0 mb-6 right-1 text-gray-500 hover:text-orange-600">
+      <i class="fa-solid fa-xmark text-xl"></i>
+    </button>
+
+    <!-- SEARCH -->
+    <div class="flex items-center border rounded-lg px-4 py-2 mb-6">
+      <input type="text"
+        placeholder="Search Localities"
+        class="w-full outline-none text-sm">
+      <i class="fa-solid fa-magnifying-glass text-orange-500"></i>
+    </div>
+
+    <div class="grid grid-cols-2 gap-8">
+
+      <!-- TOP -->
+      <div>
+        <h4 class="font-semibold mb-3">Top Localities</h4>
+
+        <label class="flex items-center gap-2 text-sm mb-2">
+          <input type="checkbox" class="locality-checkbox" checked>
+          <i class="fa-solid fa-location-dot text-orange-500"></i>
+          Malad
+        </label>
+
+        <label class="flex items-center gap-2 text-sm mb-2">
+          <input type="checkbox" class="locality-checkbox">
+          <i class="fa-solid fa-location-dot text-orange-500"></i>
+          Kandivali
+        </label>
+
+        <label class="flex items-center gap-2 text-sm mb-2">
+          <input type="checkbox" class="locality-checkbox">
+          <i class="fa-solid fa-location-dot text-orange-500"></i>
+          Andheri
+        </label>
+      </div>
+
+      <!-- MORE -->
+      <div>
+        <h4 class="font-semibold mb-3">More Localities</h4>
+
+        <label class="flex items-center gap-2 text-sm mb-2">
+          <input type="checkbox" class="locality-checkbox">
+          <i class="fa-solid fa-location-dot text-orange-500"></i>
+          Kandivali East
+        </label>
+
+        <label class="flex items-center gap-2 text-sm mb-2">
+          <input type="checkbox" class="locality-checkbox">
+          <i class="fa-solid fa-location-dot text-orange-500"></i>
+          Andheri West
+        </label>
+
+        <label class="flex items-center gap-2 text-sm mb-2">
+          <input type="checkbox" class="locality-checkbox">
+          <i class="fa-solid fa-location-dot text-orange-500"></i>
+          Borivali West
+        </label>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 
 {% endblock %}
