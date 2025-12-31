@@ -171,27 +171,8 @@ def cookies(request):
 
 def submit_home_contact(request):
     if request.method == "POST":
-
-        # 🔐 reCAPTCHA verification
-        recaptcha_response = request.POST.get("g-recaptcha-response")
-        data = {
-            "secret": settings.RECAPTCHA_SECRET_KEY,
-            "response": recaptcha_response
-        }
-        r = requests.post(
-            "https://www.google.com/recaptcha/api/siteverify",
-            data=data
-        )
-        result = r.json()
-
-        if not result.get("success"):
-            return JsonResponse({
-                "status": "error",
-                "message": "reCAPTCHA verification failed"
-            })
-
-        # ✅ Save form
         form = HomeContactForm(request.POST)
+
         if form.is_valid():
             form.save()
             return JsonResponse({
@@ -205,5 +186,3 @@ def submit_home_contact(request):
         })
 
     return JsonResponse({"status": "invalid"})
-
-

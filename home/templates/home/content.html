@@ -1000,7 +1000,8 @@ style="background-image: url('https://sigmahomes.co.in/media/about/Prithvi_Pride
       </div>
 
       <div class="modal-body">
-        <form class="space-y-3">
+        <form class="space-y-3" id="homeContactForm">
+          {% csrf_token %}
           <input type="text" placeholder="Your Name" class="w-full border px-3 py-2 rounded">
           <input type="tel" placeholder="Phone Number" class="w-full border px-3 py-2 rounded">
           <textarea rows="3" placeholder="Message" class="w-full border px-3 py-2 rounded"></textarea>
@@ -1072,6 +1073,28 @@ document.addEventListener("DOMContentLoaded", function () {
   color:black;
 }
 </style>
+
+<script>
+document.getElementById("homeContactForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    fetch("{% url 'home_contact' %}", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: new FormData(this)
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("msg").innerText = data.message || "Error";
+        if (data.status === "success") {
+            this.reset();
+        }
+    });
+});
+</script>
+
 
 <style>
 .partner-card{
