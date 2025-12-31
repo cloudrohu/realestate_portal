@@ -14,12 +14,8 @@ from .models import (
 ) 
 from django.http import JsonResponse
 from django.contrib import messages
-
 from django.template.loader import render_to_string
-
 from django.db.models import Min, Max
-
-
 
 # --- 1. All Projects Listing Page (Optimized Index) ---
 def index(request):
@@ -322,10 +318,6 @@ def search_projects(request):
 
     return render(request, "projects/residential_list.html", context)  # YES
 
-
-# =========================================================
-# 🏠 RESIDENTIAL PROJECTS (LEGACY / OPTIONAL)
-# =========================================================
 def residential_projects(request):
     query = request.GET.get("q", "")  # YES
     bhk = request.GET.get("bhk")      # YES
@@ -368,10 +360,6 @@ def residential_projects(request):
 
     return render(request, "projects/residential_list.html", context)  # YES
 
-
-# =========================================================
-# 🏗 PROJECT DETAIL VIEW
-# =========================================================
 def project_details(request, id, slug):
     project = get_object_or_404(
         Project, id=id, slug=slug, active=True
@@ -429,7 +417,6 @@ def project_details(request, id, slug):
 
     return render(request, "projects/project_detail.html", context)  # YES
 
-
 # 🏢 Commercial Projects
 def commercial_projects(request):
     query = request.GET.get('q', '')
@@ -447,7 +434,6 @@ def commercial_projects(request):
         'breadcrumb': 'Commercial',
     }
     return render(request, 'projects/commercial_list.html', context)
-
 
 def project_details(request, id, slug):
 
@@ -514,7 +500,6 @@ def project_details(request, id, slug):
 
     return render(request, "projects/project_detail.html", context)
 
-
 def submit_enquiry(request, id):
     project = get_object_or_404(Project, id=id)
 
@@ -537,8 +522,6 @@ def submit_enquiry(request, id):
         return redirect('thank_you')  # or use project detail slug redirect
 
     return redirect('project_details', id=project.id, slug=project.slug)
-
-
 
 def thank_you(request):
     return render(request, 'projects/thank_you.html')
