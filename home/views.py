@@ -13,8 +13,8 @@ from user.models import Developer  # 👈 import your Developer model
 
 from django.shortcuts import render
 from projects.models import Project  # import your Project model
-from django.http import JsonResponse
-from .forms import HomeContactForm
+
+
 
 def index(request):
     settings_obj = Setting.objects.first()
@@ -169,20 +169,4 @@ def cookies(request):
 
 
 
-def submit_home_contact(request):
-    if request.method == "POST":
-        form = HomeContactForm(request.POST)
 
-        if form.is_valid():
-            form.save()
-            return JsonResponse({
-                "status": "success",
-                "message": "Form submitted successfully"
-            })
-
-        return JsonResponse({
-            "status": "error",
-            "errors": form.errors
-        })
-
-    return JsonResponse({"status": "invalid"})

@@ -288,22 +288,3 @@ class ImpactMetric(models.Model):
 
     def __str__(self):
         return f"{self.title}: {self.value}"
-
-class HomeContact(models.Model):
-
-    TYPE_CHOICES = [
-        ("Book Site Visit", "Book Site Visit"),
-        ("Unit Booking", "Unit Booking"),
-        ("Home Loan Assistance", "Home Loan Assistance"),
-        ("Legal Advice", "Legal Advice"),
-        ("Get In Touch", "Get In Touch"),
-    ]
-
-    name = models.CharField(max_length=150)
-    email = models.EmailField()
-    phone = models.CharField(max_length=20)
-    type = models.CharField(max_length=50, choices=TYPE_CHOICES)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.name} - {self.type}"

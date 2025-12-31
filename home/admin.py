@@ -3,7 +3,7 @@ from django.utils.html import mark_safe
 from .models import (
     Setting, Slider, Leadership, Why_Choose,
     About, Contact_Page, Our_Team,
-    Testimonial, FAQ, ImpactMetric, HomeContact
+    Testimonial, FAQ, ImpactMetric
 )
 
 # =============================
@@ -297,51 +297,3 @@ class ImpactMetricAdmin(admin.ModelAdmin):
     list_editable = ("order",)
     ordering = ("order",)
     search_fields = ("title", "value")
-
-@admin.register(HomeContact)
-
-
-class HomeContactAdmin(admin.ModelAdmin):
-
-    # 👉 Admin List View Columns
-    list_display = (
-        "name",
-        "email",
-        "phone",
-        "type",
-        "created_at",
-    )
-
-    # 👉 Right Sidebar Filters
-    list_filter = (
-        "type",
-        "created_at",
-    )
-
-    # 👉 Top Search Bar
-    search_fields = (
-        "name",
-        "email",
-        "phone",
-    )
-
-    # 👉 Date hierarchy (top navigation)
-    date_hierarchy = "created_at"
-
-    # 👉 Default ordering (latest first)
-    ordering = ("-created_at",)
-
-    # 👉 Readonly fields (security)
-    readonly_fields = ("created_at",)
-
-    # 👉 Form layout (clean & professional)
-    fieldsets = (
-        ("User Details", {
-            "fields": ("name", "email", "phone")
-        }),
-        ("Enquiry Info", {
-            "fields": ("type", "created_at")
-        }),
-    )
-
-    
