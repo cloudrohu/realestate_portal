@@ -288,3 +288,38 @@ class ImpactMetric(models.Model):
 
     def __str__(self):
         return f"{self.title}: {self.value}"
+
+class HomeContact(models.Model):
+
+    TYPE_CHOICES = [
+        ("Search & Shortlisting", "Search & Shortlisting"),
+        ("Book Site Visit", "Book Site Visit"),
+        ("Home Loan Assistance", "Home Loan Assistance"),
+        ("Legal Advice", "Legal Advice"),
+        ("Unit Booking", "Unit Booking"),
+        ("Get In Touch", "Get In Touch"),
+    ]
+
+    FOLLOWUP_STATUS = [
+        ("Pending", "Pending"),
+        ("In Progress", "In Progress"),
+        ("Completed", "Completed"),
+        ("Not Interested", "Not Interested"),
+    ]
+
+    name = models.CharField(max_length=150)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    type = models.CharField(max_length=50, choices=TYPE_CHOICES)
+
+    is_read = models.BooleanField(default=False)  # 🔴 NEW
+    followup_status = models.CharField(
+        max_length=20,
+        choices=FOLLOWUP_STATUS,
+        default="Pending"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.type}"

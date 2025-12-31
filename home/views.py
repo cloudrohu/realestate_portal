@@ -13,8 +13,8 @@ from user.models import Developer  # 👈 import your Developer model
 
 from django.shortcuts import render
 from projects.models import Project  # import your Project model
-
-
+from django.http import JsonResponse
+from .forms import HomeContactForm
 
 def index(request):
     settings_obj = Setting.objects.first()
@@ -168,5 +168,42 @@ def cookies(request):
     return render(request, 'terms/cookies-policy.html', {"setting": get_setting()})
 
 
+
+def submit_home_contact(request):
+    if request.method == "POST":
+
+        # 🔐 reCAPTCHA verification
+        recaptcha_response = request.POST.get("g-recaptcha-response")
+        data = {
+            "secret": settings.RECAPTCHA_SECRET_KEY,
+            "response": recaptcha_response
+        }
+        r = requests.post(
+            "https://www.google.com/recaptcha/api/siteverify",
+            data=data
+        )
+        result = r.json()
+
+        if not result.get("success"):
+            return JsonResponse({
+                "status": "error",
+                "message": "reCAPTCHA verification failed"
+            })
+
+        # ✅ Save form
+        form = HomeContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({
+                "status": "success",
+                "message": "Form submitted successfully"
+            })
+
+        return JsonResponse({
+            "status": "error",
+            "errors": form.errors
+        })
+
+    return JsonResponse({"status": "invalid"})
 
 

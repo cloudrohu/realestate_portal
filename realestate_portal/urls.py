@@ -12,6 +12,7 @@ from properties.sitemaps import PropertySitemap, BlogSitemap, StaticSitemap
 
 from projects .views import *   
 
+
 # Define the dictionary of sitemaps
 sitemaps = {
     'static': StaticSitemap,
@@ -21,16 +22,14 @@ sitemaps = {
 }
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('home.urls')),
-    path("", include("utility.urls")),  # ✅ Add this
+    path('', include('home.urls')),   # 👈 YAHIN SE home-contact aayega
+    path('', include('utility.urls')),
     path('projects/', include('projects.urls')),
     path('properties/', include('properties.urls')),
     path('accounts/', include('user.urls')),
-    path("ajax/load-localities/", load_localities, name="ajax_load_localities"),
     path('blog/', include('blog.urls')),
-    
     path('ckeditor/', include('ckeditor_uploader.urls')),
-
 ]
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

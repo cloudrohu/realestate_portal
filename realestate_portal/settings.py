@@ -11,8 +11,13 @@ ALLOWED_HOSTS = ['*']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
-RECAPTCHA_SECRET_KEY = "6LdgIDUsAAAAAIzVGZ6S73rb0IVFIOy1ITHtkuLj"
 
 
 # 🧠 4️⃣ Installed Apps
@@ -80,14 +85,23 @@ TEMPLATES = [
     },
 ]
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+
 # 🧠 9️⃣ Auth
 AUTH_USER_MODEL = 'user.CustomUser'
+
+RECAPTCHA_SITE_KEY = "6Lfs5zssAAAAADMVaU7ADWR-KVRYTiceY2iapH0U"
+RECAPTCHA_SECRET_KEY = "6Lfs5zssAAAAAJfTP8yyIQnBzPX6o7QBUIK-_P5Z"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = 'yourgmail@gmail.com'
+EMAIL_HOST_PASSWORD = 'your-app-password'
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+ADMIN_EMAIL = 'admin@gmail.com'
 
 # 🔐 Password validation
 AUTH_PASSWORD_VALIDATORS = [

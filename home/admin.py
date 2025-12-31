@@ -3,8 +3,11 @@ from django.utils.html import mark_safe
 from .models import (
     Setting, Slider, Leadership, Why_Choose,
     About, Contact_Page, Our_Team,
-    Testimonial, FAQ, ImpactMetric
+    Testimonial, FAQ, ImpactMetric, HomeContact
 )
+from django.http import HttpResponse
+import csv
+from django.utils.html import format_html
 
 # =============================
 # 🌐 WEBSITE SETTINGS ADMIN
@@ -297,3 +300,96 @@ class ImpactMetricAdmin(admin.ModelAdmin):
     list_editable = ("order",)
     ordering = ("order",)
     search_fields = ("title", "value")
+
+
+@admin.register(HomeContact)
+class HomeContactAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "name",
+        "email",
+        "phone",
+        "type",
+        "followup_status",
+        "read_status",
+        "whatsapp_link",
+        "created_at",
+    )
+
+    list_filter = (
+        "type",
+        "followup_status",
+        "is_read",
+        "created_at",
+    )
+
+    search_fields = ("name", "email", "phone")
+    ordering = ("-created_at",)
+    readonly_fields = ("created_at",)
+
+    actions = ["mark_as_read", "export_as_excel"]
+
+    fieldsets = (
+        ("Customer Info", {
+            "fields": ("name", "email", "phone")
+        }),
+        ("Enquiry Details", {
+            "fields": ("type", "followup_status", "is_read")
+        }),
+        ("System", {
+            "fields": ("created_at",)
+        }),
+    )
+
+    # 🔴 Read / Unread badge
+    def read_status(self, obj):
+        if obj.is_read:
+            return format_html('<span style="color:green;font-weight:bold;">Read</span>')
+        return format_html('<span style="color:red;font-weight:bold;">Unread</span>')
+
+    read_status.short_description = "Status"
+
+    # 📲 WhatsApp button
+    def whatsapp_link(self, obj):
+        if obj.phone:
+            return format_html(
+                '<a href="https://wa.me/91{}" target="_blank" '
+                'style="color:green;font-weight:bold;">Chat</a>',
+                obj.phone
+            )
+        return "-"
+
+    whatsapp_link.short_description = "WhatsApp"
+
+    # ✅ Admin Action: Mark as Read
+    def mark_as_read(self, request, queryset):
+        queryset.update(is_read=True)
+
+    mark_as_read.short_description = "Mark selected as Read"
+
+    # 📤 Export to CSV (Excel compatible)
+    def export_as_excel(self, request, queryset):
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="home_contacts.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow([
+            "Name", "Email", "Phone", "Type",
+            "Followup Status", "Read", "Created At"
+        ])
+
+        for obj in queryset:
+            writer.writerow([
+                obj.name,
+                obj.email,
+                obj.phone,
+                obj.type,
+                obj.followup_status,
+                "Yes" if obj.is_read else "No",
+                obj.created_at.strftime("%Y-%m-%d %H:%M"),
+            ])
+
+        return response
+
+    export_as_excel.short_description = "Export Selected to Excel"
+

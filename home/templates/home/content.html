@@ -448,7 +448,7 @@ relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
   </div>
 </section>
 
-<!-- ===================== FULL WIDTH SECTION ======================= -->
+<!-- ===================== How We Work ======================= -->
 <section class="w-full py-12 text-white bg-cover bg-center relative" 
 style="background-image: url('https://sigmahomes.co.in/media/about/Prithvi_Pride.jpg');">
 
@@ -1005,9 +1005,12 @@ style="background-image: url('https://sigmahomes.co.in/media/about/Prithvi_Pride
           <input type="tel" placeholder="Phone Number" class="w-full border px-3 py-2 rounded">
           <textarea rows="3" placeholder="Message" class="w-full border px-3 py-2 rounded"></textarea>
 
-          <button class="w-full bg-orange-500 text-white py-2 rounded">
-            Submit
-          </button>
+          <div class="g-recaptcha" data-sitekey="{{ RECAPTCHA_SITE_KEY }}">.
+            <button class="w-full bg-orange-500 text-white py-2 rounded">
+              Submit
+            </button>
+          </div>
+        
         </form>
       </div>
 
@@ -1114,3 +1117,5 @@ document.addEventListener("DOMContentLoaded", function () {
 }
 </style>
 <!-- NEW LAUNCH SECTION -->
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
