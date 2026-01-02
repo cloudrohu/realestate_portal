@@ -1,4 +1,5 @@
 # projects/views.py
+from urllib import request
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q 
@@ -17,19 +18,15 @@ from django.contrib import messages
 from django.template.loader import render_to_string
 from django.db.models import Min, Max
 
-# --- 1. All Projects Listing Page (Optimized Index) ---
 def index(request):
     # Start with all active projects
     queryset_list = Project.objects.filter(active=True).order_by('project_name')
 
-    # --- Filtering Logic ---
     
-    # 1. City Filter (Standard Foreign Key)
     if 'city_id' in request.GET and request.GET['city_id']:
         city_id = request.GET['city_id']
         queryset_list = queryset_list.filter(city_id=city_id)
 
-    # 2. Locality Filter (MPTT Descendants Implementation)
     if 'locality_id' in request.GET and request.GET['locality_id']:
         locality_id = request.GET['locality_id']
         try:
@@ -46,12 +43,10 @@ def index(request):
             pass # Ignore if invalid ID is passed
 
 
-    # 3. Status Filter
     if 'status' in request.GET and request.GET['status']:
         status = request.GET['status']
         queryset_list = queryset_list.filter(construction_status__iexact=status)
 
-    # 4. Keyword Search (Project Name or Developer Name)
     if 'keywords' in request.GET and request.GET['keywords']:
         keywords = request.GET['keywords']
         queryset_list = queryset_list.filter(
@@ -59,7 +54,6 @@ def index(request):
             Q(developer__name__icontains=keywords)
         )
         
-    # --- Context ---
     
     available_cities = City.objects.all().order_by('name')
     # Fetch all *top-level* Localities for the main dropdown (or all of them if preferred)
@@ -76,254 +70,73 @@ def index(request):
     
     return render(request, 'projects/projects.html', context)
 
-    def search_projects(request):
-        settings_obj = Setting.objects.first()
-
-        # ================= GET PARAMS =================
-        category = request.GET.get("category")
-        property_type = request.GET.get("property_type")
-        city = request.GET.get("city")
-        locality = request.GET.get("locality")
-        location = request.GET.get("location")
-        bhk = request.GET.get("bhk")
-        min_price = request.GET.get("min_price")
-        max_price = request.GET.get("max_price")
-        area = request.GET.get("area")
-        sort = request.GET.get("sort")
-
-        # ================= BASE QUERY =================
-        projects = Project.objects.filter(active=True)
-
-        if category:
-            projects = projects.filter(category__iexact=category)
-
-        if property_type:
-            projects = projects.filter(propert_type__name__iexact=property_type)
-
-        if city:
-            projects = projects.filter(city_id=city)
-
-        if locality:
-            projects = projects.filter(locality_id=locality)
-
-        if location:
-            projects = projects.filter(
-                Q(project_name__icontains=location) |
-                Q(locality__name__icontains=location)
-            )
-
-        if bhk:
-            projects = projects.filter(configurations__bhk=bhk)
-
-        if area:
-            projects = projects.filter(configurations__area_sqft__gte=area)
-
-        # ================= PRICE ANNOTATION =================
-        projects = projects.annotate(
-            min_price_val=Min("configurations__price_in_rupees"),
-            max_price_val=Max("configurations__price_in_rupees"),
-        )
-
-        # ================= PRICE OVERLAP LOGIC =================
-        if min_price:
-            projects = projects.filter(max_price_val__gte=int(min_price))
-
-        if max_price:
-            projects = projects.filter(min_price_val__lte=int(max_price))
-
-        # ================= SORT =================
-        if sort == "price_low":
-            projects = projects.order_by("min_price_val")
-        elif sort == "price_high":
-            projects = projects.order_by("-min_price_val")
-        elif sort == "latest":
-            projects = projects.order_by("-create_at")
-        elif sort == "possession":
-            projects = projects.order_by("possession_year", "possession_month")
-        else:
-            projects = projects.order_by("-create_at")
-
-        projects = projects.distinct()
-
-        # ================= PAGINATION =================
-        paginator = Paginator(projects, 9)
-        page = request.GET.get("page")
-        projects_page = paginator.get_page(page)
-
-        # ================= AJAX RESPONSE =================
-        if request.headers.get("x-requested-with") == "XMLHttpRequest":
-            html = render_to_string(
-                "projects/_project_results.html",
-                {"projects": projects_page},
-                request=request
-            )
-            return JsonResponse({"html": html})
-
-        # ================= NORMAL RESPONSE (ALWAYS RETURN) =================
-        context = {
-            "settings_obj": settings_obj,
-            "projects": projects_page,
-            "cities": City.objects.all(),
-            "selected": request.GET,
-        }
-
-        return render(request, "projects/residential_list.html", context)
-
-
-
-
-
-    def residential_projects(request):
-        query = request.GET.get('q', '')
-        bhk = request.GET.get("bhk")
-        min_price = request.GET.get("min_price")
-        max_price = request.GET.get("max_price")
-
-        projects = Project.objects.filter(
-            propert_type__parent__name__iexact='Residential',
-            active=True
-        ).annotate(
-            min_price=Min("configurations__price_in_rupees"),
-            max_price=Max("configurations__price_in_rupees"),
-        ).select_related(
-            'city', 'locality', 'propert_type'
-        )
-
-        if query:
-            projects = projects.filter(project_name__icontains=query)
-
-        if bhk:
-            projects = projects.filter(configurations__bhk=bhk)
-
-        if min_price:
-            projects = projects.filter(
-                configurations__price_in_rupees__gte=min_price
-            )
-
-        if max_price:
-            projects = projects.filter(
-                configurations__price_in_rupees__lte=max_price
-            )
-
-        context = {
-            'projects': projects.distinct(),
-            'page_title': 'Residential Projects',
-            'breadcrumb': 'Residential',
-        }
-
-        return render(request, 'projects/residential_list.html', context)
 
 def search_projects(request):
     settings_obj = Setting.objects.first()
 
-    # ================= GET PARAMS =================
-    category        = request.GET.get("category")
-    property_type   = request.GET.get("property_type")
-    city            = request.GET.get("city")
-    locality        = request.GET.get("locality")
-    location        = request.GET.get("location")
-    bhk             = request.GET.get("bhk")
-    amenities       = request.GET.get("amenities")
-    furnishing      = request.GET.get("furnishing")
-    construction    = request.GET.get("construction_status")
-    rera            = request.GET.get("rera")
-    min_price       = request.GET.get("min_price")
-    max_price       = request.GET.get("max_price")
-    area            = request.GET.get("area")
-    sort            = request.GET.get("sort")
+    # ================= SAFE GET PARAMS =================
+    location  = request.GET.get("q", "").strip()
+    bhk       = request.GET.get("bhk")
+    area      = request.GET.get("area")
+    amenities = request.GET.get("amenities")
+    sort      = request.GET.get("sort")
 
     # ================= BASE QUERY =================
-    projects = (
-        Project.objects
-        .filter(active=True)
-        .select_related("city", "locality", "developer")
-        .prefetch_related("configurations", "amenities")
-    )
+    projects = Project.objects.filter(active=True)
 
-    # ================= CATEGORY =================
-    if category:
-        projects = projects.filter(category__iexact=category)
-
-    # ================= PROPERTY TYPE (MPTT SAFE) =================
-    if property_type:
-        type_names = [t.strip() for t in property_type.split(",") if t]
-        type_nodes = PropertyType.objects.filter(name__in=type_names)
-
-        all_types = PropertyType.objects.none()
-        for node in type_nodes:
-            all_types |= node.get_descendants(include_self=True)
-
-        projects = projects.filter(propert_type__in=all_types)
-
-    # ================= CITY / LOCALITY =================
-    if city:
-        projects = projects.filter(city_id=city)
-
-    if locality:
-        projects = projects.filter(locality_id=locality)
-
-    # ================= SEARCH TEXT =================
+    # ================= SEARCH (LOCATION FIRST) =================
     if location:
+        location = location.split(",")[0].strip()
+
         projects = projects.filter(
             Q(project_name__icontains=location) |
-            Q(locality__name__icontains=location) |
-            Q(city__name__icontains=location)
+            Q(locality__name__icontains=location)
         )
 
-    # ================= BHK =================
+    # ================= BHK (EXISTS – NO PROJECT DROP) =================
     if bhk:
-        bhk_list = [b.strip() for b in bhk.split(",") if b]
-        projects = projects.filter(configurations__bhk_type__in=bhk_list)
-
-    # ================= AREA (OVERLAP SAFE) =================
-    if area:
-        projects = projects.filter(
-            configurations__area_sqft__gte=int(area)
+        bhk_qs = ProjectConfiguration.objects.filter(
+            project=OuterRef("pk"),
+            bhk_type=bhk
         )
+        projects = projects.annotate(
+            has_bhk=Exists(bhk_qs)
+        ).filter(has_bhk=True)
 
-    # ================= AMENITIES (OPTIMIZED) =================
+    # ================= AREA (EXISTS) =================
+    if area:
+        area_qs = ProjectConfiguration.objects.filter(
+            project=OuterRef("pk"),
+            area_sqft__gte=int(area)
+        )
+        projects = projects.annotate(
+            has_area=Exists(area_qs)
+        ).filter(has_area=True)
+
+    # ================= AMENITIES (EXISTS) =================
     if amenities:
         amenity_list = [a.strip() for a in amenities.split(",") if a]
-        projects = projects.filter(
-            amenities__name__in=amenity_list
+
+        amenity_qs = ProjectAmenities.objects.filter(
+            project=OuterRef("pk"),
+            name__in=amenity_list
         )
+        projects = projects.annotate(
+            has_amenity=Exists(amenity_qs)
+        ).filter(has_amenity=True)
 
-    # ================= FURNISHING =================
-    if furnishing:
-        furnishing_list = [f.strip() for f in furnishing.split(",") if f]
-        projects = projects.filter(furnishing_status__in=furnishing_list)
-
-    # ================= CONSTRUCTION STATUS =================
-    if construction:
-        construction_list = [c.strip() for c in construction.split(",") if c]
-        projects = projects.filter(construction_status__in=construction_list)
-
-    # ================= RERA =================
-    if rera == "approved":
-        projects = projects.filter(rera__isnull=False)
-
-    # ================= PRICE RANGE =================
+    # ================= PRICE =================
     projects = projects.annotate(
-        min_price_val=Min("configurations__price_in_rupees"),
-        max_price_val=Max("configurations__price_in_rupees"),
+        min_price=Min("configurations__price_in_rupees")
     )
 
-    if min_price:
-        projects = projects.filter(max_price_val__gte=int(min_price))
-
-    if max_price:
-        projects = projects.filter(min_price_val__lte=int(max_price))
-
     # ================= SORT =================
-    sort_map = {
-        "price_low": "min_price_val",
-        "price_high": "-min_price_val",
-        "latest": "-create_at",
-        "possession": "possession_year",
-    }
-    projects = projects.order_by(sort_map.get(sort, "-create_at"))
-
-    projects = projects.distinct()
+    if sort == "price_low":
+        projects = projects.order_by("min_price")
+    elif sort == "price_high":
+        projects = projects.order_by("-min_price")
+    else:
+        projects = projects.order_by("-create_at")
 
     # ================= PAGINATION =================
     paginator = Paginator(projects, 9)
@@ -338,23 +151,11 @@ def search_projects(request):
         )
         return JsonResponse({"html": html})
 
-    # ================= CONTEXT =================
-    context = {
-        "settings_obj": settings_obj,
+    return render(request, "projects/residential_list.html", {
         "projects": projects_page,
-        "cities": City.objects.filter(level_type="CITY"),
-        "localities": Locality.objects.all(),
-        "property_types": PropertyType.objects.filter(is_selectable=True),
-        "amenities_list": PropertyAmenities.objects.all(),
-
-        "bhk_choices": ["1 BHK", "2 BHK", "3 BHK", "4 BHK", "5 BHK"],
-        "construction_choices": ["New Launch", "Under Construction", "Ready to move"],
-        "furnishing_choices": ["Unfurnished", "Semifurnished", "Furnished"],
-
+        "settings_obj": settings_obj,
         "selected": request.GET,
-    }
-
-    return render(request, "projects/residential_list.html", context)
+    })
 
 def residential_projects(request):
     query = request.GET.get("q", "")  # YES

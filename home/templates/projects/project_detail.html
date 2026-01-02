@@ -727,7 +727,7 @@ body.popup-open .rera-badges {
                             </td>
 
                             <td class="border px-4 py-4">
-                                ₹{{ c.price_in_rupees|intcomma }}
+                                {{ c.formatted_price }}
                             </td>
 
                             <td class="border px-4 py-4">
@@ -1533,13 +1533,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         <!-- DESCRIPTION -->
         <p class="text-sm text-gray-700 leading-relaxed mt-6">
-            Mahindra Lifespaces is one of the leading real estate development companies in India. 
-            We have projects across the country and provide thoughtfully designed living spaces. 
-            Projects in Mumbai Metropolitan Region, Pune, Nagpur, Ahmedabad, Delhi NCR,
+            {{ project.developer.about_developer }}
         </p>
 
-        <a href="#" class="text-green-600 font-semibold text-sm block mt-2">Read More…</a>
-
+        
         <!-- BUTTON -->
         <button class="mt-6 bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg">
             View All Projects Now !
