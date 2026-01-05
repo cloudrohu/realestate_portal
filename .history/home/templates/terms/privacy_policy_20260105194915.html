@@ -2,6 +2,22 @@
 {% load static %}
 
 {% block content %}
+<div class="max-w-5xl mx-auto px-5 py-10">
+
+    <!-- HEADER -->
+    <header class="text-center mb-10">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Privacy Policy</h1>
+    </header>
+
+    <!-- MAIN CARD -->
+    <div class="bg-white shadow-lg rounded-xl p-6 md:p-10 border">
+        {{ setting.|safe }}
+    </div>
+
+</div>
+{% endblock content %}
+
+{% block content %}
 {% for setting in settings_obj %}
 <div class="max-w-5xl mx-auto px-5 py-10">
 
@@ -12,7 +28,7 @@
 
     <!-- MAIN CARD -->
     <div class="bg-white shadow-lg rounded-xl p-6 md:p-10 border">
-        {{ setting.cookies|safe }}
+        {{ setting.privacy_policy|safe }}
     </div>
 
 </div>

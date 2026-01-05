@@ -1,5 +1,8 @@
+{% extends "base.html" %}
+{% load static %}
+
 {% block content %}
-{% for setting in settings_obj %}
+{% for rs in settings_obj %}
 <div class="max-w-5xl mx-auto px-5 py-10">
 
     <!-- HEADER -->
@@ -9,7 +12,7 @@
 
     <!-- MAIN CARD -->
     <div class="bg-white shadow-lg rounded-xl p-6 md:p-10 border">
-        {{ setting.disclaimer|safe }}
+        {{ setting.cookies|safe }}
     </div>
 
 </div>
