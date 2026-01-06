@@ -40,186 +40,465 @@
 <!-- ================= MAIN CONTAINER ================= -->
 <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
 
-  <aside class="space-y-6 lg:sticky lg:top-24">
+    <aside class="space-y-6 lg:sticky lg:top-24">
 
-    <form method="get" id="filterForm"
-          class="bg-white shadow-lg rounded-xl p-6 space-y-4">
+      <form method="get" id="filterForm" class="bg-white shadow-lg rounded-xl p-6 space-y-4">
 
       <!-- ================= HEADER ================= -->
-      <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="font-bold text-gray-800 text-lg">Advanced Search</h3>
-        <button type="button"
-                onclick="clearAllFilters()"
-                class="text-orange-600 text-sm font-semibold">
-          Clear All Filters
-        </button>
+      <div class="border-b pb-3">
+        <h3 class="font-bold text-gray-800 text-lg">
+          Advanced Search
+        </h3>
       </div>
 
-      <!-- ================= HIDDEN INPUTS (🔥 MUST) ================= -->
-      <input type="hidden" name="property_type"
-            id="property_type_input"
-            value="{{ selected.property_type|default:'' }}">
-
-      <input type="hidden" name="bhk"
-            id="bhk_input"
-            value="{{ selected.bhk|default:'' }}">
-
-      <input type="hidden" name="amenities"
-            id="amenities_input"
-            value="{{ selected.amenities|default:'' }}">
-
-      <input type="hidden" name="furnishing"
-            id="furnishing_input"
-            value="{{ selected.furnishing|default:'' }}">
-
-      <input type="hidden" name="construction_status"
-            id="construction_input"
-            value="{{ selected.construction_status|default:'' }}">
-
-      <input type="hidden" name="rera"
-            id="rera_input"
-            value="{{ selected.rera|default:'' }}">
-
       <!-- ================= CATEGORY ================= -->
-      <select name="category" class="w-full border px-3 py-2 rounded-lg text-sm">
-        <option value="">Residential</option>
-        <option value="commercial"
-          {% if selected.category == "commercial" %}selected{% endif %}>
-          Commercial
-        </option>
+      <select name="category" id="categorySelect" onchange="loadPropertyTypes()" class="w-full border px-3 py-2 rounded-lg text-sm">
+        <option value="residential">Residential</option>
+        <option value="commercial">Commercial</option>
       </select>
 
+       <!-- ================= TYPE OF PROPERTY BODY ================= -->
+      <div class="border rounded-xl overflow-hidden">
 
-      <!-- ================= TYPE OF PROPERTY ================= -->
-      <div class="border rounded-lg p-3">
-
+        <!-- HEADER -->
         <button type="button"
-                onclick="toggleBlock('propertyTypeBody','propertyArrow')"
-                class="w-full flex justify-between items-center font-semibold">
-          <span>Type of property</span>
-          <i id="propertyArrow"
-            class="fa-solid fa-chevron-down transition-transform"></i>
+          onclick="toggleTypeProperty()"
+          class="w-full flex justify-between items-center
+                px-4 py-3 bg-white">
+
+          <h4 class="text-sm font-semibold text-gray-800">
+            Type of property
+          </h4>
+
+          <svg id="typeArrow"
+            class="w-4 h-4 text-gray-500 transition-transform duration-300"
+            fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M19 9l-7 7-7-7" />
+          </svg>
         </button>
 
-        <div id="propertyTypeBody" class="hidden mt-3 flex flex-wrap gap-2">
-          <button type="button" class="property-pill"
-            data-group="property"
-            data-value="Residential Apartment"
-            onclick="togglePill(this,'property_type_input')">
-            + Residential Apartment
+        <!-- BODY -->
+        <div id="typeBody"
+          class="overflow-hidden transition-all duration-300 ease-in-out
+                max-h-0 opacity-0">
+
+          <div class="px-4 pt-3 pb-4 space-y-2">
+
+            <div id="typePills" class="flex flex-wrap gap-2"></div>
+
+            <button id="typeMoreBtn" type="button"
+              onclick="toggleTypeMore()"
+              class="text-sm text-orange-600 font-medium hidden">
+              + 1 more
+            </button>
+
+            <input type="hidden" name="property_type"
+              id="propertyTypeInput">
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- ================= NO. OF BEDROOMS ================= -->
+      <div class="border rounded-xl overflow-hidden">
+
+        <!-- HEADER -->
+        <button type="button" onclick="toggleBhkSection()"
+          class="w-full flex justify-between items-center px-4 py-3 bg-white">
+
+          <h4 class="text-sm font-semibold text-gray-800">
+            No. of Bedrooms
+          </h4>
+
+          <svg id="bhkArrow"
+            class="w-4 h-4 text-gray-500 transition-transform duration-300"
+            fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        <!-- BODY -->
+        <div id="bhkBody"
+          class="hidden px-4 pt-3 pb-4 space-y-3">
+
+          <!-- Pills -->
+          <div class="flex flex-wrap gap-2">
+
+            <button type="button" class="bhk-pill"
+              onclick="toggleBhkPill(this)" data-value="1 RK/1 BHK">
+              + 1 RK/1 BHK
+            </button>
+
+            <button type="button" class="bhk-pill"
+              onclick="toggleBhkPill(this)" data-value="2 BHK">
+              + 2 BHK
+            </button>
+
+            <button type="button" class="bhk-pill"
+              onclick="toggleBhkPill(this)" data-value="3 BHK">
+              + 3 BHK
+            </button>
+
+            <button type="button" class="bhk-pill"
+              onclick="toggleBhkPill(this)" data-value="4 BHK">
+              + 4 BHK
+            </button>
+
+            <button type="button" class="bhk-pill"
+              onclick="toggleBhkPill(this)" data-value="5 BHK">
+              + 5 BHK
+            </button>
+
+            <!-- MORE -->
+            <div id="bhkMore" class="hidden flex flex-wrap gap-2">
+              <button type="button" class="bhk-pill"
+                onclick="toggleBhkPill(this)" data-value="6 BHK">+ 6 BHK</button>
+              <button type="button" class="bhk-pill"
+                onclick="toggleBhkPill(this)" data-value="7 BHK">+ 7 BHK</button>
+              <button type="button" class="bhk-pill"
+                onclick="toggleBhkPill(this)" data-value="8 BHK">+ 8 BHK</button>
+              <button type="button" class="bhk-pill"
+                onclick="toggleBhkPill(this)" data-value="9 BHK">+ 9 BHK</button>
+              <button type="button" class="bhk-pill"
+                onclick="toggleBhkPill(this)" data-value="9+ BHK">+ 9+ BHK</button>
+            </div>
+          </div>
+
+          <!-- + more -->
+          <button id="bhkMoreBtn" type="button"
+            onclick="showMoreBhk()"
+            class="text-sm text-orange-600 font-medium">
+            + 5 more
           </button>
 
-          <button type="button" class="property-pill"
-            data-group="property"
-            data-value="Independent House/Villa"
-            onclick="togglePill(this,'property_type_input')">
-            + Independent House/Villa
-          </button>
+          <input type="hidden" name="bhk" id="bhkInput">
 
-          <button type="button" class="property-pill"
-            data-group="property"
-            data-value="Residential Land"
-            onclick="togglePill(this,'property_type_input')">
-            + Residential Land
-          </button>
         </div>
       </div>
 
-      <!-- ================= BHK ================= -->
-      <div class="border rounded-lg p-3">
+        <!-- ================= CONSTRUCTION STATUS ================= -->
+        <div class="border rounded-xl overflow-hidden">
 
-        <button type="button"
-                onclick="toggleBlock('bhkBody','bhkArrow')"
-                class="w-full flex justify-between items-center font-semibold">
-          <span>No. of Bedrooms</span>
-          <i id="bhkArrow"
-            class="fa-solid fa-chevron-down transition-transform"></i>
-        </button>
+          <!-- HEADER -->
+          <button type="button"
+            onclick="csToggle()"
+            class="w-full flex justify-between items-center px-4 py-3 bg-white">
 
-       <div id="bhkBody" class="hidden mt-3 flex flex-wrap gap-2">
-        {% for bhk in bhk_choices %}
-          <button type="button" class="bedroom-pill"
-            data-group="bhk"
-            data-value="{{ bhk }}"
-            onclick="togglePill(this,'bhk_input')">
-            + {{ bhk }}
+            <h4 class="text-sm font-semibold text-gray-800">
+              Construction Status
+            </h4>
+
+            <svg id="csArrow"
+              class="w-4 h-4 text-gray-500 transition-transform duration-300"
+              fill="none" stroke="currentColor" stroke-width="2"
+              viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M19 9l-7 7-7-7" />
+            </svg>
           </button>
-        {% endfor %}
-      </div>
-      </div>
 
-      <!-- ================= CONSTRUCTION ================= -->
-      <div class="border rounded-lg p-3">
+          <!-- BODY -->
+          <div id="csBody" class="hidden px-4 pt-3 pb-4">
 
-        <button type="button"
-                onclick="toggleBlock('constructionBody','constructionArrow')"
-                class="w-full flex justify-between items-center font-semibold">
-          <span>Construction Status</span>
-          <i id="constructionArrow"
-            class="fa-solid fa-chevron-down transition-transform"></i>
-        </button>
+            <div class="flex flex-wrap gap-2">
 
-      <div id="constructionBody" class="hidden mt-3 flex flex-wrap gap-2">
-        {% for status in construction_choices %}
-          <button type="button" class="orange-pill"
-            data-group="construction"
-            data-value="{{ status }}"
-            onclick="togglePill(this,'construction_input')">
-            + {{ status }}
+              <button type="button"
+                onclick="csPill(this)"
+                data-value="New Launch"
+                class="cs-pill">
+                + New Launch
+              </button>
+
+              <button type="button"
+                onclick="csPill(this)"
+                data-value="Under Construction"
+                class="cs-pill">
+                + Under Construction
+              </button>
+
+              <button type="button"
+                onclick="csPill(this)"
+                data-value="Ready to move"
+                class="cs-pill">
+                + Ready to move
+              </button>
+
+            </div>
+
+            <input type="hidden"
+              name="construction_status"
+              id="csInput">
+          </div>
+        </div>
+
+        <!-- ================= LOCALITIES ================= -->
+      <div class="border rounded-xl overflow-hidden">
+
+        <!-- HEADER -->
+        <div class="flex justify-between items-center px-4 py-3 bg-white">
+
+          <button type="button"
+            onclick="locToggle()"
+            class="flex items-center gap-2 text-sm font-semibold text-gray-800">
+            Localities
+            <svg id="locArrow"
+              class="w-4 h-4 transition-transform"
+              fill="none" stroke="currentColor" stroke-width="2"
+              viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M19 9l-7 7-7-7"/>
+            </svg>
           </button>
-        {% endfor %}
-      </div>
 
+          <button type="button"
+            onclick="clearLocalities()"
+            class="text-blue-600 text-sm font-medium">
+            Clear
+          </button>
+        </div>
+
+        <!-- BODY -->
+        <div id="locBody" class="hidden px-4 pb-4 space-y-2 text-sm">
+
+          <!-- Quick list -->
+          <label class="flex items-center gap-2">
+            <input type="checkbox" class="loc-cb" value="Malad East" onchange="updateLocalities()">
+            Malad East
+          </label>
+
+          <label class="flex items-center gap-2">
+            <input type="checkbox" class="loc-cb" value="Kandivali" onchange="updateLocalities()">
+            Kandivali
+          </label>
+
+          <label class="flex items-center gap-2">
+            <input type="checkbox" class="loc-cb" value="Andheri" onchange="updateLocalities()">
+            Andheri
+          </label>
+
+          <label class="flex items-center gap-2">
+            <input type="checkbox" class="loc-cb" value="Malad" onchange="updateLocalities()">
+            Malad
+          </label>
+
+          <label class="flex items-center gap-2">
+            <input type="checkbox" class="loc-cb" value="Borivali" onchange="updateLocalities()">
+            Borivali
+          </label>
+
+          <!-- More -->
+          <button type="button"
+            onclick="openLocalityModal()"
+            class="flex items-center gap-2 text-blue-600 text-sm font-medium mt-2">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            More Localities
+          </button>
+
+          <input type="hidden" name="locality" id="localityInput">
+        </div>
       </div>
 
       <!-- ================= AMENITIES ================= -->
-      <div class="border rounded-lg p-3">
+      <div class="border rounded-xl overflow-hidden">
 
-        <button type="button"
-                onclick="toggleBlock('amenitiesBody','amenitiesArrow')"
-                class="w-full flex justify-between items-center font-semibold">
-          <span>Amenities</span>
-          <i id="amenitiesArrow"
-            class="fa-solid fa-chevron-down transition-transform"></i>
-        </button>
+        <!-- HEADER -->
+        <div class="flex justify-between items-center px-4 py-3 bg-white">
 
-        <div id="amenitiesBody" class="hidden mt-3 flex flex-wrap gap-2">
-          {% for a in amenities_list %}
-          <button type="button" class="amenities-pill"
-            data-group="amenities"
-            data-value="{{ a.name }}"
-            onclick="togglePill(this,'amenities_input')">
-            + {{ a.name }}
+          <button type="button"
+            onclick="amenToggle()"
+            class="flex items-center gap-2 text-sm font-semibold text-gray-800">
+            Amenities
+            <svg id="amenArrow"
+              class="w-4 h-4 transition-transform"
+              fill="none" stroke="currentColor" stroke-width="2"
+              viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M19 9l-7 7-7-7"/>
+            </svg>
           </button>
-          {% endfor %}
+
+          <button type="button"
+            onclick="amenClear()"
+            class="text-blue-600 text-sm font-medium">
+            Clear
+          </button>
+        </div>
+
+        <!-- BODY -->
+        <div id="amenBody" class="hidden px-4 pt-3 pb-4 space-y-3">
+
+          <!-- Pills -->
+          <div class="flex flex-wrap gap-2">
+
+            <button type="button" class="amen-pill"
+              onclick="amenPill(this)" data-value="Gymnasium">
+              + Gymnasium
+            </button>
+
+            <button type="button" class="amen-pill"
+              onclick="amenPill(this)" data-value="Parking">
+              + Parking
+            </button>
+
+            <button type="button" class="amen-pill"
+              onclick="amenPill(this)" data-value="Park">
+              + Park
+            </button>
+
+            <button type="button" class="amen-pill"
+              onclick="amenPill(this)" data-value="Swimming Pool">
+              + Swimming Pool
+            </button>
+
+            <button type="button" class="amen-pill"
+              onclick="amenPill(this)" data-value="Lift">
+              + Lift
+            </button>
+
+            <!-- MORE -->
+            <div id="amenMore" class="hidden flex flex-wrap gap-2">
+              <button type="button" class="amen-pill"
+                onclick="amenPill(this)" data-value="Club House">+ Club House</button>
+              <button type="button" class="amen-pill"
+                onclick="amenPill(this)" data-value="Jogging Track">+ Jogging Track</button>
+              <button type="button" class="amen-pill"
+                onclick="amenPill(this)" data-value="Kids Play Area">+ Kids Play Area</button>
+              <button type="button" class="amen-pill"
+                onclick="amenPill(this)" data-value="Security">+ Security</button>
+              <button type="button" class="amen-pill"
+                onclick="amenPill(this)" data-value="Power Backup">+ Power Backup</button>
+            </div>
+
+          </div>
+
+          <!-- + more -->
+          <button id="amenMoreBtn" type="button"
+            onclick="amenShowMore()"
+            class="text-sm text-blue-600 font-medium">
+            + 5 more
+          </button>
+
+          <!-- hidden input -->
+          <input type="hidden" name="amenities" id="amenInput">
         </div>
       </div>
 
-   
-      <!-- ================= BUDGET ================= -->
-      <div class="grid grid-cols-2 gap-3">
-      <input type="number" name="min_price"
-        value="{{ selected.min_price }}"
-        placeholder="Min Budget"
-        class="border px-3 py-2 rounded-lg">
+      <!-- ================= FURNISHING ================= -->
+      <div class="border rounded-xl overflow-hidden">
 
-      <input type="number" name="max_price"
-        value="{{ selected.max_price }}"
-        placeholder="Max Budget"
-        class="border px-3 py-2 rounded-lg">
+        <!-- HEADER -->
+        <div class="flex justify-between items-center px-4 py-3 bg-white">
+
+          <button type="button"
+            onclick="furToggle()"
+            class="flex items-center gap-2 text-sm font-semibold text-gray-800">
+            Furnishing
+            <svg id="furArrow"
+              class="w-4 h-4 transition-transform"
+              fill="none" stroke="currentColor" stroke-width="2"
+              viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+
+          <button type="button"
+            onclick="furClear()"
+            class="text-blue-600 text-sm font-medium">
+            Clear
+          </button>
+        </div>
+
+        <!-- BODY -->
+        <div id="furBody" class="hidden px-4 pt-3 pb-4 space-y-3">
+
+          <div class="flex flex-wrap gap-2">
+
+            <button type="button" class="fur-pill"
+              onclick="furPill(this)" data-value="Unfurnished">
+              + Unfurnished
+            </button>
+
+            <button type="button" class="fur-pill"
+              onclick="furPill(this)" data-value="Semi Furnished">
+              + Semi Furnished
+            </button>
+
+            <button type="button" class="fur-pill"
+              onclick="furPill(this)" data-value="Fully Furnished">
+              + Fully Furnished
+            </button>
+
+          </div>
+
+          <!-- hidden input -->
+          <input type="hidden" name="furnishing" id="furInput">
+        </div>
       </div>
 
-      <!-- ================= SUBMIT ================= -->
-      <button type="submit"
-        class="w-full bg-orange-500 hover:bg-orange-600
-              text-white font-semibold py-3 rounded-xl">
-        Search Properties
-      </button>
+      <!-- ================= RERA APPROVED ================= -->
+      <div class="border rounded-xl overflow-hidden">
 
-    </form>
-  </aside>
+        <!-- HEADER -->
+        <div class="flex justify-between items-center px-4 py-3 bg-white">
+
+          <button type="button"
+            onclick="reraToggle()"
+            class="flex items-center gap-2 text-sm font-semibold text-gray-800">
+            RERA Approved
+            <svg id="reraArrow"
+              class="w-4 h-4 transition-transform"
+              fill="none" stroke="currentColor" stroke-width="2"
+              viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+
+          <button type="button"
+            onclick="reraClear()"
+            class="text-blue-600 text-sm font-medium">
+            Clear
+          </button>
+        </div>
+
+        <!-- BODY -->
+        <div id="reraBody" class="hidden px-4 pt-3 pb-4 space-y-3">
+
+          <div class="flex flex-wrap gap-2">
+
+            <button type="button" class="rera-pill"
+              onclick="reraSelect(this)" data-value="RERA approved properties">
+              + RERA approved properties
+            </button>
+
+            <button type="button" class="rera-pill"
+              onclick="reraSelect(this)" data-value="RERA registered dealers">
+              + RERA registered dealers
+            </button>
+
+          </div>
+
+          <!-- hidden input -->
+          <input type="hidden" name="rera" id="reraInput">
+        </div>
+      </div>
 
 
+        <!-- ================= SUBMIT ================= -->
+        <button type="submit"
+          class="w-full bg-orange-500 hover:bg-orange-600
+                text-white font-semibold py-3 rounded-xl">
+          Search Properties
+        </button>
+
+      </form>
+    </aside>
 
   <div class="lg:col-span-2 space-y-6">
 
@@ -1061,63 +1340,6 @@ document.querySelectorAll(".config-card").forEach(card => {
 </script>
 
 
-
-
-<style>
-  .amenities-pill {
-    padding: 6px 14px;
-    border: 1px solid #fb923c;      /* orange-400 */
-    border-radius: 9999px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #ea580c;                 /* orange-600 */
-    background: #fff;
-    transition: all 0.2s ease;
-  }
-
-  .amenities-pill:hover {
-    background: #fff7ed;            /* orange-50 */
-    border-color: #f97316;          /* orange-500 */
-  }
-
-  .amenities-pill.active {
-    background: #f97316;            /* orange-500 */
-    color: #fff;
-    border-color: #f97316;
-  }
-</style>
-
-
-
-<script>
-  function toggleAmenities() {
-    document.getElementById("amenitiesBody").classList.toggle("hidden");
-    document.getElementById("amenitiesArrow").classList.toggle("rotate-180");
-  }
-
-  function clearAmenities() {
-    document
-      .querySelectorAll("#amenitiesBody .amenities-pill")
-      .forEach(btn => btn.classList.remove("active"));
-  }
-
-  // multi-select
-  document.addEventListener("click", function (e) {
-    if (e.target.classList.contains("amenities-pill")) {
-      e.target.classList.toggle("active");
-    }
-  });
-</script>
-
-
-
-
-
-
-
-
-<!-- filter style and scripts  -->
-
 <style>
 /* Glass tabs */
 .bhk-tab {
@@ -1149,52 +1371,6 @@ document.querySelectorAll(".config-card").forEach(card => {
 }
 </style>
 
-<style>
-  .property-pill {
-    padding: 6px 14px;
-    border: 1px solid #fb923c; /* orange-400 */
-    border-radius: 9999px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #ea580c; /* orange-600 */
-    background: #fff;
-    transition: all 0.2s ease;
-  }
-
-  .property-pill:hover {
-    background: #fff7ed; /* orange-50 */
-    border-color: #f97316; /* orange-500 */
-  }
-
-  .property-pill.active {
-    background: #f97316; /* orange-500 */
-    color: #fff;
-    border-color: #f97316;
-  }
-</style>
-
-
-<script>
-  function togglePropertyType() {
-    const body = document.getElementById("propertyTypeBody");
-    const arrow = document.getElementById("propertyArrow");
-
-    body.classList.toggle("hidden");
-    arrow.classList.toggle("rotate-180");
-  }
-
-  function toggleMoreProperty(btn) {
-    document.getElementById("moreProperty").classList.remove("hidden");
-    btn.classList.add("hidden");
-  }
-
-  // active state (multi select)
-  document.addEventListener("click", function (e) {
-    if (e.target.classList.contains("property-pill")) {
-      e.target.classList.toggle("active");
-    }
-  });
-</script>
 
 <style>
       /* ================= BHK TABS SCROLL ================= */
@@ -1247,428 +1423,94 @@ document.querySelectorAll(".config-card").forEach(card => {
 
 </style>
 
-<style>
-
-
-  .bedroom-pill {
-    padding: 6px 14px;
-    border: 1px solid #fb923c;      /* orange-400 */
-    border-radius: 9999px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #ea580c;                 /* orange-600 */
-    background: #fff;
-    transition: all 0.2s ease;
-  }
-
-  .bedroom-pill:hover {
-    background: #fff7ed;            /* orange-50 */
-    border-color: #f97316;          /* orange-500 */
-  }
-
-  .bedroom-pill.active {
-    background: #f97316;            /* orange-500 */
-    color: #fff;
-    border-color: #f97316;
-  }
-</style>
-
-<script>
-  function toggleBedrooms() {
-    const body = document.getElementById("bedroomBody");
-    const arrow = document.getElementById("bedroomArrow");
-
-    body.classList.toggle("hidden");
-    arrow.classList.toggle("rotate-180");
-  }
-
-  function toggleMoreBedrooms(btn) {
-    document.getElementById("moreBedrooms").classList.remove("hidden");
-    btn.classList.add("hidden");
-  }
-
-  // Active select (multi-select)
-  document.addEventListener("click", function (e) {
-    if (e.target.classList.contains("bedroom-pill")) {
-      e.target.classList.toggle("active");
-    }
-  });
-</script>
-
-<style>
-  .orange-pill {
-    padding: 6px 14px;
-    border: 1px solid #fb923c;      /* orange-400 */
-    border-radius: 9999px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #ea580c;                 /* orange-600 */
-    background: #fff;
-    transition: all 0.2s ease;
-  }
-
-  .orange-pill:hover {
-    background: #fff7ed;            /* orange-50 */
-    border-color: #f97316;          /* orange-500 */
-  }
-
-  .orange-pill.active {
-    background: #f97316;            /* orange-500 */
-    color: #fff;
-    border-color: #f97316;
-  }
-</style>
-
-<script>
-function toggleConstruction() {
-  document.getElementById("constructionBody").classList.toggle("hidden");
-  document.getElementById("constructionArrow").classList.toggle("rotate-180");
-}
-
-function togglePostedBy() {
-  document.getElementById("postedByBody").classList.toggle("hidden");
-  document.getElementById("postedByArrow").classList.toggle("rotate-180");
-}
-
-// active pill toggle (multi-select)
-document.addEventListener("click", function (e) {
-  if (e.target.classList.contains("orange-pill")) {
-    e.target.classList.toggle("active");
-  }
-});
-</script>
-
-<style>
-  /* Furnishing */
-  .furnishing-pill {
-    padding: 6px 14px;
-    border: 1px solid #fb923c;
-    border-radius: 9999px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #ea580c;
-    background: #fff;
-    transition: all 0.2s ease;
-  }
-  .furnishing-pill:hover {
-    background: #fff7ed;
-    border-color: #f97316;
-  }
-  .furnishing-pill.active {
-    background: #f97316;
-    color: #fff;
-    border-color: #f97316;
-  }
-
-  /* RERA */
-  .rera-pill {
-    padding: 6px 14px;
-    border: 1px solid #fb923c;
-    border-radius: 9999px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #ea580c;
-    background: #fff;
-    transition: all 0.2s ease;
-  }
-  .rera-pill:hover {
-    background: #fff7ed;
-    border-color: #f97316;
-  }
-  .rera-pill.active {
-    background: #f97316;
-    color: #fff;
-    border-color: #f97316;
-  }
-</style>
-
-<script>
-  function toggleFurnishing() {
-    document.getyan;
-    document.getElementById("furnishingBody").classList.toggle("hidden");
-    document.getElementById("furnishingArrow").classList.toggle("rotate-180");
-  }
-
-  function toggleRera() {
-    document.getElementById("reraBody").classList.toggle("hidden");
-    document.getElementById("reraArrow").classList.toggle("rotate-180");
-  }
-
-  // active pill (multi-select)
-  document.addEventListener("click", function (e) {
-    if (
-      e.target.classList.contains("furnishing-pill") ||
-      e.target.classList.contains("rera-pill")
-    ) {
-      e.target.classList.toggle("active");
-    }
-  });
-</script>
-
-<style>
-.active-pill{
-    background:#f97316;
-    color:#fff;
-    border-color:#f97316;
-}
-.locality-checkbox {
-  accent-color: #f97316; /* orange */
-}
-</style>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  document.querySelectorAll(".config-card").forEach(card => {
-
-    const tabs = card.querySelectorAll(".bhk-tab");
-    const panels = card.querySelectorAll(".bhk-panel");
-    const underline = card.querySelector(".bhk-underline");
-
-    function activateTab(tab) {
-      tabs.forEach(t => t.classList.remove("active"));
-      tab.classList.add("active");
-
-      // underline position
-      underline.style.width = tab.offsetWidth + "px";
-      underline.style.left = tab.offsetLeft + "px";
-
-      // panel switch
-      const target = tab.dataset.target;
-      panels.forEach(p => {
-        p.classList.toggle("hidden", p.dataset.panel !== target);
-      });
-
-      // auto scroll tab into view
-      tab.scrollIntoView({
-        behavior: "smooth",
-        inline: "center"
-      });
-    }
-
-    // init first tab
-    if (tabs.length) activateTab(tabs[0]);
-
-    tabs.forEach(tab => {
-      tab.addEventListener("click", () => activateTab(tab));
-    });
-
-  });
-
-});
-</script>
-
-
-<script>
-  function toggleLocalities() {
-    document.getElementById("localityBody").classList.toggle("hidden");
-    document.getElementById("localityArrow").classList.toggle("rotate-180");
-  }
-
-  function openLocalityModal() {
-    document.getElementById("localityModal").classList.remove("hidden");
-  }
-
-  function closeLocalityModal() {
-    document.getElementById("localityModal").classList.add("hidden");
-  }
-
-  function clearLocalities() {
-    document
-      .querySelectorAll('.locality-checkbox')
-      .forEach(cb => cb.checked = false);
-  }
-</script>
-
-<script>
-  function clearAllFilters() {
-
-    /* ================= CHECKBOXES ================= */
-    document
-      .querySelectorAll('input[type="checkbox"]')
-      .forEach(cb => cb.checked = false);
-
-    /* ================= TEXT / NUMBER INPUTS ================= */
-    document
-      .querySelectorAll('input[type="text"], input[type="number"]')
-      .forEach(input => input.value = "");
-
-    /* ================= SELECT DROPDOWNS ================= */
-    document
-      .querySelectorAll('select')
-      .forEach(select => select.selectedIndex = 0);
-
-    /* ================= PILLS (ALL TYPES) ================= */
-    document
-      .querySelectorAll(
-        '.property-pill, .bedroom-pill, .amenities-pill, ' +
-        '.furnishing-pill, .rera-pill, .orange-pill'
-      )
-      .forEach(pill => pill.classList.remove("active"));
-
-    /* ================= OPTIONAL: CLOSE ALL ACCORDIONS ================= */
-    document
-      .querySelectorAll('[id$="Body"]')
-      .forEach(body => body.classList.add("hidden"));
-
-    document
-      .querySelectorAll('[id$="Arrow"]')
-      .forEach(arrow => arrow.classList.remove("rotate-180"));
-  }
-</script>
-
-<script>
-function toggleBlock(bodyId, arrowId) {
-  document.getElementById(bodyId).classList.toggle("hidden");
-  document.getElementById(arrowId).classList.toggle("rotate-180");
-}
-
-function togglePill(btn, inputId) {
-  btn.classList.toggle("active-pill");
-
-  const group = btn.dataset.group;
-  const values = [];
-
-  document
-    .querySelectorAll(`[data-group="${group}"].active-pill`)
-    .forEach(el => values.push(el.dataset.value));
-
-  document.getElementById(inputId).value = values.join(",");
-}
-
-function clearAllFilters() {
-  document.getElementById("filterForm").reset();
-
-  document.querySelectorAll(".active-pill")
-    .forEach(el => el.classList.remove("active-pill"));
-
-  document.querySelectorAll("input[type=hidden]")
-    .forEach(el => el.value = "");
-}
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  function activateFromInput(inputId, group) {
-    const input = document.getElementById(inputId);
-    if (!input || !input.value) return;
-
-    const values = input.value.split(",");
-
-    document
-      .querySelectorAll(`[data-group="${group}"]`)
-      .forEach(btn => {
-        if (values.includes(btn.dataset.value)) {
-          btn.classList.add("active-pill");
-        }
-      });
-  }
-
-  activateFromInput("property_type_input", "property");
-  activateFromInput("bhk_input", "bhk");
-  activateFromInput("amenities_input", "amenities");
-  activateFromInput("furnishing_input", "furnishing");
-  activateFromInput("construction_input", "construction");
-  activateFromInput("rera_input", "rera");
-
-});
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  function autoOpen(bodyId, inputId) {
-    const input = document.getElementById(inputId);
-    if (input && input.value) {
-      document.getElementById(bodyId).classList.remove("hidden");
-    }
-  }
-
-  autoOpen("propertyTypeBody", "property_type_input");
-  autoOpen("bhkBody", "bhk_input");
-  autoOpen("amenitiesBody", "amenities_input");
-  autoOpen("furnishingBody", "furnishing_input");
-  autoOpen("constructionBody", "construction_input");
-
-});
-</script>
-
-
 <!-- ================= LOCALITY MODAL ================= -->
-<div id="localityModal"
-  class="fixed inset-0 bg-black/40 hidden z-50 flex items-center justify-center">
+<div id="locModal" class="fixed inset-0 bg-black/40 hidden z-50 flex items-center justify-center px-3">
 
-  <div class="bg-white w-full max-w-3xl rounded-xl shadow-lg p-6 relative">
+  <div class="bg-white w-full max-w-3xl rounded-xl shadow-lg p-5 relative">
 
     <!-- CLOSE -->
     <button onclick="closeLocalityModal()"
-      class="absolute top-0 mb-6 right-1 text-gray-500 hover:text-orange-600">
+      class="absolute top-4 right-4 text-gray-500 hover:text-orange-600">
       <i class="fa-solid fa-xmark text-xl"></i>
     </button>
 
     <!-- SEARCH -->
-    <div class="flex items-center border rounded-lg px-4 py-2 mb-6">
-      <input type="text"
+    <div class="flex items-center border rounded-lg px-4 py-2 mb-4">
+      <input type="text" id="locSearch"
+        onkeyup="filterLocalities()"
         placeholder="Search Localities"
         class="w-full outline-none text-sm">
       <i class="fa-solid fa-magnifying-glass text-orange-500"></i>
     </div>
 
-    <div class="grid grid-cols-2 gap-8">
+    <div class="grid grid-cols-2 gap-10 text-sm leading-relaxed" id="locList">
 
-      <!-- TOP -->
-      <div>
-        <h4 class="font-semibold mb-3">Top Localities</h4>
+      <div class="space-y-3">
+        <h4 class="font-semibold mb-4 text-gray-800">
+          Top Localities
+        </h4>
 
-        <label class="flex items-center gap-2 text-sm mb-2">
-          <input type="checkbox" class="locality-checkbox" checked>
-          <i class="fa-solid fa-location-dot text-orange-500"></i>
-          Malad
-        </label>
-
-        <label class="flex items-center gap-2 text-sm mb-2">
-          <input type="checkbox" class="locality-checkbox">
-          <i class="fa-solid fa-location-dot text-orange-500"></i>
+        <label class="flex items-center gap-3 loc-item py-1">
+          <input type="checkbox" value="Kandivali" onchange="syncLocality(this)">
           Kandivali
         </label>
 
-        <label class="flex items-center gap-2 text-sm mb-2">
-          <input type="checkbox" class="locality-checkbox">
-          <i class="fa-solid fa-location-dot text-orange-500"></i>
+        <label class="flex items-center gap-3 loc-item py-1">
+          <input type="checkbox" value="Andheri" onchange="syncLocality(this)">
           Andheri
+        </label>
+
+        <label class="flex items-center gap-3 loc-item py-1">
+          <input type="checkbox" value="Malad" onchange="syncLocality(this)">
+          Malad
+        </label>
+
+        <label class="flex items-center gap-3 loc-item py-1">
+          <input type="checkbox" value="Borivali" onchange="syncLocality(this)">
+          Borivali
         </label>
       </div>
 
-      <!-- MORE -->
-      <div>
-        <h4 class="font-semibold mb-3">More Localities</h4>
+      <!-- RIGHT -->
+      <div class="space-y-3">
+        <h4 class="font-semibold mb-4 text-gray-800">
+          More Localities
+        </h4>
 
-        <label class="flex items-center gap-2 text-sm mb-2">
-          <input type="checkbox" class="locality-checkbox">
-          <i class="fa-solid fa-location-dot text-orange-500"></i>
-          Kandivali East
-        </label>
-
-        <label class="flex items-center gap-2 text-sm mb-2">
-          <input type="checkbox" class="locality-checkbox">
-          <i class="fa-solid fa-location-dot text-orange-500"></i>
+        <label class="flex items-center gap-3 loc-item py-1">
+          <input type="checkbox" value="Andheri West" onchange="syncLocality(this)">
           Andheri West
         </label>
 
-        <label class="flex items-center gap-2 text-sm mb-2">
-          <input type="checkbox" class="locality-checkbox">
-          <i class="fa-solid fa-location-dot text-orange-500"></i>
+        <label class="flex items-center gap-3 loc-item py-1">
+          <input type="checkbox" value="Andheri East" onchange="syncLocality(this)">
+          Andheri East
+        </label>
+
+        <label class="flex items-center gap-3 loc-item py-1">
+          <input type="checkbox" value="Malad West" onchange="syncLocality(this)">
+          Malad West
+        </label>
+
+        <label class="flex items-center gap-3 loc-item py-1">
+          <input type="checkbox" value="Borivali East" onchange="syncLocality(this)">
+          Borivali East
+        </label>
+
+        <label class="flex items-center gap-3 loc-item py-1">
+          <input type="checkbox" value="Borivali West" onchange="syncLocality(this)">
           Borivali West
         </label>
       </div>
 
     </div>
+
   </div>
 </div>
 
 
+<link rel="stylesheet" href="{% static 'projects/assets/css/pills.css' %}">
+<script src="{% static 'projects/assets/js/pills.js' %}"></script>
 
 
 {% endblock %}
-
