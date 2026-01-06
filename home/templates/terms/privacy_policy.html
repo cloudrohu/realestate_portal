@@ -1,17 +1,24 @@
+{% extends "base.html" %}
 {% block content %}
-{% for setting in settings_obj %}
-<div class="max-w-5xl mx-auto px-5 py-10">
+<div class="bg-gray-50 min-h-screen py-10">
+  <div class="max-w-5xl mx-auto px-4">
 
-    <!-- HEADER -->
-    <header class="text-center mb-10">
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Cookies-Policy</h1>
-    </header>
+    <!-- CARD -->
+    <div class="bg-white shadow-lg rounded-2xl p-6 md:p-10 border border-gray-200">
 
-    <!-- MAIN CARD -->
-    <div class="bg-white shadow-lg rounded-xl p-6 md:p-10 border">
-        {{ setting.privacy_policy|safe }}
+      <!-- HEADING INSIDE CARD -->
+      <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 text-center">
+        Privacy Policy
+      </h1>
+
+      <!-- CONTENT -->
+      <div class="prose prose-gray max-w-none text-sm md:text-base">
+        {{ settings_obj.privacy_policy|safe }}
+      </div>
+
     </div>
 
+  </div>
 </div>
-{% endfor %}
-{% endblock content %}
+
+{% endblock %}

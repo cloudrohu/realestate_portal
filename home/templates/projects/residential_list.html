@@ -40,9 +40,10 @@
 <!-- ================= MAIN CONTAINER ================= -->
 <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
 
-    <aside class="space-y-6 lg:sticky lg:top-24">
+    <aside class="space-y-4 md:space-y-5 lg:space-y-6 lg:sticky lg:top-24">
 
-      <form method="get" id="filterForm" class="bg-white shadow-lg rounded-xl p-6 space-y-4">
+
+      <form class="bg-white shadow-md md:shadow-lg rounded-2xl p-4 md:p-5 lg:p-6 space-y-4 md:space-y-5">
 
       <!-- ================= HEADER ================= -->
       <div class="border-b pb-3">
@@ -58,7 +59,7 @@
       </select>
 
        <!-- ================= TYPE OF PROPERTY BODY ================= -->
-      <div class="border rounded-xl overflow-hidden">
+      <div class="border rounded-xl overflow-hidden shadow-sm md:shadow-none">
 
         <!-- HEADER -->
         <button type="button"
@@ -103,11 +104,11 @@
 
 
       <!-- ================= NO. OF BEDROOMS ================= -->
-      <div class="border rounded-xl overflow-hidden">
+      <div class="border rounded-xl overflow-hidden shadow-sm md:shadow-none">
 
         <!-- HEADER -->
         <button type="button" onclick="toggleBhkSection()"
-          class="w-full flex justify-between items-center px-4 py-3 bg-white">
+          class="w-full flex justify-between items-center px-4 py-3 md:py-3.5 bg-white active:bg-gray-50">
 
           <h4 class="text-sm font-semibold text-gray-800">
             No. of Bedrooms
@@ -182,12 +183,12 @@
       </div>
 
         <!-- ================= CONSTRUCTION STATUS ================= -->
-        <div class="border rounded-xl overflow-hidden">
+        <div class="border rounded-xl overflow-hidden shadow-sm md:shadow-none">
 
           <!-- HEADER -->
           <button type="button"
             onclick="csToggle()"
-            class="w-full flex justify-between items-center px-4 py-3 bg-white">
+            class="w-full flex justify-between items-center px-4 py-3 md:py-3.5 bg-white active:bg-gray-50">
 
             <h4 class="text-sm font-semibold text-gray-800">
               Construction Status
@@ -237,7 +238,7 @@
         </div>
 
         <!-- ================= LOCALITIES ================= -->
-      <div class="border rounded-xl overflow-hidden">
+      <div class="border rounded-xl overflow-hidden shadow-sm md:shadow-none">
 
         <!-- HEADER -->
         <div class="flex justify-between items-center px-4 py-3 bg-white">
@@ -304,7 +305,7 @@
       </div>
 
       <!-- ================= AMENITIES ================= -->
-      <div class="border rounded-xl overflow-hidden">
+      <div class="border rounded-xl overflow-hidden shadow-sm md:shadow-none">
 
         <!-- HEADER -->
         <div class="flex justify-between items-center px-4 py-3 bg-white">
@@ -389,7 +390,7 @@
       </div>
 
       <!-- ================= FURNISHING ================= -->
-      <div class="border rounded-xl overflow-hidden">
+      <div class="border rounded-xl overflow-hidden shadow-sm md:shadow-none">
 
         <!-- HEADER -->
         <div class="flex justify-between items-center px-4 py-3 bg-white">
@@ -442,7 +443,7 @@
       </div>
 
       <!-- ================= RERA APPROVED ================= -->
-      <div class="border rounded-xl overflow-hidden">
+      <div class="border rounded-xl overflow-hidden shadow-sm md:shadow-none">
 
         <!-- HEADER -->
         <div class="flex justify-between items-center px-4 py-3 bg-white">
@@ -498,7 +499,16 @@
         </button>
 
       </form>
+      <div class="fixed bottom-0 left-0 right-0 p-3 bg-white shadow-lg md:hidden z-50">
+        <button type="submit"
+          form="filterForm"
+          class="w-full bg-orange-500 hover:bg-orange-600
+                text-white font-semibold py-3 rounded-xl">
+          Search Properties
+        </button>
+      </div>
     </aside>
+
 
   <div class="lg:col-span-2 space-y-6">
 
