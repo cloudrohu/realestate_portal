@@ -53,13 +53,13 @@
       </div>
 
       <!-- ================= CATEGORY ================= -->
-      <select name="category" id="categorySelect" onchange="loadPropertyTypes()" class="w-full border px-3 py-2 rounded-lg text-sm">
+      <select name="category" id="categorySelect" onchange="loadPropertyTypes()" class="w-full border px-3 py-2 text-sm">
         <option value="residential">Residential</option>
         <option value="commercial">Commercial</option>
       </select>
 
        <!-- ================= TYPE OF PROPERTY BODY ================= -->
-      <div class="border rounded-xl overflow-hidden shadow-sm md:shadow-none">
+      <div class="border overflow-hidden shadow-sm md:shadow-none">
 
         <!-- HEADER -->
         <button type="button"
@@ -104,7 +104,7 @@
 
 
       <!-- ================= NO. OF BEDROOMS ================= -->
-      <div class="border rounded-xl overflow-hidden shadow-sm md:shadow-none">
+      <div class="border overflow-hidden shadow-sm md:shadow-none">
 
         <!-- HEADER -->
         <button type="button" onclick="toggleBhkSection()"
@@ -183,7 +183,7 @@
       </div>
 
         <!-- ================= CONSTRUCTION STATUS ================= -->
-        <div class="border rounded-xl overflow-hidden shadow-sm md:shadow-none">
+        <div class="border overflow-hidden shadow-sm md:shadow-none">
 
           <!-- HEADER -->
           <button type="button"
@@ -238,7 +238,7 @@
         </div>
 
         <!-- ================= LOCALITIES ================= -->
-      <div class="border rounded-xl overflow-hidden shadow-sm md:shadow-none">
+      <div class="border overflow-hidden shadow-sm md:shadow-none">
 
         <!-- HEADER -->
         <div class="flex justify-between items-center px-4 py-3 bg-white">
@@ -305,7 +305,7 @@
       </div>
 
       <!-- ================= AMENITIES ================= -->
-      <div class="border rounded-xl overflow-hidden shadow-sm md:shadow-none">
+      <div class="border overflow-hidden shadow-sm md:shadow-none">
 
         <!-- HEADER -->
         <div class="flex justify-between items-center px-4 py-3 bg-white">
@@ -390,7 +390,7 @@
       </div>
 
       <!-- ================= FURNISHING ================= -->
-      <div class="border rounded-xl overflow-hidden shadow-sm md:shadow-none">
+      <div class="border overflow-hidden shadow-sm md:shadow-none">
 
         <!-- HEADER -->
         <div class="flex justify-between items-center px-4 py-3 bg-white">
@@ -443,7 +443,7 @@
       </div>
 
       <!-- ================= RERA APPROVED ================= -->
-      <div class="border rounded-xl overflow-hidden shadow-sm md:shadow-none">
+      <div class="border overflow-hidden shadow-sm md:shadow-none">
 
         <!-- HEADER -->
         <div class="flex justify-between items-center px-4 py-3 bg-white">
@@ -492,10 +492,8 @@
 
 
         <!-- ================= SUBMIT ================= -->
-        <button type="submit"
-          class="w-full bg-orange-500 hover:bg-orange-600
-                text-white font-semibold py-3 rounded-xl">
-          Search Properties
+        <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3">
+          Filter Properties
         </button>
 
       </form>
@@ -512,19 +510,15 @@
 
   <div class="lg:col-span-2 space-y-6">
 
-    <div class="flex items-center gap-2 bg-white shadow p-3 rounded mb-4">
+    <div class="flex items-center gap-2 bg-white shadow p-3 mb-4">
 
-      <button id="listViewBtn"
-              class="bg-orange-500 text-white p-2 rounded">
+      <button id="listViewBtn" class="bg-orange-500 text-white p-2">
         <i class="fas fa-list"></i>
       </button>
 
       <!-- Grid Button (Desktop only) -->
-      <button id="gridViewBtn"
-              class="hidden sm:hidden md:inline-flex
-                    items-center justify-center
-                    bg-gray-200 text-gray-700 p-2 rounded
-                    hover:bg-orange-100 hover:text-orange-600 transition">
+      <button id="gridViewBtn" class="hidden sm:hidden md:inline-flex
+       items-center justify-center bg-gray-200 text-gray-700 p-[12px] hover:bg-orange-100 hover:text-orange-600 transition">
         <i class="fas fa-th"></i>
       </button>
 
@@ -785,21 +779,18 @@
       </div>
 
       <!-- ================= GRID VIEW ================= -->
-      <div id="gridView"
-          class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+      <div id="gridView" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
 
             {% for project in projects %}
-            <div class="bg-white rounded-xl shadow border hover:shadow-lg hover:border-orange-500 transition">
+            <div class="bg-white shadow border hover:shadow-lg hover:border-orange-500 transition">
 
               <!-- IMAGE -->
               <a href="{{ project.get_absolute_url }}">
                 {% if project.image %}
-                  <img src="{{ project.image.url }}"
-                      class="w-full h-[230px] object-cover rounded-t-xl"
+                  <img src="{{ project.image.url }}" class="w-full h-[230px] object-cover"
                       alt="{{ project.project_name }}">
                 {% else %}
-                  <img src="{% static 'images/no-images.jpg' %}"
-                      class="w-full h-[230px] object-cover rounded-t-xl"
+                  <img src="{% static 'images/no-images.jpg' %}" class="w-full h-[230px] object-cover"
                       alt="No Image">
                 {% endif %}
               </a>
@@ -835,7 +826,7 @@
                 </div>
 
                 <!-- ================= CONFIGURATION BOX ================= -->
-                <div class="border rounded-lg bg-white text-xs">
+                <div class="border  bg-white text-xs">
 
                   {% with project.configurations.all as configs %}
                   {% if configs %}
