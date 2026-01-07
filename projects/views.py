@@ -76,6 +76,7 @@ def search_projects(request):
 
     # ================= SAFE GET PARAMS =================
     location  = request.GET.get("q", "").strip()
+    city      = request.GET.get("city", "").strip()
     bhk       = request.GET.get("bhk")
     area      = request.GET.get("area")
     amenities = request.GET.get("amenities")
@@ -84,16 +85,21 @@ def search_projects(request):
     # ================= BASE QUERY =================
     projects = Project.objects.filter(active=True)
 
-    # ================= SEARCH (LOCATION FIRST) =================
+    # ================= LOCATION SEARCH (PROJECT / LOCALITY / CITY) =================
     if location:
         location = location.split(",")[0].strip()
 
         projects = projects.filter(
             Q(project_name__icontains=location) |
-            Q(locality__name__icontains=location)
+            Q(locality__name__icontains=location) |
+            Q(city__name__icontains=location)
         )
 
-    # ================= BHK (EXISTS – NO PROJECT DROP) =================
+    # ================= CITY FILTER (DROPDOWN SUPPORT) =================
+    if city:
+        projects = projects.filter(city__name__iexact=city)
+
+    # ================= BHK FILTER (EXISTS – SAFE) =================
     if bhk:
         bhk_qs = ProjectConfiguration.objects.filter(
             project=OuterRef("pk"),
@@ -103,17 +109,21 @@ def search_projects(request):
             has_bhk=Exists(bhk_qs)
         ).filter(has_bhk=True)
 
-    # ================= AREA (EXISTS) =================
+    # ================= AREA FILTER (EXISTS) =================
     if area:
-        area_qs = ProjectConfiguration.objects.filter(
-            project=OuterRef("pk"),
-            area_sqft__gte=int(area)
-        )
-        projects = projects.annotate(
-            has_area=Exists(area_qs)
-        ).filter(has_area=True)
+        try:
+            area = int(area)
+            area_qs = ProjectConfiguration.objects.filter(
+                project=OuterRef("pk"),
+                area_sqft__gte=area
+            )
+            projects = projects.annotate(
+                has_area=Exists(area_qs)
+            ).filter(has_area=True)
+        except ValueError:
+            pass
 
-    # ================= AMENITIES (EXISTS) =================
+    # ================= AMENITIES FILTER (EXISTS) =================
     if amenities:
         amenity_list = [a.strip() for a in amenities.split(",") if a]
 
@@ -125,7 +135,7 @@ def search_projects(request):
             has_amenity=Exists(amenity_qs)
         ).filter(has_amenity=True)
 
-    # ================= PRICE =================
+    # ================= PRICE ANNOTATION =================
     projects = projects.annotate(
         min_price=Min("configurations__price_in_rupees")
     )
@@ -142,7 +152,7 @@ def search_projects(request):
     paginator = Paginator(projects, 9)
     projects_page = paginator.get_page(request.GET.get("page"))
 
-    # ================= AJAX =================
+    # ================= AJAX SUPPORT =================
     if request.headers.get("x-requested-with") == "XMLHttpRequest":
         html = render_to_string(
             "projects/_project_results.html",
@@ -151,11 +161,16 @@ def search_projects(request):
         )
         return JsonResponse({"html": html})
 
-    return render(request, "projects/residential_list.html", {
-        "projects": projects_page,
-        "settings_obj": settings_obj,
-        "selected": request.GET,
-    })
+    # ================= NORMAL RENDER =================
+    return render(
+        request,
+        "projects/residential_list.html",
+        {
+            "projects": projects_page,
+            "settings_obj": settings_obj,
+            "selected": request.GET,
+        }
+    )
 
 def residential_projects(request):
     query = request.GET.get("q", "")  # YES
