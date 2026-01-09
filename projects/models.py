@@ -59,8 +59,10 @@ class Project(MPTTModel):
     )
 
     Construction_Status = (
-        ('Under Construction', 'Under Construction'), ('New Launch', 'New Launch'),
-        ('Partially Ready To Move', 'Partially Ready To Move'), ('Ready To Move', 'Ready To Move'),
+        ('Under Construction', 'Under Construction'),
+        ('New Launch', 'New Launch'),
+        ('Partially Ready To Move', 'Partially Ready To Move'),
+        ('Ready To Move', 'Ready To Move'),
         ('Deleverd', 'Deleverd'),
     )
     

@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse 
 from properties.models import Property 
-from utility.models import Locality,PropertyType,City,Bank
+from utility.models import Locality,PropertyType,City,Bank,ProjectAmenities
 from .models import (
     Setting, Slider, Testimonial, About, Leadership,
     Contact_Page, FAQ, Our_Team,Why_Choose,ImpactMetric
@@ -43,7 +43,9 @@ def index(request):
     bank = Bank.objects.all().order_by("title")
 
     about_page = About.objects.filter(is_active=True).first()
+    about_page = About.objects.filter(is_active=True).first()
     impactmetric = ImpactMetric.objects.all()
+    amenities = ProjectAmenities.objects.all()
     why_choose_items = Why_Choose.objects.filter(is_active=True).order_by("order")
     testimonials = Testimonial.objects.all().order_by("-id")
     faqs = FAQ.objects.all().order_by("id")
@@ -59,6 +61,7 @@ def index(request):
             "cities": cities,
             "current_city": current_city,
             "impactmetric": impactmetric,
+            "amenities": amenities,
             "project_featured": project_featured,
             "new_launch_residential": new_launch_residential,
             "new_launch_commercial": new_launch_commercial,
