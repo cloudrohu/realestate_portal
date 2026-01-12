@@ -52,11 +52,72 @@
                   </h3>
                 </div>
 
-                <!-- ================= CATEGORY ================= -->
-                <select name="category" id="categorySelect" onchange="loadPropertyTypes()" class="w-full border px-3 py-2 text-sm">
-                  <option value="residential">Residential</option>
-                  <option value="commercial">Commercial</option>
-                </select>
+                 <!-- ================= LOCALITIES ================= -->
+                <div class="border overflow-hidden shadow-sm md:shadow-none">
+
+                  <!-- HEADER -->
+                  <div class="flex justify-between items-center px-4 py-3 bg-white">
+
+                    <button type="button"
+                      onclick="locToggle()"
+                      class="flex items-center gap-2 text-sm font-semibold text-gray-800">
+                      Localities
+                      <svg id="locArrow"
+                        class="w-4 h-4 transition-transform"
+                        fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M19 9l-7 7-7-7"/>
+                      </svg>
+                    </button>
+
+                    <button type="button"
+                      onclick="clearLocalities()"
+                      class="text-blue-600 text-sm font-medium">
+                      Clear
+                    </button>
+                  </div>
+
+                  <!-- BODY -->
+                  <div id="locBody" class="hidden px-4 pb-4 space-y-2 text-sm">
+
+                    <!-- Quick list -->
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" class="loc-cb" value="Malad East" onchange="updateLocalities()">
+                      Malad East
+                    </label>
+
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" class="loc-cb" value="Kandivali" onchange="updateLocalities()">
+                      Kandivali
+                    </label>
+
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" class="loc-cb" value="Andheri" onchange="updateLocalities()">
+                      Andheri
+                    </label>
+
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" class="loc-cb" value="Malad" onchange="updateLocalities()">
+                      Malad
+                    </label>
+
+                    <label class="flex items-center gap-2">
+                      <input type="checkbox" class="loc-cb" value="Borivali" onchange="updateLocalities()">
+                      Borivali
+                    </label>
+
+                    <!-- More -->
+                    <button type="button"
+                      onclick="openLocalityModal()"
+                      class="flex items-center gap-2 text-blue-600 text-sm font-medium mt-2">
+                      <i class="fa-solid fa-magnifying-glass"></i>
+                      More Localities
+                    </button>
+
+                    <input type="hidden" name="locality" id="localityInput">
+                  </div>
+                </div>
 
                 
                 <!-- ================= NO. OF BEDROOMS ================= -->
@@ -170,72 +231,7 @@
                   </div>
                 </div>
 
-                  <!-- ================= LOCALITIES ================= -->
-                <div class="border overflow-hidden shadow-sm md:shadow-none">
-
-                  <!-- HEADER -->
-                  <div class="flex justify-between items-center px-4 py-3 bg-white">
-
-                    <button type="button"
-                      onclick="locToggle()"
-                      class="flex items-center gap-2 text-sm font-semibold text-gray-800">
-                      Localities
-                      <svg id="locArrow"
-                        class="w-4 h-4 transition-transform"
-                        fill="none" stroke="currentColor" stroke-width="2"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M19 9l-7 7-7-7"/>
-                      </svg>
-                    </button>
-
-                    <button type="button"
-                      onclick="clearLocalities()"
-                      class="text-blue-600 text-sm font-medium">
-                      Clear
-                    </button>
-                  </div>
-
-                  <!-- BODY -->
-                  <div id="locBody" class="hidden px-4 pb-4 space-y-2 text-sm">
-
-                    <!-- Quick list -->
-                    <label class="flex items-center gap-2">
-                      <input type="checkbox" class="loc-cb" value="Malad East" onchange="updateLocalities()">
-                      Malad East
-                    </label>
-
-                    <label class="flex items-center gap-2">
-                      <input type="checkbox" class="loc-cb" value="Kandivali" onchange="updateLocalities()">
-                      Kandivali
-                    </label>
-
-                    <label class="flex items-center gap-2">
-                      <input type="checkbox" class="loc-cb" value="Andheri" onchange="updateLocalities()">
-                      Andheri
-                    </label>
-
-                    <label class="flex items-center gap-2">
-                      <input type="checkbox" class="loc-cb" value="Malad" onchange="updateLocalities()">
-                      Malad
-                    </label>
-
-                    <label class="flex items-center gap-2">
-                      <input type="checkbox" class="loc-cb" value="Borivali" onchange="updateLocalities()">
-                      Borivali
-                    </label>
-
-                    <!-- More -->
-                    <button type="button"
-                      onclick="openLocalityModal()"
-                      class="flex items-center gap-2 text-blue-600 text-sm font-medium mt-2">
-                      <i class="fa-solid fa-magnifying-glass"></i>
-                      More Localities
-                    </button>
-
-                    <input type="hidden" name="locality" id="localityInput">
-                  </div>
-                </div>
+              
 
              <!-- ================= AMENITIES ================= -->
               <div class="border overflow-hidden shadow-sm md:shadow-none border-b last:border-0">
