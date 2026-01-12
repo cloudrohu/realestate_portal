@@ -23,7 +23,7 @@
 
           {% for rs in project_featured %}
           <div class="swiper-slide">
-            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200">
+            <div class="bg-white shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200">
 
               <!-- Image Section -->
               <div class="relative h-60 w-full overflow-hidden">
@@ -147,126 +147,124 @@
 
     <!-- Tabs -->
     <div class="flex flex-wrap justify-center mb-8 gap-3">
-      <button data-tab="residential" class="tab-btn active px-6 py-2 rounded-full font-semibold shadow transition">
+      <button data-tab="residential" class="tab-btn active px-6 py-2 font-semibold shadow transition">
         Residential
       </button>
-      <button data-tab="commercial" class="tab-btn bg-gray-200 text-gray-800 px-6 py-2 rounded-full font-semibold hover:bg-orange-200 transition">
+      <button data-tab="commercial" class="tab-btn bg-gray-200 text-gray-800 px-6 py-2 font-semibold hover:bg-orange-200 transition">
         Commercial
       </button>
     </div>
 
-    <!-- residential TAB -->
-    <!-- RESIDENTIAL TAB -->
-<div id="residential" class="tab-content">
-  <div class="swiper mySwiper">
-    <div class="swiper-wrapper">
+          <!-- residential TAB -->
+      <div id="residential" class="tab-content">
+        <div class="swiper mySwiper">
+          <div class="swiper-wrapper">
 
-      {% for project in new_launch_residential %}
-      <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
+            {% for project in new_launch_residential %}
+            <div class="swiper-slide bg-white shadow-lg  overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
 
-        <div class="relative">
-          {% if project.image %}
-            <img src="{{ project.image.url }}" class="w-full h-48 object-cover">
-          {% else %}
-            <img src="https://dummyimage.com/400x250/cccccc/000000&text=No+Image" class="w-full h-48 object-cover">
-          {% endif %}
+              <div class="relative">
+                {% if project.image %}
+                  <img src="{{ project.image.url }}" class="w-full h-48 object-cover">
+                {% else %}
+                  <img src="https://dummyimage.com/400x250/cccccc/000000&text=No+Image" class="w-full h-48 object-cover">
+                {% endif %}
 
-          <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">
-            NEW LAUNCH
-          </span>
+                <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">
+                  NEW LAUNCH
+                </span>
 
-          <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">
-            Residential
-          </span>
-        </div>
+                <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">
+                  Residential
+                </span>
+              </div>
 
-        <div class="p-4">
-          <p class="text-lg font-bold text-gray-700">
-            {{ project.project_name }}
-          </p>
+              <div class="p-4">
+                <p class="text-lg font-bold text-gray-700">
+                  {{ project.project_name }}
+                </p>
 
-          <p class="text-orange-600 font-semibold mt-1">
-            {{ project.get_configuration_details|linebreaksbr }}
-          </p>
+                <p class="text-orange-600 font-semibold mt-1">
+                  {{ project.get_configuration_details|linebreaksbr }}
+                </p>
 
-          <p class="text-sm text-gray-600 mt-1">
-            <i class="fas fa-map-marker-alt text-orange-500"></i>
-            {{ project.locality.name }}, {{ project.city.name }}
-          </p>
-        </div>
+                <p class="text-sm text-gray-600 mt-1">
+                  <i class="fas fa-map-marker-alt text-orange-500"></i>
+                  {{ project.locality.name }}, {{ project.city.name }}
+                </p>
+              </div>
 
-        <div class="bg-orange-500 text-center">
-          <a href="{{ project.get_absolute_url }}"
-             class="block text-white font-bold w-full py-3 uppercase">
-            See Details
-          </a>
-        </div>
-      </div>
-      {% empty %}
-        <p class="text-center text-gray-500">No Residential New Launch Projects</p>
-      {% endfor %}
+              <div class="bg-orange-500 text-center">
+                <a href="{{ project.get_absolute_url }}"
+                  class="block text-white font-bold w-full py-3 uppercase">
+                  See Details
+                </a>
+              </div>
+            </div>
+            {% empty %}
+              <p class="text-center text-gray-500">No Residential New Launch Projects</p>
+            {% endfor %}
 
-    </div>
+          </div>
 
-    
-  </div>
-</div>
-
-
-    <!-- RENT TAB -->
-    <!-- COMMERCIAL TAB -->
-<div id="commercial" class="tab-content hidden">
-  <div class="swiper mySwiper">
-    <div class="swiper-wrapper">
-
-      {% for project in new_launch_commercial %}
-      <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
-
-        <div class="relative">
-          {% if project.image %}
-            <img src="{{ project.image.url }}" class="w-full h-48 object-cover">
-          {% else %}
-            <img src="https://dummyimage.com/400x250/cccccc/000000&text=No+Image" class="w-full h-48 object-cover">
-          {% endif %}
-
-          <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">
-            NEW LAUNCH
-          </span>
-
-          <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">
-            Commercial
-          </span>
-        </div>
-
-        <div class="p-4">
-          <p class="text-lg font-bold text-gray-700">
-            {{ project.project_name }}
-          </p>
-
-          <p class="text-orange-600 font-semibold mt-1">
-            {{ project.get_configuration_details|linebreaksbr }}
-          </p>
-
-          <p class="text-sm text-gray-600 mt-1">
-            <i class="fas fa-map-marker-alt text-orange-500"></i>
-            {{ project.locality.name }}, {{ project.city.name }}
-          </p>
-        </div>
-
-        <div class="bg-orange-500 text-center">
-          <a href="{{ project.get_absolute_url }}"
-             class="block text-white font-bold w-full py-3 uppercase">
-            See Details
-          </a>
+          
         </div>
       </div>
-      {% empty %}
-        <p class="text-center text-gray-500">No Commercial New Launch Projects</p>
-      {% endfor %}
 
-    </div>
-  </div>
-</div>
+
+          <!-- COMMERCIAL TAB -->
+      <div id="commercial" class="tab-content hidden">
+        <div class="swiper mySwiper">
+          <div class="swiper-wrapper">
+
+            {% for project in new_launch_commercial %}
+            <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
+
+              <div class="relative">
+                {% if project.image %}
+                  <img src="{{ project.image.url }}" class="w-full h-48 object-cover">
+                {% else %}
+                  <img src="https://dummyimage.com/400x250/cccccc/000000&text=No+Image" class="w-full h-48 object-cover">
+                {% endif %}
+
+                <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 ">
+                  NEW LAUNCH
+                </span>
+
+                <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 ">
+                  Commercial
+                </span>
+              </div>
+
+              <div class="p-4">
+                <p class="text-lg font-bold text-gray-700">
+                  {{ project.project_name }}
+                </p>
+
+                <p class="text-orange-600 font-semibold mt-1">
+                  {{ project.get_configuration_details|linebreaksbr }}
+                </p>
+
+                <p class="text-sm text-gray-600 mt-1">
+                  <i class="fas fa-map-marker-alt text-orange-500"></i>
+                  {{ project.locality.name }}, {{ project.city.name }}
+                </p>
+              </div>
+
+              <div class="bg-orange-500 text-center">
+                <a href="{{ project.get_absolute_url }}"
+                  class="block text-white font-bold w-full py-3 uppercase">
+                  See Details
+                </a>
+              </div>
+            </div>
+            {% empty %}
+              <p class="text-center text-gray-500">No Commercial New Launch Projects</p>
+            {% endfor %}
+
+          </div>
+        </div>
+      </div>
 
 
   </div>
@@ -295,7 +293,7 @@
     <div class="md:col-span-3 grid md:grid-cols-3 gap-6">
 
       <!-- CARD 1 - READY TO MOVE -->
-      <div class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+      <div class="relative overflow-hidden shadow-lg group cursor-pointer">
         <img src="https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg" 
              class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
         
@@ -312,7 +310,7 @@
       </div>
 
       <!-- CARD 2 - DER EARLY POSSESSION -->
-      <div class="relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+      <div class="relative overflow-hidden shadow-lg group cursor-pointer">
         <img src="https://images.pexels.com/photos/439416/pexels-photo-439416.jpeg" 
              class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
 
@@ -327,8 +325,7 @@
       </div>
 
       <!-- CARD 3 - NEW LAUNCH -->
-      <div class="Find Your Dream Property
-relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
+      <div class="Find Your Dream Property relative overflow-hidden shadow-lg group cursor-pointer">
         <img src="https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg" 
              class="w-full h-64 object-cover group-hover:scale-105 transition duration-500">
 
@@ -394,13 +391,13 @@ relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
     <!-- IMAGE SIDE -->
     <div class="relative group" data-aos="zoom-in-right">
 
-      <div class="absolute -inset-2 bg-orange-500/10 blur-xl rounded-3xl opacity-0 group-hover:opacity-100 transition"></div>
+      <div class="absolute -inset-2 bg-orange-500/10 blur-xl opacity-0 group-hover:opacity-100 transition"></div>
 
       <img src="{{ about_page.home_bg.url|default:'https://dummyimage.com/600x380/cccccc/000&text=Why+Choose+Us' }}"
-           class="relative w-full h-[450px] object-cover rounded-3xl shadow-xl transition group-hover:scale-[1.01]"
+           class="relative w-full h-[450px] object-cover  shadow-xl transition group-hover:scale-[1.01]"
            alt="Why Choose">
 
-      <div class="absolute inset-0 rounded-3xl border border-white/20 pointer-events-none"></div>
+      <div class="absolute inset-0 border border-white/20 pointer-events-none"></div>
     </div>
 
     <!-- TEXT SIDE WITH INTERNAL SCROLL -->
@@ -449,8 +446,7 @@ relative rounded-xl overflow-hidden shadow-lg group cursor-pointer">
 </section>
 
 <!-- ===================== How We Work ======================= -->
-<section class="w-full py-12 text-white bg-cover bg-center relative" 
-style="background-image: url('https://sigmahomes.co.in/media/about/Prithvi_Pride.jpg');">
+<section class="w-full py-12 text-white bg-cover bg-center relative" style="background-image: url('https://sigmahomes.co.in/media/about/Prithvi_Pride.jpg');">
 
   <div class="absolute inset-0 bg-black/50"></div>
 
