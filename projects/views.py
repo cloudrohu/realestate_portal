@@ -1,18 +1,23 @@
 # projects/views.py
-from urllib import request
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Q 
-from .models import Project
+from django.db.models import Q, Min, Max
+from django.http import JsonResponse
+
 from home.models import Setting
-from properties.models import Property # Needed for project_details if included
+from properties.models import Property
+
 # Import related models for dropdowns
-from utility.models import City, Locality , PropertyType , PossessionIn , ProjectAmenities , Bank , PropertyAmenities
-# Import related models for dropdowns
+from utility.models import (
+    City, Locality, PropertyType, PossessionIn,
+    ProjectAmenities, Bank, PropertyAmenities
+)
+
 from .models import (
     Project, Configuration, Gallery, RERA_Info, BookingOffer, Overview,
-    USP, Amenities, Header, WelcomeTo, Connectivity, WhyInvest,Enquiry,ProjectFAQ
-) 
+    USP, Amenities, Header, WelcomeTo, Connectivity, WhyInvest, Enquiry, ProjectFAQ
+)
+
 
 def index(request):
     # Start with all active projects
