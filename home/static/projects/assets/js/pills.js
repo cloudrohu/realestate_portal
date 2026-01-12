@@ -1,36 +1,4 @@
-const PROPERTY_TYPES = {
-  residential: [
-    "Residential Apartment",
-    "Independent House/Villa",
-    "Residential Land",
-    "Independent/Builder Floor",
-    "Farm House",
-    "Serviced Apartments"
-  ],
-  commercial: [
-    "Office Space",
-    "Shop",
-    "Showroom",
-    "Commercial Land",
-    "Warehouse",
-    "Industrial Shed"
-  ]
-};
-
 document.addEventListener("DOMContentLoaded", function () {
-
-  /* ---------- RESTORE PROPERTY TYPE ---------- */
-  const propInput = document.getElementById("propertyTypeInput");
-  if (propInput && propInput.value) {
-    selectedTypes = propInput.value.split(",");
-
-    document.querySelectorAll("#typePills button").forEach(btn => {
-      if (selectedTypes.includes(btn.dataset.value)) {
-        btn.className = activeType();
-        btn.innerText = "✓ " + btn.dataset.value;
-      }
-    });
-  }
 
   /* ---------- RESTORE BHK ---------- */
   const bhkInput = document.getElementById("bhkInput");
@@ -613,3 +581,8 @@ document.addEventListener("DOMContentLoaded", function () {
   autoOpen("reraBody", "reraArrow", "reraInput");
 
 });
+  function clearLocality() {
+    document.querySelectorAll(".locality-checkbox").forEach((cb) => {
+      cb.checked = false;
+    });
+  }

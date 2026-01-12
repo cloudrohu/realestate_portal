@@ -1812,24 +1812,63 @@ document.addEventListener("DOMContentLoaded", function () {
 <script>
     document.addEventListener("DOMContentLoaded", function () {
 
-        // ✅ ID se target kiya
         const slider = document.getElementById("relatedProjectsSlider");
         const prevBtn = document.getElementById("rpPrevBtn");
         const nextBtn = document.getElementById("rpNextBtn");
 
-        // ✅ scroll amount (1 card = around 350px)
         const scrollAmount = 360;
 
+        // ✅ Manual buttons
         nextBtn.addEventListener("click", () => {
             slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
+            resetAutoSlide();
         });
 
         prevBtn.addEventListener("click", () => {
             slider.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+            resetAutoSlide();
         });
+
+        // ===============================
+        // ✅ AUTO SLIDE FEATURE
+        // ===============================
+        let autoSlideInterval;
+        const autoSlideDelay = 3000; // 3 sec (tum 2000 / 4000 kar sakte ho)
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                // ✅ If end reached → go back to start
+                if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 10) {
+                    slider.scrollTo({ left: 0, behavior: "smooth" });
+                } else {
+                    slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
+                }
+            }, autoSlideDelay);
+        }
+
+        function stopAutoSlide() {
+            clearInterval(autoSlideInterval);
+        }
+
+        function resetAutoSlide() {
+            stopAutoSlide();
+            startAutoSlide();
+        }
+
+        // ✅ Start auto slide on load
+        startAutoSlide();
+
+        // ✅ Pause on hover
+        slider.addEventListener("mouseenter", stopAutoSlide);
+        slider.addEventListener("mouseleave", startAutoSlide);
+
+        // ✅ Mobile touch support (pause on touch)
+        slider.addEventListener("touchstart", stopAutoSlide);
+        slider.addEventListener("touchend", startAutoSlide);
 
     });
 </script>
+
 
 
 
