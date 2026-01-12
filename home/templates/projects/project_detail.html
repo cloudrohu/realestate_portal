@@ -1712,7 +1712,8 @@ document.addEventListener("DOMContentLoaded", function () {
     <div class="bg-white border border-t-0 rounded-b-lg p-5">
 
         <!-- SCROLL WRAPPER -->
-        <div class="flex gap-6 overflow-x-auto pb-3 scroll-smooth snap-x snap-mandatory hide-scrollbar">
+       <div class="flex gap-6 overflow-x-auto pb-3 scroll-smooth snap-x snap-mandatory hide-scrollbar select-none">
+
 
             {% for rp in related_projects %}
             <div class="min-w-[280px] sm:min-w-[320px] lg:min-w-[360px] snap-start
@@ -1798,20 +1799,45 @@ document.addEventListener("DOMContentLoaded", function () {
 </style>
 
 <script>
-new Swiper(".relatedSwiper", {
-    slidesPerView: 1,
-    spaceBetween: 20,
-    pagination: { el: ".swiper-pagination", clickable: true },
-    navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev"
-    },
-    breakpoints: {
-        640: { slidesPerView: 2 },
-        1024: { slidesPerView: 3 }
+document.addEventListener("DOMContentLoaded", function () {
+    const scrollWrapper = document.querySelector(".hide-scrollbar");
+
+    let scrollSpeed = 1; // speed (1 = slow, 2 = fast)
+    let direction = 1; // 1 = right, -1 = left
+    let interval;
+
+    function startAutoScroll() {
+        interval = setInterval(() => {
+            scrollWrapper.scrollLeft += scrollSpeed * direction;
+
+            // when reached end -> reverse
+            if (scrollWrapper.scrollLeft + scrollWrapper.clientWidth >= scrollWrapper.scrollWidth - 5) {
+                direction = -1;
+            }
+
+            // when reached start -> reverse
+            if (scrollWrapper.scrollLeft <= 0) {
+                direction = 1;
+            }
+        }, 20); // lower = smoother
     }
+
+    function stopAutoScroll() {
+        clearInterval(interval);
+    }
+
+    startAutoScroll();
+
+    // pause on hover (desktop)
+    scrollWrapper.addEventListener("mouseenter", stopAutoScroll);
+    scrollWrapper.addEventListener("mouseleave", startAutoScroll);
+
+    // pause on touch (mobile)
+    scrollWrapper.addEventListener("touchstart", stopAutoScroll);
+    scrollWrapper.addEventListener("touchend", startAutoScroll);
 });
 </script>
+
 
 
 <!-- ================= CONTACT POPUP ================= -->
