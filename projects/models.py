@@ -417,6 +417,8 @@ class ProjectFAQ(models.Model):
 
 # projects/models.py  (or a separate app like enquiries/models.py)
 
+from django.db import models
+
 class Enquiry(models.Model):
     project = models.ForeignKey(
         'Project',

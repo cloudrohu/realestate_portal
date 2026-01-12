@@ -45,6 +45,63 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+ // 1. Toggle Section Open/Close
+  function toggleBhkSection() {
+      const body = document.getElementById('bhkBody');
+      const arrow = document.getElementById('bhkArrow');
+      if (body.classList.contains('hidden')) {
+          body.classList.remove('hidden');
+          arrow.style.transform = 'rotate(180deg)';
+      } else {
+          body.classList.add('hidden');
+          arrow.style.transform = 'rotate(0deg)';
+      }
+  }
+
+  // 2. Toggle Selection (Active/Inactive)
+  function toggleBhkPill(btn) {
+      const value = btn.getAttribute('data-value');
+      const input = document.getElementById('bhkInput');
+      
+      // Input string ko array me convert karein (comma se tod kar)
+      let values = input.value ? input.value.split(',').map(v => v.trim()).filter(v => v) : [];
+
+      if (values.includes(value)) {
+          // Agar pehle se selected hai, to remove karein
+          values = values.filter(v => v !== value);
+          // Styling hatayein
+          btn.classList.remove('bg-blue-50', 'border-blue-200', 'text-blue-600');
+          btn.classList.add('bg-white', 'border-gray-200', 'text-gray-600');
+      } else {
+          // Agar selected nahi hai, to add karein
+          values.push(value);
+          // Styling lagayein
+          btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-600');
+          btn.classList.add('bg-blue-50', 'border-blue-200', 'text-blue-600');
+      }
+
+      // Updated array ko wapas string banakar input me dalein
+      input.value = values.join(',');
+  }
+
+  // 3. Clear All Selection
+  function bhkClear() {
+      document.getElementById('bhkInput').value = '';
+      
+      // Saare buttons se styling hata do
+      document.querySelectorAll('.bhk-pill').forEach(btn => {
+          btn.classList.remove('bg-blue-50', 'border-blue-200', 'text-blue-600');
+          btn.classList.add('bg-white', 'border-gray-200', 'text-gray-600');
+      });
+  }
+
+  // 4. Show More Button
+  function showMoreBhk() {
+      document.getElementById('bhkMore').classList.remove('hidden');
+      document.getElementById('bhkMore').classList.add('flex'); // Add flex logic
+      document.getElementById('bhkMoreBtn').classList.add('hidden');
+  }
+
   /* ---------- RESTORE CONSTRUCTION ---------- */
   const csInput = document.getElementById("csInput");
   if (csInput && csInput.value) {
