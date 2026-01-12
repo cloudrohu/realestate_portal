@@ -1711,11 +1711,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     <div class="bg-white border border-t-0 rounded-b-lg p-5">
 
-        <!-- GRID WRAPPER -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- SCROLL WRAPPER -->
+        <div class="flex gap-6 overflow-x-auto pb-3 scroll-smooth snap-x snap-mandatory hide-scrollbar">
 
             {% for rp in related_projects %}
-            <div class="border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
+            <div class="min-w-[280px] sm:min-w-[320px] lg:min-w-[360px] snap-start
+                        border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition bg-white">
 
                 <!-- IMAGE -->
                 <div class="relative h-52 w-full">
@@ -1785,6 +1786,16 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
 </section>
 
+<style>
+.hide-scrollbar::-webkit-scrollbar{
+  display: none;
+}
+.hide-scrollbar{
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+</style>
 
 <script>
 new Swiper(".relatedSwiper", {
