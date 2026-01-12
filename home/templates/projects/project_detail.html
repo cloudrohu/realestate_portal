@@ -1702,6 +1702,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <section class="max-w-7xl mx-auto p-4">
 
+    <!-- HEADER -->
     <div class="bg-[#e8eff5] rounded-t-lg px-5 py-3 border">
         <h2 class="text-xl font-semibold text-[#1b4d6b]">
             Explore Related Projects
@@ -1710,100 +1711,95 @@ document.addEventListener("DOMContentLoaded", function () {
 
     <div class="bg-white border border-t-0 rounded-b-lg p-5">
 
-        <div class="swiper relatedSwiper">
-            <div class="swiper-wrapper pb-8"> {% for rp in related_projects %}
-                <div class="swiper-slide">
-                    
-                    <div class="border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition bg-white h-full flex flex-col">
+        <!-- GRID WRAPPER -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
-                        <div class="relative h-52 w-full shrink-0">
-                            {% if rp.image %}
-                                <img src="{{ rp.image.url }}" class="w-full h-full object-cover">
-                            {% else %}
-                                <img src="https://via.placeholder.com/800x500?text=No+Project+Image" class="w-full h-full object-cover">
-                            {% endif %}
+            {% for rp in related_projects %}
+            <div class="border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
 
-                            <button class="absolute top-3 right-3 bg-white hover:bg-red-50 rounded-full p-2 shadow transition">
-                                <i class="fa-regular fa-heart text-red-500"></i>
-                            </button>
-                        </div>
+                <!-- IMAGE -->
+                <div class="relative h-52 w-full">
 
-                        <div class="p-4 flex-grow"> <div class="flex justify-between items-start">
-                                <h3 class="text-lg font-semibold line-clamp-1" title="{{ rp.project_name }}">
-                                    {{ rp.project_name }}
-                                </h3>
-                                <p class="font-bold text-[#1b4d6b] whitespace-nowrap ml-2">
-                                    ₹ {{ rp.min_price }}
-                                </p>
-                            </div>
+                    {% if rp.image %}
+                        <img src="{{ rp.image.url }}" class="w-full h-full object-cover">
+                    {% else %}
+                        <img src="https://via.placeholder.com/800x500?text=No+Project+Image"
+                            class="w-full h-full object-cover">
+                    {% endif %}
 
-                            <div class="text-sm mt-2 space-y-1.5">
-                                <p class="text-gray-600 line-clamp-1">
-                                    <i class="fa-solid fa-building mr-1 text-gray-400"></i>
-                                    {{ rp.developer }}
-                                </p>
-                                <p class="text-gray-600 line-clamp-1">
-                                    <i class="fa-solid fa-location-dot mr-1 text-gray-400"></i>
-                                    {{ rp.locality }}
-                                </p>
-                            </div>
+                    <button class="absolute top-3 right-3 bg-white rounded-full p-2 shadow">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
 
-                            <div class="flex justify-between mt-4 pt-3 border-t text-xs font-medium text-gray-500">
-                                <p>
-                                    <i class="fa-solid fa-ruler-combined mr-1"></i>
-                                    {{ rp.min_carpet }} - {{ rp.max_carpet }} sqft
-                                </p>
-                                <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded">
-                                    {{ rp.possession_month }} {{ rp.possession_year }}
-                                </span>
-                            </div>
-                        </div>
+                </div>
 
-                        <div class="grid grid-cols-2 mt-auto">
-                            <a href="{{ rp.get_absolute_url }}" class="bg-[#133B5C] hover:bg-[#0f2e48] text-white py-3 text-center text-sm font-semibold transition">
-                                View Details
-                            </a>
-                            <button class="bg-green-600 hover:bg-green-700 text-white py-3 text-sm font-semibold transition flex items-center justify-center gap-2">
-                                <i class="fa-brands fa-whatsapp"></i> Chat
-                            </button>
-                        </div>
-
+                <!-- CONTENT -->
+                <div class="p-4">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-lg font-semibold">
+                            {{ rp.project_name }}
+                        </h3>
+                        <p class="font-semibold">
+                            ₹ {{ rp.min_price|intcomma }}
+                        </p>
                     </div>
-                </div> 
-                {% endfor %}
+
+                    <div class="text-sm mt-1 space-y-1">
+                        <p class="text-gray-600">
+                            <i class="fa-solid fa-building"></i>
+                            {{ rp.developer }}
+                        </p>
+                        <p class="text-gray-600">
+                            <i class="fa-solid fa-location-dot"></i>
+                            {{ rp.locality }}
+                        </p>
+                    </div>
+
+                    <div class="flex justify-between mt-3 text-sm">
+                        <p>
+                            <i class="fa-solid fa-ruler-combined"></i>
+                            {{ rp.min_carpet }} - {{ rp.max_carpet }} sqft
+                        </p>
+                        <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">
+                            {{ rp.possession_month }} {{ rp.possession_year }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <div class="grid grid-cols-2">
+                    <a href="{{ rp.get_absolute_url }}"
+                    class="bg-[#133B5C] text-white py-3 text-center">
+                        View
+                    </a>
+                    <button class="bg-green-600 text-white py-3">
+                        Chat
+                    </button>
+                </div>
 
             </div>
-            
-            <div class="swiper-pagination"></div>
+            {% endfor %}
+
         </div>
 
     </div>
 </section>
 
+
 <script>
-  var swiper = new Swiper(".relatedSwiper", {
-    slidesPerView: 1, // Mobile pe 1 card
-    spaceBetween: 20, // Cards ke beech gap
-    loop: false, // Loop band rakha hai taaki errors kam aayein
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
+new Swiper(".relatedSwiper", {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    pagination: { el: ".swiper-pagination", clickable: true },
+    navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev"
     },
     breakpoints: {
-      640: {
-        slidesPerView: 2, // Tablet pe 2 cards
-        spaceBetween: 20,
-      },
-      768: {
-        slidesPerView: 2,
-        spaceBetween: 30,
-      },
-      1024: {
-        slidesPerView: 3, // Desktop pe 3 cards
-        spaceBetween: 30,
-      },
-    },
-  });
+        640: { slidesPerView: 2 },
+        1024: { slidesPerView: 3 }
+    }
+});
 </script>
 
 
