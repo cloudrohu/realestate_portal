@@ -114,8 +114,7 @@ class PossessionIn(models.Model):
     def __str__(self):
         return str(self.year)
 
-from django.db import models
-from django.utils.html import mark_safe
+
 
 class ProjectAmenities(models.Model):
     title = models.CharField(max_length=100)
@@ -135,6 +134,8 @@ class ProjectAmenities(models.Model):
 class Bank(models.Model):
     title = models.CharField(max_length=50,blank=True)
     image = models.ImageField(upload_to='images/')
+    home_loan_partner = models.BooleanField(default=False,blank=True)
+
     def __str__(self):
         return self.title
     

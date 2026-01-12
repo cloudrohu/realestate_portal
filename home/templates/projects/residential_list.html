@@ -43,7 +43,7 @@
     <aside class="space-y-4 md:space-y-5 lg:space-y-6 lg:sticky lg:top-24">
 
 
-      <form class="bg-white shadow-md md:shadow-lg rounded-2xl p-4 md:p-5 lg:p-6 space-y-4 md:space-y-5">
+      <form class="bg-white shadow-md md:shadow-lg rounded-2xl p-4 md:p-5 lg:p-6 space-y-4 md:space-y-5" id="filterForm" method="GET">
 
                 <!-- ================= HEADER ================= -->
                 <div class="border-b pb-3">
@@ -238,78 +238,82 @@
                 </div>
 
              <!-- ================= AMENITIES ================= -->
-                <div class="border overflow-hidden shadow-sm md:shadow-none border-b last:border-0">
+              <div class="border overflow-hidden shadow-sm md:shadow-none border-b last:border-0">
 
-                    <div class="flex justify-between items-center px-4 py-3 bg-white">
-                      <button type="button"
-                        onclick="amenToggle()"
-                        class="flex items-center gap-2 text-sm font-semibold text-gray-800 hover:text-orange-600 transition">
-                        Amenities
-                        <svg id="amenArrow"
-                          class="w-4 h-4 transition-transform text-gray-400"
-                          fill="none" stroke="currentColor" stroke-width="2"
-                          viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M19 9l-7 7-7-7"/>
-                        </svg>
-                      </button>
+                <div class="flex justify-between items-center px-4 py-3 bg-white">
+                  <button type="button"
+                    onclick="amenToggle()"
+                    class="flex items-center gap-2 text-sm font-semibold text-gray-800 hover:text-orange-600 transition">
+                    Amenities
+                    <svg id="amenArrow"
+                      class="w-4 h-4 transition-transform text-gray-400"
+                      fill="none" stroke="currentColor" stroke-width="2"
+                      viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M19 9l-7 7-7-7"/>
+                    </svg>
+                  </button>
 
-                      <button type="button"
-                        onclick="amenClear()"
-                        class="text-orange-600 hover:text-orange-800 text-sm font-medium">
-                        Clear
-                      </button>
-                    </div>
+                  <button type="button"
+                    onclick="amenClear()"
+                    class="text-orange-600 hover:text-orange-800 text-sm font-medium">
+                    Clear
+                  </button>
+                </div>
 
-                    <div id="amenBody" class="hidden px-4 pt-3 pb-4 space-y-3 bg-white">
+                <div id="amenBody" class="hidden px-4 pt-3 pb-4 space-y-3 bg-white">
 
-                      <div class="flex flex-wrap gap-2">
+                  <div class="flex flex-wrap gap-2">
 
-                        {% for amen in amenities %}
-                          
-                          {% if forloop.counter <= 6 %}
-                            <button type="button"
-                              class="amen-pill px-4 py-1.5 rounded-full border text-sm text-gray-700 bg-white hover:bg-gray-100 transition"
-                              onclick="amenPill(this)"
-                              data-value="{{ amen.title }}">
-                              + {{ amen.title }}
-                            </button>
-                          {% endif %}
-
-                        {% endfor %}
-
-                      </div>
-
-                      {% if amenities|length > 6 %}
-                        <div id="amenMore" class="hidden flex flex-wrap gap-2">
-                          {% for amen in amenities %}
-                            {% if forloop.counter > 6 %}
-                              <button type="button"
-                                class="amen-pill px-4 py-1.5 rounded-full border text-sm text-gray-700 bg-white hover:bg-gray-100 transition"
-                                onclick="amenPill(this)"
-                                data-value="{{ amen.title }}">
-                                + {{ amen.title }}
-                              </button>
-                            {% endif %}
-                          {% endfor %}
-                        </div>
-
-                        <button type="button" 
-                          id="amenMoreBtn"
-                          onclick="amenShowMore()"
-                          class="text-sm text-orange-600 font-medium hover:underline mt-2">
-                          + Show {{ amenities|length|add:"-6" }} more
+                    {% for amen in amenities %}
+                      {% if forloop.counter <= 6 %}
+                        <button type="button"
+                          class="amen-pill px-4 py-1.5 rounded-full border text-sm transition
+                          {% if amen.title in selected_amenities_list %}
+                            bg-orange-100 text-orange-700 border-orange-300
+                          {% else %}
+                            text-gray-700 bg-white hover:bg-gray-100
+                          {% endif %}"
+                          onclick="amenPill(this)"
+                          data-value="{{ amen.title }}">
+                          + {{ amen.title }}
                         </button>
                       {% endif %}
+                    {% endfor %}
+                  </div>
 
-                      <input type="hidden" 
-                            name="amenities" 
-                            id="amenInput" 
-                            value="{{ request.GET.amenities|default:'' }}">
-
+                  {% if amenities|length > 6 %}
+                    <div id="amenMore" class="hidden flex flex-wrap gap-2">
+                      {% for amen in amenities %}
+                        {% if forloop.counter > 6 %}
+                          <button type="button"
+                            class="amen-pill px-4 py-1.5 rounded-full border text-sm transition
+                            {% if amen.title in selected_amenities_list %}
+                              bg-orange-100 text-orange-700 border-orange-300
+                            {% else %}
+                              text-gray-700 bg-white hover:bg-gray-100
+                            {% endif %}"
+                            onclick="amenPill(this)"
+                            data-value="{{ amen.title }}">
+                            + {{ amen.title }}
+                          </button>
+                        {% endif %}
+                      {% endfor %}
                     </div>
+
+                    <button type="button"
+                      id="amenMoreBtn"
+                      onclick="amenShowMore()"
+                      class="text-sm text-orange-600 font-medium hover:underline mt-2">
+                      + Show {{ amenities|length|add:"-6" }} more
+                    </button>
+                  {% endif %}
+
+                  <!-- ✅ hidden input -->
+                  <input type="hidden" name="amenities" id="amenInput" value="{{ selected_amenities|default:'' }}">
                 </div>
-   
+              </div>
+              
 
 
                 <!-- ================= FURNISHING ================= -->
@@ -873,45 +877,56 @@
                 </div>
                 {% endfor %}
             </div>
-        <!-- (Tumne jo code diya hai, wo yahin paste rahega) -->
 
                 <!-- Pagination Section -->
-              {% if projects.has_other_pages %}
-              <nav class="flex justify-center mt-10">
-                <ul class="flex items-center gap-2 text-gray-700">
+                {% if projects.has_other_pages %}
+                  <nav class="flex justify-center mt-10">
+                    <ul class="flex items-center gap-2 text-gray-700">
 
-                  {% if projects.has_previous %}
-                    <li>
-                      <a href="?q={{ query }}&type={{ property_type }}&page={{ projects.previous_page_number }}" 
-                        class="px-3 py-1 border rounded hover:bg-gray-200">&laquo; Prev</a>
-                    </li>
-                  {% else %}
-                    <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">&laquo; Prev</li>
+                      {% if projects.has_previous %}
+                        <li>
+                          <a href="?{% param_replace page=projects.previous_page_number %}" 
+                            class="px-3 py-1 border rounded hover:bg-gray-200 transition">
+                            &laquo; Prev
+                          </a>
+                        </li>
+                      {% else %}
+                        <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">
+                          &laquo; Prev
+                        </li>
+                      {% endif %}
+
+                      {% for num in projects.paginator.page_range %}
+                        {% if projects.number == num %}
+                          <li class="px-3 py-1 bg-[#00E0FF] text-white rounded font-bold">
+                            {{ num }}
+                          </li>
+                        {% elif num > projects.number|add:'-3' and num < projects.number|add:'3' %}
+                          <li>
+                            <a href="?{% param_replace page=num %}" 
+                              class="px-3 py-1 border rounded hover:bg-gray-200 transition">
+                              {{ num }}
+                            </a>
+                          </li>
+                        {% endif %}
+                      {% endfor %}
+
+                      {% if projects.has_next %}
+                        <li>
+                          <a href="?{% param_replace page=projects.next_page_number %}" 
+                            class="px-3 py-1 border rounded hover:bg-gray-200 transition">
+                            Next &raquo;
+                          </a>
+                        </li>
+                      {% else %}
+                        <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">
+                          Next &raquo;
+                        </li>
+                      {% endif %}
+
+                    </ul>
+                  </nav>
                   {% endif %}
-
-                  {% for num in projects.paginator.page_range %}
-                    {% if num == projects.number %}
-                      <li class="px-3 py-1 bg-[#00E0FF] text-white rounded">{{ num }}</li>
-                    {% elif num > projects.number|add:'-3' and num < projects.number|add:'3' %}
-                      <li>
-                        <a href="?q={{ query }}&type={{ property_type }}&page={{ num }}" 
-                          class="px-3 py-1 border rounded hover:bg-gray-200">{{ num }}</a>
-                      </li>
-                    {% endif %}
-                  {% endfor %}
-
-                  {% if projects.has_next %}
-                    <li>
-                      <a href="?q={{ query }}&type={{ property_type }}&page={{ projects.next_page_number }}" 
-                        class="px-3 py-1 border rounded hover:bg-gray-200">Next &raquo;</a>
-                    </li>
-                  {% else %}
-                    <li class="px-3 py-1 text-gray-400 border rounded cursor-not-allowed">Next &raquo;</li>
-                  {% endif %}
-
-                </ul>
-              </nav>
-              {% endif %}
 
 
     
