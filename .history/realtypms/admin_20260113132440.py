@@ -85,9 +85,9 @@ class MeetingInline(admin.StackedInline):
 # ✅ GOOGLE COMPANY ADMIN
 # =====================================================
 @admin.register(GoogleCompany)
-class GoogleCompanyAdmin(ImportExportModelAdmin):
+#class GoogleCompanyAdmin(ImportExportModelAdmin):
 
-#class GoogleCompanyAdmin(AutoUserAdminMixin, admin.ModelAdmin):
+class GoogleCompanyAdmin(AutoUserAdminMixin, admin.ModelAdmin):
     resource_class = GoogleCompanyResource
     change_list_template = "admin/realtypms/googlecompany/change_list.html"
 
