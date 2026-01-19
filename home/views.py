@@ -7,9 +7,7 @@ from .models import (
     Setting, Slider, Testimonial, About, Leadership,
     Contact_Page, FAQ, Our_Team,Why_Choose,ImpactMetric
 )
-from user.models import Developer  # 👈 import your Developer model
-# NOTE: The manual function get_global_context() has been removed 
-#       because the utility.context_processors handles this globally.
+from user.models import Developer 
 
 from django.shortcuts import render
 from projects.models import Project  # import your Project model
