@@ -325,39 +325,6 @@ function locToggle() {
   document.getElementById("locArrow").classList.toggle("rotate-180");
 }
 
-/* modal */
-function openLocalityModal() {
-  document.getElementById("locModal").classList.remove("hidden");
-}
-function closeLocalityModal() {
-  document.getElementById("locModal").classList.add("hidden");
-}
-
-/* update hidden input */
-function updateLocalities() {
-  const values = [];
-  document.querySelectorAll(".loc-cb:checked").forEach(cb => {
-    values.push(cb.value);
-  });
-  document.getElementById("localityInput").value = values.join(",");
-}
-
-/* sync modal → aside */
-function syncLocality(cb) {
-  const asideCb = [...document.querySelectorAll(".loc-cb")]
-    .find(el => el.value === cb.value);
-
-  if (asideCb) asideCb.checked = cb.checked;
-  updateLocalities();
-}
-
-/* clear */
-function clearLocalities() {
-  document.querySelectorAll(".loc-cb").forEach(cb => cb.checked = false);
-  document.querySelectorAll("#locModal input[type=checkbox]")
-    .forEach(cb => cb.checked = false);
-  document.getElementById("localityInput").value = "";
-}
 
 /* search */
 function filterLocalities() {
@@ -575,14 +542,53 @@ document.addEventListener("DOMContentLoaded", function () {
   autoOpen("typeBody", "typeArrow", "propertyTypeInput");
   autoOpen("bhkBody", "bhkArrow", "bhkInput");
   autoOpen("csBody", "csArrow", "csInput");
-  autoOpen("locBody", "locArrow", "localityInput");
   autoOpen("amenBody", "amenArrow", "amenInput");
   autoOpen("furBody", "furArrow", "furInput");
   autoOpen("reraBody", "reraArrow", "reraInput");
 
 });
-  function clearLocality() {
-    document.querySelectorAll(".locality-checkbox").forEach((cb) => {
-      cb.checked = false;
-    });
+  // ================== BUDGET RANGE ==================
+function budgetToggle() {
+  const body = document.getElementById("budgetBody");
+  const arrow = document.getElementById("budgetArrow");
+
+  body.classList.toggle("hidden");
+
+  // rotate arrow
+  if (body.classList.contains("hidden")) {
+    arrow.classList.remove("rotate-180");
+  } else {
+    arrow.classList.add("rotate-180");
   }
+}
+
+function budgetClear() {
+  const minBudget = document.getElementById("minBudget");
+  const maxBudget = document.getElementById("maxBudget");
+
+  // clear inputs
+  minBudget.value = "";
+  maxBudget.value = "";
+
+  // auto submit (optional)
+  // document.getElementById("filterForm").submit();
+
+  // close section after clear (optional)
+  const body = document.getElementById("budgetBody");
+  const arrow = document.getElementById("budgetArrow");
+  body.classList.add("hidden");
+  arrow.classList.remove("rotate-180");
+}
+
+// Auto open if values exist
+document.addEventListener("DOMContentLoaded", () => {
+  const minBudget = document.getElementById("minBudget");
+  const maxBudget = document.getElementById("maxBudget");
+  const body = document.getElementById("budgetBody");
+  const arrow = document.getElementById("budgetArrow");
+
+  if ((minBudget && minBudget.value) || (maxBudget && maxBudget.value)) {
+    body.classList.remove("hidden");
+    arrow.classList.add("rotate-180");
+  }
+});

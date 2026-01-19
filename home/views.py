@@ -74,7 +74,6 @@ def index(request):
         }
     )
 
-
 def robots_txt(request):
     """
     Serves the robots.txt file content for SEO.
@@ -124,8 +123,6 @@ def about_page_view(request):
     }
     return render(request, "home/about.html", context)
 
-
-
 def contact_view(request):
     """Renders the Contact Page with site contact details."""
     settings_obj = Setting.objects.first()
@@ -151,7 +148,6 @@ def faq_view(request):
         "faqs": faqs,
     }
     return render(request, 'home/faq.html', context)
-
 
 #-----------------------------------------------------------------------------------------------
 

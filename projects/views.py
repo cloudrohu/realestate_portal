@@ -67,10 +67,14 @@ def search_projects(request):
     city = request.GET.get("city", "").strip()
     amenities = request.GET.get("amenities")
     status = request.GET.get("construction_status")
-    bhk = request.GET.get("bhk") 
+    bhk = request.GET.get("bhk")
+
+    # ✅ MULTI Locality IDs
+    locality_ids = request.GET.getlist("locality")
 
     projects = Project.objects.filter(active=True)
 
+    # ✅ Search
     if location:
         search_term = location.split(",")[0].strip()
         projects = projects.filter(
@@ -79,34 +83,54 @@ def search_projects(request):
             Q(city__name__icontains=search_term)
         )
 
+    # ✅ City Filter
     if city:
         projects = projects.filter(city__name__iexact=city)
 
-    if amenities:
-        amenity_list = [a.strip() for a in amenities.split(",") if a]
-        if amenity_list:
-            projects = projects.filter(amenities__amenities__title__in=amenity_list).distinct()
+    # ✅ ✅ Locality Filter (MPTT)
+    if locality_ids:
+        selected_localities = Locality.objects.filter(id__in=locality_ids)
 
+        all_localities = Locality.objects.none()
+        for loc in selected_localities:
+            all_localities |= loc.get_descendants(include_self=True)
+
+        projects = projects.filter(locality__in=all_localities).distinct()
+
+    # ✅ Amenities Filter
+    if amenities:
+        amenity_list = [a.strip() for a in amenities.split(",") if a.strip()]
+        if amenity_list:
+            projects = projects.filter(
+                amenities__amenities__title__in=amenity_list
+            ).distinct()
+
+    # ✅ Status Filter
     if status:
-        status_list = [s.strip() for s in status.split(",") if s]
+        status_list = [s.strip() for s in status.split(",") if s.strip()]
         if status_list:
             projects = projects.filter(construction_status__in=status_list).distinct()
 
+    # ✅ BHK Filter
     selected_bhk_list = []
     if bhk:
-        selected_bhk_list = [b.strip() for b in bhk.split(",") if b]
+        selected_bhk_list = [b.strip() for b in bhk.split(",") if b.strip()]
         if selected_bhk_list:
             bhk_query = Q()
             for b in selected_bhk_list:
-                bhk_query |= Q(bhk_type__icontains=b)
+                bhk_query |= Q(bhk_type__icontains=b) | Q(configurations__bhk_type__icontains=b)
             projects = projects.filter(bhk_query).distinct()
 
+    # ✅ Pagination
     projects = projects.select_related("city", "locality").prefetch_related("amenities").order_by("-create_at")
     paginator = Paginator(projects, 9)
     projects_page = paginator.get_page(request.GET.get("page"))
 
     status_choices = [choice[0] for choice in Project.Construction_Status]
     bhk_choices = get_bhk_choices()
+
+    # ✅ send selected locality ids as string
+    selected_locality_ids = [str(x) for x in locality_ids]
 
     context = {
         "projects": projects_page,
@@ -118,6 +142,10 @@ def search_projects(request):
         "selected_status": status,
         "selected_bhk": bhk,
         "selected_bhk_list": selected_bhk_list,
+
+        # ✅ required for locality filter UI
+        "available_localities": Locality.objects.all().order_by("name"),
+        "selected_locality_ids": selected_locality_ids,
     }
 
     return render(request, "projects/residential_list.html", context)
@@ -125,45 +153,37 @@ def search_projects(request):
 def residential_projects(request):
     settings_obj = Setting.objects.first()
 
-    # ==========================================
-    # 1. GET PARAMETERS FROM URL (Sidebar Inputs)
-    # ==========================================
     query = request.GET.get("q", "").strip()
-    category = request.GET.get("category", "residential").strip() # Default to residential
+    category = request.GET.get("category", "residential").strip()
     bhk = request.GET.get("bhk", "").strip()
     amenities = request.GET.get("amenities", "").strip()
     status = request.GET.get("construction_status", "").strip()
     min_price = request.GET.get("min_price", "").strip()
     max_price = request.GET.get("max_price", "").strip()
-    furnishing = request.GET.get("furnishing", "").strip()
     rera = request.GET.get("rera", "").strip()
 
-    # ==========================================
-    # 2. BASE QUERY
-    # ==========================================
-    # Default filter: Active projects only
-    projects = Project.objects.filter(active=True)
+    # ✅ MULTI Locality IDs
+    locality_ids = request.GET.getlist("locality")
 
-    # Category Filter (Residential vs Commercial)
-    # Agar user ne 'Commercial' select kiya hai to wo filter karein, nahi to 'Residential'
-    if category.lower() == 'commercial':
+    # ✅ price safe annotation
+    projects = Project.objects.filter(active=True).annotate(
+        min_p=Min(
+            "configurations__price_in_rupees",
+            filter=Q(configurations__price_in_rupees__isnull=False, configurations__price_in_rupees__gt=0)
+        ),
+        max_p=Max(
+            "configurations__price_in_rupees",
+            filter=Q(configurations__price_in_rupees__isnull=False, configurations__price_in_rupees__gt=0)
+        )
+    )
+
+    # ✅ Category
+    if category.lower() == "commercial":
         projects = projects.filter(propert_type__parent__name__iexact="Commercial")
     else:
         projects = projects.filter(propert_type__parent__name__iexact="Residential")
 
-    # Optimization: Related data pehle hi fetch kar lein
-    projects = projects.select_related("city", "locality", "developer") \
-                       .prefetch_related("amenities", "configurations", "rera") \
-                       .annotate(
-                           min_p=Min("configurations__price_in_rupees"),
-                           max_p=Max("configurations__price_in_rupees")
-                       )
-
-    # ==========================================
-    # 3. APPLY FILTERS
-    # ==========================================
-
-    # --- A. Search (Location, Project Name, Developer) ---
+    # ✅ Search
     if query:
         projects = projects.filter(
             Q(project_name__icontains=query) |
@@ -172,20 +192,49 @@ def residential_projects(request):
             Q(developer__name__icontains=query)
         )
 
-    # --- B. Price Filter ---
-    if min_price:
-        try:
-            projects = projects.filter(max_p__gte=int(min_price))
-        except ValueError:
-            pass
-    
-    if max_price:
-        try:
-            projects = projects.filter(min_p__lte=int(max_price))
-        except ValueError:
-            pass
+    # ✅ ✅ Locality Filter (MPTT)
+    if locality_ids:
+        selected_localities = Locality.objects.filter(id__in=locality_ids)
 
-    # --- C. Amenities Filter ---
+        all_localities = Locality.objects.none()
+        for loc in selected_localities:
+            all_localities |= loc.get_descendants(include_self=True)
+
+        projects = projects.filter(locality__in=all_localities).distinct()
+
+    # ✅ Budget filter
+    if min_price or max_price:
+        projects = projects.exclude(min_p__isnull=True).exclude(max_p__isnull=True)
+
+    try:
+        if min_price:
+            min_price_int = int(min_price)
+            projects = projects.filter(max_p__gte=min_price_int)
+
+        if max_price:
+            max_price_int = int(max_price)
+            projects = projects.filter(min_p__lte=max_price_int)
+    except ValueError:
+        pass
+
+    # ✅ BHK filter
+    selected_bhk_list = []
+    if bhk:
+        selected_bhk_list = [b.strip() for b in bhk.split(",") if b.strip()]
+        if selected_bhk_list:
+            bhk_query = Q()
+            for b in selected_bhk_list:
+                bhk_query |= Q(bhk_type__icontains=b) | Q(configurations__bhk_type__icontains=b)
+            projects = projects.filter(bhk_query).distinct()
+
+    # ✅ Status filter
+    selected_status_list = []
+    if status:
+        selected_status_list = [s.strip() for s in status.split(",") if s.strip()]
+        if selected_status_list:
+            projects = projects.filter(construction_status__in=selected_status_list).distinct()
+
+    # ✅ Amenities filter
     selected_amenities_list = []
     if amenities:
         selected_amenities_list = [a.strip() for a in amenities.split(",") if a.strip()]
@@ -194,87 +243,39 @@ def residential_projects(request):
                 amenities__amenities__title__in=selected_amenities_list
             ).distinct()
 
-    # --- D. Construction Status ---
-    selected_status_list = []
-    if status:
-        selected_status_list = [s.strip() for s in status.split(",") if s.strip()]
-        if selected_status_list:
-            projects = projects.filter(construction_status__in=selected_status_list).distinct()
-
-    # --- E. BHK Filter (Hybrid Logic) ---
-    selected_bhk_list = []
-    if bhk:
-        selected_bhk_list = [b.strip() for b in bhk.split(",") if b.strip()]
-        if selected_bhk_list:
-            bhk_query = Q()
-            for b in selected_bhk_list:
-                # 1. Project Level Check
-                bhk_query |= Q(bhk_type__icontains=b)
-                # 2. Configuration Level Check
-                bhk_query |= Q(configurations__bhk_type__icontains=b)
-            
-            projects = projects.filter(bhk_query).distinct()
-
-    # --- F. RERA Filter ---
-    # Aapke HTML me "RERA approved properties" value aa rahi hai
+    # ✅ RERA filter
     if rera:
-        if "RERA approved" in rera:
-            # Check karein ki RERA info exist karti hai aur registration no blank nahi hai
-            projects = projects.filter(rera__registration_no__isnull=False).exclude(rera__registration_no="").distinct()
+        projects = projects.filter(rera__registration_no__isnull=False).exclude(rera__registration_no="").distinct()
 
-    # --- G. Furnishing Filter ---
-    # Note: Aapke Project model me 'furnishing' field nahi dikh raha tha, 
-    # lekin agar aap Amenities me 'Unfurnished/Furnished' store karte hain to ye logic chalega:
-    if furnishing:
-        furnishing_list = [f.strip() for f in furnishing.split(",") if f.strip()]
-        if furnishing_list:
-            # Option 1: Agar Furnishing Amenities table me hai
-            projects = projects.filter(amenities__amenities__title__in=furnishing_list).distinct()
-            
-            # Option 2: Agar Project model me future me field add karein, to ye use karein:
-            # projects = projects.filter(furnishing_status__in=furnishing_list)
+    # ✅ final optimize
+    projects = projects.select_related("city", "locality", "developer").prefetch_related(
+        "amenities", "configurations"
+    ).order_by("-create_at").distinct()
 
-    # ==========================================
-    # 4. ORDERING & PAGINATION
-    # ==========================================
-    projects = projects.order_by("-create_at")
+    paginator = Paginator(projects, 9)
+    projects_page = paginator.get_page(request.GET.get("page"))
 
-    paginator = Paginator(projects, 9)  # 9 projects per page
-    page_number = request.GET.get("page")
-    projects_page = paginator.get_page(page_number)
+    selected_locality_ids = [str(x) for x in locality_ids]
 
-    # ==========================================
-    # 5. CONTEXT DATA
-    # ==========================================
     context = {
         "projects": projects_page,
         "settings_obj": settings_obj,
-        "page_title": "Residential Projects",
-        "breadcrumb": "Residential",
 
-        # --- Filter Dropdown Options ---
         "amenities": ProjectAmenities.objects.all().order_by("title"),
         "construction_status": [choice[0] for choice in Project.Construction_Status],
-        "bhk_choices": get_bhk_choices(),
+        "bhk_choices": [choice[0] for choice in Project.BHK_CHOICES],
 
-        # --- Selected Values (UI State Maintain karne ke liye) ---
-        "selected_category": category,
-        
-        "selected_amenities": amenities,
+        "selected_bhk_list": selected_bhk_list,
+        "selected_status_list": selected_status_list,
         "selected_amenities_list": selected_amenities_list,
 
-        "selected_status": status,
-        "selected_status_list": selected_status_list,
+        "selected_amenities": amenities,
+        "values": request.GET,
 
-        "selected_bhk": bhk,
-        "selected_bhk_list": selected_bhk_list,
-
-        "selected_furnishing": furnishing, # Input hidden field ke liye
-        "selected_rera": rera,             # Input hidden field ke liye
-
-        "values": request.GET, # Pagination URLs ke liye
+        # ✅ Locality dynamic list + selected ids
+        "available_localities": Locality.objects.all().order_by("name"),
+        "selected_locality_ids": selected_locality_ids,
     }
-
     return render(request, "projects/residential_list.html", context)
 
 def project_details(request, id, slug):
@@ -441,4 +442,3 @@ def load_localities(request):
     city_id = request.GET.get("city_id")
     localities = Locality.objects.filter(city_id=city_id).values("id", "name")
     return JsonResponse(list(localities), safe=False)
-
