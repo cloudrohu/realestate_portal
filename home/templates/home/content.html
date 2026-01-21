@@ -698,66 +698,64 @@
 <section class="py-20 bg-white" id="home-loan-partners">
   <div class="max-w-7xl mx-auto px-6 text-center">
 
-    <h2 class="text-3xl md:text-4xl font-bold text-orange-600 mb-3">
+    <h2 class="text-3xl md:text-4xl font-extrabold text-orange-600 mb-3">
       Home Loan Partners
     </h2>
+
     <p class="text-gray-600 max-w-2xl mx-auto mb-12">
       We are associated with India’s most trusted banks to help you
       get the best home loan deals.
     </p>
 
-    <!-- Swiper -->
-    <div class="swiper loanPartnerSwiper">
-      <div class="swiper-wrapper">
+    <!-- ✅ Slider Wrapper -->
+    <div class="relative">
 
-        <!-- PARTNER CARD -->
-        <div class="swiper-slide">
-          <div class="partner-card">
-            <img src="{% static 'assets/images/banks/sbi.png' %}" alt="SBI Home Loan">
-            <p>SBI Home Loan</p>
+      <!-- ✅ Fade Effect (Left/Right Blur) -->
+
+      <!-- Swiper -->
+      <div class="swiper loanPartnerSwiper !py-2">
+        <div class="swiper-wrapper">
+
+          {% for bank in bank %}
+          <div class="swiper-slide">
+
+            <!-- ✅ Premium Partner Card -->
+            <div
+              class="group relative w-full h-[150px] md:h-[170px] rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-2xl transition-all duration-500 bg-white">
+
+              <!-- ✅ Image -->
+              <img src="{{bank.image.url}}" alt="{{bank.title}}"
+                class="w-full h-full object-cover transition duration-700 group-hover:scale-110 group-hover:rotate-[0.5deg]" />
+
+              <!-- ✅ Premium overlay -->
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-100 transition duration-500">
+              </div>
+
+              <!-- ✅ Bank Name -->
+              <div class="absolute bottom-0 left-0 right-0 p-3">
+                <p
+                  class="text-white text-sm font-bold tracking-wide uppercase drop-shadow-lg line-clamp-1">
+                  {{bank.title}}
+                </p>
+              </div>
+
+              <!-- ✅ Glow on hover -->
+              <div
+                class="absolute inset-0 ring-0 group-hover:ring-2 group-hover:ring-orange-500/70 transition duration-500 rounded-2xl">
+              </div>
+
+            </div>
           </div>
-        </div>
+          {% endfor %}
 
-        <div class="swiper-slide">
-          <div class="partner-card">
-            <img src="{% static 'assets/images/banks/hdfc.png' %}" alt="HDFC Home Loan">
-            <p>HDFC Home Loan</p>
-          </div>
         </div>
-
-        <div class="swiper-slide">
-          <div class="partner-card">
-            <img src="{% static 'assets/images/banks/icici.png' %}" alt="ICICI Home Loan">
-            <p>ICICI Home Loan</p>
-          </div>
-        </div>
-
-        <div class="swiper-slide">
-          <div class="partner-card">
-            <img src="{% static 'assets/images/banks/axis.png' %}" alt="Axis Bank Home Loan">
-            <p>Axis Bank</p>
-          </div>
-        </div>
-
-        <div class="swiper-slide">
-          <div class="partner-card">
-            <img src="{% static 'assets/images/banks/lic.png' %}" alt="LIC Housing Finance">
-            <p>LIC Housing Finance</p>
-          </div>
-        </div>
-
-        <div class="swiper-slide">
-          <div class="partner-card">
-            <img src="{% static 'assets/images/banks/pnb.png' %}" alt="PNB Housing Finance">
-            <p>PNB Housing</p>
-          </div>
-        </div>
-
       </div>
-    </div>
 
+    </div>
   </div>
 </section>
+
 
 <script>
   var loanPartnerSwiper = new Swiper(".loanPartnerSwiper", {
@@ -1066,47 +1064,37 @@ document.addEventListener("DOMContentLoaded", function () {
 }
 </style>
 
-<style>
-.partner-card{
-  background:#f8fafc;
-  border:1px solid #e5e7eb;
-  border-radius:16px;
-  padding:28px 20px;
-  height:140px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  transition:0.35s ease;
-}
 
-.partner-card img{
-  height:42px;
-  object-fit:contain;
-  transition:0.35s ease;
-}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    new Swiper(".loanPartnerSwiper", {
+      loop: true,
+      freeMode: true,
+      freeModeMomentum: false,
+      centeredSlides: false,
+      grabCursor: true,
 
-.partner-card p{
-  font-size:14px;
-  font-weight:600;
-  color:#1f2937;
-  transition:0.35s ease;
-}
+      speed: 6000,
+      autoplay: {
+        delay: 0,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+      },
 
-/* HOVER EFFECT */
-.partner-card:hover{
-  background:#000;
-  transform:translateY(-6px);
-  box-shadow:0 20px 40px rgba(0,0,0,0.25);
-}
+      spaceBetween: 20,
+      slidesPerView: 2,
 
-.partner-card:hover img{
-  filter:brightness(0) invert(1);
-}
+      breakpoints: {
+        480:  { slidesPerView: 2.2 },
+        640:  { slidesPerView: 3 },
+        768:  { slidesPerView: 4 },
+        1024: { slidesPerView: 5 },
+        1280: { slidesPerView: 6 }
+      }
+    });
+  });
+</script>
 
-.partner-card:hover p{
-  color:#fff;
-}
-</style>
+
+
 <!-- NEW LAUNCH SECTION -->
