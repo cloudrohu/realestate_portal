@@ -710,39 +710,37 @@
     <!-- ✅ Slider Wrapper -->
     <div class="relative">
 
-      <!-- ✅ Fade Effect (Left/Right Blur) -->
 
-      <!-- Swiper -->
-      <div class="swiper loanPartnerSwiper !py-2">
+      <!-- ✅ Swiper -->
+      <div class="swiper loanPartnerSwiper !py-3 !px-2">
         <div class="swiper-wrapper">
 
           {% for bank in bank %}
-          <div class="swiper-slide">
+          <div class="swiper-slide !w-[240px] md:!w-[280px] lg:!w-[300px]">
 
             <!-- ✅ Premium Partner Card -->
-            <div
-              class="group relative w-full h-[150px] md:h-[170px] rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-2xl transition-all duration-500 bg-white">
+            <div class="group relative w-full h-[160px] md:h-[180px] rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-2xl transition-all duration-500 bg-white">
 
-              <!-- ✅ Image -->
+              <!-- ✅ Full Image Cover -->
               <img src="{{bank.image.url}}" alt="{{bank.title}}"
                 class="w-full h-full object-cover transition duration-700 group-hover:scale-110 group-hover:rotate-[0.5deg]" />
 
-              <!-- ✅ Premium overlay -->
+              <!-- ✅ Dark Gradient Overlay -->
               <div
-                class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-100 transition duration-500">
+                class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-100 transition duration-500">
               </div>
 
-              <!-- ✅ Bank Name -->
+              <!-- ✅ Bank Title -->
               <div class="absolute bottom-0 left-0 right-0 p-3">
                 <p
-                  class="text-white text-sm font-bold tracking-wide uppercase drop-shadow-lg line-clamp-1">
+                  class="text-white text-sm font-bold tracking-wide uppercase drop-shadow-lg truncate">
                   {{bank.title}}
                 </p>
               </div>
 
-              <!-- ✅ Glow on hover -->
+              <!-- ✅ Hover Glow Border -->
               <div
-                class="absolute inset-0 ring-0 group-hover:ring-2 group-hover:ring-orange-500/70 transition duration-500 rounded-2xl">
+                class="absolute inset-0 rounded-2xl ring-0 group-hover:ring-2 group-hover:ring-orange-500/70 transition duration-500">
               </div>
 
             </div>
@@ -753,6 +751,7 @@
       </div>
 
     </div>
+
   </div>
 </section>
 
@@ -1066,35 +1065,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    new Swiper(".loanPartnerSwiper", {
-      loop: true,
-      freeMode: true,
-      freeModeMomentum: false,
-      centeredSlides: false,
-      grabCursor: true,
+document.addEventListener("DOMContentLoaded", function () {
+  new Swiper(".loanPartnerSwiper", {
+    loop: true,
+    speed: 6000,
+    spaceBetween: 22,
 
-      speed: 6000,
-      autoplay: {
-        delay: 0,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: true
-      },
+    // ✅ Continuous Smooth Auto Scroll
+    freeMode: true,
+    freeModeMomentum: false,
 
-      spaceBetween: 20,
-      slidesPerView: 2,
+    autoplay: {
+      delay: 0,
+      disableOnInteraction: false,
+      pauseOnMouseEnter: true
+    },
 
-      breakpoints: {
-        480:  { slidesPerView: 2.2 },
-        640:  { slidesPerView: 3 },
-        768:  { slidesPerView: 4 },
-        1024: { slidesPerView: 5 },
-        1280: { slidesPerView: 6 }
-      }
-    });
+    grabCursor: true,
+    centeredSlides: false,
+
+    // ✅ Wider Layout (Less slides => wider cards)
+    breakpoints: {
+      320:  { slidesPerView: 1.2 },
+      480:  { slidesPerView: 1.6 },
+      640:  { slidesPerView: 2.3 },
+      768:  { slidesPerView: 3 },
+      1024: { slidesPerView: 3.8 },
+      1280: { slidesPerView: 4.5 }
+    }
   });
+});
 </script>
-
 
 
 <!-- NEW LAUNCH SECTION -->

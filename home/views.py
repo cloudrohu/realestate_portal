@@ -1,4 +1,3 @@
-
 from django.shortcuts import render
 from django.http import HttpResponse 
 from properties.models import Property 
@@ -38,7 +37,7 @@ def index(request):
 
     featured_developers = Developer.objects.filter(featured_builder=True).order_by("-create_at")[:8]
     featured_locality = Locality.objects.filter(featured_locality=True).order_by("name")[:20]
-    bank = Bank.objects.all().order_by("title")
+    bank = Bank.objects.filter(home_loan_partner=True).order_by("title")
 
     about_page = About.objects.filter(is_active=True).first()
     about_page = About.objects.filter(is_active=True).first()
@@ -71,6 +70,7 @@ def index(request):
             "faqs": faqs,
         }
     )
+
 
 def robots_txt(request):
     """
