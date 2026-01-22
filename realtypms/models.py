@@ -2,31 +2,48 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils.html import mark_safe
 from django.conf import settings
-
-# ✅ IMPORTANT: Staff ko yaha dubara model mat banao
-# Staff already exists in user app
 from user.models import Staff
-
-
 from utility.models import City, Locality, Category, Sub_Locality
+import re
+from projects.models import Project
+
+# ✅ Phone Cleaner: last 10 digit + multiple numbers safe
+def clean_phone_india(phone: str):
+    if not phone:
+        return None
+
+    # convert to string
+    phone = str(phone)
+
+    # ✅ Extract digit sequences
+    # Example: "8097400056 ::: +912226795111" -> ["8097400056", "912226795111"]
+    digit_groups = re.findall(r"\d+", phone)
+
+    # ✅ First try to find valid Indian mobile number
+    for g in digit_groups:
+        if len(g) >= 10:
+            last10 = g[-10:]
+            # Indian mobile normally starts with 6-9
+            if last10[0] in ["6", "7", "8", "9"]:
+                return last10
+
+    # ✅ fallback: just take last10 of full digit string
+    digits = re.sub(r"\D", "", phone)
+    if len(digits) >= 10:
+        return digits[-10:]
+    return digits
 
 
-
-# ============================================================
-# GOOGLE COMPANY
-# ============================================================
 class GoogleCompany(models.Model):
     name = models.CharField(max_length=255)
     name_for_emails = models.CharField(max_length=255, blank=True, null=True)
 
-    # ✅ FK mapping
+    # ✅ FK mapping (optional for import safety)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, blank=True)
     locality = models.ForeignKey(Locality, on_delete=models.SET_NULL, null=True, blank=True)
     sub_locality = models.ForeignKey(Sub_Locality, on_delete=models.SET_NULL, null=True, blank=True)
-
-    # ✅ project ko string reference karo (safe)
-    project = models.ForeignKey("projects.Project", on_delete=models.SET_NULL, null=True, blank=True)
+    project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, blank=True)
 
     # ✅ original text fields (Outscraper)
     category_text = models.CharField(max_length=550, blank=True, null=True, db_index=True)
@@ -63,31 +80,18 @@ class GoogleCompany(models.Model):
 
     STATUS_CHOICES = [
         ("New", "New"),
-        ("Follow_Up", "Follow Up"),
-        ("Visit_On", "Visit On....."),
-        ("Busy", "Busy"),
-        ("Ringing", "Ringing"),
-        ("Disconnect", "Disconnect"),
-
-        ("Invalid No", "Invalid No"),
-        ("Switched_Off", "Switched Off"),
-
-        ("Not Reachable.", "Not Reachable."),
-        ("Not Available", "Not Available"),
-        ("Not_Interested", "Not Interested"),
-
-        ("Out Of Service", "Out Of Service"),
-        ("Already_Visited", "Already Visited"),
-        ("🤝 Deal Closed", "🤝 Deal Closed"),
-
-        ("Site visit Ongoing", "Site visit Ongoing"),
-
-        ("All Ready Purchased. ", "All Ready Purchased. "),
-
+        ("Meeting", "Meeting"),
+        ("Follow Up", "Follow Up"),
+        ("Not Received", "Not Received"),
+        ("Not Interested", "Not Interested"),
+        ("They Will Connect", "They Will Connect"),
+        ("Call later", "Call later"),
+        ("Call Tomorrow", "Call Tomorrow"),
+        ("Switched Off", "Switched Off"),
+        ("Invalid Number", "Invalid Number"),
+        ("Send Ditails", "Send Ditails"),
+        ("Deal Done", "Deal Done"),
     ]
-
-
-
     status = models.CharField(max_length=25, choices=STATUS_CHOICES, default="New")
 
     assigned_to = models.ForeignKey(
@@ -103,7 +107,6 @@ class GoogleCompany(models.Model):
 
     slug = models.SlugField(max_length=500, blank=True, null=True, db_index=True)
 
-    # ✅ FIXED: auth.User -> settings.AUTH_USER_MODEL
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name="realtypms_googlecompany_created",
@@ -117,20 +120,21 @@ class GoogleCompany(models.Model):
         null=True, blank=True
     )
 
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name_plural = "1. Google Companies"
+        verbose_name_plural = "0. Google Companies"
         ordering = ["-created_at"]
 
     def __str__(self):
         return f"{self.name} ({self.city_text})"
 
     def save(self, *args, **kwargs):
-        # ✅ Phone clean
+        # ✅ Phone: store only last 10 digits
         if self.phone:
-            self.phone = self.phone.replace(" ", "").strip()
+            self.phone = clean_phone_india(self.phone)
 
         super().save(*args, **kwargs)
 

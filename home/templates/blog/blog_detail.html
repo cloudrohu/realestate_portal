@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+
+<section class="bg-gray-50 py-14">
+  <div class="max-w-6xl mx-auto px-4">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" class="text-sm text-gray-500 mb-6">
+      <a href="/" class="hover:underline hover:text-gray-700">Home</a>
+      <span class="mx-2 text-gray-300">/</span>
+      <a href="/blogs/" class="hover:underline hover:text-gray-700">Blog</a>
+      <span class="mx-2 text-gray-300">/</span>
+      <span class="text-gray-900 font-semibold">{{ blog.title }}</span>
+    </nav>
+
+    <!-- Main Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+      <!-- LEFT: Blog Content -->
+      <div class="lg:col-span-8">
+
+        <!-- Featured Image -->
+        {% if blog.featured_image %}
+        <div class="bg-white border border-gray-200 shadow-sm overflow-hidden">
+          <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-[300px] md:h-[420px] object-cover" loading="lazy">
+        </div>
+        {% endif %}
+
+        <!-- Blog Header -->
+        <div class="mt-7 bg-white border border-gray-200 shadow-sm p-6 md:p-7">
+          <div class="flex flex-wrap items-center gap-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+            {% if blog.category %}<span class="bg-gray-100 border border-gray-200 px-2 py-1">{{ blog.category.name }}</span>{% endif %}
+            {% if blog.published_date %}<span class="text-gray-300">|</span><span>{{ blog.published_date|date:"M d, Y" }}</span>{% endif %}
+          </div>
+
+          <h1 class="text-2xl md:text-2xl font-semibold text-gray-900 mt-3 leading-snug">{{ blog.title }}</h1>
+
+          <div class="mt-4 flex items-center justify-between flex-wrap gap-3">
+            <p class="text-sm text-gray-600">By <span class="font-semibold text-gray-900">{% if blog.author_name %}{{ blog.author_name }}{% else %}Admin{% endif %}</span></p>
+          </div>
+
+          {% if blog.short_description %}
+          <p class="mt-4 text-sm text-gray-700 leading-relaxed">{{ blog.short_description }}</p>
+          {% endif %}
+        </div>
+
+        <!-- Blog Body -->
+        <div class="mt-7 bg-white border border-gray-200 shadow-sm p-6 md:p-7">
+          <div class="text-sm text-gray-800 leading-7 space-y-4">
+            {{ blog.content|safe }}
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Sidebar -->
+      <aside class="lg:col-span-4 space-y-8 lg:sticky lg:top-6 h-fit">
+
+        <!-- ✅ Contact Form -->
+        <div class="bg-white border border-gray-200 shadow-sm p-6">
+        <h3 class="text-base font-semibold text-gray-900">Get in Touch</h3>
+        <p class="text-sm text-gray-600 mt-1">Share your details, we’ll call you back shortly.</p>
+
+        <form action="" method="post" class="mt-5 space-y-4">
+            {% csrf_token %}
+            <input type="hidden" name="blog_title" value="{{ blog.title }}">
+            <input type="hidden" name="blog_slug" value="{{ blog.slug }}">
+
+            <!-- ✅ Full Name -->
+            <div>
+                <label class="block text-xs font-bold text-gray-600 mb-1">Full Name</label>
+                <input type="text" name="name" required placeholder="Enter your name" class="w-full border border-gray-300 bg-white px-4 py-3 text-sm outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition">
+            </div>
+
+            <!-- ✅ Phone Number -->
+            <div>
+                <label class="block text-xs font-bold text-gray-600 mb-1">Phone Number</label>
+                <input type="tel" name="phone" required placeholder="Enter phone number" class="w-full border border-gray-300 bg-white px-4 py-3 text-sm outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition">
+            </div>
+
+            <!-- ✅ Email -->
+            <div>
+                <label class="block text-xs font-bold text-gray-600 mb-1">Email (Optional)</label>
+                <input type="email" name="email" placeholder="Enter email address" class="w-full border border-gray-300 bg-white px-4 py-3 text-sm outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition">
+            </div>
+
+            <!-- ✅ Message -->
+            <div>
+                <label class="block text-xs font-bold text-gray-600 mb-1">Message</label>
+                <textarea name="message" rows="3" placeholder="Write your message..." class="w-full border border-gray-300 bg-white px-4 py-3 text-sm outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition resize-none"></textarea>
+            </div>
+
+            <!-- ✅ Button -->
+            <button type="submit" class="w-full px-5 py-3 bg-blue-700 text-white text-sm font-semibold shadow-sm hover:bg-blue-800 transition">Submit Request</button>
+
+            <!-- ✅ TRUST BADGES (Premium Look) -->
+            <div class="pt-4 border-t border-gray-200">
+            <div class="grid grid-cols-2 gap-3">
+                <div class="flex items-center gap-2 bg-slate-50 border border-gray-200 px-3 py-2">
+                <span class="text-green-600 text-sm">✔</span>
+                <p class="text-[12px] font-semibold text-gray-700">100% Privacy</p>
+                </div>
+
+                <div class="flex items-center gap-2 bg-slate-50 border border-gray-200 px-3 py-2">
+                <span class="text-blue-700 text-sm">⚡</span>
+                <p class="text-[12px] font-semibold text-gray-700">Quick Callback</p>
+                </div>
+
+                <div class="flex items-center gap-2 bg-slate-50 border border-gray-200 px-3 py-2">
+                <span class="text-purple-700 text-sm">🏆</span>
+                <p class="text-[12px] font-semibold text-gray-700">Verified Team</p>
+                </div>
+
+                <div class="flex items-center gap-2 bg-slate-50 border border-gray-200 px-3 py-2">
+                <span class="text-orange-600 text-sm">📞</span>
+                <p class="text-[12px] font-semibold text-gray-700">Free Consultation</p>
+                </div>
+            </div>
+
+            <p class="mt-3 text-[11px] text-gray-500 leading-relaxed">
+                By submitting this form, you agree to be contacted by our team for project updates & offers. No spam promise.
+            </p>
+            </div>
+
+            <!-- ✅ Contact details -->
+            <div class="pt-3 text-xs text-gray-600 space-y-1">
+            {% if settings_obj.phone %}<p><span class="font-semibold text-gray-900">Call:</span> {{ settings_obj.phone }}</p>{% endif %}
+            {% if settings_obj.email %}<p><span class="font-semibold text-gray-900">Email:</span> {{ settings_obj.email }}</p>{% endif %}
+            </div>
+
+        </form>
+        </div>
+
+
+        <!-- ✅ Related Blogs -->
+        <div id="related" class="bg-white border border-gray-200 shadow-sm p-6">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-semibold text-gray-900">Related Blogs</h3>
+            <a href="/blogs/" class="text-xs font-semibold text-blue-700 hover:underline">View all</a>
+          </div>
+
+          <div class="mt-5 space-y-4">
+            {% for r in related_blogs %}
+            <a href="{% url 'blog:blog_detail' r.slug %}" class="block group">
+              <div class="flex gap-4">
+
+                <div class="w-24 h-20 bg-gray-100 border border-gray-200 overflow-hidden flex-shrink-0">
+                  {% if r.featured_image %}
+                  <img src="{{ r.featured_image.url }}" alt="{{ r.title }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy">
+                  {% else %}
+                  <div class="w-full h-full flex items-center justify-center text-xs text-gray-400">No Image</div>
+                  {% endif %}
+                </div>
+
+                <div class="flex-1 min-w-0">
+                  <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">{% if r.category %}{{ r.category.name }}{% else %}General{% endif %}</p>
+                  <p class="text-sm font-semibold text-gray-900 mt-1 leading-snug line-clamp-2 group-hover:text-blue-700 transition">{{ r.title }}</p>
+                  {% if r.published_date %}<p class="text-xs text-gray-500 mt-2">{{ r.published_date|date:"M d, Y" }}</p>{% endif %}
+                </div>
+
+              </div>
+            </a>
+            {% empty %}
+            <p class="text-sm text-gray-600">No related blogs found.</p>
+            {% endfor %}
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+{% endblock %}

@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse 
 from properties.models import Property 
 from utility.models import Locality,PropertyType,City,Bank,ProjectAmenities
+from blog.models import Blog, Category
 from .models import (
     Setting, Slider, Testimonial, About, Leadership,
     Contact_Page, FAQ, Our_Team,Why_Choose,ImpactMetric, Service
@@ -38,6 +39,8 @@ def index(request):
     featured_developers = Developer.objects.filter(featured_builder=True).order_by("-create_at")[:8]
     featured_locality = Locality.objects.filter(featured_locality=True).order_by("name")[:20]
     bank = Bank.objects.filter(home_loan_partner=True).order_by("title")
+    blogs = Blog.objects.filter(is_published=True).order_by("-published_date", "-created_at")[:3]
+
 
     about_page = About.objects.filter(is_active=True).first()
     about_page = About.objects.filter(is_active=True).first()
@@ -68,6 +71,7 @@ def index(request):
             "why_choose_items": why_choose_items,
             "testimonials": testimonials,
             "faqs": faqs,
+            "blogs": blogs,
         }
     )
 

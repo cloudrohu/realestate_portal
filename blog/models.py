@@ -92,3 +92,56 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.name} on {self.post.title}"
+
+class BlogCategory(models.Model):
+    name = models.CharField(max_length=80, unique=True)
+    slug = models.SlugField(max_length=90, unique=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Blog Categories"
+        ordering = ["name"]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
+class Blog(models.Model):
+    category = models.ForeignKey(BlogCategory, on_delete=models.SET_NULL, null=True, blank=True, related_name="blogs")
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=240, unique=True, blank=True)
+    author_name = models.CharField(max_length=100, default="Admin")
+    published_date = models.DateField(null=True, blank=True)
+    featured_image = models.ImageField(upload_to="blogs/featured/", null=True, blank=True)
+    short_description = models.TextField(help_text="1–2 lines short summary")
+    content = models.TextField(help_text="Full blog content")
+    is_published = models.BooleanField(default=True)
+    is_featured = models.BooleanField(default=False)
+
+    # ✅ SEO Fields
+    meta_title = models.CharField(max_length=255, blank=True, null=True)
+    meta_description = models.CharField(max_length=300, blank=True, null=True)
+    meta_keywords = models.TextField(blank=True, null=True, help_text="Write keywords separated by comma")
+    og_image = models.ImageField(upload_to="blogs/og/", null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-published_date", "-created_at"]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        if not self.meta_title:
+            self.meta_title = self.title
+        if not self.meta_description:
+            self.meta_description = (self.short_description[:297] + "...") if len(self.short_description) > 300 else self.short_description
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title

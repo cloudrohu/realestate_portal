@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Tag, Post, Comment
+from .models import Category, Tag, Post, Comment, BlogCategory, Blog
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -31,3 +31,18 @@ class CommentAdmin(admin.ModelAdmin):
     def approve_comments(self, request, queryset):
         queryset.update(active=True)
     approve_comments.short_description = "Approve selected comments"
+
+@admin.register(BlogCategory)
+class BlogCategoryAdmin(admin.ModelAdmin):
+    list_display = ("name", "slug")
+    prepopulated_fields = {"slug": ("name",)}
+    search_fields = ("name",)
+
+
+@admin.register(Blog)
+class BlogAdmin(admin.ModelAdmin):
+    list_display = ("title", "category", "author_name", "published_date", "is_published", "is_featured")
+    list_filter = ("category", "is_published", "is_featured")
+    search_fields = ("title", "short_description", "content", "author_name")
+    prepopulated_fields = {"slug": ("title",)}
+    list_editable = ("is_published", "is_featured")

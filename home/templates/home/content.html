@@ -570,104 +570,98 @@
   
 
 <!-- Blog Section Start -->
-<section id="blog" class="py-16 bg-gray-50">
-  <div class="max-w-7xl mx-auto px-4 text-center">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 
-    <!-- Section Header -->
-    <h2 class="text-3xl font-bold text-gray-800 mb-3">
-      Latest from Our Blog
-    </h2>
-    <p class="text-gray-600 mb-10">
-      Property tips, market news & expert guides
-    </p>
+<section id="blog" class="py-20 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4">
 
-    <!-- 🔥 BLOG GRID (4 Columns Desktop) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-      <!-- Blog Card -->
-      <div class="bg-white rounded-xl shadow hover:shadow-xl transition overflow-hidden group">
-        <img src="https://via.placeholder.com/600x400"
-             class="h-44 w-full object-cover group-hover:scale-105 transition duration-300"
-             alt="">
-        <div class="p-4 text-left">
-          <span class="text-xs text-blue-600 font-semibold">Market Trends</span>
-          <h3 class="text-lg font-bold text-gray-800 mt-1">
-            Mumbai Property Market Update
-          </h3>
-          <p class="text-sm text-gray-600 mt-2 line-clamp-2">
-            Latest insights on prices, demand & upcoming hotspots in Mumbai.
-          </p>
-          <a href="#" class="inline-block mt-3 text-blue-600 text-sm font-semibold hover:underline">
-            Read More →
-          </a>
-        </div>
-      </div>
-
-      <!-- Duplicate cards (2,3,4) -->
-         <!-- Blog Card -->
-      <div class="bg-white rounded-xl shadow hover:shadow-xl transition overflow-hidden group">
-        <img src="https://via.placeholder.com/600x400"
-             class="h-44 w-full object-cover group-hover:scale-105 transition duration-300"
-             alt="">
-        <div class="p-4 text-left">
-          <span class="text-xs text-blue-600 font-semibold">Market Trends</span>
-          <h3 class="text-lg font-bold text-gray-800 mt-1">
-            Mumbai Property Market Update
-          </h3>
-          <p class="text-sm text-gray-600 mt-2 line-clamp-2">
-            Latest insights on prices, demand & upcoming hotspots in Mumbai.
-          </p>
-          <a href="#" class="inline-block mt-3 text-blue-600 text-sm font-semibold hover:underline">
-            Read More →
-          </a>
-        </div>
-      </div>  <!-- Blog Card -->
-      <div class="bg-white rounded-xl shadow hover:shadow-xl transition overflow-hidden group">
-        <img src="https://via.placeholder.com/600x400"
-             class="h-44 w-full object-cover group-hover:scale-105 transition duration-300"
-             alt="">
-        <div class="p-4 text-left">
-          <span class="text-xs text-blue-600 font-semibold">Market Trends</span>
-          <h3 class="text-lg font-bold text-gray-800 mt-1">
-            Mumbai Property Market Update
-          </h3>
-          <p class="text-sm text-gray-600 mt-2 line-clamp-2">
-            Latest insights on prices, demand & upcoming hotspots in Mumbai.
-          </p>
-          <a href="#" class="inline-block mt-3 text-blue-600 text-sm font-semibold hover:underline">
-            Read More →
-          </a>
-        </div>
-      </div>  <!-- Blog Card -->
-      <div class="bg-white rounded-xl shadow hover:shadow-xl transition overflow-hidden group">
-        <img src="https://via.placeholder.com/600x400"
-             class="h-44 w-full object-cover group-hover:scale-105 transition duration-300"
-             alt="">
-        <div class="p-4 text-left">
-          <span class="text-xs text-blue-600 font-semibold">Market Trends</span>
-          <h3 class="text-lg font-bold text-gray-800 mt-1">
-            Mumbai Property Market Update
-          </h3>
-          <p class="text-sm text-gray-600 mt-2 line-clamp-2">
-            Latest insights on prices, demand & upcoming hotspots in Mumbai.
-          </p>
-          <a href="#" class="inline-block mt-3 text-blue-600 text-sm font-semibold hover:underline">
-            Read More →
-          </a>
-        </div>
-      </div>
-      <!-- Copy same card 3 more times -->
-      
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900">Latest from Our Blog</h2>
+      <p class="text-gray-600 mt-2">Property tips, market news & expert guides</p>
     </div>
 
-    <!-- View All -->
-    <a href="/blogs"
-       class="inline-block mt-10 text-blue-600 font-semibold hover:underline">
-      View All Blogs
-    </a>
+    <!-- ✅ Desktop Grid (3 cards) -->
+    <div class="hidden md:grid grid-cols-3 gap-8">
+      {% for blog in blogs %}
+      <article class="bg-white border border-gray-200 shadow-sm hover:shadow-xl transition overflow-hidden">
+        <a href="{% url 'blog:blog_detail' blog.slug %}">
+          {% if blog.featured_image %}
+          <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-56 object-cover">
+          {% else %}
+          <img src="https://via.placeholder.com/600x400" alt="{{ blog.title }}" class="w-full h-56 object-cover">
+          {% endif %}
+        </a>
+        <div class="p-6 text-left">
+          {% if blog.category %}
+          <p class="text-xs font-semibold text-gray-500 tracking-wider uppercase">{{ blog.category.name }}</p>
+          {% else %}
+          <p class="text-xs font-semibold text-gray-500 tracking-wider uppercase">General</p>
+          {% endif %}
+          <h3 class="text-xl font-extrabold text-gray-900 mt-2 leading-snug line-clamp-2">
+            <a href="{% url 'blog:blog_detail' blog.slug %}" class="hover:underline">{{ blog.title }}</a>
+          </h3>
+          <p class="text-sm text-gray-600 mt-3 leading-relaxed line-clamp-2">{{ blog.short_description }}</p>
+          <div class="flex items-center justify-between mt-5">
+            <span class="text-xs font-semibold text-gray-500">By <span class="text-gray-800">{{ blog.author_name }}</span></span>
+            <a href="{% url 'blog:blog_detail' blog.slug %}" class="inline-flex items-center gap-2 text-blue-700 text-sm font-extrabold hover:underline">Read More <span>→</span></a>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    <!-- ✅ Mobile/Tablet Slider (dots pagination) -->
+    <div class="md:hidden">
+      <div class="swiper blogSwiper">
+        <div class="swiper-wrapper">
+
+          {% for blog in blogs %}
+          <div class="swiper-slide">
+            <article class="bg-white border border-gray-200 shadow-sm overflow-hidden">
+              <a href="{% url 'blog:blog_detail' blog.slug %}">
+                {% if blog.featured_image %}
+                <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-56 object-cover">
+                {% else %}
+                <img src="https://via.placeholder.com/600x400" alt="{{ blog.title }}" class="w-full h-56 object-cover">
+                {% endif %}
+              </a>
+              <div class="p-6 text-left">
+                {% if blog.category %}
+                <p class="text-xs font-semibold text-gray-500 tracking-wider uppercase">{{ blog.category.name }}</p>
+                {% else %}
+                <p class="text-xs font-semibold text-gray-500 tracking-wider uppercase">General</p>
+                {% endif %}
+                <h3 class="text-xl font-extrabold text-gray-900 mt-2 leading-snug line-clamp-2">
+                  <a href="{% url 'blog:blog_detail' blog.slug %}" class="hover:underline">{{ blog.title }}</a>
+                </h3>
+                <p class="text-sm text-gray-600 mt-3 leading-relaxed line-clamp-2">{{ blog.short_description }}</p>
+                <div class="flex items-center justify-between mt-5">
+                  <span class="text-xs font-semibold text-gray-500">By <span class="text-gray-800">{{ blog.author_name }}</span></span>
+                  <a href="{% url 'blog:blog_list' %}" class="inline-flex items-center gap-2 text-blue-700 text-sm font-extrabold hover:underline">Read More <span>→</span></a>
+                </div>
+              </div>
+            </article>
+          </div>
+          {% endfor %}
+
+        </div>
+
+        <div class="swiper-pagination mt-6 !relative"></div>
+      </div>
+    </div>
+
+    <div class="text-center mt-12">
+      <a href="{% url 'blog:blog_list' %}" class="inline-flex items-center gap-2 px-7 py-3 bg-blue-700 text-white font-extrabold shadow-md hover:shadow-xl transition">View All Blogs <span>→</span></a>
+    </div>
 
   </div>
 </section>
+
+
+<script>
+  new Swiper(".blogSwiper", { slidesPerView: 1, spaceBetween: 18, pagination: { el: ".swiper-pagination", clickable: true } });
+</script>
+
 <!-- Blog Section End -->
 
 
