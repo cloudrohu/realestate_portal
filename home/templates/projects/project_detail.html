@@ -1126,115 +1126,126 @@ document.addEventListener("DOMContentLoaded", function () {
 </style>
 
 <!-- ===================== MASTER & FLOOR PLAN SECTION ===================== -->
-
 <section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="floorplan">
 
-    <!-- HEADER -->
-    <div class="bg-[#e8eff5] px-5 py-3 border rounded-t-lg flex items-center justify-between">
-        <h2 class="text-xl font-semibold">Floor Plan</h2>
+  <!-- HEADER -->
+  <div class="bg-[#e8eff5] px-5 py-3 border rounded-t-lg flex items-center justify-between">
+    <h2 class="text-xl font-semibold">Master & Floor Plan</h2>
 
-        <button class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded">
-            Plan Kit
-        </button>
-    </div>
+    {% if project.master_plan or project.floor_plan %}
+    <button class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded">
+      Plan Kit
+    </button>
+    {% endif %}
+  </div>
 
-    <div class="bg-white border border-t-0 rounded-b-lg p-6">
+  <div class="bg-white border border-t-0 rounded-b-lg p-6">
 
-        <div class="grid md:grid-cols-2 gap-6">
+    <div class="grid md:grid-cols-2 gap-6">
 
-            <!-- ===================== MASTER PLAN ===================== -->
-            <div>
-                <h3 class="font-semibold text-gray-700 mb-3">Master Plan</h3>
+      <!-- ===================== MASTER PLAN ===================== -->
+      <div>
+        <h3 class="font-semibold text-gray-700 mb-3">Master Plan</h3>
 
-                <div class="relative">
+        {% if project.master_plan %}
+        <div class="border rounded-lg overflow-hidden">
+          <img src="{{ project.master_plan.url }}"
+               alt="{{ project.project_name }} Master Plan"
+               class="w-full max-h-[420px] object-contain bg-white cursor-pointer gallery-img"
+               data-index="0">
+        </div>
+        {% else %}
+        <div class="border rounded-lg p-8 text-center text-sm text-gray-500 bg-gray-50">
+          Master Plan Not Available
+        </div>
+        {% endif %}
+      </div>
 
-                    <!-- SWIPER -->
-                    <div class="swiper masterSwiper border rounded-lg p-2">
-                        <div class="swiper-wrapper">
+      <!-- ===================== FLOOR PLAN ===================== -->
+      <div>
+        <h3 class="font-semibold text-gray-700 mb-3">Floor Plans</h3>
 
-                            <div class="swiper-slide">
-                                <img src="https://housiey.com/_next/image?url=https%3A%2F%2Fresources.housiey.com%2Fadmin%2Fuploads%2Fproject_images%2Fmahindra-marina-64_1763796641183-428364518.webp&w=750&q=60"
-                                     class="w-full rounded-lg" />
-                            </div>  
+        {% with plans=project.configurations.all %}
+        {% if plans %}
+        <div class="swiper floorPlanSwiper border rounded-lg p-2">
+          <div class="swiper-wrapper">
 
-                            <div class="swiper-slide">
-                                <img src="https://housiey.com/_next/image?url=https%3A%2F%2Fresources.housiey.com%2Fadmin%2Fuploads%2Fproject_images%2Fmahindra-marina-64_1763796650039-877349433.webp&w=750&q=60"
-                                     class="w-full rounded-lg" />
-                            </div>
-
-                            <div class="swiper-slide">
-                                <img src="https://via.placeholder.com/900x600?text=Master+Plan+3"
-                                     class="w-full rounded-lg" />
-                            </div>
-
-                        </div>
-
-                        <!-- ARROWS -->
-                        <div class="swiper-button-prev !left-0"></div>
-                    </div>
-
+            {% for c in plans %}
+              {% if c.unit_plan %}
+              <div class="swiper-slide">
+                <div class="rounded-lg overflow-hidden border bg-white">
+                  <img src="{{ c.unit_plan.url }}"
+                       alt="{{ project.project_name }} {{ c.bhk_type }} Unit Plan"
+                       class="w-full max-h-[420px] object-contain bg-white cursor-pointer gallery-img"
+                       data-index="{{ forloop.counter }}">
                 </div>
-            </div>
 
-            <!-- ===================== FLOOR PLAN ===================== -->
-            <div>
-                <h3 class="font-semibold text-gray-700 mb-3">Floor Plan</h3>
-
-                <div class="relative">
-
-                    <div class="swiper floorSwiper border rounded-lg p-2">
-                        <div class="swiper-wrapper">
-
-                            <div class="swiper-slide">
-                                <img src="https://housiey.com/_next/image?url=https%3A%2F%2Fresources.housiey.com%2Fadmin%2Fuploads%2Fproject_images%2Fmahindra-marina-64_1763796650039-877349433.webp&w=750&q=60"
-                                     class="w-full rounded-lg" />
-                            </div>
-
-                            <div class="swiper-slide">
-                                <img src="https://via.placeholder.com/900x600?text=Floor+Plan+2"
-                                     class="w-full rounded-lg" />
-                            </div>
-
-                            <div class="swiper-slide">
-                                <img src="https://via.placeholder.com/900x600?text=Floor+Plan+3"
-                                     class="w-full rounded-lg" />
-                            </div>
-
-                        </div>
-
-                        <!-- ARROWS -->
-                        <div class="swiper-button-next !right-0"></div>
-                    </div>
-
+                <div class="mt-2 text-center text-sm font-semibold text-gray-700">
+                  {{ c.bhk_type }} • {{ c.area_sqft }} sqft
                 </div>
-            </div>
+              </div>
+              {% endif %}
+            {% endfor %}
 
+            {% if project.floor_plan %}
+            <div class="swiper-slide">
+              <div class="rounded-lg overflow-hidden border bg-white">
+                <img src="{{ project.floor_plan.url }}"
+                     alt="{{ project.project_name }} Floor Plan"
+                     class="w-full max-h-[420px] object-contain bg-white cursor-pointer gallery-img"
+                     data-index="{{ plans|length|add:'2' }}">
+              </div>
+              <div class="mt-2 text-center text-sm font-semibold text-gray-700">
+                Common Floor Plan
+              </div>
+            </div>
+            {% endif %}
+
+          </div>
+
+          <!-- Navigation -->
+          <div class="swiper-button-prev !text-gray-700"></div>
+          <div class="swiper-button-next !text-gray-700"></div>
+          <div class="swiper-pagination !relative mt-4"></div>
         </div>
 
+        {% else %}
+          {% if project.floor_plan %}
+            <div class="border rounded-lg overflow-hidden">
+              <img src="{{ project.floor_plan.url }}"
+                   alt="{{ project.project_name }} Floor Plan"
+                   class="w-full max-h-[420px] object-contain bg-white cursor-pointer gallery-img"
+                   data-index="1">
+            </div>
+          {% else %}
+            <div class="border rounded-lg p-8 text-center text-sm text-gray-500 bg-gray-50">
+              Floor Plan Not Available
+            </div>
+          {% endif %}
+        {% endif %}
+        {% endwith %}
+
+      </div>
+
     </div>
 
+  </div>
 </section>
 
 <script>
-    var masterSwiper = new Swiper(".masterSwiper", {
-        slidesPerView: 1,
-        spaceBetween: 10,
-        navigation: {
-            nextEl: ".masterSwiper .swiper-button-next",
-            prevEl: ".masterSwiper .swiper-button-prev",
-        },
-        loop: true,
-    });
-
-    var floorSwiper = new Swiper(".floorSwiper", {
-        slidesPerView: 1,
-        spaceBetween: 10,
-        navigation: {
-            nextEl: ".floorSwiper .swiper-button-next",
-            prevEl: ".floorSwiper .swiper-button-prev",
-        },
-        loop: true,
-    });
+  var floorPlanSwiper = new Swiper(".floorPlanSwiper", {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    loop: true,
+    pagination: {
+      el: ".floorPlanSwiper .swiper-pagination",
+      clickable: true,
+    },
+    navigation: {
+      nextEl: ".floorPlanSwiper .swiper-button-next",
+      prevEl: ".floorPlanSwiper .swiper-button-prev",
+    },
+  });
 </script>
 
 
