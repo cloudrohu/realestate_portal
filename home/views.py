@@ -4,7 +4,7 @@ from properties.models import Property
 from utility.models import Locality,PropertyType,City,Bank,ProjectAmenities
 from .models import (
     Setting, Slider, Testimonial, About, Leadership,
-    Contact_Page, FAQ, Our_Team,Why_Choose,ImpactMetric
+    Contact_Page, FAQ, Our_Team,Why_Choose,ImpactMetric, Service
 )
 from user.models import Developer 
 
@@ -188,3 +188,13 @@ def cookies(request):
         "settings_obj": settings_obj,
     }
     return render(request, 'terms/cookies-policy.html', context)
+
+def services(request):
+    settings_obj = Setting.objects.filter(status="True").first()    
+    services = Service.objects.filter(is_active=True)
+
+    context = {
+        "settings_obj": settings_obj,
+        "services": services,
+    }
+    return render(request, 'services/services.html', context)

@@ -288,3 +288,17 @@ class ImpactMetric(models.Model):
 
     def __str__(self):
         return f"{self.title}: {self.value}"
+
+class Service(models.Model):
+    title = models.CharField(max_length=120)
+    description = models.TextField()
+    image = models.ImageField(upload_to="services/")
+    order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["order"]
+
+    def __str__(self):
+        return self.title

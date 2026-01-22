@@ -3,7 +3,7 @@ from django.utils.html import mark_safe
 from .models import (
     Setting, Slider, Leadership, Why_Choose,
     About, Contact_Page, Our_Team,
-    Testimonial, FAQ, ImpactMetric
+    Testimonial, FAQ, ImpactMetric, Service
 )
 
 @admin.register(Setting)
@@ -294,3 +294,9 @@ class ImpactMetricAdmin(admin.ModelAdmin):
     list_editable = ("order",)
     ordering = ("order",)
     search_fields = ("title", "value")
+
+@admin.register(Service)
+class ServiceAdmin(admin.ModelAdmin):
+    list_display = ("title", "order", "is_active")
+    list_editable = ("order", "is_active")
+    search_fields = ("title", "description")
