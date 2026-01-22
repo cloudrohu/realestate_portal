@@ -1023,52 +1023,178 @@ document.getElementById("videoPlayBtn").addEventListener("click", function () {
 }
 </style>
 
-
 <!-- ===================== AMENITIES SECTION ===================== -->
 <section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="amenities">
 
-    <!-- HEADER BAR -->
-    <div class="bg-[#e8eff5] px-5 py-3 border rounded-t-lg">
-        <h2 class="text-xl font-semibold">Amenities</h2>
-    </div>
+  <!-- HEADER -->
+  <div class="bg-[#e8eff5] px-5 py-3 border rounded-t-lg">
+    <h2 class="text-xl font-semibold">Amenities</h2>
+  </div>
 
-    <div class="bg-white border border-t-0 rounded-b-lg p-6">
+  <!-- BODY -->
+  <div class="bg-white border border-t-0 rounded-b-lg p-6">
+    <h3 class="text-sm font-semibold text-gray-700 mb-4">External Amenities</h3>
 
-        <h3 class="text-sm font-semibold text-gray-700 mb-3">
-            External Amenities
-        </h3>
+    {% if project_amenities %}
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4" id="amenitiesGrid">
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3"
-             id="amenitiesGrid">
+      {% for item in project_amenities %}
+      <div class="amenity-card {% if forloop.counter > 12 %}hidden more-item{% endif %}">
 
-            {% for item in project_amenities %}
-            <div class="amenity-card
-                        {% if forloop.counter > 12 %}hidden more-item{% endif %}">
-
-                {% if item.amenities.image %}
-                <img src="{{ item.amenities.image.url }}"
-                     class="w-8 opacity-80 mt-1"
-                     alt="{{ item.amenities.title }}">
-                {% endif %}
-
-                <p class="label">{{ item.amenities.title }}</p>
+        <!-- IMAGE AREA -->
+        <div class="amenity-img-wrap">
+          {% if item.amenities.image %}
+            <img src="{{ item.amenities.image.url }}" alt="{{ item.amenities.title }}" class="amenity-img">
+          {% else %}
+            <div class="amenity-placeholder">
+              <i class="fa-solid fa-star"></i>
             </div>
-            {% endfor %}
-
-            {% if project_amenities|length > 12 %}
-            <!-- SHOW MORE BUTTON -->
-            <div id="showMoreBtn"
-                class="border rounded-lg flex items-center justify-center
-                       text-center p-2 h-10 bg-[#e8eff5]
-                       text-gray-700 font-semibold cursor-pointer">
-                + {{ project_amenities|length|add:"-12" }} More
-            </div>
-            {% endif %}
-
+          {% endif %}
         </div>
 
+        <!-- TITLE -->
+        <p class="label">{{ item.amenities.title }}</p>
+
+      </div>
+      {% endfor %}
+
+      <!-- SHOW MORE -->
+      {% if project_amenities|length > 12 %}
+      <button id="showMoreBtn" type="button" class="showmore-btn">
+        + {{ project_amenities|length|add:"-12" }} More
+      </button>
+      {% endif %}
+
     </div>
+    {% else %}
+    <p class="text-gray-500 text-sm">No amenities found for this project.</p>
+    {% endif %}
+
+  </div>
 </section>
+
+<!-- ✅ CSS -->
+<style>
+  .amenity-card{
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    background: #fff;
+    transition: .25s;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 160px;
+  }
+
+  .amenity-card:hover{
+    box-shadow: 0 10px 25px rgba(0,0,0,.12);
+    transform: translateY(-2px);
+  }
+
+  /* ✅ SAME HEIGHT IMAGE AREA */
+  .amenity-img-wrap{
+    width: 100%;
+    height: 95px;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* ✅ IMAGE PERFECT FIT */
+  .amenity-img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 🔥 best for gallery type */
+    display: block;
+  }
+
+  /* ✅ NO IMAGE PLACEHOLDER */
+  .amenity-placeholder{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    font-size: 22px;
+  }
+
+  /* ✅ TITLE */
+  .amenity-card .label{
+    font-size: 13px;
+    color: #0f172a;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    padding: 10px 8px;
+  }
+
+  /* ✅ SHOW MORE BUTTON (same grid style) */
+  .showmore-btn{
+    border: 1px solid #cbd5e1;
+    border-radius: 14px;
+    background: #e8eff5;
+    font-weight: 700;
+    font-size: 13px;
+    color: #334155;
+    height: 44px;
+    width: 100%;
+    cursor: pointer;
+    transition: .25s;
+  }
+  .showmore-btn:hover{
+    background: #dbeafe;
+    transform: translateY(-1px);
+  }
+
+  /* ✅ Smooth animation */
+  .fadeIn{
+    animation: fadeIn .22s ease-in-out;
+  }
+  @keyframes fadeIn{
+    from {opacity: 0; transform: translateY(8px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+</style>
+
+<!-- ✅ SHOW MORE / SHOW LESS JS -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const btn = document.getElementById("showMoreBtn");
+  if (!btn) return;
+
+  const hiddenItems = Array.from(document.querySelectorAll(".more-item"));
+  const totalHidden = hiddenItems.length;
+
+  let expanded = false;
+  btn.innerHTML = `+ ${totalHidden} More`;
+
+  btn.addEventListener("click", () => {
+    expanded = !expanded;
+
+    hiddenItems.forEach(item => {
+      if (expanded) {
+        item.classList.remove("hidden");
+        item.classList.add("fadeIn");
+      } else {
+        item.classList.add("hidden");
+        item.classList.remove("fadeIn");
+      }
+    });
+
+    btn.innerHTML = expanded ? `− Show Less` : `+ ${totalHidden} More`;
+  });
+
+});
+</script>
+
+
+
 
 <!-- ===================== JS FOR SHOW MORE ===================== -->
 <script>

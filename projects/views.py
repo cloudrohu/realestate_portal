@@ -279,6 +279,8 @@ def residential_projects(request):
     return render(request, "projects/residential_list.html", context)
 
 def project_details(request, id, slug):
+    settings_obj = Setting.objects.first()
+
     project = get_object_or_404(Project, id=id, slug=slug, active=True)
 
     carpet_range = project.configurations.aggregate(
@@ -287,23 +289,23 @@ def project_details(request, id, slug):
     )
 
     related_projects = (
-            Project.objects
-            .filter(active=True)
-            .exclude(id=project.id)
-            .filter(
-                Q(locality=project.locality) |
-                Q(city=project.city) |
-                Q(developer=project.developer)
-            )
-            .annotate(
-                min_carpet=Min("configurations__area_sqft"),
-                max_carpet=Max("configurations__area_sqft"),
-                min_price=Min("configurations__price_in_rupees"),
-            )
-            .select_related("city", "locality", "developer")
-            .prefetch_related("configurations")
-            .distinct()[:8]
+        Project.objects
+        .filter(active=True)
+        .exclude(id=project.id)
+        .filter(
+            Q(locality=project.locality) |
+            Q(city=project.city) |
+            Q(developer=project.developer)
         )
+        .annotate(
+            min_carpet=Min("configurations__area_sqft"),
+            max_carpet=Max("configurations__area_sqft"),
+            min_price=Min("configurations__price_in_rupees"),
+        )
+        .select_related("city", "locality", "developer")
+        .prefetch_related("configurations")
+        .distinct()[:8]
+    )
 
     if not related_projects.exists():
         related_projects = (
@@ -315,16 +317,19 @@ def project_details(request, id, slug):
                 max_carpet=Max("configurations__area_sqft"),
                 min_price=Min("configurations__price_in_rupees"),
             )
-        )
+        )[:8]
 
-    related_projects = related_projects[:8]
+    # ✅ AMENITIES
+    project_amenities = project.project_amenities.select_related("amenities").all()
 
     context = {
+        "settings_obj": settings_obj,
         "project": project,
         "min_carpet": carpet_range["min_area"],
         "max_carpet": carpet_range["max_area"],
         "related_projects": related_projects,
         "project_faqs": project.faqs.all().order_by("order"),
+        "project_amenities": project_amenities,
     }
 
     return render(request, "projects/project_detail.html", context)
@@ -346,71 +351,6 @@ def commercial_projects(request):
         'breadcrumb': 'Commercial',
     }
     return render(request, 'projects/commercial_list.html', context)
-
-def project_details(request, id, slug):
-
-    # ✅ STEP 1: FETCH PROJECT FIRST
-    project = get_object_or_404(Project, id=id, slug=slug, active=True)
-
-    # ✅ STEP 2: SETTINGS
-    settings_obj = Setting.objects.first()
-    rs = Setting.objects.first()
-
-    # ✅ STEP 3: CARPET RANGE
-    carpet_range = project.configurations.aggregate(
-        min_area=Min("area_sqft"),
-        max_area=Max("area_sqft")
-    )
-
-    # ✅ STEP 4: RELATED PROJECTS (LOCALITY FIRST)
-    related_projects = Project.objects.filter(
-        locality=project.locality,
-        active=True
-    ).exclude(id=project.id)
-
-    # 👉 Fallback: agar same locality me aur project na mile
-    if not related_projects.exists():
-        related_projects = Project.objects.filter(
-            city=project.city,
-            active=True
-        ).exclude(id=project.id)
-
-    related_projects = related_projects[:8]
-
-    # ✅ STEP 5: FAQ
-    project_faqs = project.faqs.all().order_by("order")
-
-    # ✅ STEP 6: FINAL CONTEXT
-    context = {
-        "project": project,
-        "active": project,
-
-        "settings_obj": settings_obj,
-        "rs": rs,
-
-        "min_carpet": carpet_range["min_area"],
-        "max_carpet": carpet_range["max_area"],
-
-        "welcome": project.welcomes.all(),
-        "usps": project.usps.all(),
-        "configurations": project.configurations.all().order_by("bhk_type"),
-        "gallery": project.gallery.all(),
-        "amenities": project.amenities.all(),
-        "rera": project.rera.all(),
-        "BookingOffer": project.BookingOffer.all(),
-        "headers": project.headers.all(),
-        "configs": project.configurations.all(),
-        "why_invest": project.why_invest.all(),
-
-        # ✅ RELATED + FAQ
-        "project_faqs": project_faqs,
-        "related_projects": related_projects,
-
-        # OPTIONAL
-        "properties": Property.objects.filter(project=project),
-    }
-
-    return render(request, "projects/project_detail.html", context)
 
 def submit_enquiry(request, id):
     project = get_object_or_404(Project, id=id)

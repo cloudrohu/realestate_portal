@@ -340,8 +340,8 @@ class Connectivity(models.Model):
         return f"{self.title}"
 
 class Amenities(models.Model):
-    Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="amenities")
-    amenities = models.ForeignKey(ProjectAmenities, on_delete=models.CASCADE, related_name="amenities")
+    Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="project_amenities")
+    amenities = models.ForeignKey(ProjectAmenities, on_delete=models.CASCADE, related_name="project_amenities_items")
     
     def __str__(self):
         return f"{self.Project.project_name} - {self.amenities.title}"
