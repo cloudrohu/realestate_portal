@@ -1103,6 +1103,12 @@ document.addEventListener("DOMContentLoaded", function () {
       <div>
         <h3 class="font-semibold text-gray-700 mb-3">Floor Plans</h3>
 
+        <style>
+          .floorPlanSwiper { height: 420px; }
+          .floorPlanSwiper .swiper-wrapper,
+          .floorPlanSwiper .swiper-slide { height: 100% !important; }
+          .floorPlanSwiper img { height: 100% !important; width: 100% !important; object-fit: cover; }
+        </style>
 
         {% with plans=project.configurations.all %}
         {% if plans %}
@@ -1132,6 +1138,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
           </div>
 
+          <!-- Navigation -->
+          <div class="swiper-button-prev !text-gray-700"></div>
+          <div class="swiper-button-next !text-gray-700"></div>
 
           <!-- Pagination -->
           <div class="swiper-pagination !absolute !bottom-2 !left-0 !right-0"></div>
