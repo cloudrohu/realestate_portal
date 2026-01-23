@@ -1,0 +1,205 @@
+from django.shortcuts import render
+from django.db.models import Min, Max, Q
+from django.http import HttpResponse 
+from properties.models import Property 
+from utility.models import Locality,PropertyType,City,Bank,ProjectAmenities
+from blog.models import Blog, Category
+from .models import (
+    Setting, Slider, Testimonial, About, Leadership,
+    Contact_Page, FAQ, Our_Team,Why_Choose,ImpactMetric, Service
+)
+from user.models import Developer 
+
+from django.shortcuts import render
+from projects.models import Project  # import your Project model
+
+
+
+def index(request):
+    settings_obj = Setting.objects.first()
+    cities = City.objects.filter(level_type="CITY").order_by("name")
+
+    residential_type = PropertyType.objects.filter(name__iexact="Residential", is_top_level=True).first()
+    commercial_type = PropertyType.objects.filter(name__iexact="Commercial", is_top_level=True).first()
+
+    residential_types = residential_type.get_descendants(include_self=True) if residential_type else PropertyType.objects.none()
+    commercial_types = commercial_type.get_descendants(include_self=True) if commercial_type else PropertyType.objects.none()
+
+    new_launch_residential = Project.objects.filter(
+        active=True, construction_status__iexact="New Launch", propert_type__in=residential_types
+    ).select_related("city", "locality", "developer", "propert_type").prefetch_related("configurations").order_by("-create_at")[:10]
+
+    new_launch_commercial = Project.objects.filter(
+        active=True, construction_status__iexact="New Launch", propert_type__in=commercial_types
+    ).select_related("city", "locality", "developer", "propert_type").prefetch_related("configurations").order_by("-create_at")[:10]
+
+    project_featured = Project.objects.filter(
+        active=True, featured_property=True
+    ).select_related("city", "locality", "developer", "propert_type").prefetch_related("configurations").order_by("-create_at")[:6]
+
+    featured_developers = Developer.objects.filter(featured_builder=True).order_by("-create_at")[:8]
+    featured_locality = Locality.objects.filter(featured_locality=True).order_by("name")[:20]
+    bank = Bank.objects.filter(home_loan_partner=True).order_by("title")
+    blogs = Blog.objects.filter(is_published=True).order_by("-published_date", "-created_at")[:3]
+
+
+    about_page = About.objects.filter(is_active=True).first()
+    about_page = About.objects.filter(is_active=True).first()
+    impactmetric = ImpactMetric.objects.all()
+    amenities = ProjectAmenities.objects.all()
+    why_choose_items = Why_Choose.objects.filter(is_active=True).order_by("order")
+    testimonials = Testimonial.objects.all().order_by("-id")
+    faqs = FAQ.objects.all().order_by("id")
+
+    current_city = project_featured.first().city.name if project_featured.exists() else "Mumbai"
+
+    return render(
+        request,
+        "home/index.html",
+        {
+            "settings_obj": settings_obj,
+            "bank": bank,
+            "cities": cities,
+            "current_city": current_city,
+            "impactmetric": impactmetric,
+            "amenities": amenities,
+            "project_featured": project_featured,
+            "new_launch_residential": new_launch_residential,
+            "new_launch_commercial": new_launch_commercial,
+            "featured_developers": featured_developers,
+            "featured_locality": featured_locality,
+            "about_page": about_page,
+            "why_choose_items": why_choose_items,
+            "testimonials": testimonials,
+            "faqs": faqs,
+            "blogs": blogs,
+        }
+    )
+
+
+def robots_txt(request):
+    """
+    Serves the robots.txt file content for SEO.
+    """
+    robots_content = """
+User-agent: *
+Disallow: /admin/
+Disallow: /accounts/
+Allow: /
+
+Sitemap: http://127.0.0.1:8000/sitemap.xml 
+    """
+    return HttpResponse(robots_content.strip(), content_type="text/plain")
+
+def about_page_view(request):
+    """
+    Display the About page with:
+    - About section (single)
+    - Leadership list
+    - Global site settings
+    """
+
+    # 🧠 Global site settings (for logo, footer, SEO)
+    settings_obj = Setting.objects.filter(status="True").first()
+
+    # 🏠 Fetch active About page content (latest or first)
+    about_page = About.objects.filter(is_active=True).order_by('-created_at').first()
+
+    # 👥 Leadership team
+    leaders = Leadership.objects.filter(is_active=True).order_by('display_order')
+
+    # ✅ Fallback (safe defaults)
+    if not about_page:
+        about_page = {
+            "title": "About Makaan Hub",
+            "subtitle": "Delivering trust, growth and innovation since 2008.",
+            "projects_delivered": 120,
+            "happy_families": 10000,
+            "years_of_excellence": 16,
+            "awards_recognitions": 12,
+        }
+
+    context = {
+        "about_page": about_page,
+        "leaders": leaders,
+        "settings_obj": settings_obj,
+    }
+    return render(request, "home/about.html", context)
+
+def contact_view(request):
+    """Renders the Contact Page with site contact details."""
+    settings_obj = Setting.objects.first()
+    # Contact_Page में 'setting' field नहीं है (traceback के अनुसार),
+    # इसलिए सीधे पहला contact record ले रहें हैं।
+    contact_content = Contact_Page.objects.first()
+
+    context = {
+        "settings_obj": settings_obj,
+        "contact_content": contact_content,
+    }
+    return render(request, 'home/contact.html', context)
+
+def faq_view(request):
+    """Renders the FAQ page."""
+    settings_obj = Setting.objects.first()
+
+    # Fetch all FAQs (no setting filter because model doesn't have it)
+    faqs = FAQ.objects.all().order_by('id')
+
+    context = {
+        "settings_obj": settings_obj,
+        "faqs": faqs,
+    }
+    return render(request, 'home/faq.html', context)
+
+#-----------------------------------------------------------------------------------------------
+
+def get_setting():
+
+    settings_obj = Setting.objects.filter(status="True").first()    
+
+    return Setting.objects.first()
+
+def privacy_policy(request):
+
+    
+    settings_obj = Setting.objects.filter(status="True").first()    
+    context = {
+        "settings_obj": settings_obj,
+    }
+
+    return render(request, 'terms/privacy_policy.html', context)
+
+def terms_conditions(request):
+    settings_obj = Setting.objects.filter(status="True").first()   
+
+    context = {
+        "settings_obj": settings_obj,
+    }
+    return render(request, 'terms/terms_conditions.html', context)
+
+def disclaimer(request):
+    settings_obj = Setting.objects.filter(status="True").first()    
+
+    context = {
+        "settings_obj": settings_obj,
+    }
+    return render(request, 'terms/disclaimer.html', context)
+
+def cookies(request):
+    settings_obj = Setting.objects.filter(status="True").first()    
+
+    context = {
+        "settings_obj": settings_obj,
+    }
+    return render(request, 'terms/cookies-policy.html', context)
+
+def services(request):
+    settings_obj = Setting.objects.filter(status="True").first()    
+    services = Service.objects.filter(is_active=True)
+
+    context = {
+        "settings_obj": settings_obj,
+        "services": services,
+    }
+    return render(request, 'services/services.html', context)
