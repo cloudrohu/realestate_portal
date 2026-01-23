@@ -509,6 +509,28 @@ body.popup-open .rera-badges {
 
 </THIRD-SECTION>
 
+<script>
+
+
+    // show popup
+    imgs.forEach((img, index) => {
+        img.addEventListener("click", () => {
+            current = index;
+            popupImg.src = img.src;
+            popup.classList.remove("hidden");
+            popup.classList.add("flex");
+            tabsNav.style.display = "none";   // 🔥 HIDE NAV WHEN POPUP OPENS
+        });
+    });
+
+    // close popup
+    document.getElementById("closeBtn").onclick = () => {
+        popup.classList.add("hidden");
+        tabsNav.style.display = "block";      // 🔥 SHOW NAV AGAIN
+    };
+
+</script>
+
 <!-- ===================== OVERVIEW BOX ===================== -->
 <section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="overview">
     <div class="bg-[#e8eff5] border rounded-t-lg px-5 py-3 flex items-center justify-between">
