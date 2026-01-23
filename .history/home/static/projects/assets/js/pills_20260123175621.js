@@ -600,3 +600,7 @@ function clearLocalityOnly() {
 
   window.location.href = url.toString();
 }
+function clearLocalityOnly() {
+  document.querySelectorAll('input[name="locality"]').forEach(cb => cb.checked = false);
+  document.getElementById("filterForm").submit();
+}

@@ -209,12 +209,12 @@
 
               <!-- Footer Button -->
               <div class="bg-orange-500 text-center py-2 hover:bg-orange-600 transition">
-                <div class="px-2 pb-2">
-                  <a href="{{ rs.get_absolute_url }}" target="_blank"
-                    class="block text-center py-2.5 font-bold tracking-wide text-sm text-white bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 transition shadow-md">
-                    SEE DETAILS
-                  </a>
-                </div>
+<div class="px-3 pb-3">
+  <a href="{{ rs.get_absolute_url }}"
+     class="block text-center py-2.5 rounded-xl font-bold tracking-wide text-sm text-white bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 transition shadow-md">
+    SEE DETAILS
+  </a>
+</div>
 
               </div>
             </div>
@@ -420,7 +420,7 @@
               </div>
 
               <div class="bg-orange-500 text-center">
-                <a href="{{ project.get_absolute_url }}" target="_blank"
+                <a href="{{ project.get_absolute_url }}"
                   class="block text-white font-bold w-full py-3 uppercase">
                   See Details
                 </a>
@@ -522,7 +522,7 @@
 
       <!-- CTA -->
       <div class="mt-6">
-        <a href="{% url 'search_projects' %}" target="_blank" class="inline-flex items-center justify-center px-7 py-3 text-white font-bold bg-gradient-to-r from-[#002D62] to-[#0b4aa0] shadow hover:opacity-95 transition">View All Projects</a>
+        <a href="{% url 'search_projects' %}" class="inline-flex items-center justify-center px-7 py-3 text-white font-bold bg-gradient-to-r from-[#002D62] to-[#0b4aa0] shadow hover:opacity-95 transition">View All Projects</a>
       </div>
 
     </div>
@@ -531,7 +531,7 @@
     <div class="lg:col-span-8 grid md:grid-cols-3 gap-6">
 
       <!-- CARD 1 -->
-      <a target="_blank" href="{% url 'search_projects' %}?bhk=&construction_status=Ready+To+Move&rera=" class="group relative  overflow-hidden shadow-lg border border-gray-100">
+      <a href="{% url 'search_projects' %}?bhk=&construction_status=Ready+To+Move&rera=" class="group relative  overflow-hidden shadow-lg border border-gray-100">
         <img src="https://sigmahomes.co.in/media/images/aerial_view-new.webp" class="w-full h-72 object-cover group-hover:scale-110 transition duration-700" alt="Ready to Move">
         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 
@@ -558,7 +558,7 @@
       </a>
 
       <!-- CARD 2 -->
-      <a target="_blank" href="{% url 'search_projects' %}?bhk=&construction_status=Under+Construction&rera=" class="group relative  overflow-hidden shadow-lg border border-gray-100">
+      <a href="{% url 'search_projects' %}?bhk=&construction_status=Under+Construction&rera=" class="group relative  overflow-hidden shadow-lg border border-gray-100">
         <img src="https://sigmahomes.co.in/media/images/Elevation_Render_1_fQvU_1.webp" class="w-full h-72 object-cover group-hover:scale-110 transition duration-700" alt="Early Possession">
         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 
@@ -585,7 +585,7 @@
       </a>
 
       <!-- CARD 3 -->
-      <a target="_blank" href="{% url 'search_projects' %}?bhk=&construction_status=New+Launch&rera=" class="group relative  overflow-hidden shadow-lg border border-gray-100">
+      <a href="{% url 'search_projects' %}?bhk=&construction_status=New+Launch&rera=" class="group relative  overflow-hidden shadow-lg border border-gray-100">
         <img src="https://sigmahomes.co.in/media/images/Road-To-Elevation-3.webp" class="w-full h-72 object-cover group-hover:scale-110 transition duration-700" alt="New Launch">
         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 

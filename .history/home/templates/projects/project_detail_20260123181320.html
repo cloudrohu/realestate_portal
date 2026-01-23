@@ -1036,42 +1036,81 @@ document.getElementById("videoPlayBtn").addEventListener("click", function () {
     <h3 class="text-sm font-semibold text-gray-700 mb-4">External Amenities</h3>
 
     {% if project_amenities %}
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4" id="amenitiesGrid">
 
-      {% for item in project_amenities %}
-      <div class="amenity-card {% if forloop.counter > 12 %}hidden more-item{% endif %}">
+      <!-- ✅ GRID -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4" id="amenitiesGrid">
+        {% for item in project_amenities %}
+        <div class="amenity-card {% if forloop.counter > 12 %}hidden more-item{% endif %}">
 
-        <!-- IMAGE AREA -->
-        <div class="amenity-img-wrap">
-          {% if item.amenities.image %}
-            <img src="{{ item.amenities.image.url }}" alt="{{ item.amenities.title }}" class="amenity-img">
-          {% else %}
-            <div class="amenity-placeholder">
-              <i class="fa-solid fa-star"></i>
-            </div>
-          {% endif %}
+          <div class="amenity-img-wrap">
+            {% if item.amenities.image %}
+              <img src="{{ item.amenities.image.url }}" alt="{{ item.amenities.title }}" class="amenity-img">
+            {% else %}
+              <div class="amenity-placeholder">
+                <i class="fa-solid fa-star"></i>
+              </div>
+            {% endif %}
+          </div>
+
+          <p class="label">{{ item.amenities.title }}</p>
         </div>
-
-        <!-- TITLE -->
-        <p class="label">{{ item.amenities.title }}</p>
-
+        {% endfor %}
       </div>
-      {% endfor %}
 
-      <!-- SHOW MORE -->
+      <!-- ✅ BUTTON OUTSIDE GRID -->
       {% if project_amenities|length > 12 %}
-      <button id="showMoreBtn" type="button" class="showmore-btn">
-        + {{ project_amenities|length|add:"-12" }} More
-      </button>
+      <div class="mt-5 flex justify-center">
+        <button id="showMoreBtn" type="button" class="showmore-btn w-[220px]">
+          + {{ project_amenities|length|add:"-12" }} More
+        </button>
+      </div>
       {% endif %}
 
-    </div>
     {% else %}
-    <p class="text-gray-500 text-sm">No amenities found for this project.</p>
+      <p class="text-gray-500 text-sm">No amenities found for this project.</p>
     {% endif %}
-
   </div>
 </section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const btn = document.getElementById("showMoreBtn");
+  if (!btn) return;
+
+  const items = document.querySelectorAll("#amenitiesGrid .more-item");
+  const hiddenCount = items.length;
+  let expanded = false;
+
+  btn.addEventListener("click", function () {
+
+    if (!expanded) {
+      // ✅ SHOW
+      items.forEach((item, index) => {
+        setTimeout(() => {
+          item.classList.remove("hidden");
+          item.classList.add("fadeIn");
+        }, index * 25);
+      });
+
+      btn.innerText = "Show Less";
+      expanded = true;
+
+    } else {
+      // ✅ HIDE
+      items.forEach(item => item.classList.add("hidden"));
+
+      btn.innerText = `+ ${hiddenCount} More`;
+      expanded = false;
+
+      // ✅ back to section
+      document.getElementById("amenities").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  });
+
+});
+</script>
+
 
 <!-- ✅ CSS -->
 <style>

@@ -311,7 +311,7 @@ def project_details(request, id, slug):
         )[:8]
 
     # ✅ AMENITIES
-    project_amenities = project.project_amenities.all().distinct()
+    project_amenities = project.project_amenities.select_related("amenities").all().distinct()
 
 
     context = {

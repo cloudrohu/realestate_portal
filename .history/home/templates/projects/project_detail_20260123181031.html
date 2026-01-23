@@ -1073,6 +1073,42 @@ document.getElementById("videoPlayBtn").addEventListener("click", function () {
   </div>
 </section>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const btn = document.getElementById("showMoreBtn");
+  if (!btn) return;
+
+  let expanded = false;
+
+  btn.addEventListener("click", function () {
+    const items = document.querySelectorAll("#amenitiesGrid .more-item");
+
+    if (!expanded) {
+      // ✅ Show
+      items.forEach((item, index) => {
+        setTimeout(() => {
+          item.classList.remove("hidden");
+          item.classList.add("fadeIn");
+        }, index * 40);
+      });
+
+      btn.innerText = "Show Less";
+      expanded = true;
+
+    } else {
+      // ✅ Hide again
+      items.forEach(item => item.classList.add("hidden"));
+      btn.innerText = `+ ${items.length} More`;
+      expanded = false;
+
+      // scroll up nicely
+      document.getElementById("amenities").scrollIntoView({behavior:"smooth", block:"start"});
+    }
+  });
+});
+</script>
+
+
 <!-- ✅ CSS -->
 <style>
   .amenity-card{

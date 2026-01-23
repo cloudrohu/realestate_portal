@@ -467,7 +467,7 @@
               <div class="flex gap-3 md:justify-end">
 
                     <!-- View Details -->
-                    <a href="{{ project.get_absolute_url }}" target="_blank" class="flex-1 md:flex-none inline-flex items-center justify-center gap-2  px-4 py-2 bg-orange-500 text-white text-sm font-semibold  rounded-3xl hover:bg-orange-600 transition">
+                    <a href="{{ project.get_absolute_url }}" class="flex-1 md:flex-none inline-flex items-center justify-center gap-2  px-4 py-2 bg-orange-500 text-white text-sm font-semibold  rounded-3xl hover:bg-orange-600 transition">
                       View Details
                       
                     </a>
@@ -649,7 +649,9 @@
 
               <!-- CTA -->
               <div class="flex gap-3 pt-2">
-                <a href="{{ project.get_absolute_url }}" class="flex-1 text-center px-3 py-2 bg-orange-500 text-white text-sm font-semibold rounded-full hover:bg-orange-600" target="_blank" >
+                <a href="{{ project.get_absolute_url }}"
+                  class="flex-1 text-center px-3 py-2 bg-orange-500 text-white
+                          text-sm font-semibold rounded-full hover:bg-orange-600">
                   View Details
                 </a>
 

@@ -592,11 +592,3 @@ document.addEventListener("DOMContentLoaded", () => {
     arrow.classList.add("rotate-180");
   }
 });
-function clearLocalityOnly() {
-  document.querySelectorAll('input[name="locality"]').forEach(cb => cb.checked = false);
-
-  const url = new URL(window.location.href);
-  url.searchParams.delete("locality");
-
-  window.location.href = url.toString();
-}
