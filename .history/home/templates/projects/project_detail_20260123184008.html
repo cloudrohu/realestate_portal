@@ -1204,12 +1204,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 </style>
 
-<style>
-  .floorPlanSwiper .swiper-slide{
-    height: auto !important;
-  }
-</style>
-
 <!-- ===================== MASTER & FLOOR PLAN SECTION ===================== -->
 <section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="floorplan">
 
@@ -1224,8 +1218,8 @@ document.addEventListener("DOMContentLoaded", function () {
     {% endif %}
   </div>
 
-  <!-- BODY -->
   <div class="bg-white border border-t-0 rounded-b-lg p-6">
+
     <div class="grid md:grid-cols-2 gap-6">
 
       <!-- ===================== MASTER PLAN ===================== -->
@@ -1233,11 +1227,13 @@ document.addEventListener("DOMContentLoaded", function () {
         <h3 class="font-semibold text-gray-700 mb-3">Master Plan</h3>
 
         {% if project.master_plan %}
-        <div class="border rounded-lg overflow-hidden bg-white h-[420px]">
-          <img src="{{ project.master_plan.url }}"
-               alt="{{ project.project_name }} Master Plan"
-               class="w-full h-full object-cover cursor-pointer gallery-img"
-               data-index="0">
+        <div class="border rounded-lg overflow-hidden" >
+          <!-- MASTER PLAN IMAGE -->
+            <img src="{{ project.master_plan.url }}"
+                alt="{{ project.project_name }} Master Plan"
+                class="w-full h-[420px] object-contain bg-white cursor-pointer gallery-img"
+                data-index="0">
+
         </div>
         {% else %}
         <div class="border rounded-lg p-8 text-center text-sm text-gray-500 bg-gray-50">
@@ -1250,39 +1246,39 @@ document.addEventListener("DOMContentLoaded", function () {
       <div>
         <h3 class="font-semibold text-gray-700 mb-3">Floor Plans</h3>
 
-        <style>
-          .floorPlanSwiper { height: 420px; }
-          .floorPlanSwiper .swiper-wrapper,
-          .floorPlanSwiper .swiper-slide { height: 100% !important; }
-        </style>
-
         {% with plans=project.configurations.all %}
         {% if plans %}
+        <div class="swiper floorPlanSwiper border rounded-lg p-2">
+          <div class="swiper-wrapper" >
 
-        <!-- ✅ remove padding -->
-        <div class="swiper floorPlanSwiper border rounded-lg overflow-hidden">
-
-          <div class="swiper-wrapper">
-
-            <!-- ✅ Unit Plan Slides -->
             {% for c in plans %}
               {% if c.unit_plan %}
               <div class="swiper-slide">
-                <img src="{{ c.unit_plan.url }}"
-                     alt="{{ project.project_name }} {{ c.bhk_type }} Unit Plan"
-                     class="w-full h-full object-cover cursor-pointer gallery-img"
-                     data-index="{{ forloop.counter }}">
+                <div class="rounded-lg overflow-hidden border bg-white">
+                  <img src="{{ c.unit_plan.url }}"
+                       alt="{{ project.project_name }} {{ c.bhk_type }} Unit Plan"
+                       class="w-full max-h-[420px] object-contain bg-white cursor-pointer gallery-img"
+                       data-index="{{ forloop.counter }}">
+                </div>
+
+                <div class="mt-2 text-center text-sm font-semibold text-gray-700">
+                  {{ c.bhk_type }} • {{ c.area_sqft }} sqft
+                </div>
               </div>
               {% endif %}
             {% endfor %}
 
-            <!-- ✅ Common Floor Plan Slide -->
             {% if project.floor_plan %}
             <div class="swiper-slide">
-              <img src="{{ project.floor_plan.url }}"
-                   alt="{{ project.project_name }} Floor Plan"
-                   class="w-full h-full object-cover cursor-pointer gallery-img"
-                   data-index="{{ plans|length|add:'1' }}">
+              <div class="rounded-lg overflow-hidden border bg-white">
+                <img src="{{ project.floor_plan.url }}"
+                     alt="{{ project.project_name }} Floor Plan"
+                     class="w-full max-h-[420px] object-contain bg-white cursor-pointer gallery-img"
+                     data-index="{{ plans|length|add:'2' }}">
+              </div>
+              <div class="mt-2 text-center text-sm font-semibold text-gray-700">
+                Common Floor Plan
+              </div>
             </div>
             {% endif %}
 
@@ -1291,23 +1287,21 @@ document.addEventListener("DOMContentLoaded", function () {
           <!-- Navigation -->
           <div class="swiper-button-prev !text-gray-700"></div>
           <div class="swiper-button-next !text-gray-700"></div>
-
-          <!-- Pagination -->
-          <div class="swiper-pagination !absolute !bottom-2 !left-0 !right-0"></div>
+          <div class="swiper-pagination !relative mt-4"></div>
         </div>
 
         {% else %}
           {% if project.floor_plan %}
-          <div class="border rounded-lg overflow-hidden bg-white h-[420px]">
-            <img src="{{ project.floor_plan.url }}"
-                 alt="{{ project.project_name }} Floor Plan"
-                 class="w-full h-full object-cover cursor-pointer gallery-img"
-                 data-index="1">
-          </div>
+            <div class="border rounded-lg overflow-hidden">
+              <img src="{{ project.floor_plan.url }}"
+                   alt="{{ project.project_name }} Floor Plan"
+                   class="w-full max-h-[420px] object-contain bg-white cursor-pointer gallery-img"
+                   data-index="1">
+            </div>
           {% else %}
-          <div class="border rounded-lg p-8 text-center text-sm text-gray-500 bg-gray-50">
-            Floor Plan Not Available
-          </div>
+            <div class="border rounded-lg p-8 text-center text-sm text-gray-500 bg-gray-50">
+              Floor Plan Not Available
+            </div>
           {% endif %}
         {% endif %}
         {% endwith %}
@@ -1315,6 +1309,7 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
 
     </div>
+
   </div>
 </section>
 
