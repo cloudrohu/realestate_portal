@@ -5,15 +5,31 @@
 {% load static %}
 
 
+<style>
+    /* Popup open hone par header ke upar ke chips hide */
+body.popup-open .project-badges,
+body.popup-open .header-badges,
+body.popup-open .rera-badges {
+  display: none !important;
+}
 
+</style>
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="assets/css/projects_details.css">
     <script src="assets/js/projects_details.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>{% block title %}{{ project.project_name }} by {{ project.developer }} {{ project.locality }} ,{{ project.city }}{% endblock %}</title>
+    <title>{{ project.project_name }} by {{ project.developer }} {{ project.locality }} ,{{ project.city }}</title>
+</head>
 
+<style>
+  iframe{
+    width: 100%;
+  }
+</style>
 
 <main>
 <!-- ================= PROJECT HEADER ================= -->
@@ -410,7 +426,7 @@
 
             <!-- Card 2 -->
             <div class="border p-4 rounded-md bg-white flex flex-col gap-1">
-                <p class="font-semibold text-lg">{{ project.towers }}</p>
+                <p class="font-semibold text-lg">{{ project.floor }}</p>
                 <p class="text-gray-600 text-sm">Towers</p>
             </div>
 
@@ -508,7 +524,9 @@
     </div>
 </section>
 
-
+<!-- ========================================= -->
+<!-- 🔥 PRICING & UNIT PLANS SECTION -->
+<!-- ========================================= -->
 <section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="pricing">
 
     <!-- HEADER -->
@@ -728,6 +746,25 @@ document.getElementById("videoPlayBtn").addEventListener("click", function () {
 });
 </script>
 
+<style>
+
+.amenity-card{
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    padding:5px;
+    text-align:center;
+    background:#fff;
+    transition:.25s;
+}
+.amenity-card:hover{
+    box-shadow:0 4px 10px rgba(0,0,0,.08);
+}
+.amenity-card .label{
+    font-size:13px;
+    color:#374151;
+    margin-top:6px;
+}
+</style>
 
 <!-- ===================== AMENITIES SECTION ===================== -->
 <section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="amenities">
@@ -779,6 +816,94 @@ document.getElementById("videoPlayBtn").addEventListener("click", function () {
   </div>
 </section>
 
+<!-- ✅ CSS -->
+<style>
+  .amenity-card{
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    background: #fff;
+    transition: .25s;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 160px;
+  }
+
+  .amenity-card:hover{
+    box-shadow: 0 10px 25px rgba(0,0,0,.12);
+    transform: translateY(-2px);
+  }
+
+  /* ✅ SAME HEIGHT IMAGE AREA */
+  .amenity-img-wrap{
+    width: 100%;
+    height: 95px;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* ✅ IMAGE PERFECT FIT */
+  .amenity-img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 🔥 best for gallery type */
+    display: block;
+  }
+
+  /* ✅ NO IMAGE PLACEHOLDER */
+  .amenity-placeholder{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    font-size: 22px;
+  }
+
+  /* ✅ TITLE */
+  .amenity-card .label{
+    font-size: 13px;
+    color: #0f172a;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    padding: 10px 8px;
+  }
+
+  /* ✅ SHOW MORE BUTTON (same grid style) */
+  .showmore-btn{
+    border: 1px solid #cbd5e1;
+    border-radius: 14px;
+    background: #e8eff5;
+    font-weight: 700;
+    font-size: 13px;
+    color: #334155;
+    height: 44px;
+    width: 100%;
+    cursor: pointer;
+    transition: .25s;
+  }
+  .showmore-btn:hover{
+    background: #dbeafe;
+    transform: translateY(-1px);
+  }
+
+  /* ✅ Smooth animation */
+  .fadeIn{
+    animation: fadeIn .22s ease-in-out;
+  }
+  @keyframes fadeIn{
+    from {opacity: 0; transform: translateY(8px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+</style>
+
 
 
 
@@ -812,6 +937,15 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 
+<!-- ===================== CARD STYLE (Tailwind classes) ===================== -->
+<style>
+    .amenity-card {
+        @apply border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition;
+    }
+    .amenity-card .label {
+        @apply text-xs text-gray-800;
+    }
+</style>
 
 <!-- ===================== MASTER & FLOOR PLAN SECTION ===================== -->
 <section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="floorplan">
@@ -1050,58 +1184,58 @@ document.addEventListener("DOMContentLoaded", function () {
 </section>
 
 <!-- ===================== EMI CALCULATOR ===================== -->
-<section class="bg-white border-b" id="emi_calculator">
-<div class="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-8">
-    <div>
-    <h2 class="text-2xl font-semibold mb-4 flex items-center gap-2">
-<i class="fa-solid fa-calculator text-gray-700 text-xl"></i>
-EMI Calculator
-    </h2>
-    <p class="text-sm text-gray-700 mb-4">
-        Estimate your monthly EMI based on loan amount, interest rate and tenure.
-    </p>
+  <section class="bg-white border-b" id="emi_calculator">
+    <div class="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-8">
+      <div>
+        <h2 class="text-2xl font-semibold mb-4 flex items-center gap-2">
+    <i class="fa-solid fa-calculator text-gray-700 text-xl"></i>
+    EMI Calculator
+        </h2>
+        <p class="text-sm text-gray-700 mb-4">
+          Estimate your monthly EMI based on loan amount, interest rate and tenure.
+        </p>
 
-    <form id="emiForm" class="space-y-4 text-sm">
-        <div>
-        <label class="block text-gray-600 mb-1">Property Price (₹)</label>
-        <input type="number" id="priceInput" class="w-full border px-3 py-2"
-            placeholder="27000000" />
-        </div>
-        <div>
-        <label class="block text-gray-600 mb-1">Down Payment (₹)</label>
-        <input type="number" id="downInput" class="w-full border px-3 py-2"
-            placeholder="5000000" />
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-        <div>
-            <label class="block text-gray-600 mb-1">Interest Rate (% p.a.)</label>
-            <input type="number" id="rateInput" class="w-full border px-3 py-2"
-            placeholder="8.5" step="0.1" />
-        </div>
-        <div>
-            <label class="block text-gray-600 mb-1">Tenure (Years)</label>
-            <input type="number" id="tenureInput" class="w-full border px-3 py-2"
-            placeholder="20" />
-        </div>
-        </div>
+        <form id="emiForm" class="space-y-4 text-sm">
+          <div>
+            <label class="block text-gray-600 mb-1">Property Price (₹)</label>
+            <input type="number" id="priceInput" class="w-full border px-3 py-2"
+              placeholder="27000000" />
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Down Payment (₹)</label>
+            <input type="number" id="downInput" class="w-full border px-3 py-2"
+              placeholder="5000000" />
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-gray-600 mb-1">Interest Rate (% p.a.)</label>
+              <input type="number" id="rateInput" class="w-full border px-3 py-2"
+                placeholder="8.5" step="0.1" />
+            </div>
+            <div>
+              <label class="block text-gray-600 mb-1">Tenure (Years)</label>
+              <input type="number" id="tenureInput" class="w-full border px-3 py-2"
+                placeholder="20" />
+            </div>
+          </div>
 
-        <button type="button" id="emiBtn"
-        class="bg-gray-900 text-white px-4 py-2 text-sm">
-        Calculate EMI
-        </button>
-    </form>
+          <button type="button" id="emiBtn"
+            class="bg-gray-900 text-white px-4 py-2 text-sm">
+            Calculate EMI
+          </button>
+        </form>
+      </div>
+
+      <div class="border rounded-md p-5 text-sm flex flex-col justify-center">
+        <h3 class="font-semibold mb-3">Estimated EMI</h3>
+        <p class="text-3xl font-semibold mb-2" id="emiResult">₹0 / month</p>
+        <p class="text-xs text-gray-500">
+          This is an approximate calculation for illustration only. For an exact
+          quote, please connect with our home-loan partner.
+        </p>
+      </div>
     </div>
-
-    <div class="border rounded-md p-5 text-sm flex flex-col justify-center">
-    <h3 class="font-semibold mb-3">Estimated EMI</h3>
-    <p class="text-3xl font-semibold mb-2" id="emiResult">₹0 / month</p>
-    <p class="text-xs text-gray-500">
-        This is an approximate calculation for illustration only. For an exact
-        quote, please connect with our home-loan partner.
-    </p>
-    </div>
-</div>
-</section>
+  </section>
 
 <script>
     // ---------------------- EMI CALCULATION LOGIC ----------------------
@@ -1558,6 +1692,19 @@ EMI Calculator
 
 </main>
 
+<style>
+    #popupImg {
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -1787,120 +1934,10 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 <style>
-/* =====================================================
-   GLOBAL FIXES
-===================================================== */
-iframe {
-  width: 100%;
-}
-
-/* Popup open hone par header ke upar ke chips hide */
-body.popup-open .project-badges,
-body.popup-open .header-badges,
-body.popup-open .rera-badges {
-  display: none !important;
-}
-
-/* =====================================================
-   AMENITIES CARD (FINAL & CLEAN VERSION)
-===================================================== */
-.amenity-card {
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  background: #ffffff;
-  overflow: hidden;
-  min-height: 160px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: 0.25s ease;
-}
-
-.amenity-card:hover {
-  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-  transform: translateY(-2px);
-}
-
-/* Image wrapper – same height for all cards */
-.amenity-img-wrap {
-  width: 100%;
-  height: 95px;
-  background: #f8fafc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-/* Image */
-.amenity-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* Placeholder (no image) */
-.amenity-placeholder {
-  width: 100%;
-  height: 100%;
-  font-size: 22px;
-  color: #94a3b8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Label */
-.amenity-card .label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #0f172a;
-  text-align: center;
-  padding: 10px 8px;
-  line-height: 1.2;
-}
-
-/* =====================================================
-   SHOW MORE BUTTON
-===================================================== */
-.showmore-btn {
-  width: 100%;
-  height: 44px;
-  border-radius: 14px;
-  border: 1px solid #cbd5e1;
-  background: #e8eff5;
-  font-size: 13px;
-  font-weight: 700;
-  color: #334155;
-  cursor: pointer;
-  transition: 0.25s ease;
-}
-
-.showmore-btn:hover {
-  background: #dbeafe;
-  transform: translateY(-1px);
-}
-
-/* =====================================================
-   ANIMATION
-===================================================== */
-.fadeIn {
-  animation: fadeIn 0.22s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
+  iframe{
+    width: 100%;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 </style>
-
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />

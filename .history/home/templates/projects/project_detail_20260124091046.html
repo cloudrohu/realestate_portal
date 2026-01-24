@@ -5,17 +5,32 @@
 {% load static %}
 
 
+<style>
+    /* Popup open hone par header ke upar ke chips hide */
+body.popup-open .project-badges,
+body.popup-open .header-badges,
+body.popup-open .rera-badges {
+  display: none !important;
+}
 
+</style>
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="assets/css/projects_details.css">
     <script src="assets/js/projects_details.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>{% block title %}{{ project.project_name }} by {{ project.developer }} {{ project.locality }} ,{{ project.city }}{% endblock %}</title>
+    <title>{{ project.project_name }} by {{ project.developer }} {{ project.locality }} ,{{ project.city }}</title>
+</head>
 
+<style>
+  iframe{
+    width: 100%;
+  }
+</style>
 
-<main>
 <!-- ================= PROJECT HEADER ================= -->
 <section class="border-b bg-white">
     <div class="max-w-6xl mx-auto px-4 py-4 lg:py-6 sticky top-0 z-[999]">
@@ -114,7 +129,12 @@
                     </a>
 
                     <!-- Contact Us -->
-                        <a href="javascript:void(0)" data-project="{{ project.project_name }}" data-project-id="{{ project.id }}" class="openContactPopup flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-4 py-2 border border-orange-500 text-orange-600 text-sm font-semibold hover:bg-orange-50 transition">
+                        <a href="javascript:void(0)"
+                            data-project="{{ project.project_name }}"
+                            data-project-id="{{ project.id }}"
+                            class="openContactPopup flex-1 md:flex-none inline-flex items-center justify-center gap-2
+                                    px-4 py-2 border border-orange-500 text-orange-600
+                                    text-sm font-semibold rounded-3xl hover:bg-orange-50 transition">
                             Contact Us
                         </a>
 
@@ -410,7 +430,7 @@
 
             <!-- Card 2 -->
             <div class="border p-4 rounded-md bg-white flex flex-col gap-1">
-                <p class="font-semibold text-lg">{{ project.towers }}</p>
+                <p class="font-semibold text-lg">{{ project.floor }}</p>
                 <p class="text-gray-600 text-sm">Towers</p>
             </div>
 
@@ -508,7 +528,9 @@
     </div>
 </section>
 
-
+<!-- ========================================= -->
+<!-- 🔥 PRICING & UNIT PLANS SECTION -->
+<!-- ========================================= -->
 <section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="pricing">
 
     <!-- HEADER -->
@@ -571,7 +593,8 @@
 
                             <td class="border px-4 py-4">
                                 {% if c.unit_plan %}
-                                    <img src="{{ c.unit_plan.url }}" class="w-20 h-20 mx-auto object-cover rounded unit-plan-img" alt="Unit Plan">
+                                    <img src="{{ c.unit_plan.url }}"
+                                         class="w-24 h-16 mx-auto object-cover rounded">
                                 {% else %}
                                     NA
                                 {% endif %}
@@ -595,83 +618,111 @@
 
 <!-- ===================== Location BOX ===================== -->
 <section class="max-w-7xl mx-auto p-4 scroll-mt-[130px] grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6" id="location">
-    <!-- ===================== MIDDLE COLUMN ===================== -->
-        <div>
 
+    <!-- ===================== MIDDLE COLUMN ===================== -->
+    <div>
         <!-- LOCATION HEADING -->
         <h2 class="text-xl font-semibold bg-[#e8eff5] px-4 py-3 rounded-t-lg border">Location</h2>
-
         <div class="border border-t-0 rounded-b-lg p-5 bg-white">
-
             <!-- MAP -->
-            <div class="border rounded-lg overflow-hidden" style="height: 350px; width: 100%;">
+            <div class="border rounded-lg overflow-hidden" style="height: 350px; width: 100%;">               
                 {{ project.google_map_iframe|safe }}
             </div>
 
             <br>
 
-            <!-- LOCATION POINTS -->
             <ul class="grid grid-cols-1 md:grid-cols-2 gap-y-2 text-sm text-gray-800 pl-5 mb-4 list-disc">
                 {% for item in project.configs.all %}
                     <li>{{ item.title }}</li>
                 {% endfor %}
             </ul>
-
         </div>
 
         <!-- VIDEOS SECTION -->
-        <h2 class="text-xl font-semibold bg-[#e8eff5] px-4 py-3 mt-6 rounded-t-lg border">Videos</h2>
+        <h2 class="text-xl font-semibold bg-[#e8eff5] px-4 py-3 mt-6 rounded-t-lg border">
+            Videos
+        </h2>
 
         <div class="border border-t-0 rounded-b-lg p-5 bg-white" id="video">
-
             <p class="text-green-600 font-semibold mb-3">Teaser</p>
 
-            <div class="relative w-full h-[525px] rounded-lg overflow-hidden bg-black">
+            <div class="relative w-full rounded-lg overflow-hidden bg-black" style="height: 525px;">
 
                 <!-- THUMBNAIL -->
-                <img id="videoThumb" src="https://img.youtube.com/vi/{{ project.youtube_embed_id }}/hqdefault.jpg" class="w-full h-full object-cover cursor-pointer" alt="{{ project.project_name }} Teaser">
+                <img
+                    id="videoThumb"
+                    src="https://img.youtube.com/vi/{{ project.youtube_embed_id }}/hqdefault.jpg"
+                    class="w-full h-full object-cover cursor-pointer"
+                    alt="{{ project.project_name }} Teaser"
+                >
 
                 <!-- PLAY BUTTON -->
-                <div id="videoPlayBtn" class="absolute inset-0 flex items-center justify-center bg-black/40 text-white text-6xl cursor-pointer transition hover:bg-black/50">
+                <div
+                    id="videoPlayBtn"
+                    class="absolute inset-0 flex items-center justify-center
+                        bg-black/40 text-white text-6xl cursor-pointer hover:bg-black/50 transition">
                     ▶
                 </div>
 
                 <!-- YOUTUBE IFRAME -->
-                <iframe id="youtubeFrame" class="absolute inset-0 w-full h-full hidden" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe
+                    id="youtubeFrame"
+                    class="absolute inset-0 w-full h-full hidden"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
 
             </div>
-
         </div>
 
-        </div>
+
+    </div> <!-- ⭐ MIDDLE COLUMN CLOSED (IMPORTANT!) -->
+
     <!-- ===================== RIGHT COLUMN ===================== -->
-        <div class="space-y-5">
-            <div class="relative overflow-hidden bg-slate-50 border border-gray-200 shadow-[0_25px_70px_rgba(0,0,0,0.15)]">
+    <div class="space-y-5">
+
+            <!-- CALL ME INSTANTLY (PREMIUM + DEPTH DESIGN) -->
+            <div class="relative rounded-3xl 
+                        bg-slate-50 
+                        border border-gray-200
+                        shadow-[0_25px_70px_rgba(0,0,0,0.15)]
+                        overflow-hidden">
 
                 <!-- TOP ACCENT -->
-                <div class="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600"></div>
+                <div class="absolute inset-x-0 top-0 h-1.5 
+                            bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600"></div>
 
                 <!-- SOFT INNER GLOW -->
-                <div class="absolute inset-0 pointer-events-none bg-gradient-to-br from-white/60 via-transparent to-transparent"></div>
+                <div class="absolute inset-0 pointer-events-none 
+                            bg-gradient-to-br from-white/60 via-transparent to-transparent"></div>
 
                 <div class="relative p-7">
 
                     <!-- HEADER -->
                     <div class="flex items-start gap-4 mb-6 pb-5 border-b border-gray-200">
 
-                        <div class="h-12 w-12 flex items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-md">
+                        <div class="h-12 w-12 flex items-center justify-center rounded-xl
+                                    bg-gradient-to-br from-orange-500 to-orange-600
+                                    text-white shadow-md">
                             <i class="fa-solid fa-phone-volume text-lg"></i>
                         </div>
 
                         <div>
-                            <h3 class="text-lg font-bold text-gray-900">Call Me Instantly</h3>
-                            <p class="text-sm text-gray-500 leading-snug">Get a callback from our property expert within seconds</p>
+                            <h3 class="text-lg font-bold text-gray-900">
+                                Call Me Instantly
+                            </h3>
+                            <p class="text-sm text-gray-500 leading-snug">
+                                Get a callback from our property expert within seconds
+                            </p>
                         </div>
-
                     </div>
 
                     <!-- FORM -->
-                    <form method="post" action="{% url 'submit_enquiry' project.id %}" id="inlineEnquiryForm" class="space-y-4">
+                    <form method="post"
+                        action="{% url 'submit_enquiry' project.id %}"
+                        id="inlineEnquiryForm"
+                        class="space-y-4">
 
                         {% csrf_token %}
                         <input type="text" name="company" class="hidden">
@@ -681,37 +732,133 @@
                         <!-- NAME -->
                         <div class="relative">
                             <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                            <input type="text" name="name" required placeholder="Your Full Name" class="w-full pl-11 pr-4 py-3 rounded-xl bg-white border border-gray-300 shadow-inner focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-sm text-gray-700">
+                            <input type="text" name="name" required
+                                placeholder="Your Full Name"
+                                class="w-full pl-11 pr-4 py-3 rounded-xl
+                                        bg-white
+                                        border border-gray-300
+                                        shadow-inner
+                                        focus:ring-2 focus:ring-orange-500
+                                        focus:border-orange-500
+                                        outline-none text-sm text-gray-700">
                         </div>
 
                         <!-- EMAIL -->
                         <div class="relative">
                             <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                            <input type="email" name="email" placeholder="Email Address (Optional)" class="w-full pl-11 pr-4 py-3 rounded-xl bg-white border border-gray-300 shadow-inner focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-sm text-gray-700">
+                            <input type="email" name="email"
+                                placeholder="Email Address (Optional)"
+                                class="w-full pl-11 pr-4 py-3 rounded-xl
+                                        bg-white
+                                        border border-gray-300
+                                        shadow-inner
+                                        focus:ring-2 focus:ring-orange-500
+                                        focus:border-orange-500
+                                        outline-none text-sm text-gray-700">
                         </div>
 
                         <!-- PHONE -->
                         <div class="relative">
                             <i class="fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                            <input type="tel" name="phone" required placeholder="Mobile Number" class="w-full pl-11 pr-4 py-3 rounded-xl bg-white border border-gray-300 shadow-inner focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-sm text-gray-700">
+                            <input type="tel" name="phone" required
+                                placeholder="Mobile Number"
+                                class="w-full pl-11 pr-4 py-3 rounded-xl
+                                        bg-white
+                                        border border-gray-300
+                                        shadow-inner
+                                        focus:ring-2 focus:ring-orange-500
+                                        focus:border-orange-500
+                                        outline-none text-sm text-gray-700">
                         </div>
 
                         <!-- CTA BUTTON -->
-                        <button type="submit" class="group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 py-3.5 font-semibold text-white text-sm shadow-md transition-all duration-300 hover:shadow-orange-500/40 hover:scale-[1.01]">
+                        <button type="submit"
+                                class="group relative w-full overflow-hidden rounded-xl
+                                    bg-gradient-to-r from-orange-500 to-orange-600
+                                    py-3.5 font-semibold text-white text-sm
+                                    shadow-md transition-all duration-300
+                                    hover:shadow-orange-500/40 hover:scale-[1.01]">
+
                             <span class="relative z-10 flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-bolt"></i>
                                 Get Instant Call Back
                             </span>
-                            <span class="absolute inset-0 bg-gradient-to-r from-orange-600 to-pink-600 opacity-0 transition group-hover:opacity-100"></span>
+
+                            <span class="absolute inset-0 bg-gradient-to-r
+                                        from-orange-600 to-pink-600
+                                        opacity-0 group-hover:opacity-100 transition"></span>
                         </button>
 
                         <!-- TRUST -->
-                        <p class="text-[11px] text-center text-gray-400 mt-2">🔒 Your details are safe & never shared</p>
+                        <p class="text-[11px] text-center text-gray-400 mt-2">
+                            🔒 Your details are safe & never shared
+                        </p>
 
                     </form>
                 </div>
             </div>
+
+
+
+        <!-- BOOK SITE VISIT -->
+        <div class="bg-white rounded-xl border p-5">
+
+            <div class="flex border-b text-sm">
+                <button class="px-3 py-2 font-semibold border-b-2 border-blue-700 text-blue-700">
+                    Book Free Site Visit
+                </button>
+                <button class="px-3 py-2 text-gray-500">Online Presentation</button>
+            </div>
+
+            <!-- Search -->
+            <div class="mt-4">
+                <label class="text-xs text-gray-500">Search projects</label>
+                <div class="flex items-center gap-2 bg-gray-100 rounded-full px-3 py-2 mt-1">
+                    <span class="bg-green-600 text-white text-xs px-2 py-1 rounded-full">
+                        Mahindra Marina 64 ✕
+                    </span>
+                </div>
+            </div>
+
+            <!-- Calendar -->
+            <div class="mt-4">
+                <div class="flex items-center gap-2 bg-gray-100 rounded-lg px-4 py-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-600" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span class="text-gray-700 text-sm">12-07-2025 12:29 PM</span>
+                </div>
+            </div>
+
+            <!-- OLA Option -->
+            <div class="mt-4 text-sm">
+                <label class="flex items-center gap-2">
+                    <input type="radio" name="ride" checked />
+                    <img src="https://logovectordl.com/wp-content/uploads/2020/10/ola-logo-vector.png"
+                        class="w-12" />
+                </label>
+                <label class="flex items-center gap-2 mt-2">
+                    <input type="radio" name="ride" />
+                    <span>Not Required</span>
+                </label>
+            </div>
+
+            <ul class="mt-4 text-sm text-gray-700 space-y-1 list-disc pl-4">
+                <li>Free Pick Up & Drop - Book Personal Ola</li>
+                <li>Visit Your Selected 3 Projects in One Tour</li>
+                <li>Just Visit & Decide later</li>
+            </ul>
+
+            <button class="w-full mt-5 bg-blue-900 hover:bg-blue-800 text-white py-2 rounded-lg font-semibold text-sm">
+                Book Site Visit
+            </button>
+
         </div>
+
+    </div>
+
 </section>
 
 <script>
@@ -728,6 +875,25 @@ document.getElementById("videoPlayBtn").addEventListener("click", function () {
 });
 </script>
 
+<style>
+
+.amenity-card{
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    padding:5px;
+    text-align:center;
+    background:#fff;
+    transition:.25s;
+}
+.amenity-card:hover{
+    box-shadow:0 4px 10px rgba(0,0,0,.08);
+}
+.amenity-card .label{
+    font-size:13px;
+    color:#374151;
+    margin-top:6px;
+}
+</style>
 
 <!-- ===================== AMENITIES SECTION ===================== -->
 <section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="amenities">
@@ -779,6 +945,94 @@ document.getElementById("videoPlayBtn").addEventListener("click", function () {
   </div>
 </section>
 
+<!-- ✅ CSS -->
+<style>
+  .amenity-card{
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    background: #fff;
+    transition: .25s;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 160px;
+  }
+
+  .amenity-card:hover{
+    box-shadow: 0 10px 25px rgba(0,0,0,.12);
+    transform: translateY(-2px);
+  }
+
+  /* ✅ SAME HEIGHT IMAGE AREA */
+  .amenity-img-wrap{
+    width: 100%;
+    height: 95px;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* ✅ IMAGE PERFECT FIT */
+  .amenity-img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 🔥 best for gallery type */
+    display: block;
+  }
+
+  /* ✅ NO IMAGE PLACEHOLDER */
+  .amenity-placeholder{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    font-size: 22px;
+  }
+
+  /* ✅ TITLE */
+  .amenity-card .label{
+    font-size: 13px;
+    color: #0f172a;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    padding: 10px 8px;
+  }
+
+  /* ✅ SHOW MORE BUTTON (same grid style) */
+  .showmore-btn{
+    border: 1px solid #cbd5e1;
+    border-radius: 14px;
+    background: #e8eff5;
+    font-weight: 700;
+    font-size: 13px;
+    color: #334155;
+    height: 44px;
+    width: 100%;
+    cursor: pointer;
+    transition: .25s;
+  }
+  .showmore-btn:hover{
+    background: #dbeafe;
+    transform: translateY(-1px);
+  }
+
+  /* ✅ Smooth animation */
+  .fadeIn{
+    animation: fadeIn .22s ease-in-out;
+  }
+  @keyframes fadeIn{
+    from {opacity: 0; transform: translateY(8px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+</style>
+
 
 
 
@@ -812,6 +1066,15 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 
+<!-- ===================== CARD STYLE (Tailwind classes) ===================== -->
+<style>
+    .amenity-card {
+        @apply border rounded-lg flex flex-col items-center justify-center gap-2 text-center p-3 h-28 hover:shadow-md transition;
+    }
+    .amenity-card .label {
+        @apply text-xs text-gray-800;
+    }
+</style>
 
 <!-- ===================== MASTER & FLOOR PLAN SECTION ===================== -->
 <section class="max-w-7xl mx-auto p-4 scroll-mt-[130px]" id="floorplan">
@@ -1050,58 +1313,58 @@ document.addEventListener("DOMContentLoaded", function () {
 </section>
 
 <!-- ===================== EMI CALCULATOR ===================== -->
-<section class="bg-white border-b" id="emi_calculator">
-<div class="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-8">
-    <div>
-    <h2 class="text-2xl font-semibold mb-4 flex items-center gap-2">
-<i class="fa-solid fa-calculator text-gray-700 text-xl"></i>
-EMI Calculator
-    </h2>
-    <p class="text-sm text-gray-700 mb-4">
-        Estimate your monthly EMI based on loan amount, interest rate and tenure.
-    </p>
+  <section class="bg-white border-b" id="emi_calculator">
+    <div class="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-8">
+      <div>
+        <h2 class="text-2xl font-semibold mb-4 flex items-center gap-2">
+    <i class="fa-solid fa-calculator text-gray-700 text-xl"></i>
+    EMI Calculator
+        </h2>
+        <p class="text-sm text-gray-700 mb-4">
+          Estimate your monthly EMI based on loan amount, interest rate and tenure.
+        </p>
 
-    <form id="emiForm" class="space-y-4 text-sm">
-        <div>
-        <label class="block text-gray-600 mb-1">Property Price (₹)</label>
-        <input type="number" id="priceInput" class="w-full border px-3 py-2"
-            placeholder="27000000" />
-        </div>
-        <div>
-        <label class="block text-gray-600 mb-1">Down Payment (₹)</label>
-        <input type="number" id="downInput" class="w-full border px-3 py-2"
-            placeholder="5000000" />
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-        <div>
-            <label class="block text-gray-600 mb-1">Interest Rate (% p.a.)</label>
-            <input type="number" id="rateInput" class="w-full border px-3 py-2"
-            placeholder="8.5" step="0.1" />
-        </div>
-        <div>
-            <label class="block text-gray-600 mb-1">Tenure (Years)</label>
-            <input type="number" id="tenureInput" class="w-full border px-3 py-2"
-            placeholder="20" />
-        </div>
-        </div>
+        <form id="emiForm" class="space-y-4 text-sm">
+          <div>
+            <label class="block text-gray-600 mb-1">Property Price (₹)</label>
+            <input type="number" id="priceInput" class="w-full border px-3 py-2"
+              placeholder="27000000" />
+          </div>
+          <div>
+            <label class="block text-gray-600 mb-1">Down Payment (₹)</label>
+            <input type="number" id="downInput" class="w-full border px-3 py-2"
+              placeholder="5000000" />
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-gray-600 mb-1">Interest Rate (% p.a.)</label>
+              <input type="number" id="rateInput" class="w-full border px-3 py-2"
+                placeholder="8.5" step="0.1" />
+            </div>
+            <div>
+              <label class="block text-gray-600 mb-1">Tenure (Years)</label>
+              <input type="number" id="tenureInput" class="w-full border px-3 py-2"
+                placeholder="20" />
+            </div>
+          </div>
 
-        <button type="button" id="emiBtn"
-        class="bg-gray-900 text-white px-4 py-2 text-sm">
-        Calculate EMI
-        </button>
-    </form>
+          <button type="button" id="emiBtn"
+            class="bg-gray-900 text-white px-4 py-2 text-sm">
+            Calculate EMI
+          </button>
+        </form>
+      </div>
+
+      <div class="border rounded-md p-5 text-sm flex flex-col justify-center">
+        <h3 class="font-semibold mb-3">Estimated EMI</h3>
+        <p class="text-3xl font-semibold mb-2" id="emiResult">₹0 / month</p>
+        <p class="text-xs text-gray-500">
+          This is an approximate calculation for illustration only. For an exact
+          quote, please connect with our home-loan partner.
+        </p>
+      </div>
     </div>
-
-    <div class="border rounded-md p-5 text-sm flex flex-col justify-center">
-    <h3 class="font-semibold mb-3">Estimated EMI</h3>
-    <p class="text-3xl font-semibold mb-2" id="emiResult">₹0 / month</p>
-    <p class="text-xs text-gray-500">
-        This is an approximate calculation for illustration only. For an exact
-        quote, please connect with our home-loan partner.
-    </p>
-    </div>
-</div>
-</section>
+  </section>
 
 <script>
     // ---------------------- EMI CALCULATION LOGIC ----------------------
@@ -1467,6 +1730,80 @@ EMI Calculator
     </div>
 </section>
 
+<style>
+    #popupImg {
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+    .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const slider = document.getElementById("relatedProjectsSlider");
+        const prevBtn = document.getElementById("rpPrevBtn");
+        const nextBtn = document.getElementById("rpNextBtn");
+
+        const scrollAmount = 360;
+
+        // ✅ Manual buttons
+        nextBtn.addEventListener("click", () => {
+            slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
+            resetAutoSlide();
+        });
+
+        prevBtn.addEventListener("click", () => {
+            slider.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+            resetAutoSlide();
+        });
+
+        // ===============================
+        // ✅ AUTO SLIDE FEATURE
+        // ===============================
+        let autoSlideInterval;
+        const autoSlideDelay = 3000; // 3 sec (tum 2000 / 4000 kar sakte ho)
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                // ✅ If end reached → go back to start
+                if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 10) {
+                    slider.scrollTo({ left: 0, behavior: "smooth" });
+                } else {
+                    slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
+                }
+            }, autoSlideDelay);
+        }
+
+        function stopAutoSlide() {
+            clearInterval(autoSlideInterval);
+        }
+
+        function resetAutoSlide() {
+            stopAutoSlide();
+            startAutoSlide();
+        }
+
+        // ✅ Start auto slide on load
+        startAutoSlide();
+
+        // ✅ Pause on hover
+        slider.addEventListener("mouseenter", stopAutoSlide);
+        slider.addEventListener("mouseleave", startAutoSlide);
+
+        // ✅ Mobile touch support (pause on touch)
+        slider.addEventListener("touchstart", stopAutoSlide);
+        slider.addEventListener("touchend", startAutoSlide);
+
+    });
+</script>
+
 
 <!-- ================= CONTACT POPUP ================= -->
 <div id="contactPopup"
@@ -1545,362 +1882,242 @@ EMI Calculator
 
   </div>
 </div>
-<!-- UNIT PLAN POPUP -->
-<div id="unitPlanPopup"
-     class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[9999] backdrop-blur-sm">
-
-    <img id="unitPlanPopupImg"
-         class="max-w-[90vw] max-h-[90vh] rounded-lg shadow-2xl">
-
-</div>
-
 <!-- ================= END POPUP ================= -->
-
-</main>
 
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
 
-  /* =====================================================
-     RELATED PROJECTS SLIDER (AUTO + MANUAL)
-  ===================================================== */
-  const slider = document.getElementById("relatedProjectsSlider");
-  const rpPrevBtn = document.getElementById("rpPrevBtn");
-  const rpNextBtn = document.getElementById("rpNextBtn");
-  const scrollAmount = 360;
-  let autoSlideInterval;
-  const autoSlideDelay = 3000;
-
-  if (slider && rpPrevBtn && rpNextBtn) {
-
-    const startAutoSlide = () => {
-      autoSlideInterval = setInterval(() => {
-        if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 10) {
-          slider.scrollTo({ left: 0, behavior: "smooth" });
-        } else {
-          slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
-        }
-      }, autoSlideDelay);
-    };
-
-    const stopAutoSlide = () => clearInterval(autoSlideInterval);
-    const resetAutoSlide = () => { stopAutoSlide(); startAutoSlide(); };
-
-    rpNextBtn.addEventListener("click", () => {
-      slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
-      resetAutoSlide();
-    });
-
-    rpPrevBtn.addEventListener("click", () => {
-      slider.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-      resetAutoSlide();
-    });
-
-    slider.addEventListener("mouseenter", stopAutoSlide);
-    slider.addEventListener("mouseleave", startAutoSlide);
-    slider.addEventListener("touchstart", stopAutoSlide);
-    slider.addEventListener("touchend", startAutoSlide);
-
-    startAutoSlide();
-  }
-
-  /* =====================================================
-     CONTACT POPUP
-  ===================================================== */
-  const contactPopup = document.getElementById("contactPopup");
-  const closeContactPopup = document.getElementById("closeContactPopup");
-  const enquiryProjectName = document.getElementById("enquiryProjectName");
+  const popup = document.getElementById("contactPopup");
+  const closeBtn = document.getElementById("closeContactPopup");
+  const projectNameText = document.getElementById("enquiryProjectName");
   const projectIdInput = document.getElementById("projectIdInput");
   const enquiryForm = document.getElementById("enquiryForm");
 
   document.querySelectorAll(".openContactPopup").forEach(btn => {
-    btn.addEventListener("click", e => {
+    btn.addEventListener("click", function (e) {
       e.preventDefault();
-      enquiryProjectName.textContent = btn.dataset.project || "Enquiry";
-      projectIdInput.value = btn.dataset.projectId || "";
-      enquiryForm.action = `/projects/submit-enquiry/${btn.dataset.projectId}/`;
-      contactPopup.classList.remove("hidden");
+
+      projectNameText.textContent = this.dataset.project || "Enquiry";
+      projectIdInput.value = this.dataset.projectId || "";
+
+      enquiryForm.action = `/projects/submit-enquiry/${this.dataset.projectId}/`;
+
+      popup.classList.remove("hidden");
       document.body.style.overflow = "hidden";
     });
   });
 
-  if (closeContactPopup) {
-    closeContactPopup.addEventListener("click", () => {
-      contactPopup.classList.add("hidden");
-      document.body.style.overflow = "";
-    });
-  }
+  closeBtn.addEventListener("click", closePopup);
 
-  if (contactPopup) {
-    contactPopup.addEventListener("click", e => {
-      if (e.target === contactPopup) {
-        contactPopup.classList.add("hidden");
-        document.body.style.overflow = "";
-      }
-    });
-  }
-
-  /* =====================================================
-     TABS (PRICING / BHK)
-  ===================================================== */
-  const tabBtns = document.querySelectorAll(".tab-btn");
-  const tabs = document.querySelectorAll(".tab-content");
-
-  tabBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      tabBtns.forEach(b => {
-        b.classList.remove("text-green-700", "border-b-2", "border-green-700");
-        b.classList.add("text-gray-600");
-      });
-
-      btn.classList.add("text-green-700", "border-b-2", "border-green-700");
-      btn.classList.remove("text-gray-600");
-
-      const target = btn.dataset.tab;
-      tabs.forEach(tab => tab.classList.add("hidden"));
-      document.getElementById(target)?.classList.remove("hidden");
-    });
+  popup.addEventListener("click", function (e) {
+    if (e.target === popup) closePopup();
   });
 
-  /* =====================================================
-     PAYMENT ACCORDION
-  ===================================================== */
-  const paymentBox = document.getElementById("paymentAccordion");
-  const paymentDesc = document.querySelector(".accordion-desc");
-  const paymentIcon = document.getElementById("accordionIcon");
-  let paymentOpen = true;
-
-  if (paymentBox) {
-    paymentBox.addEventListener("click", () => {
-      paymentOpen = !paymentOpen;
-      paymentDesc.classList.toggle("hidden", !paymentOpen);
-      paymentIcon.textContent = paymentOpen ? "—" : "+";
-    });
-  }
-
-  /* =====================================================
-     PRICE SHEET POPUP
-  ===================================================== */
-  const openPricePopup = document.getElementById("openPricePopup");
-  const closePricePopup = document.getElementById("closePricePopup");
-  const pricePopup = document.getElementById("pricePopup");
-  const priceForm = document.getElementById("priceForm");
-
-  if (openPricePopup && pricePopup) {
-    openPricePopup.addEventListener("click", () => {
-      pricePopup.classList.remove("hidden");
-      pricePopup.classList.add("flex");
-      document.body.style.overflow = "hidden";
-    });
-  }
-
-  if (closePricePopup) {
-    closePricePopup.addEventListener("click", () => {
-      pricePopup.classList.add("hidden");
-      pricePopup.classList.remove("flex");
-      document.body.style.overflow = "";
-    });
-  }
-
-  if (priceForm) {
-    priceForm.addEventListener("submit", e => {
-      e.preventDefault();
-      const link = document.createElement("a");
-      link.href = "static/pdf/price-sheet.pdf";
-      link.download = "Price-Sheet.pdf";
-      link.click();
-      pricePopup.classList.add("hidden");
-      pricePopup.classList.remove("flex");
-      document.body.style.overflow = "";
-      priceForm.reset();
-    });
-  }
-
-  /* =====================================================
-     READ MORE (ABOUT DEVELOPER)
-  ===================================================== */
-  const readMoreBtn = document.getElementById("readMoreBtn");
-  const aboutMoreWrapper = document.getElementById("aboutMoreWrapper");
-  const readMoreText = document.getElementById("readMoreText");
-  const readMoreIcon = document.getElementById("readMoreIcon");
-  let readMoreOpen = false;
-
-  if (readMoreBtn && aboutMoreWrapper) {
-    readMoreBtn.addEventListener("click", () => {
-      readMoreOpen = !readMoreOpen;
-      aboutMoreWrapper.style.maxHeight = readMoreOpen ? aboutMoreWrapper.scrollHeight + "px" : "0px";
-      readMoreText.textContent = readMoreOpen ? "Read Less" : "Read More";
-      readMoreIcon.style.transform = readMoreOpen ? "rotate(180deg)" : "rotate(0deg)";
-    });
-  }
-
-  /* =====================================================
-     IMAGE GALLERY POPUP
-  ===================================================== */
-  const galleryPopup = document.getElementById("popup");
-  const popupImg = document.getElementById("popupImg");
-  const galleryImages = document.querySelectorAll(".gallery-img");
-  let currentIndex = 0;
-  const images = [...galleryImages].map(img => img.src);
-
-  const openGallery = index => {
-    currentIndex = index;
-    popupImg.src = images[currentIndex];
-    galleryPopup.classList.remove("hidden");
-    galleryPopup.classList.add("flex");
-    document.body.style.overflow = "hidden";
-  };
-
-  galleryImages.forEach((img, i) => img.addEventListener("click", () => openGallery(i)));
-
-  galleryPopup?.addEventListener("click", e => {
-    if (e.target === galleryPopup) {
-      galleryPopup.classList.add("hidden");
-      galleryPopup.classList.remove("flex");
-      document.body.style.overflow = "";
-    }
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closePopup();
   });
 
-  /* =====================================================
-     UNIT PLAN IMAGE POPUP
-  ===================================================== */
-  const unitPlanPopup = document.getElementById("unitPlanPopup");
-  const unitPlanImg = document.getElementById("unitPlanPopupImg");
-
-  document.querySelectorAll(".unit-plan-img").forEach(img => {
-    img.addEventListener("click", () => {
-      unitPlanImg.src = img.src;
-      unitPlanPopup.classList.remove("hidden");
-      unitPlanPopup.classList.add("flex");
-      document.body.style.overflow = "hidden";
-    });
-  });
-
-  unitPlanPopup?.addEventListener("click", () => {
-    unitPlanPopup.classList.add("hidden");
-    unitPlanPopup.classList.remove("flex");
+  function closePopup() {
+    popup.classList.add("hidden");
     document.body.style.overflow = "";
-  });
+  }
 
 });
 </script>
 
-<style>
-/* =====================================================
-   GLOBAL FIXES
-===================================================== */
-iframe {
-  width: 100%;
-}
 
-/* Popup open hone par header ke upar ke chips hide */
-body.popup-open .project-badges,
-body.popup-open .header-badges,
-body.popup-open .rera-badges {
-  display: none !important;
-}
 
-/* =====================================================
-   AMENITIES CARD (FINAL & CLEAN VERSION)
-===================================================== */
-.amenity-card {
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  background: #ffffff;
-  overflow: hidden;
-  min-height: 160px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: 0.25s ease;
-}
+<!-- ========================================= -->
+<!-- 🔥 SIMPLE TAB SWITCHER -->
+<!-- ========================================= -->
+<script>
+    const tabBtns = document.querySelectorAll(".tab-btn");
+    const tabs = document.querySelectorAll(".tab-content");
 
-.amenity-card:hover {
-  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-  transform: translateY(-2px);
-}
+    tabBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
 
-/* Image wrapper – same height for all cards */
-.amenity-img-wrap {
-  width: 100%;
-  height: 95px;
-  background: #f8fafc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
+            tabBtns.forEach(b => {
+                b.classList.remove("active", "text-green-700", "border-b-2", "border-green-700");
+                b.classList.add("text-gray-600");
+            });
 
-/* Image */
-.amenity-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+            btn.classList.add("active", "text-green-700", "border-b-2", "border-green-700");
+            btn.classList.remove("text-gray-600");
 
-/* Placeholder (no image) */
-.amenity-placeholder {
-  width: 100%;
-  height: 100%;
-  font-size: 22px;
-  color: #94a3b8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+            const target = btn.getAttribute("data-tab");
 
-/* Label */
-.amenity-card .label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #0f172a;
-  text-align: center;
-  padding: 10px 8px;
-  line-height: 1.2;
-}
+            tabs.forEach(tab => tab.classList.add("hidden"));
+            document.getElementById(target).classList.remove("hidden");
+            document.getElementById(target).classList.add("block");
+        });
+    });
+</script>
 
-/* =====================================================
-   SHOW MORE BUTTON
-===================================================== */
-.showmore-btn {
-  width: 100%;
-  height: 44px;
-  border-radius: 14px;
-  border: 1px solid #cbd5e1;
-  background: #e8eff5;
-  font-size: 13px;
-  font-weight: 700;
-  color: #334155;
-  cursor: pointer;
-  transition: 0.25s ease;
-}
+<!-- ===================================== -->
+<!-- JS FOR OPEN / CLOSE -->
+<!-- ===================================== -->
 
-.showmore-btn:hover {
-  background: #dbeafe;
-  transform: translateY(-1px);
-}
+<script>
+    const box = document.getElementById("paymentAccordion");
+    const desc = document.querySelector(".accordion-desc");
+    const icon = document.getElementById("accordionIcon");
 
-/* =====================================================
-   ANIMATION
-===================================================== */
-.fadeIn {
-  animation: fadeIn 0.22s ease-in-out;
-}
+    let open = true; // default opened (same as screenshot)
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
+    box.addEventListener("click", () => {
+        open = !open;
+
+        if (open) {
+            desc.classList.remove("hidden");
+            icon.textContent = "—";
+        } else {
+            desc.classList.add("hidden");
+            icon.textContent = "+";
+        }
+    });
+</script>
+
+<script>
+    const openBtn = document.getElementById("openPricePopup");
+    const closeBtn = document.getElementById("closePricePopup");
+    const popup = document.getElementById("pricePopup");
+    const priceForm = document.getElementById("priceForm");
+
+    // OPEN POPUP
+    openBtn.addEventListener("click", () => {
+        popup.classList.remove("hidden");
+        popup.classList.add("flex");
+        document.body.style.overflow = "hidden";
+    });
+
+    // CLOSE POPUP
+    closeBtn.addEventListener("click", () => {
+        popup.classList.add("hidden");
+        popup.classList.remove("flex");
+        document.body.style.overflow = "auto";
+    });
+
+    // FORM SUBMIT
+    priceForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        // Yaha backend ko send karna ho to AJAX bhi laga sakte hain
+        // Abhi direct file download karwa rahe hain:
+
+        const downloadLink = document.createElement("a");
+        downloadLink.href = "static/pdf/price-sheet.pdf";  // <<< YOUR FILE PATH
+        downloadLink.download = "Price-Sheet.pdf";
+        downloadLink.click();
+
+        // Close popup after download
+        popup.classList.add("hidden");
+        popup.classList.remove("flex");
+        document.body.style.overflow = "auto";
+
+        // Clear form
+        priceForm.reset();
+    });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const btn = document.getElementById("readMoreBtn");
+    const wrapper = document.getElementById("aboutMoreWrapper");
+    const text = document.getElementById("readMoreText");
+    const icon = document.getElementById("readMoreIcon");
+
+    if (!btn || !wrapper) return;
+
+    let open = false;
+
+    btn.addEventListener("click", function () {
+      open = !open;
+
+      if (open) {
+        wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+        text.textContent = "Read Less";
+        icon.style.transform = "rotate(180deg)";
+      } else {
+        wrapper.style.maxHeight = "0px";
+        text.textContent = "Read More";
+        icon.style.transform = "rotate(0deg)";
+      }
+    });
+  });
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const popup = document.getElementById("popup");
+  const popupImg = document.getElementById("popupImg");
+  const closeBtn = document.getElementById("closeBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const prevBtn = document.getElementById("prevBtn");
+
+  const galleryImages = document.querySelectorAll(".gallery-img");
+  const viewAllBtn = document.querySelector(".view-all-btn");
+
+  let currentIndex = 0;
+
+  // Collect all image src
+  const images = Array.from(galleryImages).map(img => img.src);
+
+  function openPopup(index) {
+    currentIndex = index;
+    popupImg.src = images[currentIndex];
+    popup.classList.remove("hidden");
+    popup.classList.add("flex");
+    document.body.style.overflow = "hidden";
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-</style>
 
+  function closePopup() {
+    popup.classList.add("hidden");
+    popup.classList.remove("flex");
+    document.body.style.overflow = "";
+  }
+
+  function showNext() {
+    currentIndex = (currentIndex + 1) % images.length;
+    popupImg.src = images[currentIndex];
+  }
+
+  function showPrev() {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    popupImg.src = images[currentIndex];
+  }
+
+  // CLICK ON IMAGE
+  galleryImages.forEach((img, index) => {
+    img.addEventListener("click", () => openPopup(index));
+  });
+
+  // VIEW ALL BUTTON
+  if (viewAllBtn) {
+    viewAllBtn.addEventListener("click", () => openPopup(0));
+  }
+
+  // CONTROLS
+  closeBtn.addEventListener("click", closePopup);
+  nextBtn.addEventListener("click", showNext);
+  prevBtn.addEventListener("click", showPrev);
+
+  // ESC KEY CLOSE
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closePopup();
+    if (e.key === "ArrowRight") showNext();
+    if (e.key === "ArrowLeft") showPrev();
+  });
+
+  // CLICK OUTSIDE IMAGE TO CLOSE
+  popup.addEventListener("click", (e) => {
+    if (e.target === popup) closePopup();
+  });
+
+});
+</script>
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
