@@ -849,7 +849,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="border rounded-lg overflow-hidden bg-white h-[420px]">
           <img src="{{ project.master_plan.url }}"
                alt="{{ project.project_name }} Master Plan"
-               class="w-full h-[500px] object-cover cursor-pointer gallery-img"
+               class="w-full h-full object-cover cursor-pointer gallery-img"
                data-index="0">
         </div>
         {% else %}
@@ -867,33 +867,49 @@ document.addEventListener("DOMContentLoaded", function () {
         {% with plans=project.configurations.all %}
         {% if plans %}
 
-            <div class="swiper floorPlanSwiper border rounded-lg overflow-hidden">
-                <div class="swiper-wrapper">
+        <div class="swiper floorPlanSwiper border rounded-lg overflow-hidden">
+          <div class="swiper-wrapper">
 
-                    {# 🔹 FLOOR PLAN (IF EXISTS) #}
-                    {% if project.floor_plan %}
-                    <div class="swiper-slide">
-                        <img src="{{ project.floor_plan.url }}"
-                            alt="{{ project.project_name }} Floor Plan"
-                            class="w-full h-full p-2 object-cover cursor-pointer gallery-img">
-                    </div>
+            {% if project.floor_plan %}
 
-                    {# 🔹 ELSE: STATIC ON-REQUEST IMAGE #}
-                    {% else %}
-                    <div class="swiper-slide">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHFPNN6ObUEN4swtOHGYDHv8-lZ0nK_zSVYQ&s"
-                            alt="Floor Plan On Request"
-                            class="w-full h-[500px] object-cover cursor-pointer gallery-img">
-                    </div>
-                    {% endif %}
+              <div class="swiper-slide">
+                <img src="{{ c.unit_plan.url }}"
+                     alt="{{ project.project_name }} {{ c.bhk_type }} Unit Plan"
+                     class="w-full h-full object-cover cursor-pointer gallery-img"
+                     data-index="{{ forloop.counter }}">
+              </div>
+            {% endif %}
 
-                </div>
 
-                <!-- Pagination -->
-                <div class="swiper-pagination !absolute !bottom-2 !left-0 !right-0"></div>
+            {% if project.floor_plan %}
+            <div class="swiper-slide">
+              <img src="{{ project.floor_plan.url }}"
+                   alt="{{ project.project_name }} Floor Plan"
+                   class="w-full h-full object-cover cursor-pointer gallery-img"
+                   data-index="{{ plans|length|add:'1' }}">
             </div>
+            {% endif %}
 
- 
+          </div>
+
+
+          <!-- Pagination -->
+          <div class="swiper-pagination !absolute !bottom-2 !left-0 !right-0"></div>
+        </div>
+
+        {% else %}
+          {% if project.floor_plan %}
+          <div class="border rounded-lg overflow-hidden bg-white h-[420px]">
+            <img src="{{ project.floor_plan.url }}"
+                 alt="{{ project.project_name }} Floor Plan"
+                 class="w-full h-full object-cover cursor-pointer gallery-img"
+                 data-index="1">
+          </div>
+          {% else %}
+          <div class="border rounded-lg p-8 text-center text-sm text-gray-500 bg-gray-50">
+            Floor Plan Not Available
+          </div>
+          {% endif %}
         {% endif %}
         {% endwith %}
 
