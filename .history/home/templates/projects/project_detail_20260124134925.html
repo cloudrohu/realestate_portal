@@ -1743,36 +1743,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-
-    const btn = document.getElementById("readMoreBtn");
-    const wrapper = document.getElementById("aboutMoreWrapper");
-    const text = document.getElementById("readMoreText");
-    const icon = document.getElementById("readMoreIcon");
-
-    // safety check
-    if (!btn || !wrapper) return;
-
-    let open = false;
-
-    btn.addEventListener("click", function () {
-        open = !open;
-
-        if (open) {
-            wrapper.style.maxHeight = wrapper.scrollHeight + "px";
-            text.textContent = "Read Less";
-            icon.style.transform = "rotate(180deg)";
-        } else {
-            wrapper.style.maxHeight = "0px";
-            text.textContent = "Read More";
-            icon.style.transform = "rotate(0deg)";
-        }
-    });
-
-});
-</script>
-
 <style>
 /* =====================================================
    GLOBAL FIXES
