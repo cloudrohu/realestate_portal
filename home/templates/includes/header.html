@@ -1,3 +1,88 @@
+<!-- ===== Premium Floating Action Buttons ===== -->
+<div class="fixed bottom-6 right-6 z-[9999] flex flex-col items-center gap-4">
+
+  <!-- WhatsApp -->
+  <a href="https://wa.me/{{settings_obj.whatsapp}}"
+     target="_blank"
+     class="cta-float whatsapp">
+
+    <i class="fa-brands fa-whatsapp"></i>
+    <span>Chat</span>
+  </a>
+
+  <!-- Call Now -->
+  <a href="tel:{{settings_obj.phone}}"
+     class="cta-float call">
+
+    <i class="fa-solid fa-phone"></i>
+    <span>Call</span>
+  </a>
+
+</div>
+
+
+<style>
+/* Premium floating buttons */
+.cta-float {
+  width: 58px;
+  height: 58px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 20px;
+  color: #fff;
+  font-weight: 600;
+  padding: 0 18px;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: all 0.35s ease;
+  box-shadow: 0 12px 30px rgba(0,0,0,.25);
+  cursor: pointer;
+}
+
+/* Expand on hover */
+.cta-float span {
+  max-width: 0;
+  opacity: 0;
+  transition: .35s ease;
+  font-size: 14px;
+}
+
+.cta-float:hover {
+  width: 150px;
+  justify-content: flex-start;
+  padding-left: 18px;
+}
+
+.cta-float:hover span {
+  max-width: 80px;
+  opacity: 1;
+}
+
+/* Colors */
+.whatsapp {
+  background: linear-gradient(135deg,#25d366,#128c7e);
+}
+
+.call {
+  background: linear-gradient(135deg,#2563eb,#1e40af);
+}
+
+/* Soft pulse */
+.whatsapp {
+  animation: glow 1.8s infinite;
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 0 0 rgba(37,211,102,.6); }
+  70% { box-shadow: 0 0 0 18px rgba(37,211,102,0); }
+  100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
+}
+
+</style>
+
 <header class="sticky top-0 z-50 border-b" style="background:{{ settings_obj.header_footer_color }};color:{{ settings_obj.text_color }}">
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
 

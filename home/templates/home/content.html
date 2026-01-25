@@ -295,11 +295,11 @@
           <div class="swiper-wrapper">
 
             {% for project in new_launch_residential %}
-            <div class="swiper-slide bg-white shadow-lg  overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
+            <div class="swiper-slide bg-white overflow-hidden border-t-4 hover:shadow-xl transition">
 
               <div class="relative">
                 {% if project.image %}
-                  <img src="{{ project.image.url }}" class="w-full h-48 object-cover" alt="{{project.project_name}}" loading="lazy">
+                  <img src="{{ project.image.url }}" class="w-full h-50 object-cover" alt="{{project.project_name}}" loading="lazy">
                 {% else %}
                   <img src="https://dummyimage.com/400x250/cccccc/000000&text=No+Image" class="w-full h-48 object-cover" alt="{{project.project_name}}">
                 {% endif %}
