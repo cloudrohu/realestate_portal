@@ -71,267 +71,208 @@
 </div>
 
 
-<!-- ====================== -->
-<!-- MOBILE SEARCH SECTION -->
-<!-- ====================== -->
 <div class="md:hidden">
-  <section class="relative flex flex-col items-center justify-center text-center text-white h-[450px] bg-cover bg-center bg-no-repeat overflow-hidden" style="background-image: url('{% if settings_obj.search_bg %}{{ settings_obj.search_bg.url }}{% else %}{% static 'images/central-mumbai.jpeg' %}{% endif %}');">
+  <section 
+    class="relative flex flex-col items-center justify-center text-center text-white h-[420px] overflow-hidden">
 
+    <!-- ✅ Optimized Image (not CSS bg) -->
+    <img 
+      src="{% if settings_obj.search_bg %}{{ settings_obj.search_bg.url }}{% else %}{% static 'images/central-mumbai.webp' %}{% endif %}"
+      loading="eager"
+      fetchpriority="high"
+      class="absolute inset-0 w-full h-full object-cover"
+      alt="Real estate background">
+
+    <!-- Dark overlay (cheap + improves text clarity) -->
+    <div class="absolute inset-0 bg-black/45"></div>
 
     <!-- CONTENT -->
-    <div class="relative z-10 w-full px-4 sm:px-6 md:px-10">
-      <h2 class="text-2xl md:text-3xl font-bold mb-2 drop-shadow-lg">Real Estate Made Real Easy</h2>
-      <p class="text-gray-300 mb-6 text-sm md:text-base">
-        We’ve got you covered! From finding the perfect property to
+    <div class="relative z-10 w-full px-4">
+
+      <h2 class="text-2xl font-bold mb-2">Real Estate Made Real Easy</h2>
+      <p class="text-gray-300 mb-5 text-sm">
+        We’ve got you covered! From finding property to 
         <span class="text-pink-400 font-semibold">Interiors</span>
       </p>
 
       <!-- Tabs -->
-      <div id="mobileTabs" class="flex justify-center gap-2 mt-2 whitespace-nowrap overflow-x-auto scrollbar-hide">
+      <div id="mobileTabs" class="flex justify-center gap-2 overflow-x-auto scrollbar-hide">
         <button class="tab-btn bg-white text-black px-3 py-2 rounded-md font-semibold" data-tab="buy">Buy</button>
-        <button class="tab-btn bg-[#122c61] text-white px-3 py-2 rounded-md hover:bg-[#163070]" data-tab="projects">New Projects</button>
-        <button class="tab-btn bg-[#122c61] text-white px-3 py-2 rounded-md hover:bg-[#163070]" data-tab="rental">Rental</button>
+        <button class="tab-btn bg-[#122c61] text-white px-3 py-2 rounded-md" data-tab="projects">New Projects</button>
+        <button class="tab-btn bg-[#122c61] text-white px-3 py-2 rounded-md" data-tab="rental">Rental</button>
       </div>
 
-      <!-- ✅ Search Bar -->
-      <div class="flex items-center bg-white/60 mx-auto mt-6 rounded-full px-4 py-2 text-gray-700 shadow-lg max-w-lg relative" id="searchBar">
-        <select id="propertyTypeSelect" class="text-sm font-sm text-gray-600 bg-transparent border-none outline-none cursor-pointer focus:ring-0 pr-0 ml-0">
+      <!-- Search -->
+      <div class="flex items-center bg-white/80 mt-5 rounded-full px-4 py-2 text-gray-700 shadow-md max-w-lg mx-auto">
+
+        <select id="propertyTypeSelect"
+          class="text-sm text-gray-600 bg-transparent outline-none cursor-pointer">
           <option value="residential">Residential</option>
           <option value="commercial">Commercial</option>
         </select>
 
         <div class="h-5 w-px bg-gray-300 mx-2"></div>
 
-        
-        <!-- ✅ Input + Suggestion Dropdown -->
         <div class="relative flex-grow">
-          <input id="mobileSearchInput" type="text" placeholder="Select City"
-            class="w-full outline-none text-sm bg-transparent placeholder-gray-500" autocomplete="off" />
-          <ul id="mobileSuggestionBox" class="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto hidden z-50"></ul>
+          <input id="mobileSearchInput"
+            class="w-full bg-transparent outline-none text-sm"
+            placeholder="Select City" autocomplete="off">
+
+          <ul id="mobileSuggestionBox"
+            class="absolute left-0 right-0 mt-1 bg-white rounded-md shadow-lg hidden max-h-60 overflow-y-auto z-50"></ul>
         </div>
 
-        <button id="mobileSearchButton" 
-          class=" text-white px-1 py-1 rounded-full ml-2 hover:bg-[#163070] transition flex items-center justify-center">
-          <!-- Search Icon Only -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-              d="M21 21l-4.35-4.35M11 6a5 5 0 100 10 5 5 0 000-10z" />
-          </svg>
+        <button id="mobileSearchButton" class="ml-2">
+          🔍
         </button>
-
 
       </div>
     </div>
   </section>
-
-  <style>
-    .scrollbar-hide::-webkit-scrollbar { display: none; }
-    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-  </style>
 </div>
-<!-- ============================= -->
-<!-- ✅ DESKTOP SEARCH LOGIC -->
-<!-- ============================= -->
+
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const tabs = document.querySelectorAll(".tab-btn");
-  const select = document.getElementById("propertyType");
-  const searchInput = document.getElementById("searchInput");
-  const suggestionBox = document.getElementById("suggestionBox");
+document.addEventListener("DOMContentLoaded", () => {
 
-  const tabOptions = {
-    buy: ["Residential", "Commercial"],
-    rental: ["Residential", "Commercial Lease", "PG / Co-living"],
-    new: ["Residential", "Commercial"]
-  };
+  /* ==============================
+     ⚡ Debounce Utility
+  ============================== */
+  function debounce(fn, delay = 350) {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn(...args), delay);
+    };
+  }
 
-  // ✅ Tab switching logic
-  tabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-      tabs.forEach(t => t.classList.remove("bg-gray-200", "text-blue-700", "font-semibold"));
-      tab.classList.add("bg-gray-200", "text-blue-700", "font-semibold");
-
-      const selectedTab = tab.dataset.tab;
-      select.innerHTML = "";
-      tabOptions[selectedTab].forEach(opt => {
-        const option = document.createElement("option");
-        option.textContent = opt;
-        select.appendChild(option);
-      });
-
-      searchInput.placeholder = "Select City";
-    });
-  });
-
-  // ✅ Desktop suggestion search
-  searchInput.addEventListener("input", async () => {
-    const query = searchInput.value.trim();
-    suggestionBox.innerHTML = "";
-
+  /* ==============================
+     📦 City Fetch Logic (Shared)
+  ============================== */
+  async function fetchCities(query, box, inputEl) {
     if (query.length < 3) {
-      suggestionBox.classList.add("hidden");
+      box.classList.add("hidden");
       return;
     }
 
     try {
-      const response = await fetch(`/api/cities/?q=${encodeURIComponent(query)}`);
-      if (!response.ok) throw new Error("Network error");
+      const res = await fetch(`/api/cities/?q=${encodeURIComponent(query)}`);
+      if (!res.ok) throw new Error("Network");
 
-      const results = await response.json();
+      const results = await res.json();
+      box.innerHTML = "";
 
-      if (results.length === 0) {
-        suggestionBox.innerHTML = `<li class="px-4 py-2 text-sm text-gray-500">No results found</li>`;
-        suggestionBox.classList.remove("hidden");
+      if (!results.length) {
+        box.innerHTML = `<li class="px-4 py-2 text-sm text-gray-500">No results found</li>`;
+        box.classList.remove("hidden");
         return;
       }
 
       results.forEach(item => {
         const li = document.createElement("li");
-        li.className = "px-4 py-2 hover:bg-gray-100 flex justify-between items-center cursor-pointer text-sm";
-        li.innerHTML = `
-          <span>${item.name}</span>
-          <span class="text-gray-500 text-xs">${item.type}</span>
-        `;
-        li.addEventListener("click", () => {
-          searchInput.value = item.name;
-          suggestionBox.classList.add("hidden");
-        });
-        suggestionBox.appendChild(li);
+        li.className = "px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm flex justify-between";
+        li.innerHTML = `<span>${item.name}</span><span class="text-xs text-gray-400">${item.type}</span>`;
+
+        li.onclick = () => {
+          inputEl.value = item.name;
+          box.classList.add("hidden");
+        };
+
+        box.appendChild(li);
       });
 
-      suggestionBox.classList.remove("hidden");
-    } catch (error) {
-      console.error("❌ Error fetching cities:", error);
-      suggestionBox.innerHTML = `<li class="px-4 py-2 text-sm text-red-500">Error fetching data</li>`;
-      suggestionBox.classList.remove("hidden");
+      box.classList.remove("hidden");
+
+    } catch (err) {
+      box.innerHTML = `<li class="px-4 py-2 text-sm text-red-500">Error loading</li>`;
+      box.classList.remove("hidden");
     }
+  }
+
+  /* ==============================
+     🖥 Desktop Elements
+  ============================== */
+  const desktopInput = document.getElementById("searchInput");
+  const desktopBox   = document.getElementById("suggestionBox");
+  const desktopType  = document.getElementById("propertyType");
+  const desktopBtn   = document.getElementById("searchButton");
+
+  /* ==============================
+     📱 Mobile Elements
+  ============================== */
+  const mobileInput = document.getElementById("mobileSearchInput");
+  const mobileBox   = document.getElementById("mobileSuggestionBox");
+  const mobileType  = document.getElementById("propertyTypeSelect");
+  const mobileBtn   = document.getElementById("mobileSearchButton");
+
+  /* ==============================
+     ⚡ Debounced Functions
+  ============================== */
+  const desktopSearch = debounce(q => fetchCities(q, desktopBox, desktopInput));
+  const mobileSearch  = debounce(q => fetchCities(q, mobileBox, mobileInput));
+
+  if (desktopInput)
+    desktopInput.addEventListener("input", e => desktopSearch(e.target.value));
+
+  if (mobileInput)
+    mobileInput.addEventListener("input", e => mobileSearch(e.target.value));
+
+  /* ==============================
+     🚪 Hide dropdown on click outside
+  ============================== */
+  document.addEventListener("click", e => {
+    if (!e.target.closest("#searchInput")) desktopBox?.classList.add("hidden");
+    if (!e.target.closest("#mobileSearchInput")) mobileBox?.classList.add("hidden");
   });
 
-  // ✅ Hide suggestion on outside click
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest("#searchInput")) {
-      suggestionBox.classList.add("hidden");
-    }
-  });
-
-  // ✅ Redirect to Django search view
-  document.getElementById("searchButton").addEventListener("click", function () {
-    const city = searchInput.value.trim();
-    const type = select.value.toLowerCase();
-
+  /* ==============================
+     🔎 Search redirect (shared)
+  ============================== */
+  function redirect(city, type) {
     if (city.length < 2) {
-      alert("Please select a valid city.");
+      alert("Please select a valid city");
       return;
     }
-
     window.location.href = `/projects/search/?q=${encodeURIComponent(city)}&type=${encodeURIComponent(type)}`;
-  });
-});
-</script>
+  }
 
+  desktopBtn?.addEventListener("click", () =>
+    redirect(desktopInput.value.trim(), desktopType.value.toLowerCase())
+  );
 
-<!-- ============================= -->
-<!-- ✅ MOBILE SEARCH LOGIC -->
-<!-- ============================= -->
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const tabs = document.querySelectorAll("#mobileTabs .tab-btn");
-  const select = document.getElementById("propertyTypeSelect");
-  const input = document.getElementById("mobileSearchInput");
-  const suggestionBox = document.getElementById("mobileSuggestionBox");
-  const searchButton = document.getElementById("mobileSearchButton");
+  mobileBtn?.addEventListener("click", () =>
+    redirect(mobileInput.value.trim(), mobileType.value.toLowerCase())
+  );
 
+  /* ==============================
+     📑 Tabs Logic (Mobile + Desktop clean)
+  ============================== */
   const tabOptions = {
     buy: ["Residential", "Commercial"],
     rental: ["Residential", "Commercial Lease", "PG / Co-living"],
     projects: ["Residential", "Commercial"]
   };
 
-  // ✅ Tab switching
-  tabs.forEach(tab => {
+  document.querySelectorAll(".tab-btn").forEach(tab => {
     tab.addEventListener("click", () => {
-      tabs.forEach(t => {
-        t.classList.remove("bg-white", "text-black", "font-semibold");
-        t.classList.add("bg-[#122c61]", "text-white");
-      });
-      tab.classList.add("bg-white", "text-black", "font-semibold");
-      tab.classList.remove("bg-[#122c61]", "text-white");
+      document.querySelectorAll(".tab-btn").forEach(t => t.classList.remove("bg-white","text-black","font-semibold"));
 
-      const selectedTab = tab.dataset.tab;
-      select.innerHTML = "";
-      tabOptions[selectedTab].forEach(opt => {
-        const option = document.createElement("option");
-        option.value = opt.toLowerCase().replace(/\s+/g, "-");
-        option.textContent = opt;
-        select.appendChild(option);
-      });
+      tab.classList.add("bg-white","text-black","font-semibold");
 
-      input.placeholder = "Select City";
+      const selected = tab.dataset.tab;
+      const targetSelect = tab.closest("#mobileTabs") ? mobileType : desktopType;
+
+      if (!tabOptions[selected] || !targetSelect) return;
+
+      targetSelect.innerHTML = "";
+
+      tabOptions[selected].forEach(opt => {
+        const o = document.createElement("option");
+        o.textContent = opt;
+        o.value = opt.toLowerCase().replace(/\s+/g,"-");
+        targetSelect.appendChild(o);
+      });
     });
   });
 
-  // ✅ City suggestions (mobile)
-  input.addEventListener("input", async () => {
-    const query = input.value.trim();
-    suggestionBox.innerHTML = "";
-
-    if (query.length < 3) {
-      suggestionBox.classList.add("hidden");
-      return;
-    }
-
-    try {
-      const response = await fetch(`/api/cities/?q=${encodeURIComponent(query)}`);
-      if (!response.ok) throw new Error("Network error");
-
-      const results = await response.json();
-
-      if (results.length === 0) {
-        suggestionBox.innerHTML = `<li class="px-4 py-2 text-sm text-gray-500">No results found</li>`;
-        suggestionBox.classList.remove("hidden");
-        return;
-      }
-
-      results.forEach(item => {
-        const li = document.createElement("li");
-        li.className = "px-4 py-2 hover:bg-gray-100 flex justify-between items-center cursor-pointer text-sm";
-        li.innerHTML = `
-          <span>${item.name}</span>
-          <span class="text-gray-500 text-xs">${item.type}</span>
-        `;
-        li.addEventListener("click", () => {
-          input.value = item.name;
-          suggestionBox.classList.add("hidden");
-        });
-        suggestionBox.appendChild(li);
-      });
-
-      suggestionBox.classList.remove("hidden");
-    } catch (error) {
-      console.error("❌ Error fetching cities:", error);
-      suggestionBox.innerHTML = `<li class="px-4 py-2 text-sm text-red-500">Error fetching data</li>`;
-      suggestionBox.classList.remove("hidden");
-    }
-  });
-
-  // ✅ Hide suggestion when clicking outside
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest("#mobileSearchInput")) {
-      suggestionBox.classList.add("hidden");
-    }
-  });
-
-  // ✅ Mobile search redirect (SAME LOGIC AS DESKTOP)
-  searchButton.addEventListener("click", () => {
-    const city = input.value.trim();
-    const type = select.value.toLowerCase().replace("-", " "); // normalize “residential”, “commercial”
-
-    if (city.length < 2) {
-      alert("Please select a valid city.");
-      return;
-    }
-
-    window.location.href = `/projects/search/?q=${encodeURIComponent(city)}&type=${encodeURIComponent(type)}`;
-  });
 });
 </script>
