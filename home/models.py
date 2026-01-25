@@ -1,5 +1,5 @@
 from django.db import models
-from ckeditor_uploader.fields import RichTextUploadingField
+from django_ckeditor_5.fields import CKEditor5Field
 from django.utils.safestring import mark_safe
 from utility.compress_mixin import ImageCompressionMixin
 
@@ -32,10 +32,10 @@ class Setting(ImageCompressionMixin, models.Model):
     meta_keywords = models.TextField(blank=True, null=True)
     footer_text = models.CharField(max_length=250, blank=True, null=True)
     copy_right = models.CharField(blank=True, max_length=100)
-    privacy_policy = RichTextUploadingField(blank=True)
-    terms_conditions = RichTextUploadingField(blank=True)
-    disclaimer = RichTextUploadingField(blank=True)
-    cookies = RichTextUploadingField(blank=True)
+    privacy_policy = CKEditor5Field(blank=True)
+    terms_conditions = CKEditor5Field(blank=True)
+    disclaimer = CKEditor5Field(blank=True)
+    cookies = CKEditor5Field(blank=True)
 
 
     STATUS = (
@@ -153,7 +153,7 @@ class About(models.Model):
     # =============================
     title = models.CharField(max_length=200, help_text="Main heading (e.g., 'About Makaan Hub')")
     subtitle = models.CharField(max_length=300, blank=True, null=True, help_text="Subtitle or tagline")
-    content = RichTextUploadingField(blank=True, null=True, help_text="Detailed About Us content with formatting")
+    content = CKEditor5Field(blank=True, null=True, help_text="Detailed About Us content with formatting")
     image = models.ImageField(upload_to='about/', blank=True, null=True, help_text="Main image for About section")
 
     # =============================
@@ -161,7 +161,7 @@ class About(models.Model):
     # =============================
     who_we_are_title = models.CharField(max_length=200, default="Who We Are")
     who_we_are_subtitle = models.CharField(max_length=300, blank=True, null=True)
-    who_we_are_description = RichTextUploadingField(blank=True, null=True, help_text="Description about company identity")
+    who_we_are_description = CKEditor5Field(blank=True, null=True, help_text="Description about company identity")
 
     # =============================
     # 📊 Achievements / Highlights
@@ -176,15 +176,15 @@ class About(models.Model):
     # 🎯 Mission & Vision
     # =============================
     our_mission_title = models.CharField(max_length=200, default="Our Mission")
-    our_mission = RichTextUploadingField(blank=True, null=True)
+    our_mission = CKEditor5Field(blank=True, null=True)
     our_vision_title = models.CharField(max_length=200, default="Our Vision")
-    our_vision = RichTextUploadingField(blank=True, null=True)
+    our_vision = CKEditor5Field(blank=True, null=True)
 
     # =============================
     # 💼 Looking To Section
     # =============================
     looking_to_title = models.CharField(max_length=200, help_text="Title for 'Looking To...' section")
-    looking_to_description = RichTextUploadingField(blank=True, null=True)
+    looking_to_description = CKEditor5Field(blank=True, null=True)
     looking_to_button_text = models.CharField(max_length=50, default="Contact Us", help_text="Call-to-action button text")
     looking_to_button_link = models.URLField(blank=True, null=True, help_text="Button link (e.g., contact page)")
 
@@ -266,7 +266,7 @@ class Testimonial(models.Model):
 # =============================
 class FAQ(models.Model):
     question = models.CharField(max_length=300)
-    answer = RichTextUploadingField()
+    answer = CKEditor5Field()
 
     class Meta:
         verbose_name_plural = '7. FAQ Section'

@@ -71,14 +71,14 @@
 
 <!-- ✨ Animations (keep minimal) -->
 <style>
-@keyframes zoomHero{0%,100%{transform:scale(1.05)}50%{transform:scale(1.1)}}
-.animate-zoomHero{animation:zoomHero 20s ease-in-out infinite}
+  @keyframes zoomHero{0%,100%{transform:scale(1.05)}50%{transform:scale(1.1)}}
+  .animate-zoomHero{animation:zoomHero 20s ease-in-out infinite}
 </style>
 
 <!-- Libraries -->
-<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.6.2/countUp.umd.js" defer></script>
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
+
+
+
 
 <script defer>
 document.addEventListener("DOMContentLoaded",function(){AOS.init({duration:1000,once:true});['projects-delivered','happy-families','years-of-excellence','awards-recognitions'].forEach(id=>{const el=document.getElementById(id);if(el){new CountUp.CountUp(el,parseInt(el.innerText)).start();}});});

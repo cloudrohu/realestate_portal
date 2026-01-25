@@ -3,7 +3,7 @@
 {% load utility_tags %}
 {% load humanize %}
 
-{% block title %}Contact Makaan Hub | Real Estate Experts{% endblock %}
+{% block title %}Contact {{ settings_obj.site_name }} | Real Estate Experts{% endblock %}
 
 {% block content %}
 
@@ -62,7 +62,7 @@
         <!-- Quick CTA -->
         <div class="flex gap-3 pt-2">
           <a href="tel:{{ settings_obj.phone }}" class="flex-1 text-center py-3 rounded-lg border border-orange-500 text-orange-600 font-semibold hover:bg-orange-50">Call Now</a>
-          <a href="https://wa.me/{{ settings_obj.phone|default_if_none:'' }}" target="_blank" class="flex-1 text-center py-3 rounded-lg bg-green-500 text-white font-semibold hover:bg-green-600">WhatsApp</a>
+          <a href="https://wa.me/{{ settings_obj.whatsapp|default_if_none:'' }}" target="_blank" class="flex-1 text-center py-3 rounded-lg bg-green-500 text-white font-semibold hover:bg-green-600">WhatsApp</a>
         </div>
       </form>
     </div>

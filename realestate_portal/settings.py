@@ -24,8 +24,7 @@ DATABASES = {
 INSTALLED_APPS = [
     'jazzmin',
     'mptt',
-    'ckeditor',
-    'ckeditor_uploader',
+    'django_ckeditor_5',
     'multiselectfield',
     'import_export',
     'django.contrib.sites',
