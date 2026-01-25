@@ -150,4 +150,29 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
+CKEDITOR_5_CONFIGS = {
+    'default': {
+        'toolbar': [
+            'heading', '|',
+            'bold', 'italic', 'link',
+            'bulletedList', 'numberedList',
+            'blockQuote',
+            'imageUpload',
+            'undo', 'redo'
+        ],
+    },
+    'extends': {
+        'toolbar': [
+            'heading', '|',
+            'bold', 'italic', 'underline', 'strikethrough',
+            'link', 'uploadImage',
+            'bulletedList', 'numberedList',
+            'blockQuote', 'insertTable',
+            'mediaEmbed',
+            'undo', 'redo'
+        ],
+    }
+}
+
+
 # ✅ End of File
