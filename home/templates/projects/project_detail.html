@@ -1,6 +1,6 @@
 {% extends 'base.html' %} 
 {% load price_filters %}
-
+{% load utility_tags %} 
 {% load humanize %}
 {% block content %}
 {% load static %}
@@ -717,8 +717,8 @@
                     {% endif %}
 
                     {% if min_price %}
-                    <p class="text-xl font-extrabold text-teal-600 leading-tight">
-                        ₹ {{ min_price|inr_short }}
+                    <p class="text-xl font-bold text-teal-600 leading-tight">
+                       {{ project.get_price_range }}
                         <span class="text-sm font-medium">Onwards</span>
                     </p>
                     {% else %}
