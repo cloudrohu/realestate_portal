@@ -625,31 +625,36 @@
 
 
 <hr>
+
 <!-- 🌟 WHY CHOOSE US -->
-<section class="py-14 bg-white" id="why-choose">
-  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+<section class="hidden md:block py-12 bg-white" id="why-choose">
+  <div class="max-w-7xl mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-8 items-center">
 
     <!-- IMAGE SIDE -->
-    <div class="relative group" data-aos="zoom-in-right">
+    <div class="relative group md:order-none order-1"
+         data-aos="zoom-in-right">
 
-      <div class="absolute -inset-2 bg-orange-500/10 blur-xl opacity-0 group-hover:opacity-100 transition"></div>
+      <div class="absolute -inset-2 bg-orange-500/10 blur-xl opacity-0 md:group-hover:opacity-100 transition"></div>
 
-      <img src="{{ about_page.home_bg.url|default:'https://dummyimage.com/600x380/cccccc/000&text=Why+Choose+Us' }}"
-           class="relative w-full h-[450px] object-cover  shadow-xl transition group-hover:scale-[1.01]"
-           alt="Why Choose">
+      <img 
+        src="{{ about_page.home_bg.url|default:'https://dummyimage.com/600x380/cccccc/000&text=Why+Choose+Us' }}"
+        class="relative w-full h-[220px] sm:h-[280px] md:h-[450px] object-cover shadow-xl transition md:group-hover:scale-[1.01]"
+        alt="Why Choose"
+        loading="lazy"
+      >
 
       <div class="absolute inset-0 border border-white/20 pointer-events-none"></div>
     </div>
 
-    <!-- TEXT SIDE WITH INTERNAL SCROLL -->
+    <!-- TEXT SIDE -->
     <div data-aos="fade-left">
 
-      <h2 class="text-3xl font-bold text-orange-600 mb-4">
+      <h2 class="text-2xl md:text-3xl font-bold text-orange-600 mb-4 text-center md:text-left">
         Why Choose Us
       </h2>
 
-      <!-- SCROLL CONTAINER -->
-      <div class="max-h-[350px] overflow-y-auto pr-3 custom-scroll space-y-4 text-gray-800 text-[15px] leading-relaxed">
+      <!-- NO INTERNAL SCROLL ON MOBILE -->
+      <div class="md:max-h-[350px] md:overflow-y-auto pr-1 md:pr-3 space-y-4 text-gray-800 text-[15px] leading-relaxed">
 
         {% for item in why_choose_items %}
         <div class="flex gap-3">
@@ -666,25 +671,45 @@
           </span>
 
         </div>
-        {% empty %}
-
-        <div class="flex gap-3">
-          <span class="text-green-600 text-xl leading-none">✔</span>
-          <span class="font-medium">15+ Years of Experience</span>
-        </div>
-
-        <div class="flex gap-3">
-          <span class="text-green-600 text-xl leading-none">✔</span>
-          <span class="font-medium">Verified Properties Only</span>
-        </div>
-
         {% endfor %}
+
       </div>
 
     </div>
 
   </div>
 </section>
+<!-- 📱 WHY CHOOSE US — MOBILE ONLY -->
+<section class="block md:hidden py-10 bg-gray-50">
+
+  <div class="max-w-md mx-auto px-4 text-center">
+
+    <h2 class="text-2xl font-bold text-orange-600 mb-6">
+      Why Choose Us
+    </h2>
+
+    <div class="space-y-4">
+
+      {% for item in why_choose_items|slice:":5" %}
+      <div class="flex items-center gap-3 bg-white shadow-sm rounded-xl p-4">
+
+        <span class="text-green-600 text-xl">
+          {% if item.icon %} {{ item.icon }} {% else %} ✔ {% endif %}
+        </span>
+
+        <span class="text-gray-800 font-medium text-left">
+          {{ item.title }}
+        </span>
+
+      </div>
+      {% endfor %}
+
+    </div>
+
+  </div>
+</section>
+
+<!-- 🌟 WHY CHOOSE US END -->
 
 <!-- ===================== How We Work ======================= -->
 <section class="w-full py-12 text-white bg-cover bg-center relative" style="background-image: url('https://sigmahomes.co.in/media/about/Prithvi_Pride.jpg');">
