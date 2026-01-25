@@ -4,23 +4,24 @@
 
 
 <main>
+
 <!-- FEATURE PROJECTS -->
 <section class="bg-[#f8fafc] py-16 relative overflow-hidden">
   <div class="max-w-7xl mx-auto px-4">
 
     <!-- Section Title -->
-    <div class="text-center mb-10">
+    <div class="text-center mb-6">
       <h2 class="text-3xl md:text-4xl font-bold text-orange-400 uppercase tracking-wide">
         Featured Projects
       </h2>
-      <p class="text-gray-300 mt-1 text-sm md:text-base">
+      <p class="text-gray-300 text-sm md:text-base">
         Explore our best and most popular real estate projects
       </p>
     </div>
 
     <!-- Swiper Container -->
     <div class="relative">
-      <div class="swiper mySwiper px-8"> <!-- Added padding so arrows stay outside cards -->
+      <div class="swiper mySwiper">
         <div class="swiper-wrapper">
 
           {% for rs in project_featured %}
@@ -30,17 +31,14 @@
               <!-- Image Section -->
               <div class="relative h-60 w-full overflow-hidden">
                 {% if rs.image %}
-                  <img src="{{ rs.image.url }}" alt="{{ rs.project_name }}  "
-                    class="w-full h-full object-cover transition-transform duration-500 hover:scale-200">
+                  <img src="{{ rs.image.url }}" alt="{{ rs.project_name }} " class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" loading="lazy">
                 {% else %}
-                  <img src="{% static 'images/default-placeholder.jpg' %}" alt="No image"
-                    class="w-full h-full object-cover">
+                  <img src="{% static 'images/default-placeholder.jpg' %}" alt="No image" class="w-full h-full object-cover" loading="lazy">
                 {% endif %}
 
-                <!-- Property Type Tag -->
-                <span class="absolute top-3 left-3 bg-orange-500 text-white text-[12px] font-semibold px-3 py-1 rounded-full shadow">
-                  {{ rs.propert_type }}
-                </span>
+                      <span class="absolute top-3 left-3 bg-orange-500/90 backdrop-blur text-white text-[11px] font-semibold px-3 py-1 uppercase tracking-wide shadow-md border border-white/20">
+                          {{ rs.propert_type }}
+                        </span>
 
                 <!-- Construction Status -->
                 <span class="absolute bottom-3 right-3 bg-black/80 text-white text-[11px] font-medium px-3 py-1 rounded-full">
@@ -61,138 +59,163 @@
 
               <!-- Content -->
               <div class="p-3 space-y-2">
-               <div class="flex items-start justify-between gap-3">
-                <h3 class="text-lg font-semibold text-gray-800 hover:text-orange-600 transition leading-snug flex-1">
-                  {{ rs.project_name }}
-                </h3>
-                <div class="text-right shrink-0">
-                  {% if rs.min_price and rs.max_price %}
-                    <p class="text-[13px] font-bold text-orange-600 leading-tight">
-                      ₹{{ rs.min_price|indian_price }} - ₹{{ rs.max_price|indian_price }}
-                    </p>
-                  {% elif rs.min_price %}
-                    <p class="text-[13px] font-bold text-orange-600 leading-tight">
-                      ₹{{ rs.min_price|indian_price }}+
-                    </p>
-                  {% else %}
-                    <p class="text-[12px] text-gray-400 italic leading-tight">
-                      Price on request
-                    </p>
-                  {% endif %}
-                </div>
-              </div>
-              
-              <p class="text-sm text-gray-600 flex items-center gap-1 leading-relaxed">
-                <i class="fas fa-map-marker-alt text-orange-500"></i>
-                {{ rs.locality }}
-              </p>
+
+                  <div class="bg-white border border-gray-200 p-2 shadow-sm hover:shadow-md transition">
+
+                        <!-- TOP ROW -->
+                        <div class="flex items-start justify-between gap-3">
+
+                          <div class="flex-1">
+                            <h3 class="text-lg font-semibold text-gray-900 hover:text-orange-600 transition leading-snug line-clamp-2 min-h-[48px]">
+                              {{ rs.project_name }}
+                            </h3>
+
+                            <p class="text-sm text-gray-600 flex items-center gap-2 mt-1">
+                              <i class="fas fa-map-marker-alt text-orange-500"></i>
+                              {{ rs.locality }}
+                            </p>
+                          </div>
+
+                          <div class="text-right shrink-0">
+                            {% if rs.min_price and rs.max_price %}
+                              <p class="text-sm font-bold text-orange-600">
+                                ₹{{ rs.min_price|indian_price }} – ₹{{ rs.max_price|indian_price }}
+                              </p>
+                            {% elif rs.min_price %}
+                              <p class="text-sm font-bold text-orange-600">
+                                ₹{{ rs.min_price|indian_price }}+
+                              </p>
+                            {% else %}
+                              <p class="text-xs text-gray-400 italic">
+                                Price on request
+                              </p>
+                            {% endif %}
+                          </div>
+
+                        </div>
+
+                        <!-- DIVIDER -->
+                        <div class="border-t border-gray-100 my-2"></div>
+
+                        <!-- BOTTOM ROW -->
+                        <div class="flex items-center justify-between text-sm">
+
+                          <!-- Developer -->
+                          <div>
+                            <span class="text-xs uppercase tracking-wide text-gray-400">Developer</span>
+                            <p class="font-semibold text-gray-900">
+                              {{ rs.developer }}
+                            </p>
+                          </div>
+
+                            <!-- Area -->
+                            <div class="text-right">
+                              <span class="text-xs uppercase tracking-wide text-gray-400">Carpet Start</span>
+                            <p class="font-semibold text-gray-900">
+                              {{ rs.get_carpet_area_range|cut:" sqft"|slice:":4" }} sqft
+                            </p>
+                            </div>
+
+                          <!-- Possession -->
+                          <div class="text-right">
+                            <span class="text-xs uppercase tracking-wide text-gray-400">Possession</span>
+                            <p class="font-semibold text-green-700">
+                              {{ rs.possession_month }} {{ rs.possession_year }}
+                            </p>
+                          </div>
+
+                        </div>
+
+                  </div>
 
                   <!-- ================= CONFIGURATION CARD ================= -->
-                  <div class="config-card border bg-white mt-2 overflow-hidden">
+                  <div class="config-card border bg-white mt-2 h-[140px] flex flex-col overflow-hidden">
 
                     {% with rs.configurations.all as configs %}
                     {% if configs %}
                     {% regroup configs by bhk_type as bhk_groups %}
 
                     <!-- ================= TABS ================= -->
-                    <div class="relative overflow-x-auto border-b border-gray-200">
-                      <div class="bhk-tabs flex gap-1 text-sm font-semibold whitespace-nowrap relative px-2 py-1">
-
-                        <!-- Animated underline -->
+                    <div class="border-b border-gray-200 flex-shrink-0">
+                      <div class="bhk-tabs flex gap-1 text-sm font-semibold px-2 py-1 whitespace-nowrap relative">
                         <span class="bhk-underline absolute bottom-0 h-[3px]"></span>
 
                         {% for group in bhk_groups %}
-                          <button type="button"
-                            class="bhk-tab px-3 py-2 rounded-md transition-all duration-200
-                            {% if forloop.first %}active{% endif %}"
-                            data-target="bhk-{{ rs.id }}-{{ forloop.counter }}">
-                            {{ group.grouper }}
-                          </button>
+                        <button type="button"
+                          class="bhk-tab px-3 py-2 transition-all {% if forloop.first %}active{% endif %}"
+                          data-target="bhk-{{ rs.id }}-{{ forloop.counter }}">
+                          {{ group.grouper }}
+                        </button>
                         {% endfor %}
-
                       </div>
                     </div>
 
                     <!-- ================= PANELS ================= -->
-                    {% for group in bhk_groups %}
-                    <div class="bhk-panel {% if not forloop.first %}hidden{% endif %}"
+                    <div class="flex-1 overflow-hidden">
+
+                      {% for group in bhk_groups %}
+                      <div class="bhk-panel {% if not forloop.first %}hidden{% endif %} h-full"
                         data-panel="bhk-{{ rs.id }}-{{ forloop.counter }}">
 
-                      <!-- ✅ ONLY 2 ROWS VISIBLE + SCROLL -->
-                      <div class="table-scroll bg-white overflow-y-auto max-h-[95px]">
+                        <div class="table-scroll h-full overflow-y-auto bg-white">
 
-                        <table class="w-full text-xs sm:text-sm border-collapse">
-                          <thead class="bg-gray-50 sticky top-0 z-10">
-                            <tr class="text-center font-bold text-gray-700">
-                              <th class="px-2 py-2 border-b">Area</th>
-                              <th class="px-2 py-2 border-b">Price</th>
-                              <th class="px-2 py-2 border-b">Parking</th>
-                              <th class="px-2 py-2 border-b">Balcony</th>
-                            </tr>
-                          </thead>
+                          <table class="w-full text-xs sm:text-sm border-collapse">
+                            <thead class="bg-gray-50 sticky top-0">
+                              <tr class="text-center font-bold text-gray-700">
+                                <th class="px-2 py-2 border-b">Area</th>
+                                <th class="px-2 py-2 border-b">Price</th>
+                                <th class="px-2 py-2 border-b">Parking</th>
+                                <th class="px-2 py-2 border-b">Balcony</th>
+                              </tr>
+                            </thead>
 
-                          <tbody class="text-center">
-                            {% for cfg in group.list %}
-                            <tr class="h-[32px] {% if cfg.sold_out %}bg-red-50{% endif %}">
+                            <tbody class="text-center">
+                              {% for cfg in group.list %}
+                              <tr class="h-[32px] {% if cfg.sold_out %}bg-red-50{% endif %}">
+                                <td class="px-2 py-2 border-b">{{ cfg.area_sqft }} sqft</td>
 
-                              <td class="px-2 py-2 border-b text-gray-800">
-                                {{ cfg.area_sqft }} sqft
-                              </td>
+                                <td class="px-2 py-2 border-b font-semibold">
+                                  {% if cfg.sold_out %}
+                                    <span class="bg-red-100 text-red-700 px-2 py-0.5 text-[11px] font-bold">SOLD OUT</span>
+                                  {% else %}
+                                    <span class="font-extrabold text-orange-600">{{ cfg.formatted_price }}</span>
+                                  {% endif %}
+                                </td>
 
-                              <td class="px-2 py-2 border-b font-semibold">
-                                {% if cfg.sold_out %}
-                                  <span class="inline-flex items-center px-2 py-0.5 bg-red-100 text-red-700 text-[11px] font-bold">
-                                    SOLD OUT
-                                  </span>
-                                {% else %}
-                                  <span class="font-extrabold text-orange-600">
-                                    {{ cfg.formatted_price }}
-                                  </span>
-                                {% endif %}
-                              </td>
+                                <td class="px-2 py-2 border-b">
+                                  {{ cfg.parking|yesno:"Yes,*" }}
+                                </td>
 
-                              <td class="px-2 py-2 border-b">
-                                {% if cfg.parking %}
-                                  <span class="text-green-600 font-bold">Yes</span>
-                                {% else %}
-                                  <span class="text-gray-500">*</span>
-                                {% endif %}
-                              </td>
+                                <td class="px-2 py-2 border-b">
+                                  {{ cfg.balcony|yesno:"Yes,*" }}
+                                </td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
 
-                              <td class="px-2 py-2 border-b">
-                                {% if cfg.balcony %}
-                                  <span class="text-green-600 font-bold">Yes</span>
-                                {% else %}
-                                  <span class="text-gray-500">*</span>
-                                {% endif %}
-                              </td>
-
-                            </tr>
-                            {% endfor %}
-                          </tbody>
-                        </table>
-
+                        </div>
                       </div>
+                      {% endfor %}
+
                     </div>
-                    {% endfor %}
 
                     {% else %}
                     <!-- ================= NO CONFIG ================= -->
-                    <div class="text-center text-sm text-gray-500 py-3">
+                    <div class="flex-1 flex items-center justify-center text-sm text-gray-500 text-center px-2">
                       Configuration details available on request
                     </div>
                     {% endif %}
                     {% endwith %}
 
                   </div>
-              
+
               </div>
 
               <!-- Footer Button -->
-              <div class="bg-orange-500 text-center py-2 hover:bg-orange-600 transition">
-                <div class="px-2 pb-2">
-                  <a href="{{ rs.get_absolute_url }}" target="_blank"
-                    class="block text-center py-2.5 font-bold tracking-wide text-sm text-white bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 transition shadow-md">
+              <div class="bg-orange-500 text-center py-1 hover:bg-orange-600 transition">
+                <div class="px-2 pb-1">
+                  <a href="{{ rs.get_absolute_url }}" target="_blank" class="block text-center py-2.5 font-bold tracking-wide text-sm text-white bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 transition shadow-md">
                     SEE DETAILS
                   </a>
                 </div>
@@ -208,7 +231,7 @@
       </div>
       <br>
       <!-- Swiper Pagination & Arrows -->
-      <div class="swiper-pagination mt-6"></div>
+      <div class="swiper-pagination mt-12"></div>
       <div class="swiper-button-prev !text-orange-500 !left-0 -translate-x-8 scale-90"></div>
       <div class="swiper-button-next !text-orange-500 !right-0 translate-x-8 scale-90"></div>
     </div>
@@ -234,11 +257,12 @@
       nextEl: ".swiper-button-next",
       prevEl: ".swiper-button-prev",
     },
-    breakpoints: {
-      640: { slidesPerView: 1.2 },
-      768: { slidesPerView: 2 },
-      1024: { slidesPerView: 3 },
-    },
+   breakpoints: {
+    0: { slidesPerView: 1 },
+    640: { slidesPerView: 1 },
+    768: { slidesPerView: 2 },
+    1024: { slidesPerView: 3 }
+  },
   });
 </script>
 
@@ -276,9 +300,9 @@
 
               <div class="relative">
                 {% if project.image %}
-                  <img src="{{ project.image.url }}" class="w-full h-48 object-cover">
+                  <img src="{{ project.image.url }}" class="w-full h-48 object-cover" alt="{{project.project_name}}" loading="lazy">
                 {% else %}
-                  <img src="https://dummyimage.com/400x250/cccccc/000000&text=No+Image" class="w-full h-48 object-cover">
+                  <img src="https://dummyimage.com/400x250/cccccc/000000&text=No+Image" class="w-full h-48 object-cover" alt="{{project.project_name}}">
                 {% endif %}
 
                 <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">
@@ -293,6 +317,13 @@
               <div class="p-4">
                 <p class="text-lg font-bold text-gray-700">
                   {{ project.project_name }}
+                </p>
+
+                
+
+                <p class="text-sm text-gray-600 mt-1">
+                  <i class="fas fa-map-marker-alt text-orange-500"></i>
+                  {{ project.locality.name }}, {{ project.city.name }}
                 </p>
 
                   <!-- ================= CONFIGURATION CARD (NEW LAUNCH) ================= -->
@@ -393,11 +424,6 @@
 
                   </div>
 
-
-                <p class="text-sm text-gray-600 mt-1">
-                  <i class="fas fa-map-marker-alt text-orange-500"></i>
-                  {{ project.locality.name }}, {{ project.city.name }}
-                </p>
               </div>
 
               <div class="bg-orange-500 text-center">
