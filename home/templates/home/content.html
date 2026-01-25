@@ -21,7 +21,7 @@
 
     <!-- Swiper Container -->
     <div class="relative">
-      <div class="swiper mySwiper">
+      <div class="swiper featureSwiper">
         <div class="swiper-wrapper">
 
           {% for rs in project_featured %}
@@ -239,7 +239,7 @@
 </section>
 
 <script>
-  var swiper = new Swiper(".mySwiper", {
+  var swiper = new Swiper(".featureSwiper", {
     slidesPerView: 1,
     spaceBetween: 20,
     loop: true,
@@ -291,7 +291,7 @@
 
           <!-- residential TAB -->
       <div id="residential" class="tab-content">
-        <div class="swiper mySwiper">
+        <div class="swiper newLaunchSwiper">
           <div class="swiper-wrapper">
 
             {% for project in new_launch_residential %}
@@ -445,7 +445,7 @@
 
           <!-- COMMERCIAL TAB -->
       <div id="commercial" class="tab-content hidden">
-        <div class="swiper mySwiper">
+       <div class="swiper newLaunchSwiper">
           <div class="swiper-wrapper">
 
             {% for project in new_launch_commercial %}
@@ -898,24 +898,34 @@
 
 <br>
 <!-- STATS COUNTER -->
-<section class="relative text-white py-20 bg-gradient-to-r from-orange-600 to-orange-500 overflow-hidden">
-  <div class="absolute inset-0 bg-[url('/static/assets/images/pattern.svg')] opacity-10 animate-floatPattern"></div>
-  <div class="max-w-6xl mx-auto grid md:grid-cols-4 gap-8 text-center relative z-10">
+<section class="py-20 bg-[#0f172a] text-white">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-4 gap-10">
 
-    {% for rs in impactmetric %}
-    <!-- Single stat -->
-    <div class="bg-white/10 backdrop-blur-lg rounded-2xl py-6 px-4 hover:bg-white/20 transition-transform transform hover:scale-105" data-aos="zoom-in">
-      <i class="{{rs.icon}} text-4xl mb-3 text-orange-300 animate-pulseSlow"></i>
-      <h3 class="text-4xl font-bold" id="projects-delivered">{{ rs.value }}+</h3>
-      <p class="mt-2 text-lg">{{rs.title}}</p>
+    {% for item in impactmetric %}
+
+    <div class="group">
+      
+      <!-- PROGRESS LINE -->
+      <div class="h-1 bg-orange-500 rounded-full mb-3"
+           style="width: {{ item.value|cut:'+'|cut:'%' }}%; max-width: 100%;"></div>
+
+      <!-- ICON + VALUE -->
+      <div class="flex items-center gap-3">
+        <i class="{{ item.icon }} text-orange-400 text-2xl"></i>
+        <h3 class="text-4xl font-bold">{{ item.value }}</h3>
+      </div>
+
+      <!-- TITLE -->
+      <p class="text-gray-300 mt-1">{{ item.title }}</p>
+
     </div>
 
     {% endfor %}
 
   </div>
 </section>
-<!-- STATS COUNTER END -->
 
+<!-- STATS COUNTER END -->
 
 
 <!-- 🏦 HOME LOAN PARTNERS SLIDER -->
@@ -1232,41 +1242,75 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ===== SWIPER (ALL TYPES) ===== */
   if (window.Swiper) {
 
-    // Loan partner smooth slider
-    new Swiper(".loanPartnerSwiper", {
-      loop:true,
-      speed:6000,
-      spaceBetween:22,
-      freeMode:true,
-      freeModeMomentum:false,
-      autoplay:{delay:0,disableOnInteraction:false,pauseOnMouseEnter:true},
-      breakpoints:{
-        320:{slidesPerView:1.2},480:{slidesPerView:1.6},640:{slidesPerView:2.3},
-        768:{slidesPerView:3},1024:{slidesPerView:3.8},1280:{slidesPerView:4.5}
-      }
+   // Home Loan Partners smooth auto slider
+    document.querySelectorAll(".loanPartnerSwiper").forEach(el=>{
+      new Swiper(el,{
+        loop:true,
+        speed:6000,
+        spaceBetween:22,
+
+        freeMode:true,
+        freeModeMomentum:false,
+
+        autoplay:{
+          delay:0,
+          disableOnInteraction:false,
+          pauseOnMouseEnter:true
+        },
+
+        breakpoints:{
+          320:{slidesPerView:1.2},
+          480:{slidesPerView:1.6},
+          640:{slidesPerView:2.3},
+          768:{slidesPerView:3},
+          1024:{slidesPerView:3.8},
+          1280:{slidesPerView:4.5}
+        }
+      });
     });
 
-    // Blog slider
-    new Swiper(".blogSwiper", {
-      slidesPerView:1,
-      spaceBetween:18,
-      pagination:{ el:".swiper-pagination", clickable:true }
+    // Blog mobile slider
+    document.querySelectorAll(".blogSwiper").forEach(el=>{
+      new Swiper(el,{
+        slidesPerView:1,
+        spaceBetween:18,
+        loop:true,
+
+        autoplay:{
+          delay:4000,
+          disableOnInteraction:false,
+          pauseOnMouseEnter:true
+        },
+
+        pagination:{
+          el: el.querySelector(".swiper-pagination"),
+          clickable:true
+        }
+      });
     });
 
-    // Card sliders (multiple)
-    document.querySelectorAll(".mySwiper").forEach(el=>{
+      // New Launch Projects slider
+    document.querySelectorAll(".newLaunchSwiper").forEach(el=>{
       new Swiper(el,{
         slidesPerView:1,
         spaceBetween:20,
         loop:true,
-        pagination:{ el:el.querySelector(".swiper-pagination"), clickable:true },
-        navigation:{
-          nextEl:el.querySelector(".swiper-button-next"),
-          prevEl:el.querySelector(".swiper-button-prev")
+
+        autoplay:{
+          delay:3500,
+          disableOnInteraction:false,
+          pauseOnMouseEnter:true
         },
-        breakpoints:{768:{slidesPerView:2},1024:{slidesPerView:3}}
+
+        breakpoints:{
+          0:{slidesPerView:1},
+          640:{slidesPerView:1},
+          768:{slidesPerView:2},
+          1024:{slidesPerView:3}
+        }
       });
     });
+
 
   }
 

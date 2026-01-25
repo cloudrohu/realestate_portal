@@ -117,7 +117,6 @@ class Leadership(models.Model):
     def __str__(self):
         return f"{self.name} ({self.designation})"
 
-
 class Why_Choose(models.Model):
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=300, blank=True, null=True)
@@ -130,7 +129,6 @@ class Why_Choose(models.Model):
 
     def __str__(self):
         return self.title
-
 
 
 class About(models.Model):
@@ -209,7 +207,6 @@ class About(models.Model):
     def __str__(self):
         return self.title
 
-
 # =============================
 # 📝 Contact Page (Single)
 # =============================
@@ -227,7 +224,6 @@ class Contact_Page(models.Model):
     def __str__(self):
         return self.heading
 
-
 # =============================
 # 👨‍💼 Our Team (Multiple)
 # =============================
@@ -242,7 +238,6 @@ class Our_Team(models.Model):
 
     def __str__(self):
         return self.name
-
 
 # =============================
 # 💬 Testimonial Section (Multiple)
@@ -260,7 +255,6 @@ class Testimonial(models.Model):
     def __str__(self):
         return f"{self.name} ({self.rating}⭐)"
 
-
 # =============================
 # ❓ FAQ Section (Multiple)
 # =============================
@@ -273,8 +267,6 @@ class FAQ(models.Model):
 
     def __str__(self):
         return self.question
-
-
 
 class ImpactMetric(models.Model):
     title = models.CharField(max_length=255)
