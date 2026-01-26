@@ -3,7 +3,7 @@ from django.utils.html import mark_safe
 from .models import (
     Setting, Slider, Leadership, Why_Choose,
     About, Contact_Page, Our_Team,
-    Testimonial, FAQ, ImpactMetric, Service
+    Testimonial, FAQ, ImpactMetric, Service, FooterLink ,
 )
 
 @admin.register(Setting)
@@ -300,3 +300,41 @@ class ServiceAdmin(admin.ModelAdmin):
     list_display = ("title", "order", "is_active")
     list_editable = ("order", "is_active")
     search_fields = ("title", "description")
+
+
+    list_display = (
+        "title",
+        "order",
+        "is_active",
+    )
+
+    list_filter = ("is_active",)
+    search_fields = ("title", "subtitle", "link")
+
+    ordering = ("order",)
+
+    list_editable = ("order", "is_active")
+
+    fieldsets = (
+        ("Basic Info", {
+            "fields": ("title", "subtitle", "link")
+        }),
+        ("Hierarchy", {
+            "fields": ("parent",)
+        }),
+        ("Settings", {
+            "fields": ("order", "is_active")
+        }),
+    )
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.select_related("parent")    
+
+@admin.register(FooterLink)
+class FooterLinkAdmin(admin.ModelAdmin):
+    list_display = ("title", "parent", "order", "is_active")
+    list_editable = ("order", "is_active")
+    list_filter = ("is_active",)
+    search_fields = ("title", "subtitle")
+    ordering = ("parent", "order")

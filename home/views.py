@@ -7,7 +7,7 @@ from utility.models import Locality,PropertyType,City,Bank,ProjectAmenities
 from blog.models import Blog, Category
 from .models import (
     Setting, Slider, Testimonial, About, Leadership,
-    Contact_Page, FAQ, Our_Team,Why_Choose,ImpactMetric, Service
+    Contact_Page, FAQ, Our_Team,Why_Choose,ImpactMetric, Service, FooterLink,
 )
 from user.models import Developer 
 
@@ -26,13 +26,9 @@ def index(request):
     residential_types = residential_type.get_descendants(include_self=True) if residential_type else PropertyType.objects.none()
     commercial_types = commercial_type.get_descendants(include_self=True) if commercial_type else PropertyType.objects.none()
 
-    new_launch_residential = Project.objects.filter(
-        active=True, construction_status__iexact="New Launch", propert_type__in=residential_types
-    ).select_related("city", "locality", "developer", "propert_type").prefetch_related("configurations").order_by("-create_at")[:10]
+    new_launch_residential = Project.objects.filter(active=True, construction_status__iexact="New Launch", propert_type__in=residential_types).select_related("city", "locality", "developer", "propert_type").prefetch_related("configurations").order_by("-create_at")[:10]
 
-    new_launch_commercial = Project.objects.filter(
-        active=True, construction_status__iexact="New Launch", propert_type__in=commercial_types
-    ).select_related("city", "locality", "developer", "propert_type").prefetch_related("configurations").order_by("-create_at")[:10]
+    new_launch_commercial = Project.objects.filter( active=True, construction_status__iexact="New Launch", propert_type__in=commercial_types).select_related("city", "locality", "developer", "propert_type").prefetch_related("configurations").order_by("-create_at")[:10]
 
     project_featured = (
     Project.objects.filter(active=True, featured_property=True)
@@ -67,6 +63,7 @@ def index(request):
     about_page = About.objects.filter(is_active=True).first()
     impactmetric = ImpactMetric.objects.all()
     amenities = ProjectAmenities.objects.all()
+    footerlink = FooterLink.objects.filter(is_active=True, parent__isnull=True).prefetch_related("children").order_by("order")
     why_choose_items = Why_Choose.objects.filter(is_active=True).order_by("order")
     testimonials = Testimonial.objects.all().order_by("-id")
     faqs = FAQ.objects.all().order_by("id")
@@ -90,6 +87,7 @@ def index(request):
             "featured_locality": featured_locality,
             "about_page": about_page,
             "why_choose_items": why_choose_items,
+            "footerlink": footerlink,
             "testimonials": testimonials,
             "faqs": faqs,
             "blogs": blogs,
@@ -224,3 +222,4 @@ def services(request):
         "services": services,
     }
     return render(request, 'services/services.html', context)
+

@@ -33,11 +33,11 @@
                 {% if rs.image %}
                   <img src="{{ rs.image.url }}" alt="{{ rs.project_name }} " class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" loading="lazy">
                 {% else %}
-                  <img src="{% static 'images/default-placeholder.jpg' %}" alt="No image" class="w-full h-full object-cover" loading="lazy">
+                  <img src="{% static 'images/default-placeholder.jpg' %}" alt="Premium real estate project in Mumbai" class="w-full h-full object-cover" loading="lazy">
                 {% endif %}
 
                       <span class="absolute top-3 left-3 bg-orange-500/90 backdrop-blur text-white text-[11px] font-semibold px-3 py-1 uppercase tracking-wide shadow-md border border-white/20">
-                          {{ rs.propert_type }}
+                          {{ rs.property_type }}
                        </span>
 
                         <span class="absolute bottom-3 right-3 bg-black/70 backdrop-blur text-white text-[11px] font-semibold px-3 py-1 shadow-md border border-white/20">
@@ -274,228 +274,230 @@
 <section class="py-12" data-aos="fade-up">
   <div class="max-w-7xl mx-auto px-4 sm:px-6">
     
-    <!-- Title -->
-    <h2 class="text-2xl sm:text-3xl font-extrabold text-center mb-8 text-orange-600 uppercase">
-      NEW LAUNCH PROJECTS
-    </h2>
+        <!-- Title -->
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-center mb-8 text-orange-600 uppercase">
+          NEW LAUNCH PROJECTS
+        </h2>
 
-    <!-- Tabs -->
-    <div class="flex flex-wrap justify-center mb-8 gap-3">
-      <button data-tab="residential" class="tab-btn active px-6 py-2 font-semibold shadow transition">
-        Residential
-      </button>
-      <button data-tab="commercial" class="tab-btn bg-gray-200 text-gray-800 px-6 py-2 font-semibold hover:bg-orange-200 transition">
-        Commercial
-      </button>
-    </div>
+        <!-- Tabs -->
+        <div class="flex flex-wrap justify-center mb-8 gap-3">
+          <button data-tab="residential" class="tab-btn active px-6 py-2 font-semibold shadow transition">
+            Residential
+          </button>
+          <button data-tab="commercial" class="tab-btn bg-gray-200 text-gray-800 px-6 py-2 font-semibold hover:bg-orange-200 transition">
+            Commercial
+          </button>
+        </div>
 
-          <!-- residential TAB -->
-      <div id="residential" class="tab-content">
-        <div class="swiper newLaunchSwiper">
-          <div class="swiper-wrapper">
+        <!-- residential TAB -->
+        <div id="residential" class="tab-content">
+          <div class="swiper newLaunchSwiper">
+            <div class="swiper-wrapper">
 
-            {% for project in new_launch_residential %}
-            <div class="swiper-slide bg-white overflow-hidden border-t-4 hover:shadow-xl transition">
+              {% for project in new_launch_residential %}
+              <div class="swiper-slide bg-white flex flex-col overflow-hidden border border-gray-200 hover:shadow-xl transition min-h-[520px] max-h-[520px]">
 
-              <div class="relative">
-                {% if project.image %}
-                  <img src="{{ project.image.url }}" class="w-full h-50 object-cover" alt="{{project.project_name}}" loading="lazy">
-                {% else %}
-                  <img src="https://dummyimage.com/400x250/cccccc/000000&text=No+Image" class="w-full h-48 object-cover" alt="{{project.project_name}}">
-                {% endif %}
+                  <!-- IMAGE SECTION -->
+                  <div class="relative h-[180px] sm:h-[210px] lg:h-[230px] overflow-hidden">
 
-                <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">
-                  NEW LAUNCH
-                </span>
-
-                <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">
-                  Residential
-                </span>
-              </div>
-
-              <div class="p-4">
-                <p class="text-lg font-bold text-gray-700">
-                  {{ project.project_name }}
-                </p>
-
-                
-
-                <p class="text-sm text-gray-600 mt-1">
-                  <i class="fas fa-map-marker-alt text-orange-500"></i>
-                  {{ project.locality.name }}, {{ project.city.name }}
-                </p>
-
-                  <!-- ================= CONFIGURATION CARD (NEW LAUNCH) ================= -->
-                  <div class="config-card border bg-white mt-3 overflow-hidden">
-
-                    {% with project.configurations.all as configs %}
-                    {% if configs %}
-                    {% regroup configs by bhk_type as bhk_groups %}
-
-                    <!-- ================= TABS ================= -->
-                    <div class="relative overflow-x-auto border-b border-gray-200">
-                      <div class="bhk-tabs flex gap-1 text-sm font-semibold whitespace-nowrap relative px-2 py-1">
-
-                        <!-- Animated underline -->
-                        <span class="bhk-underline absolute bottom-0 h-[3px]"></span>
-
-                        {% for group in bhk_groups %}
-                          <button type="button"
-                            class="bhk-tab px-3 py-2 rounded-md transition-all duration-200
-                            {% if forloop.first %}active{% endif %}"
-                            data-target="bhk-{{ project.id }}-{{ forloop.counter }}">
-                            {{ group.grouper }}
-                          </button>
-                        {% endfor %}
-
-                      </div>
-                    </div>
-
-                    <!-- ================= PANELS ================= -->
-                    {% for group in bhk_groups %}
-                    <div class="bhk-panel {% if not forloop.first %}hidden{% endif %}"
-                        data-panel="bhk-{{ project.id }}-{{ forloop.counter }}">
-
-                      <!-- ✅ ONLY 2 ROWS VISIBLE + SCROLL -->
-                      <div class="table-scroll bg-white overflow-y-auto max-h-[95px]">
-
-                        <table class="w-full text-xs sm:text-sm border-collapse">
-                          <thead class="bg-gray-50 sticky top-0 z-10">
-                            <tr class="text-center font-bold text-gray-700">
-                              <th class="px-2 py-2 border-b">Area</th>
-                              <th class="px-2 py-2 border-b">Price</th>
-                              <th class="px-2 py-2 border-b">Parking</th>
-                              <th class="px-2 py-2 border-b">Balcony</th>
-                            </tr>
-                          </thead>
-
-                          <tbody class="text-center">
-                            {% for cfg in group.list %}
-                            <tr class="h-[32px] {% if cfg.sold_out %}bg-red-50{% endif %}">
-
-                              <td class="px-2 py-2 border-b text-gray-800">
-                                {{ cfg.area_sqft }} sqft
-                              </td>
-
-                              <td class="px-2 py-2 border-b font-semibold">
-                                {% if cfg.sold_out %}
-                                  <span class="inline-flex items-center px-2 py-0.5 bg-red-100 text-red-700 text-[11px] font-bold">
-                                    SOLD OUT
-                                  </span>
-                                {% else %}
-                                  <span class="font-extrabold text-orange-600">
-                                    {{ cfg.formatted_price }}
-                                  </span>
-                                {% endif %}
-                              </td>
-
-                              <td class="px-2 py-2 border-b">
-                                {% if cfg.parking %}
-                                  <span class="text-green-600 font-bold">Yes</span>
-                                {% else %}
-                                  <span class="text-gray-500">*</span>
-                                {% endif %}
-                              </td>
-
-                              <td class="px-2 py-2 border-b">
-                                {% if cfg.balcony %}
-                                  <span class="text-green-600 font-bold">Yes</span>
-                                {% else %}
-                                  <span class="text-gray-500">*</span>
-                                {% endif %}
-                              </td>
-
-                            </tr>
-                            {% endfor %}
-                          </tbody>
-                        </table>
-
-                      </div>
-                    </div>
-                    {% endfor %}
-
+                    {% if project.image %}
+                      <img src="{{ project.image.url }}" class="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105" alt="{{ project.project_name }}" loading="lazy">
                     {% else %}
-                    <div class="text-center text-sm text-gray-500 py-3">
-                      Configuration details available on request
-                    </div>
+                      <img src="https://dummyimage.com/400x250/cccccc/000000&text=No+Image" class="w-full h-full object-cover" alt="Premium real estate project in Mumbai">
                     {% endif %}
-                    {% endwith %}
 
+                    <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 rounded">
+                      NEW LAUNCH
+                    </span>
+
+                    <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 rounded">
+                      Residential
+                    </span>
+                  </div>
+
+                  <!-- CONTENT -->
+                  <div class="p-4 flex flex-col flex-grow">
+
+                    <h3 class="text-lg font-bold text-gray-800 leading-snug line-clamp-2">
+                      {{ project.project_name }}
+                    </h3>
+
+                    <p class="text-sm text-gray-600 mt-1">
+                      <i class="fas fa-map-marker-alt text-orange-500"></i>
+                      {{ project.locality.name }}, {{ project.city.name }}
+                    </p>
+
+                    <!-- ================= CONFIGURATION CARD ================= -->
+                    <div class="config-card border bg-white mt-3 overflow-hidden max-h-[170px] flex flex-col">
+
+                      {% with project.configurations.all as configs %}
+                      {% if configs %}
+                      {% regroup configs by bhk_type as bhk_groups %}
+
+                      <!-- BHK TABS -->
+                      <div class="relative overflow-x-auto border-b border-gray-200">
+                        <div class="bhk-tabs flex gap-1 text-sm font-semibold whitespace-nowrap px-2 py-1 relative">
+                          <span class="bhk-underline absolute bottom-0 h-[3px] bg-orange-500 transition-all"></span>
+
+                          {% for group in bhk_groups %}
+                            <button type="button"
+                              class="bhk-tab px-3 py-2 rounded-md transition-all duration-200 {% if forloop.first %}active{% endif %}"
+                              data-target="bhk-{{ project.id }}-{{ forloop.counter }}">
+                              {{ group.grouper }}
+                            </button>
+                          {% endfor %}
+                        </div>
+                      </div>
+
+                      <!-- PANELS -->
+                      {% for group in bhk_groups %}
+                      <div class="bhk-panel {% if not forloop.first %}hidden{% endif %}"
+                          data-panel="bhk-{{ project.id }}-{{ forloop.counter }}">
+
+                        <div class="table-scroll bg-white overflow-y-auto flex-1 max-h-[95px]">
+
+                          <table class="w-full text-xs sm:text-sm border-collapse">
+
+                            <thead class="bg-gray-50 sticky top-0 z-10">
+                              <tr class="text-center font-bold text-gray-700">
+                                <th class="px-2 py-2 border-b">Area</th>
+                                <th class="px-2 py-2 border-b">Price</th>
+                                <th class="px-2 py-2 border-b">Parking</th>
+                                <th class="px-2 py-2 border-b">Balcony</th>
+                              </tr>
+                            </thead>
+
+                            <tbody class="text-center">
+                              {% for cfg in group.list %}
+                              <tr class="h-[32px] {% if cfg.sold_out %}bg-red-50{% endif %}">
+
+                                <td class="px-2 py-2 border-b text-gray-800">
+                                  {{ cfg.area_sqft }} sqft
+                                </td>
+
+                                <td class="px-2 py-2 border-b font-semibold">
+                                  {% if cfg.sold_out %}
+                                    <span class="px-2 py-0.5 bg-red-100 text-red-700 text-[11px] font-bold">
+                                      SOLD OUT
+                                    </span>
+                                  {% else %}
+                                    <span class="font-extrabold text-orange-600">
+                                      {{ cfg.formatted_price }}
+                                    </span>
+                                  {% endif %}
+                                </td>
+
+                                <td class="px-2 py-2 border-b">
+                                  {% if cfg.parking %}
+                                    <span class="text-green-600 font-bold">Yes</span>
+                                  {% else %}
+                                    <span class="text-gray-500">*</span>
+                                  {% endif %}
+                                </td>
+
+                                <td class="px-2 py-2 border-b">
+                                  {% if cfg.balcony %}
+                                    <span class="text-green-600 font-bold">Yes</span>
+                                  {% else %}
+                                    <span class="text-gray-500">*</span>
+                                  {% endif %}
+                                </td>
+
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+
+                          </table>
+
+                        </div>
+                      </div>
+                      {% endfor %}
+
+                      {% else %}
+                      <div class="text-center text-sm text-gray-500 py-3">
+                        Configuration details available on request
+                      </div>
+                      {% endif %}
+                      {% endwith %}
+
+                    </div>
+
+                  </div>
+
+                  <!-- BUTTON -->
+                  <div class="bg-orange-500 mt-auto text-center hover:bg-orange-600 transition">
+                    <a href="{{ project.get_absolute_url }}" target="_blank"
+                      class="block text-white font-bold w-full py-3 uppercase text-center hover:bg-orange-600 transition">
+                      See Details
+                    </a>
                   </div>
 
               </div>
 
-              <div class="bg-orange-500 text-center">
-                <a href="{{ project.get_absolute_url }}" target="_blank"
-                  class="block text-white font-bold w-full py-3 uppercase">
-                  See Details
-                </a>
-              </div>
+              {% empty %}
+                <p class="text-center text-gray-500">No Residential New Launch Projects</p>
+              {% endfor %}
+
             </div>
-            {% empty %}
-              <p class="text-center text-gray-500">No Residential New Launch Projects</p>
-            {% endfor %}
 
-          </div>
-
-          
-        </div>
-      </div>
-
-
-          <!-- COMMERCIAL TAB -->
-      <div id="commercial" class="tab-content hidden">
-       <div class="swiper newLaunchSwiper">
-          <div class="swiper-wrapper">
-
-            {% for project in new_launch_commercial %}
-            <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
-
-              <div class="relative">
-                {% if project.image %}
-                  <img src="{{ project.image.url }}" class="w-full h-48 object-cover">
-                {% else %}
-                  <img src="https://dummyimage.com/400x250/cccccc/000000&text=No+Image" class="w-full h-48 object-cover">
-                {% endif %}
-
-                <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 ">
-                  NEW LAUNCH
-                </span>
-
-                <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 ">
-                  Commercial
-                </span>
-              </div>
-
-              <div class="p-4">
-                <p class="text-lg font-bold text-gray-700">
-                  {{ project.project_name }}
-                </p>
-
-                <p class="text-orange-600 font-semibold mt-1">
-                  {{ project.get_configuration_details|linebreaksbr }}
-                </p>
-
-                <p class="text-sm text-gray-600 mt-1">
-                  <i class="fas fa-map-marker-alt text-orange-500"></i>
-                  {{ project.locality.name }}, {{ project.city.name }}
-                </p>
-              </div>
-
-              <div class="bg-orange-500 text-center">
-                <a href="{{ project.get_absolute_url }}"
-                  class="block text-white font-bold w-full py-3 uppercase">
-                  See Details
-                </a>
-              </div>
-            </div>
-            {% empty %}
-              <p class="text-center text-gray-500">No Commercial New Launch Projects</p>
-            {% endfor %}
-
+            
           </div>
         </div>
-      </div>
+
+
+        <!-- COMMERCIAL TAB -->
+        <div id="commercial" class="tab-content hidden">
+        <div class="swiper newLaunchSwiper">
+            <div class="swiper-wrapper">
+
+              {% for project in new_launch_commercial %}
+              <div class="swiper-slide bg-white shadow-lg rounded overflow-hidden border-t-4 border-orange-500 hover:shadow-xl transition">
+
+                <div class="relative">
+                  {% if project.image %}
+                    <img src="{{ project.image.url }}" class="w-full h-48 object-cover" alt="{{ project.project_name }}" loading="lazy">
+                  {% else %}
+                    <img src="https://dummyimage.com/400x250/cccccc/000000&text=No+Image" class="w-full h-48 object-cover" alt="Premium real estate project in Mumbai">
+                  {% endif %}
+
+                  <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1 ">
+                    NEW LAUNCH
+                  </span>
+
+                  <span class="absolute bottom-3 right-3 bg-black text-white text-xs px-3 py-1 ">
+                    Commercial
+                  </span>
+                </div>
+
+                <div class="p-4">
+                  <p class="text-lg font-bold text-gray-700">
+                    {{ project.project_name }}
+                  </p>
+
+                  <p class="text-orange-600 font-semibold mt-1">
+                    {{ project.get_configuration_details|linebreaksbr }}
+                  </p>
+
+                  <p class="text-sm text-gray-600 mt-1">
+                    <i class="fas fa-map-marker-alt text-orange-500"></i>
+                    {{ project.locality.name }}, {{ project.city.name }}
+                  </p>
+                </div>
+
+                <div class="bg-orange-500 text-center">
+                  <a href="{{ project.get_absolute_url }}"
+                    class="block text-white font-bold w-full py-3 uppercase">
+                    See Details
+                  </a>
+                </div>
+              </div>
+              {% empty %}
+                <p class="text-center text-gray-500">No Commercial New Launch Projects</p>
+              {% endfor %}
+
+            </div>
+          </div>
+        </div>
 
 
   </div>
@@ -538,7 +540,7 @@
 
       <!-- CARD 1 -->
       <a target="_blank" href="{% url 'search_projects' %}?bhk=&construction_status=Ready+To+Move&rera=" class="group relative  overflow-hidden shadow-lg border border-gray-100">
-        <img src="https://sigmahomes.co.in/media/images/aerial_view-new.webp" class="w-full h-72 object-cover group-hover:scale-110 transition duration-700" alt="Ready to Move">
+        <img src="https://sigmahomes.co.in/media/images/aerial_view-new.webp" class="w-full h-72 object-cover group-hover:scale-110 transition duration-700" alt="Ready to Move" >
         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 
         <div class="absolute top-4 left-4">
@@ -679,7 +681,7 @@
 
   </div>
 </section>
-<!-- 📱 WHY CHOOSE US — MOBILE ONLY -->
+
 <section class="block md:hidden py-10 bg-gray-50">
 
   <div class="max-w-md mx-auto px-4 text-center">
@@ -982,7 +984,7 @@
 
               <!-- ✅ Full Image Cover -->
               <img src="{{bank.image.url}}" alt="{{bank.title}}"
-                class="w-full h-full object-cover transition duration-700 group-hover:scale-110 group-hover:rotate-[0.5deg]" />
+                class="w-full h-full object-cover transition duration-700 group-hover:scale-110 group-hover:rotate-[0.5deg]"/>
 
               <!-- ✅ Dark Gradient Overlay -->
               <div
@@ -1027,10 +1029,7 @@
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-10 place-items-center">
 
       {% for dev in featured_developers %}
-      <div class="relative w-full max-w-[200px] p-[2px] rounded-2xl 
-                  bg-gradient-to-br from-orange-500 to-pink-600 
-                  shadow-lg hover:shadow-xl transition-all duration-300 group"
-           data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:70 }}">
+      <div class="relative w-full max-w-[200px] p-[2px] rounded-2xl bg-gradient-to-br from-orange-500 to-pink-600 shadow-lg hover:shadow-xl transition-all duration-300 group data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:70 }}">
 
         <!-- INNER CARD -->
         <div class="bg-white rounded-2xl p-6 group-hover:bg-gray-50 transition duration-300 flex flex-col items-center">
@@ -1038,10 +1037,7 @@
           <!-- LOGO -->
           {% if dev.logo %}
           <a href="{{ dev.get_absolute_url }}" class="block">
-            <img src="{{ dev.logo.url }}"
-                 alt="{{ dev.title }}"
-                 class="h-16 w-auto object-contain mx-auto transition-all duration-300
-                        group-hover:scale-110 group-hover:opacity-100" />
+            <img src="{{ dev.logo.url }}" alt="{{ dev.title }}" class="h-16 w-auto object-contain mx-auto transition-all duration-300 group-hover:scale-110 group-hover:opacity-100" alt="Premium real estate project in Mumbai" />
           </a>
           {% endif %}
 

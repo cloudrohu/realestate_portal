@@ -1,66 +1,30 @@
-
-
-<!-- Above Footer Section -->
-<section class="bg-[{{ settings_obj.header_footer_color}}] text-[{{ settings_obj.text_color }}] py-14  border-t border-gray-500 text-[{{ settings_obj.text_color }}]">
+{% if footerlink %}
+<section class="bg-[{{ settings_obj.header_footer_color }}] text-[{{ settings_obj.text_color }}] py-14 border-t border-gray-500">
   <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
 
-    <!-- Column 1 -->
+    {% for col in footerlink|slice:":4" %}
     <div>
-      <h3 class="text-lg font-semibold mb-4">Property for Sale in Mumbai</h3>
-      <ul class="space-y-2 text-[{{ settings_obj.text_color }}] text-sm font-semibold">
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Flats in Mumbai</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Ready To Move Flats in Mumbai</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Under Construction Flats in Mumbai</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Villas for Sale in Mumbai</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Offices for Sale in Mumbai</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Commercial Properties in Mumbai</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Residential Properties in Mumbai</a></li>
-      </ul>
-    </div>
+      <h3 class="text-lg font-semibold mb-4">
+        {{ col.title }}
+      </h3>
 
-    <!-- Column 2 -->
-    <div>
-      <h3 class="text-lg font-semibold mb-4">Properties in Mumbai Region</h3>
-      <ul class="space-y-2 text-[{{ settings_obj.text_color }}] text-sm font-semibold">
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Flats for Sale in Navi Mumbai</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Flats for Sale in Thane</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Flats for Sale in Western Mumbai</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Flats for Sale in South Mumbai</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Flats for Sale in Central Mumbai</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Flats for Sale in Kalyan Dombivli</a></li>
+      <ul class="space-y-2 text-sm font-semibold">
+        {% for item in col.children.all|slice:":7" %}
+          <li>
+            <a href="{% url 'search_projects' %}{{ item.link|default:'#' }}" target="_blank" class="hover:underline">
+              {{ item.title }}
+            </a>
+          </li>
+        {% endfor %}
       </ul>
     </div>
-
-    <!-- Column 3 -->
-    <div>
-      <h3 class="text-lg font-semibold mb-4">Apartment / Flats for Sale in Mumbai</h3>
-      <ul class="space-y-2 text-[{{ settings_obj.text_color }}] text-sm font-semibold">
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Flats for Sale in Malad West</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Flats for Sale in Kandivali East</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Flats for Sale in Dombivli East</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Flats for Sale in Worli</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Flats for Sale in Byculla East</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Flats for Sale in Andheri West</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Flats for Sale in Andheri East</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">Flats for Sale in Powai</a></li>
-      </ul>
-    </div>
-
-    <!-- Column 4 -->
-    <div>
-      <h3 class="text-lg font-semibold mb-4">BHK Searches</h3>
-      <ul class="space-y-2 text-[{{ settings_obj.text_color }}] text-sm font-semibold">
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">1 BHK Flats for Sale in Mumbai</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">2 BHK Flats for Sale in Mumbai</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">3 BHK Flats for Sale in Mumbai</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">4 BHK Flats for Sale in Mumbai</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">5 BHK Flats for Sale in Mumbai</a></li>
-        <li><a href="#" class="hover:text-[{{ settings_obj.text_color }}]">6 BHK Flats for Sale in Mumbai</a></li>
-      </ul>
-    </div>
+    {% endfor %}
 
   </div>
 </section>
+{% endif %}
+
+
 
 <!-- FOOTER START -->
 <footer class="pt-16 border-t border-gray-500 text-[{{ settings_obj.text_color }}]" style="background-color: {{ settings_obj.header_footer_color }};">

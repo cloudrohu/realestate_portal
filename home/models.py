@@ -294,3 +294,17 @@ class Service(models.Model):
 
     def __str__(self):
         return self.title
+
+class FooterLink(models.Model):
+    title = models.CharField(max_length=200)
+    link = models.CharField(max_length=400, blank=True, null=True)
+    parent = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True, related_name="children")
+
+    order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["order"]
+
+    def __str__(self):
+        return self.title    
