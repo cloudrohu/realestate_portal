@@ -67,7 +67,7 @@ def index(request):
     featured_developers = (
         Developer.objects
         .filter(featured_builder=True)
-        .annotate(project_count=Count("project"))
+        .annotate(project_count=Count("project", distinct=True))
         .filter(project_count__gt=0)
         .order_by("-create_at")
     )

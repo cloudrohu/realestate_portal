@@ -1018,58 +1018,64 @@
 <!--HOME LOAN PARTNERS SLIDER END -->
 
 <!-- 🏢 FEATURED DEVELOPERS -->
-<section class="py-16 bg-gray-100" id="developers">
-  <div class="max-w-7xl mx-auto px-6 text-center">
+<section class="py-20 bg-gray-100" id="developers">
+  <div class="max-w-7xl mx-auto px-6">
 
-    <h2 class="text-3xl font-bold text-orange-600 mb-12">
+    <h2 class="text-3xl md:text-4xl font-bold text-center text-orange-600 mb-12">
       Featured Developers
     </h2>
 
     {% if featured_developers %}
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-10 place-items-center">
+    <div class="swiper DeveloperSwiper">
+      <div class="swiper-wrapper">
 
-      {% for dev in featured_developers %}
-      <div class="relative w-full max-w-[200px] p-[2px] rounded-2xl bg-gradient-to-br from-orange-500 to-pink-600 shadow-lg hover:shadow-xl transition-all duration-300 group data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:70 }}">
+        {% for dev in featured_developers %}
+        <div class="swiper-slide">
 
-        <!-- INNER CARD -->
-        <div class="bg-white rounded-2xl p-6 group-hover:bg-gray-50 transition duration-300 flex flex-col items-center">
+        <a href="{% url 'search_projects' %}?developer={{ dev.slug }}"
+          class="group block bg-white rounded-3xl shadow-xl overflow-hidden transition hover:shadow-2xl">
 
-          <!-- LOGO -->
-          {% if dev.logo %}
-          <a href="{% url 'search_projects' %}?developer={{ dev.slug }}">
-            <img src="{{ dev.logo.url }}" alt="{{ dev.title }}" class="h-16 w-auto object-contain mx-auto transition-all duration-300 group-hover:scale-110 group-hover:opacity-100" alt="Premium real estate project in Mumbai" />
-          </a>
-          {% endif %}
+          <!-- IMAGE AREA (SHORT HEIGHT) -->
+          <div class="relative h-[130px] overflow-hidden">
 
-          <h3 class="mt-4 text-gray-800 font-semibold text-sm group-hover:text-orange-600 transition">
-            {{ dev.title }}
-          </h3>
+            <img src="{{ dev.logo.url }}"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+
+            <!-- HOVER OVERLAY -->
+            <div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+
+              <div class="text-center text-white">
+
+                <p class="text-sm">Total Projects</p>
+
+                <p class="text-3xl font-bold text-orange-400">
+                  {{ dev.project_count }}
+                </p>
+
+              </div>
+            </div>
+
+          </div>
+
+          <!-- NAME ALWAYS VISIBLE -->
+          <div class="py-3 text-center">
+
+            <h3 class="text-base font-semibold text-gray-800 group-hover:text-orange-600 transition">
+              {{ dev.title }}
+            </h3>
+
+          </div>
+
+        </a>
 
         </div>
+        {% endfor %}
+
       </div>
-      {% endfor %}
 
     </div>
-
-    {% else %}
-
-    <!-- DEFAULT SAMPLE CARDS -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-10 place-items-center">
-
-      {% for i in "1234" %}
-      <div class="relative w-full max-w-[200px] p-[2px] rounded-2xl 
-                  bg-gradient-to-br from-orange-500 to-pink-600 shadow-lg">
-
-        <div class="bg-white rounded-2xl p-6 flex flex-col items-center">
-          <img src="https://dummyimage.com/200x100/aaa/fff&text=Logo"
-               class="h-16 object-contain mx-auto" />
-        </div>
-      </div>
-      {% endfor %}
-
-    </div>
-
     {% endif %}
+
   </div>
 </section>
 <!-- FEATURED DEVELOPERS END -->
@@ -1390,9 +1396,29 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 });
+new Swiper(".DeveloperSwiper", {
+  loop: true,
+  spaceBetween: 30,
+  autoplay: {
+    delay: 2500,
+    disableOnInteraction: false
+  },
+  pagination: {
+    el: ".swiper-pagination",
+    clickable: true
+  },
+  breakpoints: {
+    640: { slidesPerView: 2 },
+    768: { slidesPerView: 3 },
+    1024: { slidesPerView: 5 }
+  }
+});
 </script>
 
 <style>
+  .swiper-slide {
+  overflow: visible !important;
+}
 .common-btn{
   margin-top:12px;padding:8px 16px;border:1px solid white;border-radius:6px;
   font-size:14px;transition:.3s
