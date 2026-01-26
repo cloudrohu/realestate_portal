@@ -10,97 +10,115 @@ from .models import (
     Contact_Page, FAQ, Our_Team,Why_Choose,ImpactMetric, Service, FooterLink,
 )
 from user.models import Developer 
-
+    
 from django.shortcuts import render
-from projects.models import Project  # import your Project model
-
-
+from projects.models import Project  # import your Project model.
 
 def index(request):
+
     settings_obj = Setting.objects.first()
+
+    # ================= CITIES =================
     cities = City.objects.filter(level_type="CITY").order_by("name")
 
-    residential_type = PropertyType.objects.filter(name__iexact="Residential", is_top_level=True).first()
-    commercial_type = PropertyType.objects.filter(name__iexact="Commercial", is_top_level=True).first()
+    # ================= PROPERTY TYPES =================
+    residential_type = PropertyType.objects.filter(
+        name__iexact="Residential", is_top_level=True
+    ).first()
+
+    commercial_type = PropertyType.objects.filter(
+        name__iexact="Commercial", is_top_level=True
+    ).first()
 
     residential_types = residential_type.get_descendants(include_self=True) if residential_type else PropertyType.objects.none()
     commercial_types = commercial_type.get_descendants(include_self=True) if commercial_type else PropertyType.objects.none()
 
-    new_launch_residential = Project.objects.filter(active=True, construction_status__iexact="New Launch", propert_type__in=residential_types).select_related("city", "locality", "developer", "propert_type").prefetch_related("configurations").order_by("-create_at")[:10]
+    # ================= NEW LAUNCH =================
+    new_launch_residential = Project.objects.filter(
+        active=True,
+        construction_status__iexact="New Launch",
+        propert_type__in=residential_types
+    ).order_by("-create_at")[:10]
 
-    new_launch_commercial = Project.objects.filter( active=True, construction_status__iexact="New Launch", propert_type__in=commercial_types).select_related("city", "locality", "developer", "propert_type").prefetch_related("configurations").order_by("-create_at")[:10]
+    new_launch_commercial = Project.objects.filter(
+        active=True,
+        construction_status__iexact="New Launch",
+        propert_type__in=commercial_types
+    ).order_by("-create_at")[:10]
 
+    # ================= FEATURED PROJECTS =================
     project_featured = (
-    Project.objects.filter(active=True, featured_property=True)
-    .annotate(
-        min_price=Min(
-            "configurations__price_in_rupees",
-            filter=Q(configurations__price_in_rupees__isnull=False, configurations__price_in_rupees__gt=0)
-        ),
-        max_price=Max(
-            "configurations__price_in_rupees",
-            filter=Q(configurations__price_in_rupees__isnull=False, configurations__price_in_rupees__gt=0)
+        Project.objects.filter(active=True, featured_property=True)
+        .annotate(
+            min_price=Min("configurations__price_in_rupees", filter=Q(configurations__price_in_rupees__gt=0)),
+            max_price=Max("configurations__price_in_rupees", filter=Q(configurations__price_in_rupees__gt=0)),
         )
-    )
-        .select_related("city", "locality", "developer", "propert_type")
-        .prefetch_related("configurations")
         .order_by("-create_at")[:6]
     )
 
-    # ✅ Possession Status Counts
+    # ================= POSSESSION COUNTS =================
     possession_counts = Project.objects.filter(active=True).aggregate(
         ready_to_move=Count("id", filter=Q(construction_status__iexact="Ready To Move")),
         under_construction=Count("id", filter=Q(construction_status__iexact="Under Construction")),
         new_launch=Count("id", filter=Q(construction_status__iexact="New Launch")),
     )
 
-
+    # ================= FEATURED DEVELOPERS (ONLY IF PROJECT EXISTS) =================
     featured_developers = (
         Developer.objects
-        .filter(featured_builder=True, project__active=True)
+        .filter(featured_builder=True)
         .annotate(project_count=Count("project"))
         .filter(project_count__gt=0)
-        .distinct()
-        .order_by("-create_at")[:8]
+        .order_by("-create_at")
     )
+
+    # ================= OTHER HOME DATA =================
     featured_locality = Locality.objects.filter(featured_locality=True).order_by("name")[:20]
     bank = Bank.objects.filter(home_loan_partner=True).order_by("title")
     blogs = Blog.objects.filter(is_published=True).order_by("-published_date", "-created_at")[:3]
     about_page = About.objects.filter(is_active=True).first()
-    about_page = About.objects.filter(is_active=True).first()
     impactmetric = ImpactMetric.objects.all()
     amenities = ProjectAmenities.objects.all()
-    footerlink = FooterLink.objects.filter(is_active=True, parent__isnull=True).prefetch_related("children").order_by("order")
+
+    footerlink = FooterLink.objects.filter(
+        is_active=True, parent__isnull=True
+    ).prefetch_related("children").order_by("order")
+
     why_choose_items = Why_Choose.objects.filter(is_active=True).order_by("order")
     testimonials = Testimonial.objects.all().order_by("-id")
     faqs = FAQ.objects.all().order_by("id")
 
+    # ================= CURRENT CITY =================
     current_city = project_featured.first().city.name if project_featured.exists() else "Mumbai"
 
-    return render(
-        request,
-        "home/index.html",
-        {
-            "settings_obj": settings_obj,
-            "bank": bank,
-            "cities": cities,
-            "current_city": current_city,
-            "impactmetric": impactmetric,
-            "amenities": amenities,
-            "project_featured": project_featured,
-            "new_launch_residential": new_launch_residential,
-            "new_launch_commercial": new_launch_commercial,
-            "featured_developers": featured_developers,
-            "featured_locality": featured_locality,
-            "about_page": about_page,
-            "why_choose_items": why_choose_items,
-            "footerlink": footerlink,
-            "testimonials": testimonials,
-            "faqs": faqs,
-            "blogs": blogs,
-            "possession_counts": possession_counts,
-        }
-    )
+    # ================= RENDER =================
+    return render(request, "home/index.html", {
+
+        "settings_obj": settings_obj,
+        "cities": cities,
+        "current_city": current_city,
+
+        "project_featured": project_featured,
+        "new_launch_residential": new_launch_residential,
+        "new_launch_commercial": new_launch_commercial,
+
+        "featured_developers": featured_developers,
+        "featured_locality": featured_locality,
+
+        "bank": bank,
+        "blogs": blogs,
+        "about_page": about_page,
+
+        "impactmetric": impactmetric,
+        "amenities": amenities,
+        "why_choose_items": why_choose_items,
+
+        "footerlink": footerlink,
+        "testimonials": testimonials,
+        "faqs": faqs,
+
+        "possession_counts": possession_counts,
+    })
 
 
 def robots_txt(request):
