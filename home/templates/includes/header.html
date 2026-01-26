@@ -1,3 +1,4 @@
+
 <!-- ===== Premium Floating Action Buttons ===== -->
 <div class="fixed bottom-6 right-6 z-[9999] flex flex-col items-center gap-4">
 
@@ -89,7 +90,7 @@
     <!-- LOGO -->
     <a href="/" class="flex items-center gap-2">
       {% if settings_obj.logo %}
-        <img src="{{ settings_obj.logo.url }}" class="h-10">
+        <img src="{{ settings_obj.logo.url }}" class="h-12">
       {% else %}
         <span class="text-xl font-bold">RealtyPro</span>
       {% endif %}
@@ -176,21 +177,21 @@
 
   </nav>
 
-<!-- CTA AREA -->
-<div class="p-4 border-t bg-white space-y-3">
 
-  <!-- ENQUIRE -->
-  <a href="{% url 'contact' %}" class="block text-center py-3 rounded-lg text-white font-semibold shadow-sm" style="background:{{ settings_obj.button_color }}">
-    Enquire Now
-  </a>
+  <div class="p-4 border-t bg-white space-y-3">
 
-  <!-- WHATSAPP -->
-  <a href="https://wa.me/{{ settings_obj.whatsapp }}" target="_blank" class="flex items-center justify-center gap-2 border rounded-lg py-2 text-green-600 font-semibold hover:bg-green-50 transition">
-     <i class="fa-brands fa-whatsapp text-xl"></i>
-     WhatsApp Us
-  </a>
+    <!-- ENQUIRE -->
+    <a href="{% url 'contact' %}" class="block text-center py-3 rounded-lg text-white font-semibold shadow-sm" style="background:{{ settings_obj.button_color }}">
+      Enquire Now
+    </a>
 
-</div>
+    <!-- WHATSAPP -->
+    <a href="https://wa.me/{{ settings_obj.whatsapp }}" target="_blank" class="flex items-center justify-center gap-2 border rounded-lg py-2 text-green-600 font-semibold hover:bg-green-50 transition">
+      <i class="fa-brands fa-whatsapp text-xl"></i>
+      WhatsApp Us
+    </a>
+
+  </div>
 
 
 </div>

@@ -55,7 +55,14 @@ def index(request):
     )
 
 
-    featured_developers = Developer.objects.filter(featured_builder=True).order_by("-create_at")[:8]
+    featured_developers = (
+        Developer.objects
+        .filter(featured_builder=True, project__active=True)
+        .annotate(project_count=Count("project"))
+        .filter(project_count__gt=0)
+        .distinct()
+        .order_by("-create_at")[:8]
+    )
     featured_locality = Locality.objects.filter(featured_locality=True).order_by("name")[:20]
     bank = Bank.objects.filter(home_loan_partner=True).order_by("title")
     blogs = Blog.objects.filter(is_published=True).order_by("-published_date", "-created_at")[:3]

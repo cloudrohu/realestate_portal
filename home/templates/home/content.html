@@ -1036,7 +1036,7 @@
 
           <!-- LOGO -->
           {% if dev.logo %}
-          <a href="{{ dev.get_absolute_url }}" class="block">
+          <a href="{% url 'search_projects' %}?developer={{ dev.slug }}">
             <img src="{{ dev.logo.url }}" alt="{{ dev.title }}" class="h-16 w-auto object-contain mx-auto transition-all duration-300 group-hover:scale-110 group-hover:opacity-100" alt="Premium real estate project in Mumbai" />
           </a>
           {% endif %}
