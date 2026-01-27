@@ -232,3 +232,13 @@ def services(request):
     }
     return render(request, 'services/services.html', context)
 
+def calculator(request):
+    settings_obj = Setting.objects.filter(status="True").first()    
+    
+
+    context = {
+        "settings_obj": settings_obj,
+        
+    }
+    return render(request, 'home/calculator.html', context)
+
