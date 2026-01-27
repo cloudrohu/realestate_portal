@@ -1011,10 +1011,10 @@
 <!--HOME LOAN PARTNERS SLIDER END -->
 
 <!-- 🏢 FEATURED DEVELOPERS -->
-<section class="py-14 bg-gradient-to-b from-gray-50 to-gray-100" id="developers">
-  <div class="max-w-7xl mx-auto px-5">
+<section class="py-20 bg-gray-100" id="developers">
+  <div class="max-w-7xl mx-auto px-6">
 
-    <h2 class="text-2xl md:text-3xl font-extrabold text-center text-orange-600 mb-10 tracking-wide">
+    <h2 class="text-3xl md:text-4xl font-bold text-center text-orange-600 mb-12">
       Featured Developers
     </h2>
 
@@ -1025,31 +1025,36 @@
         {% for dev in featured_developers %}
         <div class="swiper-slide">
 
-          <a href="{% url 'search_projects' %}?developer={{ dev.slug }}" class="group block md:!w-[270px] rounded-2xl overflow-hidden bg-white shadow-[0_10px_32px_rgba(0,0,0,0.12)] transition-all duration-400 hover:-translate-y-2 hover:shadow-[0_16px_40px_rgba(255,115,0,0.3)]">
+          <a href="{% url 'search_projects' %}?developer={{ dev.slug }}" class="group block bg-white lg:w-[270px] shadow-xl overflow-hidden transition hover:shadow-2xl">
 
-            <!-- LOGO AREA -->
-            <div class="relative h-[120px] bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden">
-              
-              <img src="{{ dev.logo.url }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 p-3 rounded-lg " alt="{{ dev.title }} Logo" loading="lazy">
-              <!-- OVERLAY -->
-              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition flex items-end justify-center pb-4">
+            <!-- IMAGE AREA (SHORT HEIGHT) -->
+            <div class="relative h-[130px] overflow-hidden">
+
+              <img src="{{ dev.logo.url }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+
+              <!-- HOVER OVERLAY -->
+              <div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
 
                 <div class="text-center text-white">
-                  <p class="text-xs uppercase tracking-wider opacity-80">Projects</p>
-                  <p class="text-3xl font-extrabold text-orange-400">
-                    {{ dev.project_count }}
-                  </p>
-                </div>
 
+                  <p class="text-sm">Total Projects</p>
+
+                   <p class="text-3xl font-bold text-orange-400">
+                    {{ dev.project_count }}
+                   </p>
+
+                </div>
               </div>
 
             </div>
 
-            <!-- NAME -->
-            <div class="py-2.5 text-center">
+            <!-- NAME ALWAYS VISIBLE -->
+            <div class="py-3 text-center">
+
               <h3 class="text-base font-semibold text-gray-800 group-hover:text-orange-600 transition">
                 {{ dev.title }}
               </h3>
+
             </div>
 
           </a>
@@ -1058,6 +1063,7 @@
         {% endfor %}
 
       </div>
+
     </div>
     {% endif %}
 
@@ -1065,8 +1071,7 @@
 </section>
 <!-- FEATURED DEVELOPERS END -->
 
-
-<!-- LOCALITY -->
+<!-- LOCALITY START-->
 <section class="py-16 bg-white">
   <div class="max-w-7xl mx-auto px-6">
 
@@ -1080,17 +1085,17 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {% for rs in featured_locality %}
       <!-- Card -->
-      <div class="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-xl p-4 hover:shadow-md transition">
+      <a href="{% url 'search_projects' %}?locality={{ rs.id }}" class="flex items-center gap-3 bg-gray-50 border border-gray-200 rounded-xl p-4 hover:shadow-md transition">
         <div class="bg-gray-100 p-3 rounded-xl">
           <i class="fa-solid fa-location-dot text-red-500 text-xl"></i>
         </div>
         <h3 class="font-semibold text-lg text-gray-800">{{rs.name}}</h3>
-      </div>
+      </a>
       {% endfor %}     
     </div>
   </div>
 </section>
-<!-- LOCALITY -->
+<!-- LOCALITY END -->
 
 <!-- 💬 TESTIMONIALS -->
 <section class="py-16 bg-gray-100" id="testimonial">
@@ -1393,8 +1398,8 @@ new Swiper(".DeveloperSwiper", {
   },
   breakpoints: {
     640: { slidesPerView: 2 },
-    768: { slidesPerView: 3 },
-    1024: { slidesPerView: 5 }
+    768: { slidesPerView: 3},
+    1024: { slidesPerView: 4 }
   }
 });
 </script>

@@ -65,25 +65,16 @@ def index(request):
 
     # ================= FEATURED DEVELOPERS (ONLY IF PROJECT EXISTS) =================
     featured_developers = (
-        Developer.objects
-        .filter(featured_builder=True)
-        .annotate(project_count=Count("project", distinct=True))
-        .filter(project_count__gt=0)
-        .order_by("-create_at")
-    )
+    Developer.objects.filter(featured_builder=True).annotate(project_count=Count("project", distinct=True)).filter(project_count__gt=0).order_by("-create_at"))
 
     # ================= OTHER HOME DATA =================
-    featured_locality = Locality.objects.filter(featured_locality=True).order_by("name")[:20]
+    featured_locality = (Locality.objects.filter(featured_locality=True, project__active=True).distinct().order_by("name")[:20])
     bank = Bank.objects.filter(home_loan_partner=True).order_by("title")
     blogs = Blog.objects.filter(is_published=True).order_by("-published_date", "-created_at")[:3]
     about_page = About.objects.filter(is_active=True).first()
     impactmetric = ImpactMetric.objects.all()
     amenities = ProjectAmenities.objects.all()
-
-    footerlink = FooterLink.objects.filter(
-        is_active=True, parent__isnull=True
-    ).prefetch_related("children").order_by("order")
-
+    footerlink = FooterLink.objects.filter( is_active=True, parent__isnull=True).prefetch_related("children").order_by("order")
     why_choose_items = Why_Choose.objects.filter(is_active=True).order_by("order")
     testimonials = Testimonial.objects.all().order_by("-id")
     faqs = FAQ.objects.all().order_by("id")
@@ -93,30 +84,23 @@ def index(request):
 
     # ================= RENDER =================
     return render(request, "home/index.html", {
-
         "settings_obj": settings_obj,
         "cities": cities,
         "current_city": current_city,
-
         "project_featured": project_featured,
         "new_launch_residential": new_launch_residential,
         "new_launch_commercial": new_launch_commercial,
-
         "featured_developers": featured_developers,
         "featured_locality": featured_locality,
-
         "bank": bank,
         "blogs": blogs,
         "about_page": about_page,
-
         "impactmetric": impactmetric,
         "amenities": amenities,
         "why_choose_items": why_choose_items,
-
         "footerlink": footerlink,
         "testimonials": testimonials,
         "faqs": faqs,
-
         "possession_counts": possession_counts,
     })
 
