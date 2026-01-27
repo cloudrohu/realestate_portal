@@ -38,125 +38,144 @@
 </section>
 <!-- HERO END HERE -->
 
-<!-- CONVERTER START HERE -->
-<section class="max-w-7xl mx-auto px-6 py-14 grid md:grid-cols-2 gap-8">
+<!-- EMI PDF -->
+<div id="emiPdfContent">
+  <!-- CONVERTER START HERE -->
+  <section class="max-w-7xl mx-auto px-6 py-14 grid md:grid-cols-2 gap-8">
 
-<!-- LEFT -->
-<div class="bg-white border p-8 space-y-10">
+      <!-- LEFT -->
+      <div class="bg-white border border-gray-200 p-10 space-y-10">
 
-  <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
-    <span class="w-1 h-6 bg-green-600"></span> Converter
-  </h2>
+        <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-3">
+          <span class="w-1 h-7 bg-green-600 rounded"></span> Converter
+        </h2>
 
-  <div>
-    <div class="flex justify-between text-sm mb-2">
-      <span>Loan Amount</span>
-      <span id="loanValue" class="text-orange-600">3.45 Cr</span>
-    </div>
-    <input id="loan" type="range" class="w-full accent-orange-500">
-  </div>
+        <!-- Loan -->
+        <div class="space-y-2">
+          <div class="flex justify-between text-sm font-medium text-gray-700">
+            <span>Loan Amount</span>
+            <span id="loanValue" class="text-orange-600 font-semibold">3.45 Cr</span>
+          </div>
+          <input id="loan" type="range"
+            class="w-full h-1.5 rounded bg-gray-200 accent-orange-500">
+        </div>
 
-  <div>
-    <div class="flex justify-between text-sm mb-2">
-      <span>Interest Rate</span>
-      <span id="rateValue" class="text-orange-600">7.7%</span>
-    </div>
-    <input id="rate" type="range" class="w-full accent-orange-500">
-  </div>
+        <!-- Rate -->
+        <div class="space-y-2">
+          <div class="flex justify-between text-sm font-medium text-gray-700">
+            <span>Interest Rate</span>
+            <span id="rateValue" class="text-orange-600 font-semibold">7.7%</span>
+          </div>
+          <input id="rate" type="range"
+            class="w-full h-1.5 rounded bg-gray-200 accent-orange-500">
+        </div>
 
-  <div>
-    <div class="flex justify-between text-sm mb-2">
-      <span>Tenure</span>
-      <span id="yearValue" class="text-orange-600">13 Years</span>
-    </div>
-    <input id="years" type="range" class="w-full accent-orange-500">
-  </div>
+        <!-- Years -->
+        <div class="space-y-2">
+          <div class="flex justify-between text-sm font-medium text-gray-700">
+            <span>Tenure</span>
+            <span id="yearValue" class="text-orange-600 font-semibold">13 Years</span>
+          </div>
+          <input id="years" type="range"
+            class="w-full h-1.5 rounded bg-gray-200 accent-orange-500">
+        </div>
 
-</div>
+      </div>
 
+      <!-- RIGHT -->
+      <div class="bg-white border p-8 text-center">
 
-<!-- RIGHT -->
-<div class="bg-white border p-8 text-center">
+          <h3 class="text-lg font-semibold pb-3 border-b mb-4">
+            Payment Split
+          </h3>
 
-  <h3 class="text-lg font-semibold pb-3 border-b mb-4">
-    Payment Split
-  </h3>
+          <div class="max-w-[180px] mx-auto">
+            <canvas id="emiChart" height="190"></canvas>
+          </div>
 
-  <div class="max-w-[180px] mx-auto">
-    <canvas id="emiChart" height="190"></canvas>
-    </div>
+          <div class="flex justify-center gap-6 mt-4 text-sm">
+            <span class="flex items-center gap-1 text-green-600">
+              <span class="w-2.5 h-2.5 bg-green-600"></span> Interest
+            </span>
+            <span class="flex items-center gap-1 text-blue-900">
+              <span class="w-2.5 h-2.5 bg-blue-900"></span> Principal
+            </span>
+          </div>
 
-  <div class="flex justify-center gap-6 mt-4 text-sm">
-    <span class="flex items-center gap-1 text-green-600">
-      <span class="w-2.5 h-2.5 bg-green-600"></span> Interest
-    </span>
-    <span class="flex items-center gap-1 text-blue-900">
-      <span class="w-2.5 h-2.5 bg-blue-900"></span> Principal
-    </span>
-  </div>
-
-</div>
-
-</section>
-<!-- CONVERTER END HERE -->
-
-<!-- TOTAL INFORMATION -->
-<section class="bg-gray-50 py-12">
-  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-6">
-
-    <!-- EMI -->
-    <div class="bg-white border p-6 text-center">
-      <p class="text-sm text-gray-500 mb-1">Monthly EMI</p>
-      <h3 id="monthlyEmi" class="text-2xl font-bold text-blue-900">₹0</h3>
     </div>
 
-    <!-- INTEREST -->
-    <div class="bg-white border p-6 text-center">
-      <p class="text-sm text-gray-500 mb-1">Total Interest Payable</p>
-      <h3 id="totalInterest" class="text-2xl font-bold text-blue-900">₹0</h3>
+  </section>
+  <!-- CONVERTER END HERE -->
+
+  <!-- TOTAL INFORMATION -->
+  <section class="bg-gray-50 py-12">
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-6">
+
+      <!-- EMI -->
+      <div class="bg-white border p-6 text-center">
+        <p class="text-sm text-gray-500 mb-1">Monthly EMI</p>
+        <h3 id="monthlyEmi" class="text-2xl font-bold text-blue-900">₹0</h3>
+      </div>
+
+      <!-- INTEREST -->
+      <div class="bg-white border p-6 text-center">
+        <p class="text-sm text-gray-500 mb-1">Total Interest Payable</p>
+        <h3 id="totalInterest" class="text-2xl font-bold text-blue-900">₹0</h3>
+      </div>
+
+      <!-- TOTAL -->
+      <div class="bg-white border p-6 text-center">
+        <p class="text-sm text-gray-500 mb-1">Total Payment</p>
+        <h3 id="totalPayment" class="text-2xl font-bold text-green-600">₹0</h3>
+      </div>
+
+    </div>
+  </section>
+  <!-- TOTAL INFORMATION END HERE -->
+
+  <!-- AMORTIZATION SCHEDULE -->
+  <section class="max-w-7xl mx-auto px-6 py-14">
+
+    <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-2 mb-6">
+      <span class="w-1 h-6 bg-green-600"></span> Amortization Schedule
+    </h2>
+
+    <div class="flex justify-end mb-4 hidden md:block">
+      <button id="downloadEmi"
+        class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 text-sm font-medium transition">
+        Download EMI Report
+      </button>
     </div>
 
-    <!-- TOTAL -->
-    <div class="bg-white border p-6 text-center">
-      <p class="text-sm text-gray-500 mb-1">Total Payment</p>
-      <h3 id="totalPayment" class="text-2xl font-bold text-green-600">₹0</h3>
-    </div>
 
-  </div>
-</section>
-<!-- TOTAL INFORMATION END HERE -->
+    <p class="text-gray-600 mb-1">
+      Detailed amortization schedule will be available soon.
+    </p>
 
-<!-- AMORTIZATION SCHEDULE -->
-<section class="max-w-7xl mx-auto px-6 py-14">
+    <div class="w-full overflow-x-auto">
+    <table class="w-full min-w-[900px] text-sm text-center border-collapse border border-gray-300">
 
-  <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-2 mb-6">
-    <span class="w-1 h-6 bg-green-600"></span> Amortization Schedule
-  </h2>
-
-  <p class="text-gray-600 mb-1">
-    Detailed amortization schedule will be available soon.
-  </p>
-
-  <div class="overflow-x-auto -mx-6 px-6">
-    <table class="min-w-[650px] w-full text-sm text-center border-collapse border border-gray-300">
-
-        <thead class="bg-gray-100 sticky top-0">
+      <thead class="bg-gray-100">
         <tr>
-            <th class="p-3 border border-gray-300 whitespace-nowrap">Year</th>
-            <th class="p-3 border border-gray-300 whitespace-nowrap">Principal</th>
-            <th class="p-3 border border-gray-300 whitespace-nowrap">Interest</th>
-            <th class="p-3 border border-gray-300 whitespace-nowrap">Total</th>
-            <th class="p-3 border border-gray-300 whitespace-nowrap">Balance</th>
+          <th class="p-3 border border-gray-300">Year</th>
+          <th class="p-3 border border-gray-300">Principal</th>
+          <th class="p-3 border border-gray-300">Interest</th>
+          <th class="p-3 border border-gray-300">Total</th>
+          <th class="p-3 border border-gray-300">Balance</th>
         </tr>
-        </thead>
+      </thead>
 
-        <tbody id="amortizationBody" class="divide-y divide-gray-300"></tbody>
+      <tbody id="amortizationBody"></tbody>
 
     </table>
   </div>
 
-</section>
-<!-- AMORTIZATION SCHEDULE END HERE -->
+
+  </section>
+  <!-- AMORTIZATION SCHEDULE END HERE -->
+</div>
+<!-- EMI PDF END-->
+
 
 <!-- EMI GUIDE CONTENT -->
  <section class="bg-white py-16">
@@ -261,188 +280,199 @@
 <!-- EMI GUIDE CONTENT END HERE -->
 
 <!-- Difference Between Home Loan and Plot Loan EMI Calculations -->
-    <div class="max-w-7xl mx-auto px-6">
-    <div class="border-t border-gray-200 my-16"></div>
-    </div>
+  <div class="max-w-7xl mx-auto px-6">
+  <div class="border-t border-gray-200 my-16"></div>
+  </div>
 
-    <section class="bg-white py-16">
-    <div class="max-w-7xl mx-auto px-6">
+  <section class="bg-white py-16">
+  <div class="max-w-7xl mx-auto px-6">
 
-        <h2 class="text-3xl font-bold text-[#1f4e79] mb-8">
-        Difference Between Home Loan and Plot Loan EMI Calculations
-        </h2>
+      <h2 class="text-3xl font-bold text-[#1f4e79] mb-8">
+      Difference Between Home Loan and Plot Loan EMI Calculations
+      </h2>
 
-        <div class="overflow-x-auto border">
-            <table class="w-full min-w-[600px] text-sm text-center border-collapse">
+      <div class="overflow-x-auto border">
+          <table class="w-full min-w-[600px] text-sm text-center border-collapse">
 
-            <thead class="bg-gray-100">
-                <tr>
-                <th class="p-3 border">Feature</th>
-                <th class="p-3 border">Home Loan</th>
-                <th class="p-3 border">Plot Loan</th>
-                </tr>
-            </thead>
+          <thead class="bg-gray-100">
+              <tr>
+              <th class="p-3 border">Feature</th>
+              <th class="p-3 border">Home Loan</th>
+              <th class="p-3 border">Plot Loan</th>
+              </tr>
+          </thead>
 
-            <tbody>
+          <tbody>
 
-                <tr>
-                <td class="p-3 border font-medium">Purpose</td>
-                <td class="p-3 border">For purchasing a house</td>
-                <td class="p-3 border">For purchasing land</td>
-                </tr>
+              <tr>
+              <td class="p-3 border font-medium">Purpose</td>
+              <td class="p-3 border">For purchasing a house</td>
+              <td class="p-3 border">For purchasing land</td>
+              </tr>
 
-                <tr class="bg-gray-50">
-                <td class="p-3 border font-medium">Interest Rate</td>
-                <td class="p-3 border">Usually lower</td>
-                <td class="p-3 border">Slightly higher</td>
-                </tr>
+              <tr class="bg-gray-50">
+              <td class="p-3 border font-medium">Interest Rate</td>
+              <td class="p-3 border">Usually lower</td>
+              <td class="p-3 border">Slightly higher</td>
+              </tr>
 
-                <tr>
-                <td class="p-3 border font-medium">Loan Tenure</td>
-                <td class="p-3 border">Up to 30 years</td>
-                <td class="p-3 border">Up to 20 years</td>
-                </tr>
+              <tr>
+              <td class="p-3 border font-medium">Loan Tenure</td>
+              <td class="p-3 border">Up to 30 years</td>
+              <td class="p-3 border">Up to 20 years</td>
+              </tr>
 
-                <tr class="bg-gray-50">
-                <td class="p-3 border font-medium">Tax Benefits</td>
-                <td class="p-3 border">Available</td>
-                <td class="p-3 border">Limited</td>
-                </tr>
+              <tr class="bg-gray-50">
+              <td class="p-3 border font-medium">Tax Benefits</td>
+              <td class="p-3 border">Available</td>
+              <td class="p-3 border">Limited</td>
+              </tr>
 
-            </tbody>
-            </table>
-        </div>
-
-
-    </div>
-    </section>
+          </tbody>
+          </table>
+      </div>
 
 
-    <div class="max-w-7xl mx-auto px-6">
-    <div class="border-t border-gray-200 my-16"></div>
-    </div>
+  </div>
+  </section>
 
+
+  <div class="max-w-7xl mx-auto px-6">
+  <div class="border-t border-gray-200 my-16"></div>
+  </div>
 <!-- Difference Between Home Loan and Plot Loan EMI Calculations End-->
 
 
 <script>
-const loan = document.getElementById("loan");
-const rate = document.getElementById("rate");
-const years = document.getElementById("years");
+document.addEventListener("DOMContentLoaded", function(){
 
+  const loan = document.getElementById("loan");
+  const rate = document.getElementById("rate");
+  const years = document.getElementById("years");
 
-const loanValue = document.getElementById("loanValue");
-const rateValue = document.getElementById("rateValue");
-const yearValue = document.getElementById("yearValue");
+  const loanValue = document.getElementById("loanValue");
+  const rateValue = document.getElementById("rateValue");
+  const yearValue = document.getElementById("yearValue");
 
-loan.min = 1000000;
-loan.max = 300000000;
-loan.step = 100000;
-loan.value = 34500000;
+  loan.min = 1000000;
+  loan.max = 300000000;
+  loan.step = 100000;
+  loan.value = 34500000;
 
-rate.min = 5;
-rate.max = 30;
-rate.step = 0.1;
-rate.value = 7.7;
+  rate.min = 5;
+  rate.max = 30;
+  rate.step = 0.1;
+  rate.value = 7.7;
 
-years.min = 1;
-years.max = 30;
-years.value = 13;
+  years.min = 1;
+  years.max = 30;
+  years.value = 13;
 
-const ctx = document.getElementById("emiChart");
+  const ctx = document.getElementById("emiChart");
 
-let chart = new Chart(ctx, {
-  type: "pie",
-  data: {
-    labels: ["Interest", "Principal"],
-    datasets: [{
-      data: [0,0],
-      backgroundColor: ["#059669", "#1e3a8a"]
-    }]
-  },
-  options: { plugins:{ legend:{ display:false } } }
-});
+  let chart = new Chart(ctx, {
+    type: "pie",
+    data: {
+      labels: ["Interest", "Principal"],
+      datasets: [{
+        data: [0,0],
+        backgroundColor: ["#059669", "#1e3a8a"]
+      }]
+    },
+    options: { plugins:{ legend:{ display:false } } }
+  });
 
-function formatCr(val){
-  return (val / 10000000).toFixed(2) + " Cr";
-}
+  function formatCr(val){
+    return (val / 10000000).toFixed(2) + " Cr";
+  }
 
-function calculate(){
+  function calculate(){
 
-  let P = +loan.value;
-  let r = rate.value / 12 / 100;
-  let yearsCount = years.value;
-  let n = yearsCount * 12;
+    let P = +loan.value;
+    let r = rate.value / 12 / 100;
+    let yearsCount = years.value;
+    let n = yearsCount * 12;
 
-  let emi = P * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
-  let total = emi * n;
-  let interestTotal = total - P;
+    let emi = P * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+    let total = emi * n;
+    let interestTotal = total - P;
 
-  loanValue.textContent = formatCr(P);
-  rateValue.textContent = rate.value + "%";
-  yearValue.textContent = yearsCount + " Years";
+    loanValue.textContent = formatCr(P);
+    rateValue.textContent = rate.value + "%";
+    yearValue.textContent = yearsCount + " Years";
 
-  document.getElementById("monthlyEmi").textContent =
-    "₹" + Math.round(emi).toLocaleString("en-IN");
+    monthlyEmi.textContent = "₹" + Math.round(emi).toLocaleString("en-IN");
+    totalInterest.textContent = "₹" + Math.round(interestTotal).toLocaleString("en-IN");
+    totalPayment.textContent = "₹" + Math.round(total).toLocaleString("en-IN");
 
-  document.getElementById("totalInterest").textContent =
-    "₹" + Math.round(interestTotal).toLocaleString("en-IN");
+    chart.data.datasets[0].data = [interestTotal, P];
+    chart.update();
 
-  document.getElementById("totalPayment").textContent =
-    "₹" + Math.round(total).toLocaleString("en-IN");
+    let balance = P;
+    amortizationBody.innerHTML = "";
+    let currentYear = new Date().getFullYear();
 
-  chart.data.datasets[0].data = [interestTotal, P];
-  chart.update();
+    for(let y=1;y<=yearsCount;y++){
 
-  // 🔽 AMORTIZATION TABLE
-  let balance = P;
-  let tbody = document.getElementById("amortizationBody");
-  tbody.innerHTML = "";
+      let yearlyPrincipal=0;
+      let yearlyInterest=0;
 
-  let currentYear = new Date().getFullYear();
+      for(let m=1;m<=12;m++){
+        let interestMonth = balance * r;
+        let principalMonth = emi - interestMonth;
 
-  for(let y = 1; y <= yearsCount; y++){
-    let yearlyPrincipal = 0;
-    let yearlyInterest = 0;
+        yearlyInterest += interestMonth;
+        yearlyPrincipal += principalMonth;
+        balance -= principalMonth;
+        if(balance<0) balance=0;
+      }
 
-    for(let m = 1; m <= 12; m++){
-      let interestMonth = balance * r;
-      let principalMonth = emi - interestMonth;
+      amortizationBody.innerHTML += `
+        <tr>
+          <td class="p-3 border text-green-600">${currentYear+y-1}</td>
+          <td class="p-3 border">₹${Math.round(yearlyPrincipal).toLocaleString("en-IN")}</td>
+          <td class="p-3 border">₹${Math.round(yearlyInterest).toLocaleString("en-IN")}</td>
+          <td class="p-3 border">₹${Math.round(yearlyPrincipal+yearlyInterest).toLocaleString("en-IN")}</td>
+          <td class="p-3 border">₹${Math.round(balance).toLocaleString("en-IN")}</td>
+        </tr>
+      `;
+    }
+  }
 
-      yearlyInterest += interestMonth;
-      yearlyPrincipal += principalMonth;
+  loan.addEventListener("input", calculate);
+  rate.addEventListener("input", calculate);
+  years.addEventListener("input", calculate);
 
-      balance -= principalMonth;
-      if(balance < 0) balance = 0;
+  calculate(); // initial run
+
+  document.getElementById("downloadEmi").onclick = async function(){
+
+    const { jsPDF } = window.jspdf;
+
+    const canvas = await html2canvas(document.getElementById("emiPdfContent"),{
+      scale:2
+    });
+
+    const img = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p","mm","a4");
+
+    const w = 210;
+    const h = canvas.height * w / canvas.width;
+
+    let y = 0;
+    let left = h;
+
+    while(left>0){
+      pdf.addImage(img,"PNG",0,y,w,h);
+      left -= 297;
+      y -= 297;
+      if(left>0) pdf.addPage();
     }
 
-    let row = `
-        <tr>
-        <td class="p-3 border border-gray-300 font-medium text-green-600">
-            ${currentYear + y - 1}
-        </td>
-        <td class="p-3 border border-gray-300">
-            ₹${Math.round(yearlyPrincipal).toLocaleString("en-IN")}
-        </td>
-        <td class="p-3 border border-gray-300">
-            ₹${Math.round(yearlyInterest).toLocaleString("en-IN")}
-        </td>
-        <td class="p-3 border border-gray-300">
-            ₹${Math.round(yearlyPrincipal + yearlyInterest).toLocaleString("en-IN")}
-        </td>
-        <td class="p-3 border border-gray-300">
-            ₹${Math.round(balance).toLocaleString("en-IN")}
-        </td>
-        </tr>
-    `;
+    pdf.save("EMI_Report.pdf");
+  };
 
-
-    tbody.innerHTML += row;
-  }
-}
-
-loan.oninput = rate.oninput = years.oninput = calculate;
-
-calculate();
+});
 </script>
+
 {% endblock %}
