@@ -202,6 +202,8 @@ class ProjectAdmin(MPTTModelAdmin):
             'fields': (
                 'possession_month',
                 'possession_year',
+                'target_possession_month',
+                'target_possession_year',
                 'Occupancy_Certificate',
                 'Commencement_Certificate',
             )

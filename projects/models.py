@@ -118,6 +118,8 @@ class Project(MPTTModel):
 
     possession_year = models.ForeignKey(PossessionIn, on_delete=models.CASCADE) 
     possession_month = models.CharField(max_length=20, choices=MONTH_CHOICES, blank=True, null=True, help_text="Select Possession Month")
+    target_possession_year = models.ForeignKey(PossessionIn, on_delete=models.CASCADE, blank=True, null=True, related_name='target_possession_year') 
+    target_possession_month = models.CharField(max_length=20, choices=MONTH_CHOICES, blank=True, null=True, help_text="Select Target Possession Month")
     
     luxurious = models.CharField(max_length=50,null=True, blank=True)
     priceing = models.CharField(max_length=50,null=True, blank=True) 
