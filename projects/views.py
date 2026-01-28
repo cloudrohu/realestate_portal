@@ -312,7 +312,7 @@ def project_details(request, id, slug):
 
     # ✅ AMENITIES
     project_amenities = project.project_amenities.all().distinct()
-
+    project_faqs = project.faqs.all()
 
     context = {
         "settings_obj": settings_obj,
@@ -322,8 +322,8 @@ def project_details(request, id, slug):
         "min_price": price_range["min_price"],
         "max_price": price_range["max_price"],
         "related_projects": related_projects,
-        "project_faqs": project.faqs.all().order_by("order"),
         "project_amenities": project_amenities,
+        "project_faqs": project_faqs,   # ✅ ADD THIS
     }
 
     return render(request, "projects/project_detail.html", context)
