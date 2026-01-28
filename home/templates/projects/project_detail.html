@@ -487,7 +487,11 @@
                             </td>
 
                             <td class="border px-4 py-4">
+                            {% if c.sold_out %}
+                                <span class="text-red-600 text-xs uppercase font-bold">Sold Out</span>
+                            {% else %}
                                 {{ c.formatted_price }}
+                            {% endif %}
                             </td>
 
                             <td class="border px-4 py-4">
@@ -1007,13 +1011,16 @@
             <div class="swiper bankSwiper">
                 <div class="swiper-wrapper">
 
-                    <!-- BANK 1 -->
+                    {% for bank in bank %}
+                      
                     <div class="swiper-slide">
                         <div class="min-w-[150px] h-[70px] bg-white shadow-md rounded-xl border flex items-center justify-center p-2">
-                            <img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/0/04/Union_Bank_of_India_logo.svg"
-                                class="h-10 object-contain">
+                            <img loading="lazy" src="{{bank.bank.image.url}}" alt="{{ bank.bank.name }} Logo" class="h-10 object-contain">
                         </div>
                     </div>
+
+                    {% endfor %}
+
 
 
                 </div>
