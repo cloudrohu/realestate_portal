@@ -314,7 +314,7 @@ def project_details(request, id, slug):
     project_amenities = project.project_amenities.all().distinct()
     has_balcony = project.configurations.filter(balcony=True).exists()
     project_faqs = project.faqs.all()
-    bank = project.bankingoffers.all()
+    bank_offers = project.bank_offers.all()
 
     context = {
         "settings_obj": settings_obj,
@@ -324,7 +324,7 @@ def project_details(request, id, slug):
         "min_price": price_range["min_price"],
         "max_price": price_range["max_price"],
         "related_projects": related_projects,
-        "bank": bank,
+        "bank_offers": bank_offers,
         "project_amenities": project_amenities,
         "project_faqs": project_faqs,   # ✅ ADD THIS
         "has_balcony": has_balcony,   

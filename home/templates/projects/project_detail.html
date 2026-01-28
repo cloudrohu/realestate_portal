@@ -1011,16 +1011,15 @@
             <div class="swiper bankSwiper">
                 <div class="swiper-wrapper">
 
-                    {% for bank in bank %}
-                      
+                  {% for offer in bank_offers %}
                     <div class="swiper-slide">
                         <div class="min-w-[150px] h-[70px] bg-white shadow-md rounded-xl border flex items-center justify-center p-2">
-                            <img loading="lazy" src="{{bank.bank.image.url}}" alt="{{ bank.bank.name }} Logo" class="h-10 object-contain">
+                        <img src="{{ offer.bank.image.url }}"
+                            alt="{{ offer.bank.name }}"
+                            class="h-10 object-contain">
                         </div>
                     </div>
-
                     {% endfor %}
-
 
 
                 </div>
