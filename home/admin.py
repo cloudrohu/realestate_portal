@@ -3,7 +3,7 @@ from django.utils.html import mark_safe
 from .models import (
     Setting, Slider, Leadership, Why_Choose,
     About, Contact_Page, Our_Team,
-    Testimonial, FAQ, ImpactMetric, Service, FooterLink ,
+    Testimonial, FAQ, ImpactMetric, Service, FooterLink , ContactEnquiry
 )
 
 @admin.register(Setting)
@@ -118,6 +118,12 @@ class SliderAdmin(admin.ModelAdmin):
     search_fields = ("title", "subtitle")
     list_filter = ("is_active",)
     ordering = ("order",)
+
+@admin.register(ContactEnquiry)
+class ContactEnquiryAdmin(admin.ModelAdmin):
+    list_display = ("name", "email", "phone", "created_at")
+    search_fields = ("name", "email", "phone")
+    list_filter = ("created_at",) 
 
 
 # =============================

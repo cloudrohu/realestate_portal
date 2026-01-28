@@ -303,9 +303,6 @@
             </div>
         </div>
 
-
-
-
     </THIRD-SECTION>
 
     <!-- ===================== OVERVIEW BOX ===================== -->
@@ -467,49 +464,63 @@
 
                 <div class="overflow-x-auto rounded-lg">
                     <table class="w-full border text-sm text-gray-700">
-                        <thead class="bg-gray-100">
-                            <tr class="text-center">
-                                <th class="border px-4 py-3">Carpet Area</th>
-                                <th class="border px-4 py-3">Price</th>
-                                <th class="border px-4 py-3">Parking</th>
+                       <thead class="bg-gray-100">
+                        <tr class="text-center">
+                            <th class="border px-4 py-3">Carpet Area</th>
+                            <th class="border px-4 py-3">Price</th>
+                            <th class="border px-4 py-3">Parking</th>
+
+                            {% if has_balcony %}
                                 <th class="border px-4 py-3">Balcony</th>
-                                <th class="border px-4 py-3">Unit Plan</th>
-                            </tr>
-                        </thead>
+                            {% endif %}
+
+                            <th class="border px-4 py-3">Unit Plan</th>
+                        </tr>
+                    </thead>
+
 
                         <tbody>
-                            {% for c in group.list %}
-                            <tr class="text-center">
-                                <td class="border px-4 py-4">
-                                    {{ c.area_sqft }} sqft
-                                </td>
+                        {% for c in group.list %}
+                        <tr class="text-center">
+                            <td class="border px-4 py-4">
+                                {{ c.area_sqft }} sqft
+                            </td>
 
-                                <td class="border px-4 py-4">
-                                    {{ c.formatted_price }}
-                                </td>
+                            <td class="border px-4 py-4">
+                                {{ c.formatted_price }}
+                            </td>
 
-                                <td class="border px-4 py-4">
-                                    {% if c.parking %}Yes{% else %}No{% endif %}
-                                </td>
-                                    <td class="border px-4 py-4">
-                                    {% if c.balcony %}Yes{% else %}No{% endif %}
-                                </td>
-                                <td class="border px-4 py-4">
-                                    {% if c.unit_plan %}
-                                        <img loading="lazy" src="{{ c.unit_plan.url }}" class="w-20 h-20 mx-auto object-cover rounded unit-plan-img" alt="Unit Plan">
-                                    {% else %}
-                                        NA
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="4" class="py-6 text-center text-gray-400">
-                                    No pricing available
-                                </td>
-                            </tr>
-                            {% endfor %}
+                            <td class="border px-4 py-4">
+                                {% if c.parking %}Yes{% else %}No{% endif %}
+                            </td>
+
+                            {% if has_balcony %}
+                            <td class="border px-4 py-4">
+                                {% if c.balcony %}Yes{% else %}{% endif %}
+                            </td>
+                            {% endif %}
+
+                            <td class="border px-4 py-4">
+                                {% if c.unit_plan %}
+                                    <img loading="lazy" 
+                                        src="{{ c.unit_plan.url }}" 
+                                        class="w-20 h-20 mx-auto object-cover rounded unit-plan-img"
+                                        alt="Unit Plan">
+                                {% else %}
+                                    NA
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="py-6 text-center text-gray-400">
+                                No pricing available
+                            </td>
+                        </tr>
+                        {% endfor %}
                         </tbody>
+
+
                     </table>
                 </div>
             </div>

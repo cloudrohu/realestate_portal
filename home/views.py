@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from pyexpat.errors import messages
+from django.contrib import messages 
+from django.shortcuts import render, redirect
 from django.db.models import Min, Max, Q
 from django.db.models import Count, Q
 from django.http import HttpResponse 
@@ -7,7 +9,7 @@ from utility.models import Locality,PropertyType,City,Bank,ProjectAmenities
 from blog.models import Blog, Category
 from .models import (
     Setting, Slider, Testimonial, About, Leadership,
-    Contact_Page, FAQ, Our_Team,Why_Choose,ImpactMetric, Service, FooterLink,
+    Contact_Page, FAQ, Our_Team,Why_Choose,ImpactMetric, Service, FooterLink,ContactEnquiry
 )
 from user.models import Developer 
     
@@ -155,23 +157,31 @@ def about_page_view(request):
     return render(request, "home/about.html", context)
 
 def contact_view(request):
-    """Renders the Contact Page with site contact details."""
     settings_obj = Setting.objects.first()
-    # Contact_Page में 'setting' field नहीं है (traceback के अनुसार),
-    # इसलिए सीधे पहला contact record ले रहें हैं।
     contact_content = Contact_Page.objects.first()
 
+    if request.method == "POST":
+        ContactEnquiry.objects.create(
+            name=request.POST.get("name"),
+            email=request.POST.get("email"),
+            phone=request.POST.get("phone"),
+            message=request.POST.get("message"),
+        )
+
+        messages.success(request, "Your message has been sent successfully!")
+        return redirect("contact")  
+    
     context = {
         "settings_obj": settings_obj,
         "contact_content": contact_content,
     }
-    return render(request, 'home/contact.html', context)
+
+    return render(request, "home/contact.html", context)
 
 def faq_view(request):
     """Renders the FAQ page."""
     settings_obj = Setting.objects.first()
 
-    # Fetch all FAQs (no setting filter because model doesn't have it)
     faqs = FAQ.objects.all().order_by('id')
 
     context = {

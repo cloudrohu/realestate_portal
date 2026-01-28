@@ -312,6 +312,7 @@ def project_details(request, id, slug):
 
     # ✅ AMENITIES
     project_amenities = project.project_amenities.all().distinct()
+    has_balcony = project.configurations.filter(balcony=True).exists()
     project_faqs = project.faqs.all()
 
     context = {
@@ -324,6 +325,7 @@ def project_details(request, id, slug):
         "related_projects": related_projects,
         "project_amenities": project_amenities,
         "project_faqs": project_faqs,   # ✅ ADD THIS
+        "has_balcony": has_balcony,   
     }
 
     return render(request, "projects/project_detail.html", context)
