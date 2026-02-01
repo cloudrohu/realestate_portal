@@ -94,6 +94,7 @@ class SettingAdmin(admin.ModelAdmin):
                 "footer_text",
                 "copy_right",
                 "status",
+                "googletagmanager",
             )
         }),
     )

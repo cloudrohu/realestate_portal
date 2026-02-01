@@ -18,6 +18,7 @@ class Setting(ImageCompressionMixin, models.Model):
     button_color = models.CharField(max_length=150, blank=True)
     rera_color = models.CharField(max_length=150, blank=True)
     rera_number = models.CharField(max_length=150, blank=True)
+    googletagmanager = models.CharField(max_length=150, blank=True, null=True)
     address = models.CharField(blank=True, max_length=100)
     phone = models.CharField(blank=True, max_length=15)
     whatsapp = models.CharField(blank=True, max_length=15)
