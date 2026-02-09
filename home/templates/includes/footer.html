@@ -59,10 +59,12 @@
         {{ settings_obj.email }}
       </p>
 
-      <p class="flex items-center gap-3 mb-3 text-[{{ settings_obj.text_color }}]">
-        <i class="fas fa-phone-alt text-orange-500"></i>
-        {{ settings_obj.phone }}
-      </p>
+      <a href="tel:+91{{ settings_obj.phone }}" class="hover:underline">
+        <p class="flex items-center gap-3 mb-3 text-[{{ settings_obj.text_color }}]">
+          <i class="fas fa-phone-alt text-orange-500"></i>
+          +91 {{ settings_obj.phone }}
+        </p>
+      </a>
 
       
     </div>
