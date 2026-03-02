@@ -14,6 +14,10 @@ from .models import (
     Project, Configuration, Gallery, RERA_Info, BookingOffer, Overview,
     USP, Amenities, Header, WelcomeTo, Connectivity, WhyInvest, Enquiry, ProjectFAQ
 )
+from projects.models import Project,Developer
+
+
+
 
 def index(request):
     queryset_list = Project.objects.filter(active=True).order_by('project_name')
@@ -60,33 +64,85 @@ def index(request):
 def get_bhk_choices():
     return [choice[0] for choice in Project.BHK_CHOICES]
 
+def search_suggestions(request):
+    q = request.GET.get("q", "").strip()
+    results = []
+
+    if q:
+
+        # 🔹 Projects
+        projects = Project.objects.filter(
+            project_name__icontains=q
+        )[:5]
+
+        for p in projects:
+            results.append({
+                "name": p.project_name,
+                "type": "Project"
+            })
+
+        # 🔹 Developers (title field correct hai)
+        developers = Developer.objects.filter(
+            title__icontains=q
+        )[:5]
+
+        for d in developers:
+            results.append({
+                "name": d.title,
+                "type": "Developer"
+            })
+
+        # 🔹 Localities
+        localities = Locality.objects.filter(
+            name__icontains=q
+        )[:5]
+
+        for l in localities:
+            results.append({
+                "name": l.name,
+                "type": "Locality"
+            })
+
+        # 🔹 Cities
+        cities = City.objects.filter(
+            name__icontains=q
+        )[:5]
+
+        for c in cities:
+            results.append({
+                "name": c.name,
+                "type": "City"
+            })
+
+    return JsonResponse(results, safe=False)
+
 def search_projects(request):
     settings_obj = Setting.objects.first()
-
     location = request.GET.get("q", "").strip()
     city = request.GET.get("city", "").strip()
     amenities = request.GET.get("amenities")
     status = request.GET.get("construction_status")
     bhk = request.GET.get("bhk")
-
-    developer_slug = request.GET.get("developer")  # ✅ NEW
-
+    developer_slug = request.GET.get("developer") 
     locality_ids = request.GET.getlist("locality")
-
     projects = Project.objects.filter(active=True)
 
-    # 🔍 Search
+
+    # 🔍 Single Clean Search Block
     if location:
         search_term = location.split(",")[0].strip()
+
         projects = projects.filter(
             Q(project_name__icontains=search_term) |
             Q(locality__name__icontains=search_term) |
-            Q(city__name__icontains=search_term)
+            Q(city__name__icontains=search_term) |
+            Q(developer__title__icontains=search_term)
         )
 
     # 🌆 City
     if city:
         projects = projects.filter(city__name__iexact=city)
+ 
 
     # 📍 Locality (MPTT)
     if locality_ids:
@@ -96,11 +152,9 @@ def search_projects(request):
             all_localities |= loc.get_descendants(include_self=True)
         projects = projects.filter(locality__in=all_localities).distinct()
 
-    # 🏢 Developer filter (NEW)
     if developer_slug:
         projects = projects.filter(developer__slug=developer_slug)
 
-    # 🏊 Amenities
     if amenities:
         amenity_list = [a.strip() for a in amenities.split(",") if a.strip()]
         if amenity_list:
@@ -108,13 +162,11 @@ def search_projects(request):
                 project_amenities__amenities__title__in=amenity_list
             ).distinct()
 
-    # 🚧 Status
     if status:
         status_list = [s.strip() for s in status.split(",") if s.strip()]
         if status_list:
             projects = projects.filter(construction_status__in=status_list).distinct()
 
-    # 🛏 BHK
     selected_bhk_list = []
     if bhk:
         selected_bhk_list = [b.strip() for b in bhk.split(",") if b.strip()]
@@ -262,7 +314,7 @@ def residential_projects(request):
     }
 
     return render(request, "projects/residential_list.html", context)
-
+    
 def project_details(request, id, slug):
     settings_obj = Setting.objects.first()
 
@@ -358,8 +410,8 @@ def submit_enquiry(request, id):
         email = request.POST.get('email')
         phone = request.POST.get('phone')
         message = request.POST.get('message')
+        redirect_type = request.POST.get('redirect_type')
 
-        # Save enquiry
         Enquiry.objects.create(
             project=project,
             name=name,
@@ -369,7 +421,11 @@ def submit_enquiry(request, id):
         )
 
         messages.success(request, "Thank you! Your enquiry has been submitted successfully.")
-        return redirect('thank_you')  # or use project detail slug redirect
+
+        if redirect_type == "details":
+            return redirect('project_details', id=project.id, slug=project.slug)
+        else:
+            return redirect('thank_you')
 
     return redirect('project_details', id=project.id, slug=project.slug)
 

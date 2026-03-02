@@ -1,0 +1,1066 @@
+{% extends 'base.html' %} 
+{% load static %}
+{% load utility_tags %} 
+{% load humanize %} 
+{% block title %}{{ site_settings.meta_title|default:'Best Real Estate Deals' }}{% endblock %}
+{% load date_extras %}
+{% block content %}
+
+<style>
+  .property-pill {
+    width: 100%;
+    text-align: left;
+    padding: 8px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 9999px;
+    font-size: 14px;
+    background: #f9fafb;
+    transition: all 0.3s ease;
+  }
+
+  .property-pill:hover {
+    background: #c6a16e;
+    color: white;
+    border-color: #c6a16e;
+  }
+
+  .property-pill.active {
+    background: #c6a16e;
+    color: white;
+    border-color: #c6a16e;
+  }
+   .filter-pill {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 9999px;
+    font-size: 14px;
+    background: #f9fafb;
+    transition: all 0.3s ease;
+  }
+
+  .filter-pill:hover {
+    background: #c6a16e;
+    color: white;
+    border-color: #c6a16e;
+  }
+
+  .filter-pill.active {
+    background: #c6a16e;
+    color: white;
+    border-color: #c6a16e;
+  }
+  @keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+  }
+  .animate-fadeIn {
+    animation: fadeIn 0.2s ease-out;
+  }
+</style>
+
+
+<!-- ============== Main Container ============== -->
+<main>
+
+  <!-- ============== LEFT AND RIGHT CONTAINER ============== -->
+  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 px-4">
+
+    <!-- ============== LEFT BAR ============== -->
+      <aside class="space-y-6 md:hidden hidden lg:block">
+
+        <!-- ====== Filter Bar ====== -->
+        <form method="GET" action="">
+          <div class="bg-white shadow rounded p-6">
+
+              <h3 class="font-bold text-gray-700 mb-6 text-lg">
+                ADVANCED SEARCH
+              </h3>
+
+              <!-- Locality -->
+              <div class="border overflow-hidden bg-white mb-2 rounded-md">
+
+                <div class="flex items-center justify-between px-4 py-3">
+                  <button type="button" class="flex-1 flex items-center justify-between text-left" onclick="toggleSection('localityBody','localityArrow')">
+
+                    <h4 class="text-sm font-semibold text-gray-800">
+                      Locality
+                    </h4>
+
+                    <svg id="localityArrow" class="w-4 h-4 text-gray-500 transition-transform duration-300 rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+
+                  <button type="button" onclick="clearLocalityOnly()" class="text-sm font-semibold text-blue-600">
+                      Clear
+                    </button>
+                </div>
+
+                <!-- Body -->
+                <div id="localityBody" class="filter-body open">
+                  <div class="px-4 pb-4 space-y-3">
+
+                    <!-- Search -->
+                    <div class="relative">
+                      <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                      <input id="localitySearch" type="text" placeholder="Search locality..." class="w-full rounded-lg border px-10 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300" oninput="filterLocality()" />
+                    </div>
+
+                        <!-- Locality Filter -->
+                        <div class="border p-2 max-h-[220px] overflow-auto" id="localityList">
+
+                          {% for loc in locality_choices %}
+
+                          <label class="locality-item flex items-center gap-3 px-2 py-2 rounded-md hover:bg-gray-50 cursor-pointer">
+                            <input type="checkbox" name="locality" value="{{ loc.name }}" class="locality-check w-4 h-4" {% if loc.name in selected_localities %}checked{% endif %}>
+                            <span class="text-sm text-gray-800">{{ loc.name }}</span>
+                          </label>
+
+                          {% endfor %}
+
+                        </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <!-- Budget -->
+              <div class="border border-gray-300 rounded-lg p-3">
+                <button type="button" onclick="toggleBudget()"class="w-full flex justify-between items-center text-left">
+                  <span class="text-gray-800 font-semibold">
+                    Budget
+                  </span>
+
+                  <!-- Arrow -->
+                  <svg id="budgetIcon" class="w-4 h-4 text-gray-600 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                <!-- Smooth Accordion Body -->
+                <div id="budgetContent" class="overflow-hidden transition-all duration-500 max-h-0 opacity-0">
+
+                  <div class="mt-4 flex gap-4">
+
+                    <!-- Min Input -->
+                    <input type="number" placeholder="min" class="w-full border border-gray-300 rounded-full px-4 py-2 text-sm focus:ring-2 focus:ring-[#c6a16e] focus:border-[#c6a16e] outline-none">
+
+                    <!-- Max Input -->
+                    <input type="number" placeholder="max" class="w-full border border-gray-300 rounded-full px-4 py-2 text-sm focus:ring-2 focus:ring-[#c6a16e] focus:border-[#c6a16e] outline-none">
+
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Available For -->
+              <div class="border border-gray-300 rounded-lg p-3 mt-4">
+
+                <button type="button" onclick="toggleAvailable()" class="w-full flex justify-between items-center text-left">
+
+                  <span class="text-gray-800 font-semibold">
+                    Available for
+                  </span>
+
+                  <svg id="availableIcon" class="w-4 h-4 text-gray-600 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                <div id="availableContent"
+                    class="overflow-hidden transition-all duration-500 max-h-0 opacity-0">
+
+                  <div class="mt-4 flex flex-wrap gap-3">
+
+                    {% for tenant in tenant_types %}
+
+                    <label class="cursor-pointer p-2">
+                      <input type="checkbox" name="tenant" value="{{ tenant.id }}" class="hidden peer p-2" {% if tenant.id|stringformat:"s" in selected_tenants %}checked{% endif %}>
+
+                      <span class="filter-pill peer-checked:bg-[#c6a16e] peer-checked:text-white p-2 border border-gray-300 rounded-full text-sm">
+                        + {{ tenant.name }}
+                      </span>
+                    </label>
+
+                    {% endfor %}
+
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Posted By -->
+              <div class="border border-gray-300 rounded-lg p-3 mt-4">
+
+                <button type="button" onclick="togglePosted()" class="w-full flex justify-between items-center text-left">
+
+                  <span class="text-gray-800 font-semibold">
+                    Posted by
+                  </span>
+
+                  <svg id="postedIcon" class="w-4 h-4 text-gray-600 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                <div id="postedContent" class="overflow-hidden transition-all duration-500 max-h-0 opacity-0">
+
+                  <div class="mt-4 flex flex-wrap gap-3 pt-3 pb-2">
+
+                  {% for value, label in posted_by_choices %}
+
+                  <label class="cursor-pointer p-1">
+                    <input type="checkbox" name="posted_by" value="{{ value }}" class="hidden peer" {% if value in selected_posted_by %}checked{% endif %}>
+
+                    <span class="filter-pill peer-checked:bg-[#c6a16e] peer-checked:text-white px-4 py-2 border border-gray-300 rounded-full text-sm">
+                      + {{ label }}
+                    </span>
+                  </label>
+
+                  {% endfor %}
+
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Furnishing Status -->
+              <div class="border border-gray-300 rounded-lg p-3 mt-4">
+
+                <button type="button"
+                        onclick="toggleFurnish()"
+                        class="w-full flex justify-between items-center text-left">
+
+                  <span class="text-gray-800 font-semibold">
+                    Furnishing status
+                  </span>
+
+                  <svg id="furnishIcon"
+                      class="w-4 h-4 text-gray-600 transition-transform duration-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                <div id="furnishContent" class="overflow-hidden transition-all duration-500 max-h-0 opacity-0">
+
+                  <div class="mt-4 flex flex-wrap gap-3 p-1">
+
+                    {% for item in furnishing_items %}
+
+                    <label class="cursor-pointer pb-1">
+                      <input type="checkbox" name="furnishing" value="{{ item.id }}" class="hidden peer" {% if item.id|stringformat:"s" in selected_furnishing %}checked{% endif %}>
+
+                      <span class="filter-pill peer-checked:bg-[#c6a16e] peer-checked:text-white px-4 py-2 border border-gray-300 rounded-full text-sm">
+                        + {{ item.name }}
+                      </span>
+                    </label>
+
+                    {% endfor %}
+
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- No of Bathrooms -->
+              <div class="border border-gray-300 rounded-lg p-3 mt-4">
+
+                <button type="button" onclick="toggleSection('bathContent','bathIcon')" class="w-full flex justify-between items-center text-left">
+
+                  <span class="text-gray-800 font-semibold">
+                    No. of bathrooms
+                  </span>
+
+                  <svg id="bathIcon" class="w-4 h-4 text-gray-600 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                <div id="bathContent" class="overflow-hidden transition-all duration-500 max-h-0 opacity-0">
+
+                  <div class="mt-4 flex flex-wrap gap-3 p-2">
+
+                    {% for value,label in bathroom_choices %}
+
+                    <label class="cursor-pointer">
+                      <input type="checkbox" name="bathroom" value="{{ value }}" class="hidden peer" {% if value in selected_bathrooms %}checked{% endif %}>
+
+                      <span class="filter-pill peer-checked:bg-[#c6a16e] peer-checked:text-white px-4 py-2 border border-gray-300 rounded-full text-sm">
+                        {{ label }}
+                      </span>
+                    </label>
+
+                    {% endfor %}
+
+                  </div>
+
+
+                </div>
+              </div>
+
+              <!-- Available From -->
+              <div class="border border-gray-300 rounded-lg p-3 mt-4">
+
+                <button type="button"
+                        onclick="toggleSection('availableFromContent','availableFromIcon')"
+                        class="w-full flex justify-between items-center text-left">
+
+                  <span class="text-gray-800 font-semibold">
+                    Available from
+                  </span>
+
+                  <svg id="availableFromIcon"
+                      class="w-4 h-4 text-gray-600 transition-transform duration-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                <div id="availableFromContent"
+                    class="overflow-hidden transition-all duration-500 max-h-0 opacity-0">
+
+                  <div class="mt-4 flex flex-wrap gap-3 pt-2 p-2">
+
+                    {% for value,label in available_from_choices %}
+
+                    <label class="cursor-pointer">
+                      <input type="checkbox" name="available_from" value="{{ value }}" class="hidden peer" {% if value in selected_available_from %}checked{% endif %}>
+
+                      <span class="filter-pill peer-checked:bg-[#c6a16e] peer-checked:text-white px-4 py-2 border border-gray-300 rounded-full text-sm">
+                        + {{ label }}
+                      </span>
+                    </label>
+
+                    {% endfor %}
+
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Age of Property -->
+              <div class="border border-gray-300 rounded-lg p-3 mt-4">
+
+                <button type="button" onclick="toggleSection('ageContent','ageIcon')" class="w-full flex justify-between items-center text-left">
+
+                  <span class="text-gray-800 font-semibold">
+                    Age of Property
+                  </span>
+
+                  <svg id="ageIcon" class="w-4 h-4 text-gray-600 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                <div id="ageContent" class="overflow-hidden transition-all duration-500 max-h-0 opacity-0">
+
+                  <div class="mt-4 flex flex-wrap gap-3 pt-2 p-2">
+
+                    {% for value,label in age_choices %}
+
+                    <label class="cursor-pointer">
+                      <input type="checkbox" name="age" value="{{ value }}" class="hidden peer" {% if value in selected_age %}checked{% endif %}>
+
+                      <span class="filter-pill peer-checked:bg-[#c6a16e] peer-checked:text-white px-4 py-2 border border-gray-300 rounded-full text-sm">
+                        {{ label }}
+                      </span>
+                    </label>
+
+                    {% endfor %}
+
+                  </div>
+
+                </div>
+                
+              </div>
+
+
+              <button type="submit" class="w-full bg-[#c6a16e] hover:bg-[#b8935f] text-white font-bold py-3 rounded mt-4 transition">
+                SEARCH
+              </button>
+
+          </div>
+        </form>
+
+        <!-- ====== Recent Properties ====== -->
+        <div class="bg-white shadow rounded p-6">
+
+          <h3 class="font-bold text-gray-700 mb-4 text-lg">
+            RECENT PROPERTIES
+          </h3>
+
+          <div class="space-y-4 text-sm">
+
+            {% for property in recent_properties %}
+
+            <a href="{% url 'rental_detail' property.slug %}" class="flex gap-3 group">
+
+              {% if property.image %}
+                <img src="{{ property.image.url }}" class="w-20 h-14 object-cover rounded group-hover:scale-105 transition">
+              {% else %}
+                <img src="https://dummyimage.com/80x60/cccccc/000000" class="w-20 h-14 object-cover rounded">
+              {% endif %}
+
+              <div>
+                <p class="text-[#CBAA7B] font-semibold group-hover:underline">
+                  {{ property.super_area }} Sq.Ft.
+                  {{ property.bedrooms }} BHK
+                </p>
+
+                <p class="text-gray-800 font-medium">
+                  ₹ {{ property.price|default:"Price on Request" }}
+                </p>
+              </div>
+
+            </a>
+
+            {% empty %}
+              <p class="text-gray-500 text-sm">
+                No recent properties available.
+              </p>
+            {% endfor %}
+
+          </div>
+
+        </div>
+
+        <!-- ====== Helping Center ====== -->
+        <div class="bg-white shadow rounded p-6">
+          <h3 class="font-bold text-gray-700 mb-3 text-lg">HELPING CENTER</h3>
+          <p class="text-gray-700 text-sm mb-2"><strong>Address</strong><br> {{settings_obj.address}}/p>
+          <p class="text-gray-700 text-sm"><strong>Phone</strong><br> +91-{{settings_obj.phone}}</p>
+        </div>
+
+      </aside>
+    <!-- ============== LEFT BAR END ============== -->
+
+    <!-- ============== PROPERTY LISTING ============== -->
+      <div class="lg:col-span-2 space-y-6">
+
+          <div class="flex items-center gap-2 bg-white shadow p-3 rounded mb-4">
+            
+            <!-- List Button -->
+            <button id="listViewBtn" class="bg-[#c6a16e] text-white p-2 rounded border border-[#c6a16e]">
+              <i class="fas fa-list"></i>
+            </button>
+
+            <!-- Grid Button -->
+            <button id="gridViewBtn" class="bg-[#c6a16e] text-gray-700 p-2 rounded border border-[#c6a16e]">
+              <i class="fas fa-th"></i>
+            </button>
+
+            <span class="font-semibold text-[#CBAA7B]">Properties</span>
+          </div>
+
+        <filter-section>
+
+          <div class="bg-white shadow rounded p-4 flex flex-wrap gap-4 items-center lg:hidden">
+
+            <!-- Location -->
+            <select class="border px-3 py-2 rounded text-sm">
+              <option>All Locations</option>
+              <option>Mira Road</option>
+              <option>Andheri</option>
+              <option>Borivali</option>
+            </select>
+
+            <!-- Property Type -->
+            <select class="border px-3 py-2 rounded text-sm">
+              <option>Property Type</option>
+              <option>Apartment</option>
+              <option>Plot</option>
+              <option>Villa</option>
+              <option>Builder Floor</option>
+            </select>
+
+            <!-- BHK -->
+            <select class="border px-3 py-2 rounded text-sm">
+              <option>BHK</option>
+              <option>1 RK</option>
+              <option>1 BHK</option>
+              <option>1.5 BHK</option>
+              <option>2 BHK</option>
+              <option>2.5 BHK</option>
+              <option>3 BHK</option>
+              <option>3.5 BHK</option>
+            </select>
+
+            <!-- Price -->
+            <div class="flex gap-2">
+              <input type="text" placeholder="Min Price" class="border px-3 py-2 rounded text-sm w-28">
+              <input type="text" placeholder="Max Price" class="border px-3 py-2 rounded text-sm w-28">
+            </div>
+
+            <!-- Brokerage -->
+            <select class="border px-3 py-2 rounded text-sm">
+              <option>Brokerage Charges</option>
+              <option>No Brokerage</option>
+              <option>With Brokerage</option>
+            </select>
+
+            <!-- Carpet Area -->
+            <div class="flex gap-2">
+              <input type="text" placeholder="Min (sqft)" class="border px-3 py-2 rounded text-sm w-28">
+              <input type="text" placeholder="Max (sqft)" class="border px-3 py-2 rounded text-sm w-28">
+            </div>
+
+            <!-- More Filters Button -->
+            <button id="moreFiltersBtn"
+              class="text-orange-600 font-semibold underline text-sm ml-auto">More Filters</button>
+
+            <!-- Submit -->
+            <button
+              class="bg-[#c6a16e] text-white px-4 py-2 rounded hover:bg-[#c6a16e] text-sm font-semibold">
+              Filter
+            </button>
+          </div>
+
+          <!-- More Filters Panel -->
+          <div id="moreFiltersPanel" class="hidden bg-white shadow rounded p-4 mt-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+              <select class="border px-3 py-2 rounded">
+                <option>Posted By</option>
+                <option>Owner</option>
+                <option>Dealer</option>
+              </select>
+              <select class="border px-3 py-2 rounded">
+                <option>Sale Type</option>
+                <option>New</option>
+                <option>Resale</option>
+              </select>
+              <select class="border px-3 py-2 rounded">
+                <option>Property Status</option>
+                <option>Ready to Move</option>
+                <option>Under Construction</option>
+              </select>
+              <select class="border px-3 py-2 rounded">
+                <option>Possession From</option>
+                <option>2024</option>
+                <option>2025</option>
+              </select>
+              <select class="border px-3 py-2 rounded">
+                <option>Property Age</option>
+                <option>0-5 Years</option>
+                <option>5-10 Years</option>
+              </select>
+              <select class="border px-3 py-2 rounded">
+                <option>Bathrooms</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3+</option>
+              </select>
+              <label class="flex items-center gap-2">
+                <input type="checkbox"> Parking
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox"> Live-in Tour / Video
+              </label>
+            </div>
+
+            <!-- Bottom Buttons -->
+            <div class="flex justify-between items-center mt-4">
+              <button id="closeFilters" class="text-sm text-blue-600">Clear Filters & Close</button>
+              <button class="bg-[#c6a16e] px-4 py-2 rounded text-white font-semibold">
+                Show Properties
+              </button>
+            </div>
+          </div>
+
+            <!-- JS -->
+            <script>
+              document.getElementById("moreFiltersBtn").addEventListener("click", () => {
+                document.getElementById("moreFiltersPanel").classList.toggle("hidden");
+              });
+              document.getElementById("closeFilters").addEventListener("click", () => {
+                document.getElementById("moreFiltersPanel").classList.add("hidden");
+              });
+            </script>
+        </filter-section>
+
+        <div id="listView" class="max-w-4xl mx-auto space-y-6 p-4">
+
+            {% for property in properties %}
+
+            <div class="group relative flex flex-col sm:flex-row bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-xl hover:border-[#c6a16e] transition-all duration-300 overflow-hidden">
+
+              <!-- IMAGE SECTION -->
+              <div class="relative w-full sm:w-64 flex-shrink-0 p-3">
+
+                <div class="w-full h-[240px] overflow-hidden rounded-lg">
+
+                  {% if property.image %}
+                    <img src="{{ property.image.url }}" class="w-full h-[400px] object-cover transition-transform duration-500 group-hover:scale-105" alt="{{ property.title }}">
+                  {% else %}
+                    <img src="https://via.placeholder.com/400x300" class="w-full h-full object-cover" alt="No Image">
+                  {% endif %}
+
+                </div>
+
+                <div class="absolute top-4 p-2 left-4 flex flex-col gap-1.5">
+                  <span class="bg-[#c6a16e] text-white text-[9px] uppercase tracking-widest font-bold px-2.5 py-1 rounded-md shadow">
+                    For Rent
+                  </span>
+                </div>
+
+              </div>
+
+              <!-- DETAILS SECTION -->
+              <div class="flex-1 p-4 flex flex-col justify-between">
+                <div>
+
+                  <!-- LOCATION -->
+                  <p class="text-[11px] uppercase tracking-widest text-[#c6a16e] font-semibold">
+                    {{ property.locality.name }} • {{ property.city.name }}
+                  </p>
+
+                  <!-- TITLE -->
+                  <h2 class="text-lg font-semibold text-gray-800 mt-1 leading-snug group-hover:text-[#c6a16e] transition">
+                    {{ property.title }}
+                  </h2>
+
+                  <!-- RENT STRIP -->
+                  {% if property.rent_details %}
+                  <div class="mt-2 inline-flex items-baseline gap-1.5 bg-[#f9f6f0] px-2 py-1 rounded-lg">
+                    <span class="text-md font-bold text-gray-900">
+                      ₹{{ property.rent_details.monthly_rent|floatformat:0 }}
+                    </span>
+                    <span class="text-xs text-gray-500">/month</span>
+                  </div>
+                  {% endif %}
+
+                  <!-- FEATURE ROW -->
+                  <div class="flex flex-wrap items-center gap-3 mt-3 text-xs text-gray-600">
+
+                    <div class="flex items-center gap-1.5">
+                      <i class="fas fa-bed text-[#c6a16e] text-xs"></i>
+                      <span><strong>{{ property.bedrooms }}</strong> BHK</span>
+                    </div>
+
+                    <span class="text-gray-300">|</span>
+
+                    <div class="flex items-center gap-1.5">
+                      <i class="fas fa-bath text-[#c6a16e] text-xs"></i>
+                      <span><strong>{{ property.bathrooms }}</strong> Baths</span>
+                    </div>
+
+                    <span class="text-gray-300">|</span>
+
+                    <div class="flex items-center gap-1.5">
+                      <i class="fas fa-ruler-combined text-[#c6a16e] text-xs"></i>
+                      <span>{{ property.super_area }} sqft</span>
+                    </div>
+
+                    {% if property.furnishing_type %}
+                    <span class="text-gray-300">|</span>
+                    <div class="flex items-center gap-1.5">
+                      <i class="fas fa-couch text-[#c6a16e] text-xs"></i>
+                      <span>{{ property.furnishing_type }}</span>
+                    </div>
+                    {% endif %}
+
+                  </div>
+
+                  <!-- SHORT DESCRIPTION -->
+                  {% if property.about_section %}
+                  <p class="text-gray-600 text-xs mt-3 leading-relaxed">
+                    {{ property.about_section.about_description|truncatewords:20 }}
+                  </p>
+                  {% endif %}
+
+                </div>
+
+                <!-- BOTTOM CTA -->
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-1">
+
+                <div class="text-[12px] text-gray-500 font-bold mt-2">
+                    Listed {{ property.created_at|smart_date }} By {{property.posted_by}}
+                </div>
+
+                  <div class="flex gap-2">
+
+                      <a href="{% url 'rental_detail' property.slug %}" target="_blank" class="px-3 py-2 border border-[#c6a16e] text-[#c6a16e] rounded-lg hover:bg-[#f9f6f0] transition text-xs font-semibold">
+                        <i class="fas fa-eye text-xs"></i> View Details
+                      </a>
+
+                    <button onclick="openModal()" class="px-4 py-2 bg-[#c6a16e] text-white rounded-lg hover:opacity-90 transition flex items-center gap-1 text-xs font-semibold shadow">
+                        <i class="fas fa-phone text-[10px]"></i> Contact
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="text-center py-10 text-gray-500">
+              No Rental Properties Available.
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <div id="gridView" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 max-w-6xl mx-auto p-4">
+
+        {% for property in properties %}
+
+        <div class="group bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-xl hover:border-[#c6a16e] transition-all duration-300 overflow-hidden">
+
+          <!-- Image -->
+          <div class="relative h-52 overflow-hidden">
+
+            {% if property.image %}
+              <img src="{{ property.image.url }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="{{ property.title }}">
+            {% else %}
+              <img src="https://via.placeholder.com/400x300" class="w-full h-full object-cover" alt="No Image">
+            {% endif %}
+
+            <!-- Badges -->
+            <div class="absolute top-2 left-2 flex flex-col gap-1.5">
+              <span class="bg-[#c6a16e] text-white text-[9px] uppercase tracking-widest font-bold px-2.5 py-1 rounded-md shadow">
+                For Rent
+              </span>
+            </div>
+
+            <!-- Wishlist Icon -->
+            <button class="absolute top-2 right-2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-gray-600 hover:text-red-500 transition shadow">
+              <i class="far fa-heart text-sm"></i>
+            </button>
+
+          </div>
+
+          <!-- Content -->
+          <div class="p-4">
+
+            <!-- Location -->
+            <p class="text-[11px] uppercase tracking-widest text-[#c6a16e] font-semibold">
+              {{ property.locality.name }} • {{ property.city.name }}
+            </p>
+
+            <!-- Title -->
+            <h2 class="text-base font-semibold text-gray-800 mt-1 group-hover:text-[#c6a16e] transition">
+              {{ property.title }}
+            </h2>
+
+            <!-- Rent -->
+            {% if property.rent_details %}
+            <div class="mt-2 inline-flex items-baseline gap-1.5 bg-[#f9f6f0] px-3 py-1 rounded-lg">
+              <span class="text-lg font-bold text-gray-900">
+                ₹{{ property.rent_details.monthly_rent|floatformat:0 }}
+              </span>
+              <span class="text-xs text-gray-500">/month</span>
+            </div>
+            {% endif %}
+
+            <!-- Features -->
+            <div class="flex flex-wrap items-center gap-2 mt-3 text-xs text-gray-600">
+
+              <div class="flex items-center gap-1">
+                <i class="fas fa-bed text-[#c6a16e] text-xs"></i>
+                <span>{{ property.bedrooms }} BHK</span>
+              </div>
+
+              <span class="text-gray-300">|</span>
+
+              <div class="flex items-center gap-1">
+                <i class="fas fa-bath text-[#c6a16e] text-xs"></i>
+                <span>{{ property.bathrooms }} Baths</span>
+              </div>
+
+              <span class="text-gray-300">|</span>
+
+              <div class="flex items-center gap-1">
+                <i class="fas fa-ruler-combined text-[#c6a16e] text-xs"></i>
+                <span>{{ property.super_area }} sqft</span>
+              </div>
+
+              {% if property.furnishing_type %}
+              <span class="text-gray-300">|</span>
+              <div class="flex items-center gap-1">
+                <i class="fas fa-couch text-[#c6a16e] text-xs"></i>
+                <span>{{ property.furnishing_type }}</span>
+              </div>
+              {% endif %}
+
+            </div>
+
+            <!-- Short Description -->
+            {% if property.about_section %}
+            <p class="text-gray-600 text-xs mt-3 leading-relaxed">
+              {{ property.about_section.about_description|truncatewords:15 }}
+            </p>
+            {% endif %}
+
+            <!-- Bottom CTA -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-3 gap-2">
+
+              <div class="flex gap-2">
+
+                <a href="{% url 'rental_detail' property.slug %}" class="px-3 py-2 border border-[#c6a16e] text-[#c6a16e] rounded-lg hover:bg-[#f9f6f0] transition text-xs font-semibold">
+                  <i class="fas fa-eye text-xs"></i> View Details
+                </a>
+
+                <a href="{% url 'rental_detail' property.slug %}" class="px-4 py-2 bg-[#c6a16e] text-white rounded-lg hover:opacity-90 transition flex items-center gap-1 text-xs font-semibold shadow">
+                  <i class="fas fa-phone text-[10px]"></i> Contact
+                </a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="col-span-2 text-center py-10 text-gray-500">
+          No Rental Properties Available.
+        </div>
+
+        {% endfor %}
+
+        </div>
+
+      </div>
+    <!-- ============== PROPERTY LISTING END ============== -->
+
+  </div>
+  <!-- ============== LEFT AND RIGHT CONTAINER END============== -->
+
+  <div id="paginationWrapper" class="flex justify-center mt-10 space-x-3"></div>
+
+  <!-- ============== CONTACT MODAL ============== -->
+  <div id="contactModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50">
+
+    <div class="bg-white w-full max-w-md rounded-md shadow-2xl p-6 relative animate-fadeIn">
+
+      <!-- Close Button -->
+      <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-500 hover:text-red-500">
+        <i class="fas fa-times text-lg"></i>
+      </button>
+
+      <!-- Heading -->
+      <h2 class="text-xl font-bold text-gray-800 mb-4">
+        Enquiry Form
+      </h2>
+
+      <form method="POST" action="#" class="space-y-4">
+
+        <!-- Name -->
+        <div>
+          <label class="text-sm font-semibold text-gray-600">Name</label>
+          <input type="text" class="w-full border rounded-sm px-3 py-2 text-sm focus:ring-2 focus:ring-[#c6a16e] outline-none" placeholder="Your Name">
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label class="text-sm font-semibold text-gray-600">Email</label>
+          <input type="email"  class="w-full border rounded-sm px-3 py-2 text-sm focus:ring-2 focus:ring-[#c6a16e] outline-none"  placeholder="Your Email">
+        </div>
+
+        <!-- Phone -->
+        <div>
+          <label class="text-sm font-semibold text-gray-600">Phone</label>
+          <input type="tel" class="w-full border rounded-sm px-3 py-2 text-sm focus:ring-2 focus:ring-[#c6a16e] outline-none" placeholder="Your Phone">
+        </div>
+
+        <!-- Enquiry -->
+        <div>
+          <label class="text-sm font-semibold text-gray-600">Enquiry</label>
+          <textarea rows="3" class="w-full border rounded-sm px-3 py-2 text-sm focus:ring-2 focus:ring-[#c6a16e] outline-none" placeholder="I am interested in this property..."></textarea>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit"  class="w-full bg-[#c6a16e] text-white py-2 rounded-lg font-semibold hover:bg-[#b8935f] transition">
+          Send Enquiry
+        </button>
+
+      </form>
+
+    </div>
+  </div>
+  <!-- ============== CONTACT MODAL END ============== -->
+
+</main>
+<!-- ============== Main Container END ============== -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  /* ================= TOGGLE FUNCTIONS ================= */
+
+  function toggleSection(contentId, iconId, maxHeight = "max-h-96") {
+    const content = document.getElementById(contentId);
+    const icon = document.getElementById(iconId);
+
+    if (!content || !icon) return;
+
+    content.classList.toggle("max-h-0");
+    content.classList.toggle("opacity-0");
+    content.classList.toggle(maxHeight);
+    content.classList.toggle("opacity-100");
+    icon.classList.toggle("rotate-180");
+  }
+
+  window.toggleBudget = function () {
+    toggleSection("budgetContent", "budgetIcon", "max-h-40");
+  };
+
+  window.toggleProperty = function () {
+    toggleSection("propertyContent", "propertyIcon");
+  };
+
+  window.toggleAvailable = function () {
+    toggleSection("availableContent", "availableIcon");
+  };
+
+  window.togglePosted = function () {
+    toggleSection("postedContent", "postedIcon");
+  };
+
+  window.toggleFurnish = function () {
+    toggleSection("furnishContent", "furnishIcon");
+  };
+
+  window.toggleSection = toggleSection;
+
+
+  /* ================= LOCALITY SEARCH ================= */
+
+  window.filterLocality = function () {
+    const input = document.getElementById("localitySearch").value.toLowerCase();
+    const items = document.querySelectorAll(".locality-item");
+
+    items.forEach(item => {
+      const text = item.innerText.toLowerCase();
+      item.style.display = text.includes(input) ? "flex" : "none";
+    });
+  };
+
+  window.clearLocalityOnly = function () {
+    document.querySelectorAll(".locality-check").forEach(cb => {
+      cb.checked = false;
+    });
+  };
+
+
+  /* ================= DOM READY ================= */
+
+  document.addEventListener("DOMContentLoaded", function () {
+
+    /* ===== PROPERTY PILL ACTIVE ===== */
+    document.querySelectorAll(".property-pill").forEach(btn => {
+      btn.addEventListener("click", function () {
+        this.classList.toggle("active");
+      });
+    });
+
+    document.querySelectorAll(".filter-pill").forEach(btn => {
+      btn.addEventListener("click", function () {
+        this.classList.toggle("active");
+      });
+    });
+
+
+    /* ===== AUTO OPEN FILTER IF CHECKED ===== */
+
+    function autoOpenIfChecked(sectionId, iconId, maxHeight = "max-h-96") {
+      const section = document.getElementById(sectionId);
+      const icon = document.getElementById(iconId);
+
+      if (!section) return;
+
+      const hasChecked = section.querySelector("input[type='checkbox']:checked");
+
+      if (hasChecked) {
+        section.classList.remove("max-h-0", "opacity-0");
+        section.classList.add(maxHeight, "opacity-100");
+
+        if (icon) {
+          icon.classList.add("rotate-180");
+        }
+      }
+    }
+
+    // 🔥 Apply to all accordion sections
+    autoOpenIfChecked("localityBody", "localityArrow");
+    autoOpenIfChecked("availableContent", "availableIcon");
+    autoOpenIfChecked("postedContent", "postedIcon");
+    autoOpenIfChecked("furnishContent", "furnishIcon");
+    autoOpenIfChecked("bathContent", "bathIcon");
+    autoOpenIfChecked("availableFromContent", "availableFromIcon");
+    autoOpenIfChecked("ageContent", "ageIcon");
+
+  });
+
+  /* ================= LIST / GRID VIEW ================= */
+
+  const listViewBtn = document.getElementById("listViewBtn");
+  const gridViewBtn = document.getElementById("gridViewBtn");
+  const listView = document.getElementById("listView");
+  const gridView = document.getElementById("gridView");
+
+  if (listViewBtn && gridViewBtn && listView && gridView) {
+
+    listViewBtn.addEventListener("click", () => {
+      listView.classList.remove("hidden");
+      gridView.classList.add("hidden");
+
+      listViewBtn.classList.add("bg-[#c6a16e]", "text-white");
+      gridViewBtn.classList.remove("bg-[#c6a16e]", "text-white");
+    });
+
+    gridViewBtn.addEventListener("click", () => {
+      gridView.classList.remove("hidden");
+      listView.classList.add("hidden");
+
+      gridViewBtn.classList.add("bg-[#c6a16e]", "text-white");
+      listViewBtn.classList.remove("bg-[#c6a16e]", "text-white");
+    });
+  }
+
+
+  /* ================= MODAL ================= */
+
+  window.openModal = function() {
+    const modal = document.getElementById("contactModal");
+    if (!modal) return;
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  };
+
+  window.closeModal = function() {
+    const modal = document.getElementById("contactModal");
+    if (!modal) return;
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  };
+
+  window.onclick = function(event) {
+    const modal = document.getElementById("contactModal");
+    if (modal && event.target === modal) {
+      closeModal();
+    }
+  };
+
+});
+
+</script>
+
+{% endblock %}

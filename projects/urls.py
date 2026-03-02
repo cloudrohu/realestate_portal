@@ -9,5 +9,6 @@ urlpatterns = [
     path('search/', views.search_projects, name='search_projects'),  # ✅
     path('<int:id>/<slug:slug>/', views.project_details, name='project_details'),
     path('submit-enquiry/<int:id>/', views.submit_enquiry, name='submit_enquiry'),
+    path('api/search-suggestions/', views.search_suggestions, name='search_suggestions'),
     path('thank-you/', views.thank_you, name='thank_you'),
 ]

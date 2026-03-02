@@ -80,8 +80,6 @@
 </style>
 
 <header class="sticky top-0 z-50 border-b" style="background:{{ settings_obj.header_footer_color }};color:{{ settings_obj.text_color }}">
-
-
   <hr>
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
 
@@ -101,23 +99,23 @@
         <i class="fa-solid fa-house"></i> Home
       </a>
 
-      <a href="{% url 'search_projects' %}" class="flex items-center gap-2 hover:opacity-80">
+      <a target="_blank" href="{% url 'search_projects' %}" class="flex items-center gap-2 hover:opacity-80">
         <i class="fa-solid fa-building"></i> Projects
       </a>
 
-      <a href="{% url 'calculator' %}" class="flex items-center gap-2 hover:opacity-80">
+      <a target="_blank" href="{% url 'calculator' %}" class="flex items-center gap-2 hover:opacity-80">
         <i class="fa-solid fa-calculator"></i> Calculator
       </a>
 
-      <a href="{% url 'blog:blog_list' %}" class="flex items-center gap-2 hover:opacity-80">
+      <a target="_blank" href="{% url 'blog:blog_list' %}" class="flex items-center gap-2 hover:opacity-80">
         <i class="fa-solid fa-pen-nib"></i> Blogs
       </a>
 
-      <a href="{% url 'about' %}" class="flex items-center gap-2 hover:opacity-80">
+      <a target="_blank" href="{% url 'about' %}" class="flex items-center gap-2 hover:opacity-80">
         <i class="fa-solid fa-circle-info"></i> About
       </a>
 
-      <a href="{% url 'contact' %}" class="flex items-center gap-2 hover:opacity-80">
+      <a target="_blank" href="{% url 'contact' %}" class="flex items-center gap-2 hover:opacity-80">
         <i class="fa-solid fa-phone"></i> Contact
       </a>
 

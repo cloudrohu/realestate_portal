@@ -68,8 +68,6 @@ def format_price_range(price_min, price_max):
         return fmt(price_min)
     return f"{fmt(price_min)}–{fmt(price_max)}"
 
-
-
 class Project(MPTTModel):
     
     BHK_CHOICES = (

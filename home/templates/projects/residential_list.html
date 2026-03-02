@@ -465,9 +465,7 @@
                 <!-- Developer Logo -->
                 <span class="h-8 w-8 flex items-center justify-center rounded-full overflow-hidden border bg-gray-100">
                   {% if project.developer.logo %}
-                    <img src="{{ project.developer.logo.url }}"
-                        alt="{{ project.developer.title }}"
-                        class="h-[90px] w-full object-cover">
+                    <img src="{{ project.developer.logo.url }}" alt="{{ project.developer.title }}" class="h-[90px] w-full object-cover">
                   {% else %}
                     <i class="fas fa-building text-gray-400 text-sm"></i>
                   {% endif %}
@@ -485,18 +483,27 @@
               <!-- CTA BUTTONS -->
               <div class="flex gap-3 md:justify-end">
 
-                    <!-- View Details -->
-                    <a href="{{ project.get_absolute_url }}" target="_blank" class="flex-1 md:flex-none inline-flex items-center justify-center gap-2  px-4 py-2 bg-orange-500 text-white text-sm font-semibold  rounded-3xl hover:bg-orange-600 transition">
-                      View Details
-                      
-                    </a>
+                  <!-- View Details -->
+                  <a href="javascript:void(0)"
+                    data-project="{{ project.project_name }}"
+                    data-project-id="{{ project.id }}"
+                    data-type="details"
+                    class="openContactPopup flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-4 py-2 bg-orange-500 text-white text-sm font-semibold rounded-3xl hover:bg-orange-600 transition">
+                    View Details
+                  </a>
 
-                    <!-- Contact Us -->
-                    <a href="javascript:void(0)" data-project="{{ project.project_name }}" data-project-id="{{ project.id }}" class="openContactPopup flex-1 md:flex-none inline-flex items-center justify-center gap-2
-                    px-4 py-2 border border-orange-500 text-orange-600 text-sm font-semibold rounded-3xl hover:bg-orange-50 transition">
-                      Contact Us
-                    </a>
+                  <!-- Contact Us -->
+                  <a href="javascript:void(0)"
+                    data-project="{{ project.project_name }}"
+                    data-project-id="{{ project.id }}"
+                    data-type="contact"
+                    class="openContactPopup flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-4 py-2 border border-orange-500 text-orange-600 text-sm font-semibold rounded-3xl hover:bg-orange-50 transition">
+                    Contact Us
+                  </a>
+
               </div>
+
+
             </div>
           </div>
         </div>
@@ -747,8 +754,7 @@
 <div id="paginationWrapper" class="flex justify-center mt-10 space-x-3"></div>
 
 <!-- ================= CONTACT POPUP ================= -->
-<div id="contactPopup"
-     class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50 px-3">
+<div id="contactPopup" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50 px-3">
 
   <div class="relative w-full max-w-sm rounded-xl shadow-2xl bg-white overflow-hidden">
 
@@ -761,63 +767,50 @@
     </div>
 
     <!-- CLOSE -->
-    <button id="closeContactPopup"
-            class="absolute top-3 right-3 text-white text-lg">
+    <button id="closeContactPopup" class="absolute top-3 right-3 text-white text-lg">
       ✕
     </button>
 
     <!-- FORM -->
-    <form method="post" id="enquiryForm"
-          class="p-4 space-y-3 text-sm bg-white">
+    <form method="post" id="enquiryForm" class="p-4 space-y-3 text-sm bg-white">
       {% csrf_token %}
 
-      <!-- Honeypot -->
-      <input type="text" name="company" class="hidden">
-
-      <!-- reCAPTCHA token -->
-      <input type="hidden" name="g-recaptcha-response" id="recaptchaToken">
-
       <input type="hidden" name="project_id" id="projectIdInput">
+      <input type="hidden" name="redirect_type" id="redirectType">
 
       <!-- NAME -->
       <div>
         <label class="font-medium text-gray-600">Full Name</label>
-        <input type="text" name="name" required
-               class="mt-1 w-full border rounded-md px-3 py-2">
+        <input id="userName" type="text" name="name" required class="mt-1 w-full border rounded-md px-3 py-2">
       </div>
 
       <!-- EMAIL -->
       <div>
         <label class="font-medium text-gray-600">Email</label>
-        <input type="email" name="email"
-               class="mt-1 w-full border rounded-md px-3 py-2">
+        <input id="userEmail" type="email" name="email" class="mt-1 w-full border rounded-md px-3 py-2">
       </div>
 
       <!-- PHONE -->
       <div>
         <label class="font-medium text-gray-600">Mobile</label>
-        <input type="tel" name="phone" required
-               class="mt-1 w-full border rounded-md px-3 py-2">
+        <input id="userPhone" type="tel" name="phone" required class="mt-1 w-full border rounded-md px-3 py-2">
       </div>
 
       <!-- MESSAGE -->
       <div>
         <label class="font-medium text-gray-600">Message</label>
-        <textarea name="message" rows="2"
-                  class="mt-1 w-full border rounded-md px-3 py-2"></textarea>
+        <textarea name="message" rows="2" class="mt-1 w-full border rounded-md px-3 py-2"></textarea>
       </div>
 
-      <!-- SUBMIT -->
-      <button type="submit"
-              class="w-full bg-orange-500 text-white py-2.5 rounded-lg font-semibold">
+      <button type="submit" class="w-full bg-orange-500 text-white py-2.5 rounded-lg font-semibold">
         Submit Enquiry
       </button>
 
       <p class="text-[11px] text-center text-gray-400">
         🔒 100% Privacy Protected
       </p>
-    </form>
 
+    </form>
   </div>
 </div>
 <!-- ================= END POPUP ================= -->
@@ -857,7 +850,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const closeBtn = document.getElementById("closeContactPopup");
   const projectNameText = document.getElementById("enquiryProjectName");
   const projectIdInput = document.getElementById("projectIdInput");
+  const redirectTypeInput = document.getElementById("redirectType");
   const enquiryForm = document.getElementById("enquiryForm");
+
+  const nameInput = document.getElementById("userName");
+  const emailInput = document.getElementById("userEmail");
+  const phoneInput = document.getElementById("userPhone");
 
   document.querySelectorAll(".openContactPopup").forEach(btn => {
     btn.addEventListener("click", function (e) {
@@ -865,14 +863,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const projectName = this.dataset.project;
       const projectId = this.dataset.projectId;
+      const type = this.dataset.type;
 
       projectNameText.textContent = projectName;
       projectIdInput.value = projectId;
+      redirectTypeInput.value = type;
 
       enquiryForm.action = `/projects/submit-enquiry/${projectId}/`;
 
       popup.classList.remove("hidden");
       popup.classList.add("flex");
+
+      loadSavedUserData();
       document.body.style.overflow = "hidden";
     });
   });
@@ -892,6 +894,18 @@ document.addEventListener("DOMContentLoaded", function () {
     popup.classList.remove("flex");
     document.body.style.overflow = "";
   }
+
+  function loadSavedUserData() {
+    nameInput.value = localStorage.getItem("enquiry_name") || "";
+    emailInput.value = localStorage.getItem("enquiry_email") || "";
+    phoneInput.value = localStorage.getItem("enquiry_phone") || "";
+  }
+
+  enquiryForm.addEventListener("submit", function () {
+    localStorage.setItem("enquiry_name", nameInput.value);
+    localStorage.setItem("enquiry_email", emailInput.value);
+    localStorage.setItem("enquiry_phone", phoneInput.value);
+  });
 
 });
 </script>
