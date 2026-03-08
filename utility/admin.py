@@ -4,7 +4,7 @@ from django.utils.html import mark_safe
 import admin_thumbnails
 from mptt.admin import DraggableMPTTAdmin
 
-from .models import City, Locality, PropertyType, PossessionIn, ProjectAmenities, Bank
+from .models import City, Locality, PropertyType, PossessionIn, ProjectAmenities, Bank, PropertyAmenities
 
 
 # 🟡 Placeholder image URL (fallback)
@@ -109,3 +109,6 @@ class BankAdmin(admin.ModelAdmin):
     safe_image_preview.short_description = "Logo"
 
 
+@admin.register(PropertyAmenities)
+class PropertyAmenitiesAdmin(admin.ModelAdmin):
+    search_fields = ('name',)

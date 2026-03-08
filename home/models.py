@@ -133,9 +133,6 @@ class Why_Choose(models.Model):
 
 
 class About(models.Model):
-    # =============================
-    # 🎨 Background / Banner Section
-    # =============================
     search_bg = models.ImageField(
         upload_to='about/backgrounds/',
         blank=True, null=True,

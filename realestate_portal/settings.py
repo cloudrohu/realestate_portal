@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'user',
     'blog',
     'realtypms',
-
+    'rent',
+    'rent_utility',
     'easy_thumbnails',
 ]
 

@@ -12,7 +12,7 @@ from .models import (
     Contact_Page, FAQ, Our_Team,Why_Choose,ImpactMetric, Service, FooterLink,ContactEnquiry
 )
 from user.models import Developer 
-    
+from rent.models import RentalProperty
 from django.shortcuts import render
 from projects.models import Project  # import your Project model.
 
@@ -84,6 +84,20 @@ def index(request):
     # ================= CURRENT CITY =================
     current_city = project_featured.first().city.name if project_featured.exists() else "Mumbai"
 
+    # ================= FEATURED RENT PROPERTIES =================
+    rental_properties = (
+        RentalProperty.objects.select_related
+        ("city", "locality", "furnishing_type", "tenant_type", "rent_details")
+        .filter(active=True, featured_property=True)
+        .order_by("-created_at")[:8]
+    )
+    rental_properties = (
+        RentalProperty.objects
+        .select_related("city","locality","furnishing_type","tenant_type","rent_details")
+        .filter(active=True)
+        .order_by("-created_at")[:8]
+    )
+   
     # ================= RENDER =================
     return render(request, "home/index.html", {
         "settings_obj": settings_obj,
@@ -104,6 +118,7 @@ def index(request):
         "testimonials": testimonials,
         "faqs": faqs,
         "possession_counts": possession_counts,
+        "rental_properties": rental_properties,
     })
 
 
@@ -129,16 +144,13 @@ def about_page_view(request):
     - Global site settings
     """
 
-    # 🧠 Global site settings (for logo, footer, SEO)
+
     settings_obj = Setting.objects.filter(status="True").first()
 
-    # 🏠 Fetch active About page content (latest or first)
     about_page = About.objects.filter(is_active=True).order_by('-created_at').first()
 
-    # 👥 Leadership team
     leaders = Leadership.objects.filter(is_active=True).order_by('display_order')
 
-    # ✅ Fallback (safe defaults)
     if not about_page:
         about_page = {
             "title": "About Makaan Hub",
@@ -149,10 +161,18 @@ def about_page_view(request):
             "awards_recognitions": 12,
         }
 
+    rental_properties = (
+        RentalProperty.objects
+        .select_related("city", "locality", "tenant_type", "furnishing_type")
+        .filter(active=True)
+        .order_by("-id")[:10]
+    )    
+
     context = {
         "about_page": about_page,
         "leaders": leaders,
         "settings_obj": settings_obj,
+        "rental_properties": rental_properties,
     }
     return render(request, "home/about.html", context)
 

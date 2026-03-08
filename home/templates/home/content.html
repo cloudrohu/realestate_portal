@@ -5,7 +5,7 @@
 
 <main>
 
-  <!-- FEATURE PROJECTS -->
+  <!-- ======================= FEATURE PROJECTS ======================= -->
   <section class="bg-[#f8fafc] py-16 relative overflow-hidden">
     <div class="max-w-7xl mx-auto px-4">
 
@@ -14,8 +14,8 @@
         <h2 class="text-3xl md:text-4xl font-bold text-orange-400 uppercase tracking-wide">
           Featured Projects
         </h2>
-        <p class="text-gray-300 text-sm md:text-base">
-          Explore our best and most popular real estate projects
+        <p class="text-gray-400 text-sm md:text-base p-1">
+          Explore Our Best And Most Popular Real Estate Projects
         </p>
       </div>
 
@@ -264,10 +264,138 @@
     },
     });
   </script>
+  <!-- ======================= FEATURE PROJECTS ======================= -->
 
-  <!-- FEATURE PROJECTS -->
+  <!-- ======================= FEATURE PROPERTIES ======================= -->
+   {% if rental_properties %}
+  <section class="bg-gray-100 py-8">
+    <div class="max-w-7xl mx-auto px-6">
 
-  <!-- NEW LAUNCH PROJECTS -->
+      <!-- Heading -->
+      <div class="text-center mb-8">
+        <h2 class="text-4xl font-bold">
+          Featured <span class="text-[#c6a16e]">Properties</span>
+        </h2>
+      </div>
+
+        <!-- Swiper -->
+      <div class="swiper rentPropSwiper h-full">
+        <div class="swiper-wrapper">
+
+          {% for property in rental_properties %}
+          <div class="swiper-slide flex h-auto">
+            <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 overflow-hidden flex flex-col w-full h-full">
+
+
+              <!-- Image -->
+              <div class="relative">
+                {% if property.image %}
+                  <img src="{{ property.image.url }}" class="w-full h-56 object-cover"  alt="{{ property.title }}">
+                {% else %}
+                  <img src="https://via.placeholder.com/800x500" class="w-full h-56 object-cover" alt="No Image">
+                {% endif %}
+
+                {% if property.configuration %}
+                <span class="absolute top-4 right-4 bg-[#c6a16e] text-white text-xs px-3 py-1 font-semibold">
+                  {{ property.configuration }}
+                </span>
+                {% endif %}
+              </div>
+
+              <!-- Content -->
+              <div class="p-6 flex flex-col flex-grow">
+                <h3 class="text-lg font-semibold">
+                  {{ property.title }}
+                </h3>
+
+                <p class="text-sm text-gray-500 mb-4">
+                  {{ property.locality.name }}, {{ property.city.name }}
+                </p>
+
+                <div class="space-y-2 text-sm text-gray-600">
+
+                  {% if property.furnishing_type %}
+                  <p>
+                    <i class="fa-solid fa-couch text-[#c6a16e] mr-2"></i>
+                    {{ property.furnishing_type.name }}
+                  </p>
+                  {% endif %}
+
+                  {% if property.tenant_type %}
+                  <p>
+                    <i class="fa-solid fa-users text-[#c6a16e] mr-2"></i>
+                    {{ property.tenant_type.name }}
+                  </p>
+                  {% endif %}
+
+                  <p>
+                    <i class="fa-solid fa-location-dot text-[#c6a16e] mr-2"></i>
+                    {{ property.city.name }}
+                  </p>
+                </div>
+
+                <!-- Price + Button -->
+                <div class="border-t border-gray-200 pt-3 mt-auto flex items-center justify-between">
+                  <div>
+                    <h4 class="text-xl font-bold text-[#c6a16e]">
+                      <i class="fa-solid fa-indian-rupee-sign mr-1"></i>
+                      {{ property.rent_details.monthly_rent|default:"0" }}
+                    </h4>
+                    <p class="text-xs text-gray-500">per month</p>
+                  </div>
+
+                  <a href="{% url 'rental_detail' property.slug %}"
+                    class="bg-[#c6a16e] text-white px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-300 ease-in-out hover:bg-[#b8925a] hover:shadow-xl hover:scale-105">
+                    View Details
+                  </a>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+        </div>
+
+        <div class="swiper-button-prev !text-[#c6a16e] scale-90"></div>
+        <div class="swiper-button-next !text-[#c6a16e] scale-90"></div>
+      </div>
+
+    </div>
+  </section>
+  {% else %}
+  <section class="bg-gray-100 py-16">
+    <div class="max-w-4xl mx-auto text-center px-6">
+
+      <!-- Icon -->
+      <div class="flex justify-center mb-6">
+        <div class="w-20 h-20 flex items-center justify-center rounded-full bg-white shadow-md">
+          <i class="fa-solid fa-house text-4xl text-[#c6a16e]"></i>
+        </div>
+      </div>
+
+      <!-- Heading -->
+      <h2 class="text-3xl font-bold text-gray-800 mb-3">
+        No Featured Properties Available
+      </h2>
+
+      <!-- Description -->
+      <p class="text-gray-500 max-w-xl mx-auto mb-6">
+        Currently there are no featured rental properties available in this location.
+        Please check back later or explore other listings.
+      </p>
+
+      <!-- Button -->
+      <a href="{% url "rent_list" %}" class="inline-block bg-[#c6a16e] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#b8925a] transition">
+        Browse All Properties
+      </a>
+
+    </div>
+  </section>
+  {% endif %}
+  <!-- ======================= FEATURE PROPERTIES END ======================= -->
+
+  <!-- ======================= NEW LAUNCH PROJECTS ======================= -->
   <section class="py-12" data-aos="fade-up">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
       
@@ -499,8 +627,7 @@
 
     </div>
   </section>
-  <!-- NEW LAUNCH PROJECTS END-->
-
+  <!-- ======================= NEW LAUNCH PROJECTS END ======================= -->
 
   <!-- ======================= POSSESSION STATUS (UNIQUE) ======================= -->
   <section class="py-16 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
@@ -622,7 +749,6 @@
   </section>
   <!-- ======================= POSSESSION STATUS (UNIQUE END) ======================= -->
 
-
   <hr>
 
   <!-- ======================= WHAT ARE YOU LOOKING FOR? ======================= -->
@@ -687,7 +813,7 @@
   </section>
   <!-- ======================= WHAT ARE YOU LOOKING FOR? ======================= -->
 
-  <!-- 🌟 WHY CHOOSE US -->
+  <!-- ======================= 🌟 WHY CHOOSE US ======================= -->
   <section class="hidden md:block py-12 bg-white" id="why-choose">
     <div class="max-w-7xl mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-8 items-center">
 
@@ -769,8 +895,7 @@
 
     </div>
   </section>
-
-  <!-- 🌟 WHY CHOOSE US END -->
+  <!-- ======================= 🌟 WHY CHOOSE US END ======================= -->
 
   <!-- ===================== How We Work ======================= -->
   <section class="w-full py-12 text-white bg-cover bg-center relative" style="background-image: url('https://sigmahomes.co.in/media/about/Prithvi_Pride.jpg');">
@@ -892,7 +1017,7 @@
   </section>
   <!-- ===================== How We Work End======================= -->
 
-  <!-- Blog Section Start -->
+  <!-- ======================= Blog Section Start ======================= -->
   <section id="blog" class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4">
 
@@ -977,10 +1102,10 @@
 
     </div>
   </section>
-  <!-- Blog Section End -->
+  <!-- ======================= Blog Section End ======================= -->
 
   <br>
-  <!-- STATS COUNTER -->
+  <!-- ======================= STATS COUNTER ======================= -->
   <section class="py-20 bg-[#0f172a] text-white">
     <div class="max-w-6xl mx-auto grid md:grid-cols-4 gap-10">
 
@@ -1007,10 +1132,9 @@
 
     </div>
   </section>
-  <!-- STATS COUNTER END -->
+  <!-- ======================= STATS COUNTER END ======================= -->
 
-
-  <!-- 🏦 HOME LOAN PARTNERS SLIDER -->
+  <!-- ======================= HOME LOAN PARTNERS SLIDER ======================= -->
   <section class="py-20 bg-white" id="home-loan-partners">
     <div class="max-w-7xl mx-auto px-6 text-center">
 
@@ -1070,10 +1194,9 @@
 
     </div>
   </section>
-  <!--HOME LOAN PARTNERS SLIDER END -->
+  <!-- ======================= HOME LOAN PARTNERS SLIDER END ======================= -->
 
-
-  <!-- 🏢 FEATURED DEVELOPERS -->
+  <!-- ======================= FEATURED DEVELOPERS ======================= -->
   <div class="developer-section">
     <h2 class="section-title">Top Developers Projects</h2>
 
@@ -1098,11 +1221,9 @@
 
     </div>
   </div>
-  <!-- FEATURED DEVELOPERS END -->
+  <!-- ======================= FEATURED DEVELOPERS END ======================= -->
 
-
-
-  <!-- LOCALITY START-->
+  <!-- ======================= LOCALITY START ======================= -->
   <section class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-6">
 
@@ -1136,9 +1257,9 @@
   </div>
 
   </section>
-  <!-- LOCALITY END -->
+  <!-- ======================= LOCALITY END ======================= -->
 
-  <!-- 💬 TESTIMONIALS -->
+  <!-- ======================= TESTIMONIALS ======================= -->
   <section class="py-16 bg-gray-100" id="testimonial">
     <div class="max-w-4xl mx-auto px-6 text-center">
       <h2 class="text-3xl font-bold text-orange-600 mb-10">Testimonials</h2>
@@ -1159,9 +1280,9 @@
       </div>
     </div>
   </section>
-  <!-- 💬 TESTIMONIALS -->
+  <!-- ======================= TESTIMONIALS ======================= -->
 
-  <!-- LEFT DETAILS + RIGHT FORM CONTACT SECTION -->
+  <!-- ======================= CONTACT SECTION ======================= -->
   <section id="contact" class="py-14 bg-orange-50">
       <h2 class="text-3xl font-bold text-orange-600 mb-4 text-center">Get In Touch</h2>
         <p class="text-gray-600 mb-6 text-center">We are here to assist you with any queries.</p>
@@ -1204,8 +1325,9 @@
 
     </div>
   </section>
+  <!-- ======================= CONTACT SECTION END======================= -->
 
-  <!-- ❓ FAQ -->
+  <!-- ======================= ❓ FAQ ======================= -->
   <section class="py-20 bg-gray-100" id="faq">
     <div class="max-w-7xl mx-auto px-6">
 
@@ -1232,7 +1354,6 @@
     </div>
   </section>
 
-  <!-- Hidden FAQ Data -->
   <div id="faqData" class="hidden">
     {% for faq in faqs %}
     <div class="faq-item">
@@ -1253,36 +1374,8 @@
     </div>
     {% endfor %}
   </div>
-  <!-- Hidden FAQ Data -->
+  <!-- ======================= ❓ FAQ ======================= -->
 
-  <!-- POPUS START -->
-  <div class="modal fade" id="commonModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content rounded-xl">
-
-        <div class="modal-header">
-          <h5 class="modal-title text-lg font-semibold" id="modalTitle">
-            Get In Touch
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-
-        <div class="modal-body">
-          <form class="space-y-3">
-            <input type="text" placeholder="Your Name" class="w-full border px-3 py-2 rounded">
-            <input type="tel" placeholder="Phone Number" class="w-full border px-3 py-2 rounded">
-            <textarea rows="3" placeholder="Message" class="w-full border px-3 py-2 rounded"></textarea>
-
-            <button class="w-full bg-orange-500 text-white py-2 rounded">
-              Submit
-            </button>
-          </form>
-        </div>
-
-      </div>
-    </div>
-  </div>
-  <!-- POPUS END -->
 
 <script defer>
 document.addEventListener("DOMContentLoaded", () => {
@@ -1459,6 +1552,39 @@ setInterval(() => {
     container.scrollLeft = 0;
   }
 }, 2500); 
+var swiper = new Swiper(".rentPropSwiper", {
+    slidesPerView: 3,
+    spaceBetween: 30,
+    loop: true,
+    grabCursor: true,
+
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+
+    breakpoints: {
+      0: {
+        slidesPerView: 1,
+      },
+      640: {
+        slidesPerView: 2,
+      },
+      1024: {
+        slidesPerView: 3,
+      },
+    },
+    autoplay: {
+    delay: 3000,
+    disableOnInteraction: false,
+  },
+  });
+
 </script>
 
 <style>
@@ -1572,5 +1698,32 @@ font-size: 24px;
 }
 </style>
 
+
+<div class="modal fade" id="commonModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-xl">
+
+      <div class="modal-header">
+        <h5 class="modal-title text-lg font-semibold" id="modalTitle">
+          Get In Touch
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form class="space-y-3">
+          <input type="text" placeholder="Your Name" class="w-full border px-3 py-2 rounded">
+          <input type="tel" placeholder="Phone Number" class="w-full border px-3 py-2 rounded">
+          <textarea rows="3" placeholder="Message" class="w-full border px-3 py-2 rounded"></textarea>
+
+          <button class="w-full bg-orange-500 text-white py-2 rounded">
+            Submit
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 </main>
