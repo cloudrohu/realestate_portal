@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils.html import mark_safe
 from .models import PropertyAmenities, FurnishingItem, Facility, TenantType
+from import_export.admin import ImportExportModelAdmin
 
 # Placeholder image
 NO_IMAGE_URL = "https://via.placeholder.com/40x40.png?text=No+Image"
@@ -12,7 +13,7 @@ NO_IMAGE_URL = "https://via.placeholder.com/40x40.png?text=No+Image"
 
 
 @admin.register(PropertyAmenities)
-class PropertyAmenitiesAdmin(admin.ModelAdmin):
+class PropertyAmenitiesAdmin(ImportExportModelAdmin):
 
     list_display = ('name', 'icon_preview')
     search_fields = ('name',)
@@ -36,7 +37,7 @@ class PropertyAmenitiesAdmin(admin.ModelAdmin):
 # =======================================================
 
 @admin.register(FurnishingItem)
-class FurnishingItemAdmin(admin.ModelAdmin):
+class FurnishingItemAdmin(ImportExportModelAdmin):
 
     list_display = ('name', 'is_active', 'icon_preview')
     list_filter = ('is_active',)
@@ -61,14 +62,14 @@ class FurnishingItemAdmin(admin.ModelAdmin):
 # 🏢 Facility Admin
 # =======================================================
 @admin.register(Facility)
-class FacilityAdmin(admin.ModelAdmin):
+class FacilityAdmin(ImportExportModelAdmin):
 
     list_display = ('name', 'icon', 'is_active')
     list_filter = ('is_active',)
     search_fields = ('name',)
 
 @admin.register(TenantType)
-class TenantTypeAdmin(admin.ModelAdmin):
+class TenantTypeAdmin(ImportExportModelAdmin):
 
     list_display = ('name', 'is_active')
     list_filter = ('is_active',)

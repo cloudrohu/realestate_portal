@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.utils.html import mark_safe
 from .models import RentalProperty, AboutProperty, RentalConnectivity, RentalAmenity, RentalFurnishing,RentalFacility,OwnerDetails,RentDetails,RentalFAQ,RentalEnquiry
 from utility.models import PropertyAmenities
+from import_export.admin import ImportExportModelAdmin
 
 
 
@@ -10,40 +11,32 @@ class AboutPropertyInline(admin.StackedInline):
     extra = 0
     verbose_name = "About This Property"
     verbose_name_plural = "About This Property"
-
 class RentalConnectivityInline(admin.TabularInline):
     model = RentalConnectivity
     extra = 1
-
 class RentalAmenityInline(admin.TabularInline):
     model = RentalAmenity
     extra = 1
     autocomplete_fields = ['amenity']
-
 class RentalFurnishingInline(admin.TabularInline):
     model = RentalFurnishing
     extra = 1
     autocomplete_fields = ['item']
-
 class RentalFacilityInline(admin.TabularInline):
     model = RentalFacility
     extra = 1
     autocomplete_fields = ['facility']
-
 class OwnerDetailsInline(admin.StackedInline):
     model = OwnerDetails   # ✅ correct model
     extra = 0
-
 class RentDetailsInline(admin.StackedInline):
     model = RentDetails
     extra = 0
-
 class RentalFAQInline(admin.TabularInline):
     model = RentalFAQ
     extra = 1
-
 @admin.register(RentalProperty)
-class RentalPropertyAdmin(admin.ModelAdmin):
+class RentalPropertyAdmin(ImportExportModelAdmin):
 
     list_display = (
         'title',
@@ -148,10 +141,8 @@ class RentalPropertyAdmin(admin.ModelAdmin):
             )
         }),
     )
-
-
 @admin.register(RentalEnquiry)
-class RentalEnquiryAdmin(admin.ModelAdmin):
+class RentalEnquiryAdmin(ImportExportModelAdmin):
     list_display = ('name','phone','rental','created_at')
     search_fields = ('name','phone','email')
     list_filter = ('created_at',)

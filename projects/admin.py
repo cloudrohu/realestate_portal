@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.utils.html import mark_safe
 from mptt.admin import MPTTModelAdmin
+from import_export.admin import ImportExportModelAdmin
+
 
 from .models import (
     Project, BookingOffer, WelcomeTo, WebSlider, Overview, AboutUs,
@@ -19,17 +21,14 @@ class BookingOfferInline(admin.TabularInline):
     model = BookingOffer
     extra = 1
 
-
 class WelcomeToInline(admin.StackedInline):
     model = WelcomeTo
     extra = 1
-
 
 class ProjectFAQInline(admin.TabularInline):
     model = ProjectFAQ
     extra = 1
     fields = ("order", "question", "answer")
-
 
 class WebSliderInline(admin.TabularInline):
     model = WebSlider
@@ -45,21 +44,17 @@ class WebSliderInline(admin.TabularInline):
 
     image_preview.short_description = "Preview"
 
-
 class OverviewInline(admin.StackedInline):
     model = Overview
     extra = 1
-
 
 class AboutUsInline(admin.StackedInline):
     model = AboutUs
     extra = 1
 
-
 class USPInline(admin.TabularInline):
     model = USP
     extra = 1
-
 
 class ConfigurationInline(admin.TabularInline):
     model = Configuration
@@ -74,16 +69,13 @@ class ConfigurationInline(admin.TabularInline):
         'unit_plan',
     )
 
-
 class ConnectivityInline(admin.TabularInline):
     model = Connectivity
     extra = 1
 
-
 class AmenitiesInline(admin.TabularInline):
     model = Amenities
     extra = 1
-
 
 class GalleryInline(admin.TabularInline):
     model = Gallery
@@ -99,33 +91,24 @@ class GalleryInline(admin.TabularInline):
 
     image_preview.short_description = "Preview"
 
-
 class HeaderInline(admin.StackedInline):
     model = Header
     extra = 1
-
 
 class RERAInfoInline(admin.StackedInline):
     model = RERA_Info
     extra = 1
 
-
 class WhyInvestInline(admin.StackedInline):
     model = WhyInvest
     extra = 1
-
 
 class BankOfferInline(admin.TabularInline):
     model = BankOffer
     extra = 1
 
-
-# =======================
-# PROJECT ADMIN
-# =======================
-
 @admin.register(Project)
-class ProjectAdmin(MPTTModelAdmin):
+class ProjectAdmin(ImportExportModelAdmin, MPTTModelAdmin):
 
     list_display = (
         'project_name',
@@ -297,13 +280,8 @@ class ProjectAdmin(MPTTModelAdmin):
         return "No Video"
 
     youtube_preview.short_description = "YouTube Video"
-
-# =======================
-# ENQUIRY ADMIN
-# =======================
-
 @admin.register(Enquiry)
-class EnquiryAdmin(admin.ModelAdmin):
+class EnquiryAdmin(ImportExportModelAdmin):
     list_display = (
         'id',
         'name',
