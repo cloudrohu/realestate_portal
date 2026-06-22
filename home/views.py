@@ -9,46 +9,24 @@ from utility.models import Locality,PropertyType,City,Bank,ProjectAmenities
 from blog.models import Blog, Category
 from .models import (
     Setting, Slider, Testimonial, About, Leadership,
-    Contact_Page, FAQ, Our_Team,Why_Choose,ImpactMetric, Service, FooterLink,ContactEnquiry
+    Contact_Page, FAQ, Our_Team,Why_Choose,ImpactMetric, Service, FooterLink,ContactEnquiry, PossessionMetric
 )
 from user.models import Developer 
 from rent.models import RentalProperty
 from django.shortcuts import render
-from projects.models import Project  # import your Project model.
+from projects.models import Project
 
 def index(request):
 
     settings_obj = Setting.objects.first()
-
-    # ================= CITIES =================
     cities = City.objects.filter(level_type="CITY").order_by("name")
-
-    # ================= PROPERTY TYPES =================
-    residential_type = PropertyType.objects.filter(
-        name__iexact="Residential", is_top_level=True
-    ).first()
-
-    commercial_type = PropertyType.objects.filter(
-        name__iexact="Commercial", is_top_level=True
-    ).first()
-
+    residential_type = PropertyType.objects.filter(name__iexact="Residential", is_top_level=True).first()
+    commercial_type = PropertyType.objects.filter(name__iexact="Commercial", is_top_level=True).first()
     residential_types = residential_type.get_descendants(include_self=True) if residential_type else PropertyType.objects.none()
     commercial_types = commercial_type.get_descendants(include_self=True) if commercial_type else PropertyType.objects.none()
+    new_launch_residential = Project.objects.filter(active=True,construction_status__iexact="New Launch",propert_type__in=residential_types).order_by("-create_at")[:10]
+    new_launch_commercial = Project.objects.filter(active=True,construction_status__iexact="New Launch",propert_type__in=commercial_types).order_by("-create_at")[:10]
 
-    # ================= NEW LAUNCH =================
-    new_launch_residential = Project.objects.filter(
-        active=True,
-        construction_status__iexact="New Launch",
-        propert_type__in=residential_types
-    ).order_by("-create_at")[:10]
-
-    new_launch_commercial = Project.objects.filter(
-        active=True,
-        construction_status__iexact="New Launch",
-        propert_type__in=commercial_types
-    ).order_by("-create_at")[:10]
-
-    # ================= FEATURED PROJECTS =================
     project_featured = (
         Project.objects.filter(active=True, featured_property=True)
         .annotate(
@@ -58,18 +36,15 @@ def index(request):
         .order_by("-create_at")[:6]
     )
 
-    # ================= POSSESSION COUNTS =================
     possession_counts = Project.objects.filter(active=True).aggregate(
         ready_to_move=Count("id", filter=Q(construction_status__iexact="Ready To Move")),
         under_construction=Count("id", filter=Q(construction_status__iexact="Under Construction")),
         new_launch=Count("id", filter=Q(construction_status__iexact="New Launch")),
     )
 
-    # ================= FEATURED DEVELOPERS (ONLY IF PROJECT EXISTS) =================
     featured_developers = (
     Developer.objects.filter(featured_builder=True).annotate(project_count=Count("project", distinct=True)).filter(project_count__gt=0).order_by("-create_at"))
 
-    # ================= OTHER HOME DATA =================
     featured_locality = (Locality.objects.filter(featured_locality=True, project__active=True).distinct().order_by("name")[:20])
     bank = Bank.objects.filter(home_loan_partner=True).order_by("title")
     blogs = Blog.objects.filter(is_published=True).order_by("-published_date", "-created_at")[:3]
@@ -81,10 +56,8 @@ def index(request):
     testimonials = Testimonial.objects.all().order_by("-id")
     faqs = FAQ.objects.all().order_by("id")
 
-    # ================= CURRENT CITY =================
     current_city = project_featured.first().city.name if project_featured.exists() else "Mumbai"
 
-    # ================= FEATURED RENT PROPERTIES =================
     rental_properties = (
         RentalProperty.objects.select_related
         ("city", "locality", "furnishing_type", "tenant_type", "rent_details")
@@ -97,7 +70,10 @@ def index(request):
         .filter(active=True)
         .order_by("-created_at")[:8]
     )
-   
+
+    possession_metric = PossessionMetric.objects.first()
+
+
     # ================= RENDER =================
     return render(request, "home/index.html", {
         "settings_obj": settings_obj,
@@ -109,6 +85,7 @@ def index(request):
         "featured_developers": featured_developers,
         "featured_locality": featured_locality,
         "bank": bank,
+        "possession_metric": possession_metric,
         "blogs": blogs,
         "about_page": about_page,
         "impactmetric": impactmetric,

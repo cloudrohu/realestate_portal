@@ -267,7 +267,7 @@
   <!-- ======================= FEATURE PROJECTS ======================= -->
 
   <!-- ======================= FEATURE PROPERTIES ======================= -->
-   {% if rental_properties %}
+  {% if rental_properties %}
   <section class="bg-gray-100 py-8">
     <div class="max-w-7xl mx-auto px-6">
 
@@ -664,7 +664,7 @@
 
         <!-- CARD 1 -->
         <a target="_blank" href="{% url 'search_projects' %}?bhk=&construction_status=Ready+To+Move&rera=" class="group relative  overflow-hidden shadow-lg border border-gray-100">
-          <img src="{% static 'images/ready-to-move.png' %}" class="w-full h-72 object-cover group-hover:scale-110 transition duration-700" alt="Ready to Move" >
+          <img src="{{ possession_metric.ready_to_move.url}}" class="w-full h-72 object-cover group-hover:scale-110 transition duration-700" alt="Ready to Move" >
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 
           <div class="absolute top-4 left-4">
@@ -691,7 +691,7 @@
 
         <!-- CARD 2 -->
         <a target="_blank" href="{% url 'search_projects' %}?bhk=&construction_status=Under+Construction&rera=" class="group relative  overflow-hidden shadow-lg border border-gray-100">
-          <img src="{% static 'images/under-construction.png' %}" class="w-full h-72 object-cover group-hover:scale-110 transition duration-700" alt="Under Construction">
+          <img src="{{ possession_metric.under_construction.url}}" class="w-full h-72 object-cover group-hover:scale-110 transition duration-700" alt="Under Construction">
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 
           <div class="absolute top-4 left-4">
@@ -718,7 +718,7 @@
 
         <!-- CARD 3 -->
         <a target="_blank" href="{% url 'search_projects' %}?bhk=&construction_status=New+Launch&rera=" class="group relative  overflow-hidden shadow-lg border border-gray-100">
-          <img src="{% static 'images/new-launch.png' %}" class="w-full h-72 object-cover group-hover:scale-110 transition duration-700" alt="New Launch">
+          <img src="{{ possession_metric.upcoming.url }}" class="w-full h-72 object-cover group-hover:scale-110 transition duration-700" alt="New Launch">
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 
           <div class="absolute top-4 left-4">
@@ -1377,353 +1377,353 @@
   <!-- ======================= ❓ FAQ ======================= -->
 
 
-<script defer>
-document.addEventListener("DOMContentLoaded", () => {
+  <script defer>
+    document.addEventListener("DOMContentLoaded", () => {
 
-  /* ===== MODAL ===== */
-  const modal = document.getElementById("commonModal");
-  if (modal) {
-    modal.addEventListener("show.bs.modal", e => {
-      document.getElementById("modalTitle").innerText =
-        e.relatedTarget?.getAttribute("data-modal-title") || "";
-    });
-  }
-
-  /* ===== SWIPER (ALL TYPES) ===== */
-  if (window.Swiper) {
-
-  // Home Loan Partners smooth auto slider
-    document.querySelectorAll(".loanPartnerSwiper").forEach(el=>{
-      new Swiper(el,{
-        loop:true,
-        speed:6000,
-        spaceBetween:22,
-
-        freeMode:true,
-        freeModeMomentum:false,
-
-        autoplay:{
-          delay:0,
-          disableOnInteraction:false,
-          pauseOnMouseEnter:true
-        },
-
-        breakpoints:{
-          320:{slidesPerView:1.2},
-          480:{slidesPerView:1.6},
-          640:{slidesPerView:2.3},
-          768:{slidesPerView:3},
-          1024:{slidesPerView:3.8},
-          1280:{slidesPerView:4.5}
-        }
-      });
-    });
-
-    // Blog mobile slider
-    document.querySelectorAll(".blogSwiper").forEach(el=>{
-      new Swiper(el,{
-        slidesPerView:1,
-        spaceBetween:18,
-        loop:true,
-
-        autoplay:{
-          delay:4000,
-          disableOnInteraction:false,
-          pauseOnMouseEnter:true
-        },
-
-        pagination:{
-          el: el.querySelector(".swiper-pagination"),
-          clickable:true
-        }
-      });
-    });
-
-      // New Launch Projects slider
-    document.querySelectorAll(".newLaunchSwiper").forEach(el=>{
-      new Swiper(el,{
-        slidesPerView:1,
-        spaceBetween:20,
-        loop:true,
-
-        autoplay:{
-          delay:3500,
-          disableOnInteraction:false,
-          pauseOnMouseEnter:true
-        },
-
-        breakpoints:{
-          0:{slidesPerView:1},
-          640:{slidesPerView:1},
-          768:{slidesPerView:2},
-          1024:{slidesPerView:3}
-        }
-      });
-    });
-
-
-  }
-
-  /* ===== BHK TABS ===== */
-  function activateTab(tab, card){
-    const wrap = card.querySelector(".bhk-tabs");
-    const underline = wrap.querySelector(".bhk-underline");
-
-    card.querySelectorAll(".bhk-tab").forEach(t=>t.classList.remove("active"));
-    card.querySelectorAll(".bhk-panel").forEach(p=>p.classList.add("hidden"));
-
-    tab.classList.add("active");
-
-    const r1=tab.getBoundingClientRect(), r2=wrap.getBoundingClientRect();
-    underline.style.width=r1.width+"px";
-    underline.style.left=(r1.left-r2.left)+"px";
-
-    card.querySelector(`[data-panel="${tab.dataset.target}"]`)?.classList.remove("hidden");
-  }
-
-  document.addEventListener("click", e=>{
-    const tab=e.target.closest(".bhk-tab");
-    if(!tab || tab.classList.contains("bhk-disabled")) return;
-    const card=tab.closest(".config-card");
-    if(card) activateTab(tab,card);
-  });
-
-  document.querySelectorAll(".config-card").forEach(card=>{
-    const first=card.querySelector(".bhk-tab:not(.bhk-disabled)");
-    if(first) activateTab(first,card);
-  });
-
-  /* ===== SIMPLE TABS ===== */
-  document.querySelectorAll(".tab-btn").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
-      btn.classList.add("active");
-
-      document.querySelectorAll(".tab-content").forEach(t=>t.classList.add("hidden"));
-      document.getElementById(btn.dataset.tab)?.classList.remove("hidden");
-    });
-  });
-
-  /* ===== AJAX CITY ===== */
-  const city=document.getElementById("city");
-  if(city){
-    city.addEventListener("change",()=>{
-      fetch(`/ajax/load-localities/?city_id=${city.value}`)
-        .then(r=>r.json())
-        .then(data=>{
-          const loc=document.getElementById("locality");
-          loc.innerHTML='<option value="">Select Locality</option>';
-          data.forEach(l=>loc.innerHTML+=`<option value="${l.id}">${l.name}</option>`);
+      /* ===== MODAL ===== */
+      const modal = document.getElementById("commonModal");
+      if (modal) {
+        modal.addEventListener("show.bs.modal", e => {
+          document.getElementById("modalTitle").innerText =
+            e.relatedTarget?.getAttribute("data-modal-title") || "";
         });
+      }
+
+      /* ===== SWIPER (ALL TYPES) ===== */
+      if (window.Swiper) {
+
+      // Home Loan Partners smooth auto slider
+        document.querySelectorAll(".loanPartnerSwiper").forEach(el=>{
+          new Swiper(el,{
+            loop:true,
+            speed:6000,
+            spaceBetween:22,
+
+            freeMode:true,
+            freeModeMomentum:false,
+
+            autoplay:{
+              delay:0,
+              disableOnInteraction:false,
+              pauseOnMouseEnter:true
+            },
+
+            breakpoints:{
+              320:{slidesPerView:1.2},
+              480:{slidesPerView:1.6},
+              640:{slidesPerView:2.3},
+              768:{slidesPerView:3},
+              1024:{slidesPerView:3.8},
+              1280:{slidesPerView:4.5}
+            }
+          });
+        });
+
+        // Blog mobile slider
+        document.querySelectorAll(".blogSwiper").forEach(el=>{
+          new Swiper(el,{
+            slidesPerView:1,
+            spaceBetween:18,
+            loop:true,
+
+            autoplay:{
+              delay:4000,
+              disableOnInteraction:false,
+              pauseOnMouseEnter:true
+            },
+
+            pagination:{
+              el: el.querySelector(".swiper-pagination"),
+              clickable:true
+            }
+          });
+        });
+
+          // New Launch Projects slider
+        document.querySelectorAll(".newLaunchSwiper").forEach(el=>{
+          new Swiper(el,{
+            slidesPerView:1,
+            spaceBetween:20,
+            loop:true,
+
+            autoplay:{
+              delay:3500,
+              disableOnInteraction:false,
+              pauseOnMouseEnter:true
+            },
+
+            breakpoints:{
+              0:{slidesPerView:1},
+              640:{slidesPerView:1},
+              768:{slidesPerView:2},
+              1024:{slidesPerView:3}
+            }
+          });
+        });
+
+
+      }
+
+      /* ===== BHK TABS ===== */
+      function activateTab(tab, card){
+        const wrap = card.querySelector(".bhk-tabs");
+        const underline = wrap.querySelector(".bhk-underline");
+
+        card.querySelectorAll(".bhk-tab").forEach(t=>t.classList.remove("active"));
+        card.querySelectorAll(".bhk-panel").forEach(p=>p.classList.add("hidden"));
+
+        tab.classList.add("active");
+
+        const r1=tab.getBoundingClientRect(), r2=wrap.getBoundingClientRect();
+        underline.style.width=r1.width+"px";
+        underline.style.left=(r1.left-r2.left)+"px";
+
+        card.querySelector(`[data-panel="${tab.dataset.target}"]`)?.classList.remove("hidden");
+      }
+
+      document.addEventListener("click", e=>{
+        const tab=e.target.closest(".bhk-tab");
+        if(!tab || tab.classList.contains("bhk-disabled")) return;
+        const card=tab.closest(".config-card");
+        if(card) activateTab(tab,card);
+      });
+
+      document.querySelectorAll(".config-card").forEach(card=>{
+        const first=card.querySelector(".bhk-tab:not(.bhk-disabled)");
+        if(first) activateTab(first,card);
+      });
+
+      /* ===== SIMPLE TABS ===== */
+      document.querySelectorAll(".tab-btn").forEach(btn=>{
+        btn.addEventListener("click",()=>{
+          document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+          btn.classList.add("active");
+
+          document.querySelectorAll(".tab-content").forEach(t=>t.classList.add("hidden"));
+          document.getElementById(btn.dataset.tab)?.classList.remove("hidden");
+        });
+      });
+
+      /* ===== AJAX CITY ===== */
+      const city=document.getElementById("city");
+      if(city){
+        city.addEventListener("change",()=>{
+          fetch(`/ajax/load-localities/?city_id=${city.value}`)
+            .then(r=>r.json())
+            .then(data=>{
+              const loc=document.getElementById("locality");
+              loc.innerHTML='<option value="">Select Locality</option>';
+              data.forEach(l=>loc.innerHTML+=`<option value="${l.id}">${l.name}</option>`);
+            });
+        });
+      }
+
     });
-  }
+    const container = document.querySelector(".card-container");
 
-});
-const container = document.querySelector(".card-container");
+    let isDown = false;
+    let startX;
+    let scrollLeft;
 
-let isDown = false;
-let startX;
-let scrollLeft;
+    // DRAG TO SLIDE (desktop premium feel)
+    container.addEventListener("mousedown", e => {
+      isDown = true;
+      container.classList.add("active");
+      startX = e.pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+    });
 
-// DRAG TO SLIDE (desktop premium feel)
-container.addEventListener("mousedown", e => {
-  isDown = true;
-  container.classList.add("active");
-  startX = e.pageX - container.offsetLeft;
-  scrollLeft = container.scrollLeft;
-});
+    container.addEventListener("mouseleave", () => isDown = false);
+    container.addEventListener("mouseup", () => isDown = false);
 
-container.addEventListener("mouseleave", () => isDown = false);
-container.addEventListener("mouseup", () => isDown = false);
+    container.addEventListener("mousemove", e => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      container.scrollLeft = scrollLeft - walk;
+    });
 
-container.addEventListener("mousemove", e => {
-  if (!isDown) return;
-  e.preventDefault();
-  const x = e.pageX - container.offsetLeft;
-  const walk = (x - startX) * 1.5;
-  container.scrollLeft = scrollLeft - walk;
-});
+    // AUTO SLIDE
+    setInterval(() => {
+      container.scrollLeft += 220;
 
-// AUTO SLIDE
-setInterval(() => {
-  container.scrollLeft += 220;
-
-  if (container.scrollLeft + container.clientWidth >= container.scrollWidth) {
-    container.scrollLeft = 0;
-  }
-}, 2500); 
-var swiper = new Swiper(".rentPropSwiper", {
-    slidesPerView: 3,
-    spaceBetween: 30,
-    loop: true,
-    grabCursor: true,
-
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
-
-    breakpoints: {
-      0: {
-        slidesPerView: 1,
-      },
-      640: {
-        slidesPerView: 2,
-      },
-      1024: {
+      if (container.scrollLeft + container.clientWidth >= container.scrollWidth) {
+        container.scrollLeft = 0;
+      }
+    }, 2500); 
+    var swiper = new Swiper(".rentPropSwiper", {
         slidesPerView: 3,
+        spaceBetween: 30,
+        loop: true,
+        grabCursor: true,
+
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+
+        breakpoints: {
+          0: {
+            slidesPerView: 1,
+          },
+          640: {
+            slidesPerView: 2,
+          },
+          1024: {
+            slidesPerView: 3,
+          },
+        },
+        autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
       },
-    },
-    autoplay: {
-    delay: 3000,
-    disableOnInteraction: false,
-  },
-  });
+      });
 
-</script>
+  </script>
 
-<style>
- .swiper-slide {
-  overflow: visible !important;
-}
-.common-btn{
-  margin-top:12px;padding:8px 16px;border:1px solid white;border-radius:6px;
-  font-size:14px;transition:.3s
-}
-@media(min-width:768px){
-  .common-btn{opacity:0}
-  .group:hover .common-btn{opacity:1}
-}
-.common-btn:hover{background:#fff;color:#000}
+  <style>
+    .swiper-slide {
+      overflow: visible !important;
+    }
+    .common-btn{
+      margin-top:12px;padding:8px 16px;border:1px solid white;border-radius:6px;
+      font-size:14px;transition:.3s
+    }
+    @media(min-width:768px){
+      .common-btn{opacity:0}
+      .group:hover .common-btn{opacity:1}
+    }
+    .common-btn:hover{background:#fff;color:#000}
 
-/* Scrollbars */
-.table-scroll,.bhk-tabs,.bhk-panel div{
-  scrollbar-width:thin;
-  scrollbar-color:#fb923c transparent
-}
-.table-scroll::-webkit-scrollbar,
-.bhk-tabs::-webkit-scrollbar,
-.bhk-panel div::-webkit-scrollbar{width:6px;height:5px}
-.table-scroll::-webkit-scrollbar-thumb,
-.bhk-tabs::-webkit-scrollbar-thumb,
-.bhk-panel div::-webkit-scrollbar-thumb{
-  background:#fb923c;border-radius:10px
-}
+    /* Scrollbars */
+    .table-scroll,.bhk-tabs,.bhk-panel div{
+      scrollbar-width:thin;
+      scrollbar-color:#fb923c transparent
+    }
+    .table-scroll::-webkit-scrollbar,
+    .bhk-tabs::-webkit-scrollbar,
+    .bhk-panel div::-webkit-scrollbar{width:6px;height:5px}
+    .table-scroll::-webkit-scrollbar-thumb,
+    .bhk-tabs::-webkit-scrollbar-thumb,
+    .bhk-panel div::-webkit-scrollbar-thumb{
+      background:#fb923c;border-radius:10px
+    }
 
-/* BHK Tabs */
-.bhk-tab{
-  backdrop-filter:blur(10px);
-  background:rgba(255,255,255,.6);
-  padding:6px 10px;
-  color:#374151;
-  white-space:nowrap
-}
-.bhk-tab.active{color:#fb923c}
-.bhk-disabled{opacity:.4;pointer-events:none}
+    /* BHK Tabs */
+    .bhk-tab{
+      backdrop-filter:blur(10px);
+      background:rgba(255,255,255,.6);
+      padding:6px 10px;
+      color:#374151;
+      white-space:nowrap
+    }
+    .bhk-tab.active{color:#fb923c}
+    .bhk-disabled{opacity:.4;pointer-events:none}
 
-/* Underline */
-.bhk-underline{
-  background:#fb923c;
-  height:2px;
-  transition:.3s ease;
-  width:0;left:0
-}
-  .developer-section {
-font-family: Arial, sans-serif;
-padding: 20px;
-background-color: #f8f9fa;
-}
+    /* Underline */
+    .bhk-underline{
+      background:#fb923c;
+      height:2px;
+      transition:.3s ease;
+      width:0;left:0
+    }
+      .developer-section {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f8f9fa;
+    }
 
-.section-title {
-font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
+    .section-title {
+    font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
 
-.card-container {
-  display: flex;
-  gap: 20px;
-  overflow-x: auto; /* Mobile ke liye scrollable */
-  padding-bottom: 10px;
-}
+    .card-container {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto; /* Mobile ke liye scrollable */
+      padding-bottom: 10px;
+    }
 
-.dev-card {
-  min-width: 200px;
-  background: white;
-  border-radius: 15px;
-  padding: 20px 15px 0 15px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+    .dev-card {
+      min-width: 200px;
+      background: white;
+      border-radius: 15px;
+      padding: 20px 15px 0 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-.logo {
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 40px;
-}
+    .logo {
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
 
-.logo img {
-  max-width: 120px;
-}
+    .logo img {
+      max-width: 120px;
+    }
 
-.footer-badge {
-  background-color: #e8f5e9; /* Light green background */
-  width: 100%;
-  padding: 10px;
-  border-radius: 50% 50% 0 0 / 20% 20% 0 0; /* Yeh curve banata hai */
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  font-size: 10px;
-  font-weight: bold;
-  color: #1e7d32;
-}
+    .footer-badge {
+      background-color: #e8f5e9; /* Light green background */
+      width: 100%;
+      padding: 10px;
+      border-radius: 50% 50% 0 0 / 20% 20% 0 0; /* Yeh curve banata hai */
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      font-size: 10px;
+      font-weight: bold;
+      color: #1e7d32;
+    }
 
-.count {
-  background: #1a3e59; /* Dark blue circle */
-  color: white;
-  padding: 3px 5px;
-  border-radius: 50%;
-  font-size: 12px;
-}
-</style>
+    .count {
+      background: #1a3e59; /* Dark blue circle */
+      color: white;
+      padding: 3px 5px;
+      border-radius: 50%;
+      font-size: 12px;
+    }
+  </style>
 
 
-<div class="modal fade" id="commonModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-xl">
+  <div class="modal fade" id="commonModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-xl">
 
-      <div class="modal-header">
-        <h5 class="modal-title text-lg font-semibold" id="modalTitle">
-          Get In Touch
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <div class="modal-header">
+          <h5 class="modal-title text-lg font-semibold" id="modalTitle">
+            Get In Touch
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <form class="space-y-3">
+            <input type="text" placeholder="Your Name" class="w-full border px-3 py-2 rounded">
+            <input type="tel" placeholder="Phone Number" class="w-full border px-3 py-2 rounded">
+            <textarea rows="3" placeholder="Message" class="w-full border px-3 py-2 rounded"></textarea>
+
+            <button class="w-full bg-orange-500 text-white py-2 rounded">
+              Submit
+            </button>
+          </form>
+        </div>
+
       </div>
-
-      <div class="modal-body">
-        <form class="space-y-3">
-          <input type="text" placeholder="Your Name" class="w-full border px-3 py-2 rounded">
-          <input type="tel" placeholder="Phone Number" class="w-full border px-3 py-2 rounded">
-          <textarea rows="3" placeholder="Message" class="w-full border px-3 py-2 rounded"></textarea>
-
-          <button class="w-full bg-orange-500 text-white py-2 rounded">
-            Submit
-          </button>
-        </form>
-      </div>
-
     </div>
   </div>
-</div>
 
 </main>

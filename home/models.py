@@ -3,10 +3,6 @@ from django_ckeditor_5.fields import CKEditor5Field
 from django.utils.safestring import mark_safe
 from utility.compress_mixin import ImageCompressionMixin
 
-
-# =============================
-# 🧠 MAIN MODEL — Website Setting
-# =============================
 class Setting(ImageCompressionMixin, models.Model):    
     site_name = models.CharField(max_length=150)
     logo = models.ImageField(upload_to='settings/', blank=True, null=True)
@@ -70,12 +66,6 @@ class Setting(ImageCompressionMixin, models.Model):
         if self.logo and self.logo.name:
             return self.logo.url
         return None
-
-
-
-# =============================
-# 🖼️ Hero / Slider Section (Multiple)
-# =============================
 class Slider(models.Model):
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=300, blank=True, null=True)
@@ -91,11 +81,6 @@ class Slider(models.Model):
 
     def __str__(self):
         return self.title
-# =============================
-# 👥 Leadership Team Section
-# =============================
-
-
 class Leadership(models.Model):
     name = models.CharField(max_length=100, help_text="Full name of the team member")
     designation = models.CharField(max_length=150, help_text="Position or title (e.g., CEO, Managing Director)")
@@ -117,7 +102,6 @@ class Leadership(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.designation})"
-
 class Why_Choose(models.Model):
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=300, blank=True, null=True)
@@ -130,8 +114,6 @@ class Why_Choose(models.Model):
 
     def __str__(self):
         return self.title
-
-
 class About(models.Model):
     search_bg = models.ImageField(
         upload_to='about/backgrounds/',
@@ -144,56 +126,41 @@ class About(models.Model):
         help_text="Background image for home about section"
     )
 
-    # =============================
-    # 🏠 Main About Section
-    # =============================
+
+
     title = models.CharField(max_length=200, help_text="Main heading (e.g., 'About Makaan Hub')")
     subtitle = models.CharField(max_length=300, blank=True, null=True, help_text="Subtitle or tagline")
     content = CKEditor5Field(blank=True, null=True, help_text="Detailed About Us content with formatting")
     image = models.ImageField(upload_to='about/', blank=True, null=True, help_text="Main image for About section")
-
-    # =============================
-    # 🧑‍💼 Who We Are Section
-    # =============================
+  
     who_we_are_title = models.CharField(max_length=200, default="Who We Are")
     who_we_are_subtitle = models.CharField(max_length=300, blank=True, null=True)
     who_we_are_description = CKEditor5Field(blank=True, null=True, help_text="Description about company identity")
 
-    # =============================
-    # 📊 Achievements / Highlights
-    # =============================
+
     projects_delivered = models.PositiveIntegerField(default=0)
     happy_families = models.PositiveIntegerField(default=0)
     years_of_excellence = models.PositiveIntegerField(default=0)
     awards_recognitions = models.PositiveIntegerField(default=0)
     highlight_icon_color = models.CharField(max_length=50, blank=True, null=True, help_text="Optional color for highlight icons (e.g., #0066ff)")
 
-    # =============================
-    # 🎯 Mission & Vision
-    # =============================
     our_mission_title = models.CharField(max_length=200, default="Our Mission")
     our_mission = CKEditor5Field(blank=True, null=True)
     our_vision_title = models.CharField(max_length=200, default="Our Vision")
     our_vision = CKEditor5Field(blank=True, null=True)
 
-    # =============================
-    # 💼 Looking To Section
-    # =============================
+
     looking_to_title = models.CharField(max_length=200, help_text="Title for 'Looking To...' section")
     looking_to_description = CKEditor5Field(blank=True, null=True)
     looking_to_button_text = models.CharField(max_length=50, default="Contact Us", help_text="Call-to-action button text")
     looking_to_button_link = models.URLField(blank=True, null=True, help_text="Button link (e.g., contact page)")
 
-    # =============================
-    # 🌐 SEO + Meta Info
-    # =============================
+   
     meta_title = models.CharField(max_length=255, blank=True, null=True, help_text="SEO meta title")
     meta_description = models.TextField(blank=True, null=True, help_text="SEO meta description")
     meta_keywords = models.TextField(blank=True, null=True, help_text="SEO keywords separated by commas")
 
-    # =============================
-    # ⚙️ Admin Settings
-    # =============================
+   
     is_active = models.BooleanField(default=True, help_text="If disabled, this section won't appear on site")
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -205,9 +172,6 @@ class About(models.Model):
     def __str__(self):
         return self.title
 
-# =============================
-# 📝 Contact Page (Single)
-# =============================
 class Contact_Page(models.Model):
     heading = models.CharField(max_length=200)
     sub_heading = models.CharField(max_length=300, blank=True, null=True)
@@ -222,9 +186,7 @@ class Contact_Page(models.Model):
     def __str__(self):
         return self.heading
 
-# =============================
-# 👨‍💼 Our Team (Multiple)
-# =============================
+
 class Our_Team(models.Model):
     name = models.CharField(max_length=100)
     designation = models.CharField(max_length=100)
@@ -237,9 +199,6 @@ class Our_Team(models.Model):
     def __str__(self):
         return self.name
 
-# =============================
-# 💬 Testimonial Section (Multiple)
-# =============================
 class Testimonial(models.Model):
     name = models.CharField(max_length=100)
     designation = models.CharField(max_length=100, blank=True, null=True)
@@ -253,9 +212,7 @@ class Testimonial(models.Model):
     def __str__(self):
         return f"{self.name} ({self.rating}⭐)"
 
-# =============================
-# ❓ FAQ Section (Multiple)
-# =============================
+
 class FAQ(models.Model):
     question = models.CharField(max_length=300)
     answer = CKEditor5Field()
@@ -316,3 +273,12 @@ class ContactEnquiry(models.Model):
 
     def __str__(self):
         return self.name    
+
+
+class PossessionMetric(models.Model):
+    ready_to_move = models.ImageField(default=0,upload_to='metrics/')
+    under_construction = models.ImageField(default=0,upload_to='metrics/')
+    upcoming = models.ImageField(default=0,upload_to='metrics/')
+
+    def __str__(self):
+        return "Possession Metrics"

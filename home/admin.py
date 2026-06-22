@@ -3,7 +3,7 @@ from django.utils.html import mark_safe
 from .models import (
     Setting, Slider, Leadership, Why_Choose,
     About, Contact_Page, Our_Team,
-    Testimonial, FAQ, ImpactMetric, Service, FooterLink , ContactEnquiry
+    Testimonial, FAQ, ImpactMetric, Service, FooterLink , ContactEnquiry, PossessionMetric
 )
 from import_export.admin import ImportExportModelAdmin
 
@@ -313,3 +313,8 @@ class FooterLinkAdmin(ImportExportModelAdmin):
     list_filter = ("is_active",)
     search_fields = ("title", "subtitle")
     ordering = ("parent", "order")
+
+@admin.register(PossessionMetric)
+class PossessionMetricAdmin(ImportExportModelAdmin):
+    list_display = ("ready_to_move", "under_construction", "upcoming")
+
