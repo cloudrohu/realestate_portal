@@ -1,4 +1,4 @@
-from django_ckeditor_5.fields import CKEditor5Field
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.html import mark_safe
@@ -12,15 +12,13 @@ from mptt.models import MPTTModel
 from django.utils.text import slugify
 from utility.models import City,Locality,PossessionIn,PropertyType,ProjectAmenities,Bank
 from multiselectfield import MultiSelectField
-from user.models import Developer
 from embed_video.fields import EmbedVideoField
 from utility.compress_mixin import ImageCompressionMixin
 from django.db.models import Min, Max
-import re
+from user.models import Developer
 
-# ==========================
-# 💰 GLOBAL HELPER FUNCTIONS
-# ==========================
+
+
 def format_price(num):
     """Convert number into Indian readable format (Lakh/Cr)."""
     try:
@@ -34,26 +32,6 @@ def format_price(num):
         return f"{round(num / 100000, 2):.2f} L"
     else:
         return f"{num:,}"
-
-def get_config_lines(self):
-    """
-    Returns list of dicts:
-    [{'bhk': '3 BHK', 'area': '1500 Sq.ft', 'price': '₹8.24 Cr'}, ...]
-    """
-    lines = self.get_configuration_details().splitlines()
-    data = []
-    for line in lines:
-        line = line.strip()
-        if not line:
-            continue
-
-        # example: "3 BHK 1500 Sq.ft ₹8.24Cr"
-        price_match = re.search(r"(₹.*)$", line)
-        price = price_match.group(1).strip() if price_match else ""
-
-        left = line.replace(price, "").strip()
-        data.append({"left": left, "price": price})
-    return data
 
 def format_price_range(price_min, price_max):
     """Convert rupees to Lakh/Cr format cleanly."""
@@ -77,10 +55,8 @@ class Project(MPTTModel):
     )
 
     Construction_Status = (
-        ('Under Construction', 'Under Construction'),
-        ('New Launch', 'New Launch'),
-        ('Partially Ready To Move', 'Partially Ready To Move'),
-        ('Ready To Move', 'Ready To Move'),
+        ('Under Construction', 'Under Construction'), ('New Launch', 'New Launch'),
+        ('Partially Ready To Move', 'Partially Ready To Move'), ('Ready To Move', 'Ready To Move'),
         ('Deleverd', 'Deleverd'),
     )
     
@@ -109,28 +85,29 @@ class Project(MPTTModel):
     city = models.ForeignKey(City, on_delete=models.CASCADE) 
     locality = models.ForeignKey(Locality, on_delete=models.CASCADE) 
     
-    land_parce = models.CharField(max_length=50,null=True, blank=True)
+    land_parcel = models.CharField(max_length=50,null=True, blank=True)
     bhk_type = MultiSelectField(choices=BHK_CHOICES, max_length=50,null=True, blank=True)
     floor = models.CharField(max_length=50,null=True, blank=True)
-    towers = models.CharField(max_length=50,null=True, blank=True)
-
-    possession_year = models.ForeignKey(PossessionIn, on_delete=models.CASCADE) 
+    
+    possession_year = models.ForeignKey(PossessionIn, on_delete=models.CASCADE,null=True, blank=True) 
     possession_month = models.CharField(max_length=20, choices=MONTH_CHOICES, blank=True, null=True, help_text="Select Possession Month")
-    target_possession_year = models.ForeignKey(PossessionIn, on_delete=models.CASCADE, blank=True, null=True, related_name='target_possession_year') 
-    target_possession_month = models.CharField(max_length=20, choices=MONTH_CHOICES, blank=True, null=True, help_text="Select Target Possession Month")
     
     luxurious = models.CharField(max_length=50,null=True, blank=True)
     priceing = models.CharField(max_length=50,null=True, blank=True) 
-    youtube_embed_id = models.CharField(max_length=50, blank=True, null=True,verbose_name="YouTube Video ID")
-    featured_property = models.BooleanField(default=False)
+    youtube_embed_id = models.CharField(
+        max_length=50, 
+        blank=True, 
+        null=True,
+        verbose_name="YouTube Video ID"
+    )
     
+    featured_property = models.BooleanField(default=False)
+    balcony = models.BooleanField(default=False)
     active = models.BooleanField(default=False)
-    image = models.ImageField(null=True, blank=True,upload_to='images/')
-    banner_img = models.ImageField(null=True, blank=True,upload_to='banner_img/')
-    master_plan = models.ImageField(null=True, blank=True,upload_to='images/')
-    floor_plan = models.ImageField(null=True, blank=True,upload_to='images/')
+    image = models.ImageField(upload_to='images/',null=True, blank=True)
     google_map_iframe = models.TextField(null=True, blank=True,)
 
+    
     slug = models.SlugField(unique=True, null=True, blank=True,max_length=555,)
     create_at = models.DateTimeField(auto_now_add=True,null=True, blank=True,)
     update_at = models.DateTimeField(auto_now=True,null=True, blank=True,)
@@ -143,6 +120,13 @@ class Project(MPTTModel):
     
     class Meta:
         verbose_name_plural='1. Project'
+    
+        # models.py
+    def image_tag(self):
+        if self.image:
+            return mark_safe(f'<img src="{self.image.url}" height="60">')
+        return ""
+
 
     # 🔑 CRITICAL FIX: Handling object-to-string conversion for slug creation
     def save(self, *args, **kwargs):
@@ -153,7 +137,7 @@ class Project(MPTTModel):
         locality_name = str(self.locality) if self.locality else ''
         city_name = str(self.city) if self.city else ''
 
-        base_slug = slugify(f"{self.project_name} {locality_name} {city_name}")
+        base_slug = slugify(f"{self.project_name} {locality_name}")
         new_slug = f"{base_slug}-{self.id}"
 
         if self.slug != new_slug:
@@ -245,15 +229,12 @@ class Project(MPTTModel):
             return f"₹ {fmt(price_min)}"
 
         return f"₹ {fmt(price_min)} – {fmt(price_max)}"
-
-
 class BookingOffer(models.Model):
     Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="BookingOffer")
     title = models.CharField(max_length=255)
 
     def __str__(self):
         return self.title
-
 class WelcomeTo(models.Model):
     Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="welcomes")
     description = models.TextField(null=True, blank=True,max_length=5500)
@@ -261,7 +242,6 @@ class WelcomeTo(models.Model):
 
     def __str__(self):
         return self.description
-
 class WebSlider(models.Model):
     Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="sliders")
     image = models.ImageField(upload_to='web_slider/')
@@ -269,7 +249,6 @@ class WebSlider(models.Model):
 
     def __str__(self):
         return self.caption or f"Slider #{self.pk}"
-
 class Overview(models.Model):
     Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="overviews")
     heading = models.CharField(max_length=255)
@@ -277,81 +256,44 @@ class Overview(models.Model):
 
     def __str__(self):
         return self.heading
-
 class AboutUs(models.Model):
     Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="aboutus")
     content = models.TextField()
 
     def __str__(self):
         return "About Us"
-
 class USP(models.Model):
     Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="usps")
     point = models.CharField(null=True, blank=True,max_length=150)
     def __str__(self):
         return self.point
-
 class Configuration(models.Model):
-    Project = models.ForeignKey(
-        "Project",
-        on_delete=models.CASCADE,
-        related_name="configurations"
-    )
-
+    Project = models.ForeignKey("Project", on_delete=models.CASCADE, related_name="configurations")
     bhk_type = models.CharField(max_length=50)
-
     area_sqft = models.IntegerField(
         verbose_name="Area (Sq.ft)",
         help_text="Enter area in numeric square feet."
-    )
-
+    ) 
     parking = models.BooleanField(default=False)
-    balcony = models.BooleanField(default=False)
-    sold_out = models.BooleanField(default=False)
+    unit_plan = models.ImageField(null=True, blank=True,upload_to='images/')
 
-    unit_plan = models.ImageField(
-        null=True,
-        blank=True,
-        upload_to='images/'
-    )
-
-    # ✅ PRICE (INTEGER ONLY – VERY IMPORTANT)
+    
+    # ✅ Sudhar 3: Price ko IntegerField banayein
+    # Yeh lakh/crore calculations ke liye zaroori hai.
     price_in_rupees = models.IntegerField(
         verbose_name="Price (in ₹)",
-        help_text="Enter price in total rupees (e.g., 5000000).",
-        null=True,
-        blank=True
+        help_text="Enter price in total rupees (e.g., 5000000)."
     )
-
-    # ✅ PRICE FORMATTER (CR / L / NORMAL)
-    def formatted_price(self):
-        """
-        Returns:
-        82400000 -> ₹ 8.24 Cr
-        4500000  -> ₹ 45.00 L
-        90000    -> ₹ 90,000
-        None     -> On Request
-        """
-        if not self.price_in_rupees:
-            return "On Request"
-
-        price = self.price_in_rupees
-
-        if price >= 10000000:
-            return f"₹ {price / 10000000:.2f} Cr"
-        elif price >= 100000:
-            return f"₹ {price / 100000:.2f} L"
-        else:
-            return f"₹ {price:,}"
 
     def __str__(self):
         return f"{self.Project.project_name} - {self.bhk_type} ({self.area_sqft} sq.ft)"
-
+    
     class Meta:
+        # Configuration ke instances ko Project aur BHK type ke hisaab se arrange karein
         ordering = ['bhk_type']
 
 class Connectivity(models.Model):
-    Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="connectivity")
+    Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="configs")
     title = models.CharField(max_length=50)
 
 
@@ -359,8 +301,8 @@ class Connectivity(models.Model):
         return f"{self.title}"
 
 class Amenities(models.Model):
-    Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="project_amenities")
-    amenities = models.ForeignKey(ProjectAmenities, on_delete=models.CASCADE, related_name="project_amenities_items")
+    Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="amenities")
+    amenities = models.ForeignKey(ProjectAmenities, on_delete=models.CASCADE, related_name="amenities")
     
     def __str__(self):
         return f"{self.Project.project_name} - {self.amenities.title}"
@@ -384,7 +326,6 @@ class Header(models.Model):
 
     def __str__(self):
         return self.keywords
-
 class RERA_Info(models.Model):
     Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="rera")
     qr_image = models.ImageField(null=True, blank=True,upload_to='overviewimage/')
@@ -398,7 +339,6 @@ class RERA_Info(models.Model):
 
     def __str__(self):
         return self.registration_no
-
 class WhyInvest(models.Model):
     Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="why_invest")
     title = models.CharField(max_length=350,null=True, blank=True)
@@ -407,14 +347,19 @@ class WhyInvest(models.Model):
 
     def __str__(self):
         return f"Why Invest - {self.pk}"
-   
+
+class BankOffer(models.Model):
+    Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="amenities")
+    bank = models.ForeignKey(Bank, on_delete=models.CASCADE, related_name="amenities")
+    
+    def __str__(self):
+        return f"{self.Project.project_name} - {self.bank.title}"
 class BankOffer(models.Model):
     Project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="bank_offers")
     bank = models.ForeignKey(Bank, on_delete=models.CASCADE, related_name="bank_offers")
     
     def __str__(self):
         return f"{self.Project.project_name} - {self.bank.title}"
-
 class ProjectFAQ(models.Model):
     project = models.ForeignKey(
         Project,
@@ -430,11 +375,6 @@ class ProjectFAQ(models.Model):
 
     def __str__(self):
         return f"{self.project.project_name} - {self.question}"
-
-# projects/models.py  (or a separate app like enquiries/models.py)
-
-from django.db import models
-
 class Enquiry(models.Model):
     project = models.ForeignKey(
         'Project',
@@ -454,3 +394,4 @@ class Enquiry(models.Model):
         verbose_name = 'Project Enquiry'
         verbose_name_plural = '3. Project Enquiries'
         ordering = ['-contacted_on']
+
